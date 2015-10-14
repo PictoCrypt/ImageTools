@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="ImageToolApp.Views.EncryptView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/ResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition />
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Vorher:" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Nacher:" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"/>
+
+        <Button Grid.Row="1" Grid.Column="0" Content="Bild auswählen" Command="{Binding ChooseImageCommand}" Margin="3" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <Button Content="Encrypt" Margin="3" Command="{Binding EncryptCommand}" />
+            <Button Content="Bild speichern" Command="{Binding SaveImageCommand}" Margin="3" Width="Auto" IsEnabled="{Binding ElementName=ResultImage, Path=Source, Converter={StaticResource ImageToBoolConverter}}"/>
+        </StackPanel>
+
+
+        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Text}" FontStyle="Italic" Margin="5" BorderThickness="2" />
+
+        <Image Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Source="{Binding SourceImagePath}" />
+        <!--, TargetNullValue={StaticResource NullImage}-->
+        <Image x:Name="ResultImage" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Source="{Binding ResultImagePath}"/>
+    </Grid>
+</UserControl>
