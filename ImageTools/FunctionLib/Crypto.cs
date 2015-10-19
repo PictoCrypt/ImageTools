@@ -3,15 +3,15 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ImageFunctionLib
+namespace FunctionLib
 {
     public static class Crypto
     {
         private static readonly byte[] Salt = Encoding.ASCII.GetBytes("jasdh7834y8hfeur73rsharks214");
 
         /// <summary>
-        /// Encrypt the given string using AES.  The string can be decrypted using 
-        /// Decrypt().  The password parameters must match.
+        ///     Encrypt the given string using AES.  The string can be decrypted using
+        ///     Decrypt().  The password parameters must match.
         /// </summary>
         /// <param name="textToBeEncrypted">The text to encrypt.</param>
         /// <param name="password">A password used to generate a key for encryption.</param>
@@ -22,8 +22,8 @@ namespace ImageFunctionLib
             if (string.IsNullOrEmpty(password))
                 throw new ArgumentNullException("password");
 
-            string result;                      // Encrypted string to return
-            RijndaelManaged aesObj = null;      // RijndaelManaged object used to encrypt the data.
+            string result; // Encrypted string to return
+            RijndaelManaged aesObj = null; // RijndaelManaged object used to encrypt the data.
 
             try
             {
@@ -32,7 +32,7 @@ namespace ImageFunctionLib
 
                 // Create a RijndaelManaged object
                 aesObj = new RijndaelManaged();
-                aesObj.Key = key.GetBytes(aesObj.KeySize / 8);
+                aesObj.Key = key.GetBytes(aesObj.KeySize/8);
 
                 // Create a decryptor to perform the stream transform.
                 var encryptor = aesObj.CreateEncryptor(aesObj.Key, aesObj.IV);
@@ -41,7 +41,7 @@ namespace ImageFunctionLib
                 using (var ms = new MemoryStream())
                 {
                     // prepend the IV
-                    ms.Write(BitConverter.GetBytes(aesObj.IV.Length), 0, sizeof(int));
+                    ms.Write(BitConverter.GetBytes(aesObj.IV.Length), 0, sizeof (int));
                     ms.Write(aesObj.IV, 0, aesObj.IV.Length);
                     using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
                     {
@@ -66,8 +66,8 @@ namespace ImageFunctionLib
         }
 
         /// <summary>
-        /// Decrypt the given string.  Assumes the string was encrypted using 
-        /// Encrypt(), using an identical password.
+        ///     Decrypt the given string.  Assumes the string was encrypted using
+        ///     Encrypt(), using an identical password.
         /// </summary>
         /// <param name="textToBeDecrypted">The text to decrypt.</param>
         /// <param name="password">A password used to generate a key for decryption.</param>
@@ -98,7 +98,7 @@ namespace ImageFunctionLib
                     // Create a RijndaelManaged object
                     // with the specified key and IV.
                     aesObj = new RijndaelManaged();
-                    aesObj.Key = key.GetBytes(aesObj.KeySize / 8);
+                    aesObj.Key = key.GetBytes(aesObj.KeySize/8);
                     // Get the initialization vector from the encrypted stream
                     aesObj.IV = ReadByteArray(ms);
                     // Create a decrytor to perform the stream transform.
@@ -125,7 +125,7 @@ namespace ImageFunctionLib
 
         private static byte[] ReadByteArray(Stream s)
         {
-            var rawLength = new byte[sizeof(int)];
+            var rawLength = new byte[sizeof (int)];
             if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length)
             {
                 throw new SystemException("Stream did not contain properly formatted byte array");

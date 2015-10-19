@@ -6,14 +6,13 @@ using ImageToolApp.Controllers;
 namespace ImageToolApp
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App
     {
         [STAThread]
         public static void Main()
-        {
-            var application = new App();
+        {var application = new App();
             application.InitializeComponent();
 
             // Global Exception Handler
@@ -27,7 +26,7 @@ namespace ImageToolApp
         protected override void OnExit(ExitEventArgs e)
         {
             Current.DispatcherUnhandledException -= UnhandeledExceptionTrapper;
-         
+
             base.OnExit(e);
             Environment.Exit(0);
         }

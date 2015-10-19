@@ -2,36 +2,28 @@
 {
     public class BaseTabViewModel : BaseViewModel
     {
-        private UICommand mChooseImageCommand;
-        private string mSourceImagePath;
-        private string mText;
-        private string mAesPassword;
+        private string mPassword;
 
-        public UICommand ChooseImageCommand
+        private UICommand mTabActionCommand;
+
+        private string mText;
+
+        public BaseTabViewModel()
         {
-            get { return mChooseImageCommand; }
-            set
-            {
-                if (value.Equals(mChooseImageCommand))
-                {
-                    return;
-                }
-                mChooseImageCommand = value;
-                OnPropertyChanged("ChooseImageCommand");
-            }
+            Password = GlobalViewModel.Password;
         }
 
-        public string SourceImagePath
+        public UICommand TabActionCommand
         {
-            get { return mSourceImagePath; }
+            get { return mTabActionCommand; }
             set
             {
-                if (value.Equals(mSourceImagePath))
+                if (value.Equals(mTabActionCommand))
                 {
                     return;
                 }
-                mSourceImagePath = value;
-                OnPropertyChanged("SourceImagePath");
+                mTabActionCommand = value;
+                OnPropertyChanged("TabActionCommand");
             }
         }
 
@@ -49,17 +41,17 @@
             }
         }
 
-        public string AesPassword
+        public string Password
         {
-            get { return mAesPassword; }
+            get { return mPassword; }
             set
             {
-                if (value.Equals(mAesPassword))
+                if (value.Equals(mPassword))
                 {
                     return;
                 }
-                mAesPassword = value;
-                OnPropertyChanged("AesPassword");
+                mPassword = value;
+                OnPropertyChanged("Password");
             }
         }
     }

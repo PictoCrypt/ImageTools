@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using ImageFunctionLib;
+using FunctionLib;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 
@@ -15,20 +15,14 @@ namespace ImageToolApp.Controllers
         protected override void RegisterCommands()
         {
             base.RegisterCommands();
-            ViewModel.DecryptCommand = UICommand.Regular(Decrypt);
-            ViewModel.DecryptTextCommand = UICommand.Regular(DecryptText);
-        }
-
-        private void DecryptText()
-        {
-            var result = Crypto.Decrypt(ViewModel.Text, ViewModel.AesPassword);
-            ViewModel.Text = result;
+            ViewModel.TabActionCommand = UICommand.Regular(Decrypt);
         }
 
         private void Decrypt()
         {
-            var bitmap = new Bitmap(ViewModel.SourceImagePath);
+            var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath);
             var result = LeastSignificantBit.DecryptText(bitmap);
+            result = Crypto.Decrypt(result, ViewModel.Password);
             ViewModel.Text = result;
         }
     }

@@ -1,6 +1,5 @@
-﻿using ImageToolApp.Models;
-using System.Windows.Controls;
-using Microsoft.Win32;
+﻿using System.Windows.Controls;
+using ImageToolApp.Models;
 
 namespace ImageToolApp.Controllers
 {
@@ -8,14 +7,14 @@ namespace ImageToolApp.Controllers
         where TView : UserControl
         where TViewModel : BaseTabViewModel, new()
     {
-        protected TView View;
+        private readonly TView mView;
         protected readonly TViewModel ViewModel;
 
         protected BaseTabController()
         {
-            View = CreateView();
+            mView = CreateView();
             ViewModel = new TViewModel();
-            View.DataContext = ViewModel;
+            mView.DataContext = ViewModel;
             RegisterCommands();
         }
 
@@ -23,25 +22,11 @@ namespace ImageToolApp.Controllers
 
         protected virtual void RegisterCommands()
         {
-            ViewModel.ChooseImageCommand = UICommand.Regular(ChooseImage);
-
-        }
-
-        protected void ChooseImage()
-        {
-            var dialog = new OpenFileDialog();
-            dialog.ShowDialog();
-            dialog.Multiselect = false;
-            if (string.IsNullOrEmpty(dialog.FileName))
-            {
-                return;
-            }
-            ViewModel.SourceImagePath = dialog.FileName;
         }
 
         public TView GetView()
         {
-            return View;
+            return mView;
         }
     }
 }

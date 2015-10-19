@@ -16,5 +16,10 @@ namespace ImageToolApp.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public GlobalViewModel GlobalViewModel
+        {
+            get { return GlobalViewModel.Instance; }
+        }
     }
 }

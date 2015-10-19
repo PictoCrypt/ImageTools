@@ -4,40 +4,88 @@ namespace ImageToolApp.Models
 {
     public class MainViewModel : BaseViewModel
     {
-        private FrameworkElement mEncryptView;
-        private FrameworkElement mDecryptView;
+        private readonly FrameworkElement mDecryptView;
+        private readonly FrameworkElement mEncryptView;
+        private UICommand mCloseAppCommand;
+        private FrameworkElement mCurrentElement;
+        private UICommand mLoadImageCommand;
+        private UICommand mPreferencesCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
-            EncryptView = encryptView;
-            DecryptView = decryptView;
+            mEncryptView = encryptView;
+            mDecryptView = decryptView;
         }
 
-        public FrameworkElement EncryptView
+        public UICommand LoadImageCommand
         {
-            get { return mEncryptView; }
+            get { return mLoadImageCommand; }
             set
             {
-                if (value.Equals(mEncryptView))
+                if (value.Equals(mLoadImageCommand))
                 {
                     return;
                 }
-                mEncryptView = value;
-                OnPropertyChanged("EncryptView");
+                mLoadImageCommand = value;
+                OnPropertyChanged("LoadImageCommand");
             }
         }
 
-        public FrameworkElement DecryptView
+        public UICommand PreferencesCommand
         {
-            get { return mDecryptView; }
+            get { return mPreferencesCommand; }
             set
             {
-                if (value.Equals(mDecryptView))
+                if (value.Equals(mPreferencesCommand))
                 {
                     return;
                 }
-                mDecryptView = value;
-                OnPropertyChanged("DecryptView");
+                mPreferencesCommand = value;
+                OnPropertyChanged("PreferencesCommand");
+            }
+        }
+
+        public UICommand CloseAppCommand
+        {
+            get { return mCloseAppCommand; }
+            set
+            {
+                if (value.Equals(mCloseAppCommand))
+                {
+                    return;
+                }
+                mCloseAppCommand = value;
+                OnPropertyChanged("CloseAppCommand");
+            }
+        }
+
+        public int SelectedRibbonTabIndex
+        {
+            set
+            {
+                switch (value)
+                {
+                    case 0:
+                        CurrentElement = mEncryptView;
+                        break;
+                    case 1:
+                        CurrentElement = mDecryptView;
+                        break;
+                }
+            }
+        }
+
+        public FrameworkElement CurrentElement
+        {
+            get { return mCurrentElement; }
+            set
+            {
+                if (value.Equals(mCurrentElement))
+                {
+                    return;
+                }
+                mCurrentElement = value;
+                OnPropertyChanged("CurrentElement");
             }
         }
     }

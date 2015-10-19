@@ -3,13 +3,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace ImageFunctionLib
+namespace FunctionLib
 {
     public class LockBitmap
     {
+        private readonly Bitmap mSource;
         private BitmapData mBitmapData;
         private IntPtr mIptr = IntPtr.Zero;
-        private readonly Bitmap mSource;
 
         public LockBitmap(Bitmap source)
         {
@@ -22,7 +22,7 @@ namespace ImageFunctionLib
         public int Height { get; set; }
 
         /// <summary>
-        /// Lock bitmap data
+        ///     Lock bitmap data
         /// </summary>
         public void LockBits()
         {
@@ -66,7 +66,7 @@ namespace ImageFunctionLib
         }
 
         /// <summary>
-        /// Unlock bitmap data
+        ///     Unlock bitmap data
         /// </summary>
         public void UnlockBits()
         {
@@ -85,7 +85,7 @@ namespace ImageFunctionLib
         }
 
         /// <summary>
-        /// Get the color of the specified pixel
+        ///     Get the color of the specified pixel
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -128,7 +128,7 @@ namespace ImageFunctionLib
         }
 
         /// <summary>
-        /// Set the color of the specified pixel
+        ///     Set the color of the specified pixel
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

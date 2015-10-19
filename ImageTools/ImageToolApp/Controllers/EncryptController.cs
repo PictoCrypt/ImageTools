@@ -1,10 +1,8 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using ImageFunctionLib;
+using FunctionLib;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
-using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
@@ -18,55 +16,48 @@ namespace ImageToolApp.Controllers
         protected override void RegisterCommands()
         {
             base.RegisterCommands();
-            ViewModel.SaveImageCommand = UICommand.Regular(SaveImage);
-            ViewModel.EncryptCommand = UICommand.Regular(Encrypt);
-            ViewModel.EncryptWithAesCommand = UICommand.Regular(EncryptWithAes);
-        }
-
-        private void EncryptWithAes()
-        {
-            var result = Crypto.Encrypt(ViewModel.Text, ViewModel.AesPassword);
-            ViewModel.Text = result;
+            ViewModel.TabActionCommand = UICommand.Regular(Encrypt);
         }
 
         private void Encrypt()
         {
-            var bitmap = new Bitmap(ViewModel.SourceImagePath);
-            var result = LeastSignificantBit.Encrypt(bitmap, ViewModel.Text ?? "");
+            var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath);
+            var cryptedText = Crypto.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
+            var result = LeastSignificantBit.Encrypt(bitmap, cryptedText);
             if (result != null)
             {
                 var path = Path.GetTempFileName().Replace("tmp", "jpeg");
                 result.Save(path);
-                ViewModel.ResultImagePath = path;
+                ViewModel.GlobalViewModel.ResultImagePath = path;
             }
         }
 
-        private void SaveImage()
-        {
-            var dialog = new SaveFileDialog {Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
-            var dialogResult = dialog.ShowDialog();
-            if (dialogResult.HasValue && dialogResult.Value)
-            {
-                var tmp = ViewModel.ResultImagePath;
-                var bmp = new Bitmap(tmp);
+        //private void SaveImage()
+        //{
+        //    var dialog = new SaveFileDialog {Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
+        //    var dialogResult = dialog.ShowDialog();
+        //    if (dialogResult.HasValue && dialogResult.Value)
+        //    {
+        //        var tmp = ViewModel.ResultImagePath;
+        //        var bmp = new Bitmap(tmp);
 
-                if (File.Exists(dialog.FileName))
-                {
-                    File.Delete(dialog.FileName);
-                }
-                ViewModel.ResultImagePath = dialog.FileName;
+        //        if (File.Exists(dialog.FileName))
+        //        {
+        //            File.Delete(dialog.FileName);
+        //        }
+        //        ViewModel.ResultImagePath = dialog.FileName;
 
-                switch (dialog.FilterIndex)
-                {
-                    case 0:
-                        bmp.Save(dialog.FileName, ImageFormat.Png);
-                        break;
-                    case 1:
-                        bmp.Save(dialog.FileName, ImageFormat.Bmp);
-                        break;
-                }
-                bmp.Dispose();
-            }
-        }
+        //        switch (dialog.FilterIndex)
+        //        {
+        //            case 0:
+        //                bmp.Save(dialog.FileName, ImageFormat.Png);
+        //                break;
+        //            case 1:
+        //                bmp.Save(dialog.FileName, ImageFormat.Bmp);
+        //                break;
+        //        }
+        //        bmp.Dispose();
+        //    }
+        //}
     }
 }

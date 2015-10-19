@@ -3,7 +3,7 @@
 namespace ImageToolApp.Views
 {
     /// <summary>
-    /// Interaction logic for EncryptView.xaml
+    ///     Interaction logic for EncryptView.xaml
     /// </summary>
     public partial class EncryptView : UserControl
     {
