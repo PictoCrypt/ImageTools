@@ -1,5 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.IO;
+using System.Windows.Controls;
 using ImageToolApp.Models;
+using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
@@ -29,6 +32,19 @@ namespace ImageToolApp.Controllers
             return mView;
         }
 
-        public abstract void OpenImage();
+        public void OpenImage()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.ShowDialog();
+            dialog.Multiselect = false;
+            if (string.IsNullOrEmpty(dialog.FileName))
+            {
+                return;
+            }
+            
+            var tmp = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(dialog.FileName));
+            File.Copy(dialog.FileName, tmp);
+            ViewModel.GlobalViewModel.ImagePath = tmp;
+        }
     }
 }

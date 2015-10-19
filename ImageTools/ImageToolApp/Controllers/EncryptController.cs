@@ -30,39 +30,28 @@ namespace ImageToolApp.Controllers
             if (dialogResult.HasValue && dialogResult.Value)
             {
                 var tmp = ViewModel.GlobalViewModel.ResultImagePath;
-                var bmp = new Bitmap(tmp);
-
-                if (File.Exists(dialog.FileName))
+                using (var bmp = new Bitmap(tmp))
                 {
-                    File.Delete(dialog.FileName);
-                }
-                ViewModel.GlobalViewModel.ResultImagePath = dialog.FileName;
+                    if (File.Exists(dialog.FileName))
+                    {
+                        File.Delete(dialog.FileName);
+                    }
+                    ViewModel.GlobalViewModel.ResultImagePath = dialog.FileName;
 
-                switch (dialog.FilterIndex)
-                {
-                    case 0:
-                        bmp.Save(dialog.FileName, ImageFormat.Png);
-                        break;
-                    case 1:
-                        bmp.Save(dialog.FileName, ImageFormat.Bmp);
-                        break;
+                    switch (dialog.FilterIndex)
+                    {
+                        case 0:
+                            bmp.Save(dialog.FileName, ImageFormat.Png);
+                            break;
+                        case 1:
+                            bmp.Save(dialog.FileName, ImageFormat.Bmp);
+                            break;
+                    }
+                    
                 }
-                bmp.Dispose();
             }
         }
         
-        public override void OpenImage()
-        {
-            var dialog = new OpenFileDialog();
-            dialog.ShowDialog();
-            dialog.Multiselect = false;
-            if (string.IsNullOrEmpty(dialog.FileName))
-            {
-                return;
-            }
-            ViewModel.GlobalViewModel.ImagePath = dialog.FileName;
-        }
-
         public void OpenTxt()
         {
             throw new System.NotImplementedException();
@@ -70,19 +59,21 @@ namespace ImageToolApp.Controllers
 
         private void Encrypt()
         {
-            var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath);
-            var text = ViewModel.Text;
-            if (ViewModel.EncryptedCheck)
+            using (var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath))
             {
-                text = Crypto.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
+                var text = ViewModel.Text;
+                if (ViewModel.EncryptedCheck)
+                {
+                    text = Crypto.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
                 
-            }
-            var result = LeastSignificantBit.Encrypt(bitmap, text);
-            if (result != null)
-            {
-                var path = Path.GetTempFileName().Replace("tmp", "png");
-                result.Save(path);
-                ViewModel.GlobalViewModel.ResultImagePath = path;
+                }
+                var result = LeastSignificantBit.Encrypt(bitmap, text);
+                if (result != null)
+                {
+                    var path = Path.GetTempFileName().Replace("tmp", "png");
+                    result.Save(path);
+                    ViewModel.GlobalViewModel.ResultImagePath = path;
+                }
             }
         }
     }
