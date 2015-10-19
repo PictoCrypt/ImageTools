@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
+﻿using System.Drawing;
 using ImageFunctionLib;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
@@ -20,6 +16,13 @@ namespace ImageToolApp.Controllers
         {
             base.RegisterCommands();
             ViewModel.DecryptCommand = UICommand.Regular(Decrypt);
+            ViewModel.DecryptTextCommand = UICommand.Regular(DecryptText);
+        }
+
+        private void DecryptText()
+        {
+            var result = Crypto.Decrypt(ViewModel.Text, ViewModel.AesPassword);
+            ViewModel.Text = result;
         }
 
         private void Decrypt()

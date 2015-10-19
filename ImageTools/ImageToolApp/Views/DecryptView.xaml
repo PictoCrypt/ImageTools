@@ -5,20 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/ResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>
             <RowDefinition Height="100"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" Content="Bild auswählen" Command="{Binding ChooseImageCommand}" Margin="3" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Image Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Source="{Binding SourceImagePath}"/>
 
-        <TextBox Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Text}" FontStyle="Italic" Margin="5" BorderThickness="2" IsReadOnly="True" Background="DarkGray" TextWrapping="Wrap" AcceptsReturn="True"
+        <TextBox x:Name="TextBox" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Text}" FontStyle="Italic" Margin="5" BorderThickness="2" IsReadOnly="True" Background="DarkGray" TextWrapping="Wrap" AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto" />
 
-        <Button Grid.Row="3" Content="Decrypt" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Command="{Binding DecryptCommand}" />
+        <TextBox Grid.Row="3" Text="{Binding AesPassword}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3" IsEnabled="{Binding ElementName=TextBox, Path=Text, Converter={StaticResource IsStringNullConverter}}"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Decrypt" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Command="{Binding DecryptCommand}" />
+            <Button Content="Decrypt Text" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Command="{Binding DecryptTextCommand}" />
+        </StackPanel>
     </Grid>
 </UserControl>

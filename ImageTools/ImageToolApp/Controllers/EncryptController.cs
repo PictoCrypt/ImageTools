@@ -25,7 +25,7 @@ namespace ImageToolApp.Controllers
 
         private void EncryptWithAes()
         {
-            var result = AESEncryption.Encrypt(ViewModel.Text, ViewModel.AesPassword);
+            var result = Crypto.Encrypt(ViewModel.Text, ViewModel.AesPassword);
             ViewModel.Text = result;
         }
 
@@ -49,6 +49,11 @@ namespace ImageToolApp.Controllers
             {
                 var tmp = ViewModel.ResultImagePath;
                 var bmp = new Bitmap(tmp);
+
+                if (File.Exists(dialog.FileName))
+                {
+                    File.Delete(dialog.FileName);
+                }
                 ViewModel.ResultImagePath = dialog.FileName;
 
                 switch (dialog.FilterIndex)
@@ -60,6 +65,7 @@ namespace ImageToolApp.Controllers
                         bmp.Save(dialog.FileName, ImageFormat.Bmp);
                         break;
                 }
+                bmp.Dispose();
             }
         }
     }
