@@ -11,6 +11,7 @@
     
     <!-- Converters -->
     <converters:ImageToBoolConverter x:Key="ImageToBoolConverter" />
+    <converters:IsStringNullConverter x:Key="IsStringNullConverter" />
     <!--<converters:BitmapImageToBitmapConveter x:Key="BitmapToImageSourceConverter" />-->
 
     <!-- Styles -->

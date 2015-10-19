@@ -1,52 +1,32 @@
-﻿using System.Drawing;
-using System.IO;
+﻿using System;
+using System.Drawing;
+using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
+using ImageFunctionLib;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
-using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public class DecryptController
+    public class DecryptController : BaseTabController<DecryptView, DecryptViewModel>
     {
-        private readonly DecryptView mView;
-        private readonly DecryptViewModel mViewModel;
-
-        public DecryptController()
+        protected override DecryptView CreateView()
         {
-            mView = new DecryptView();
-            mViewModel = new DecryptViewModel();
-            mView.DataContext = mViewModel;
-            RegisterCommands();
+            return new DecryptView();
         }
 
-        private void RegisterCommands()
+        protected override void RegisterCommands()
         {
-            mViewModel.ChooseImageCommand = UICommand.Regular(ChooseImage);
-            mViewModel.DecryptCommand = UICommand.Regular(Decrypt);
+            base.RegisterCommands();
+            ViewModel.DecryptCommand = UICommand.Regular(Decrypt);
         }
 
         private void Decrypt()
         {
-            var bitmap = new Bitmap(mViewModel.SourceImagePath);
-            var result = ImageFunctionLib.ImageFunctionLib.DecryptText(bitmap);
-            mViewModel.Text = result;
-        }
-
-        private void ChooseImage()
-        {
-            var dialog = new OpenFileDialog();
-            dialog.ShowDialog();
-            dialog.Multiselect = false;
-            if (string.IsNullOrEmpty(dialog.FileName))
-            {
-                return;
-            }
-            mViewModel.SourceImagePath = dialog.FileName;
-        }
-
-        public DecryptView GetView()
-        {
-            return mView;
+            var bitmap = new Bitmap(ViewModel.SourceImagePath);
+            var result = LeastSignificantBit.DecryptText(bitmap);
+            ViewModel.Text = result;
         }
     }
 }

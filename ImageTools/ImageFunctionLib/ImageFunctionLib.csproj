@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AESEncryption.cs" />
     <Compile Include="ImageFunctionLib.cs" />
+    <Compile Include="LeastSignificantBit.cs" />
     <Compile Include="LockBitmap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

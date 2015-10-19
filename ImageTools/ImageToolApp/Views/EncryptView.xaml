@@ -21,8 +21,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="28"/>
-            <RowDefinition />
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="Auto" MinHeight="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="28"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Vorher:" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"/>
@@ -36,10 +37,14 @@
         </StackPanel>
 
 
-        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Text}" FontStyle="Italic" Margin="5" BorderThickness="2" />
+        <TextBox x:Name="TextBox" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Text}" FontStyle="Italic" Margin="5" BorderThickness="2" TextWrapping="Wrap" AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto" />
 
-        <Image Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Source="{Binding SourceImagePath}" />
+        <TextBox Grid.Row="4" Grid.Column="0" Text="{Binding AesPassword}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3" IsEnabled="{Binding ElementName=TextBox, Path=Text, Converter={StaticResource IsStringNullConverter}}"/>
+        <Button Grid.Row="4" Grid.Column="1" Content="Encrypt with AES" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="3" Command="{Binding EncryptWithAesCommand}" IsEnabled="{Binding ElementName=TextBox, Path=Text, Converter={StaticResource IsStringNullConverter}}"/>
+
+        <Image Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Source="{Binding SourceImagePath}"/>
         <!--, TargetNullValue={StaticResource NullImage}-->
-        <Image x:Name="ResultImage" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Source="{Binding ResultImagePath}"/>
+        <Image x:Name="ResultImage" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Source="{Binding ResultImagePath}"/>
     </Grid>
 </UserControl>

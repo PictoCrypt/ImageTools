@@ -1,68 +1,66 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using ImageFunctionLib;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public class EncryptController
+    public class EncryptController : BaseTabController<EncryptView, EncryptViewModel>
     {
-        private readonly EncryptViewModel mViewModel;
-        private EncryptView mView;
-
-        public EncryptController()
+        protected override EncryptView CreateView()
         {
-            mView = new EncryptView();
-            mViewModel = new EncryptViewModel();
-            mView.DataContext = mViewModel;
-            RegisterCommands();
+            return new EncryptView();
         }
 
-        private void RegisterCommands()
+        protected override void RegisterCommands()
         {
-            mViewModel.ChooseImageCommand = UICommand.Regular(ChooseImage);
-            mViewModel.SaveImageCommand = UICommand.Regular(SaveImage);
-            mViewModel.EncryptCommand = UICommand.Regular(Encrypt);
+            base.RegisterCommands();
+            ViewModel.SaveImageCommand = UICommand.Regular(SaveImage);
+            ViewModel.EncryptCommand = UICommand.Regular(Encrypt);
+            ViewModel.EncryptWithAesCommand = UICommand.Regular(EncryptWithAes);
         }
 
-        private void ChooseImage()
+        private void EncryptWithAes()
         {
-            var dialog = new OpenFileDialog();
-            dialog.ShowDialog();
-            dialog.Multiselect = false;
-            if (string.IsNullOrEmpty(dialog.FileName))
-            {
-                return;
-            }
-            mViewModel.SourceImagePath = dialog.FileName;
+            var result = AESEncryption.Encrypt(ViewModel.Text, ViewModel.AesPassword);
+            ViewModel.Text = result;
         }
 
         private void Encrypt()
         {
-            var bitmap = new Bitmap(mViewModel.SourceImagePath);
-            var result = ImageFunctionLib.ImageFunctionLib.Encrypt(bitmap, mViewModel.Text ?? "");
+            var bitmap = new Bitmap(ViewModel.SourceImagePath);
+            var result = LeastSignificantBit.Encrypt(bitmap, ViewModel.Text ?? "");
             if (result != null)
             {
-                var path = Path.GetTempFileName().Replace("tmp", "jpg");
+                var path = Path.GetTempFileName().Replace("tmp", "jpeg");
                 result.Save(path);
-                mViewModel.ResultImagePath = path;
+                ViewModel.ResultImagePath = path;
             }
         }
 
         private void SaveImage()
         {
-            var dialog = new SaveFileDialog();
-            dialog.ShowDialog();
-            var tmp = mViewModel.ResultImagePath;
-            File.Copy(tmp, dialog.FileName);
-            mViewModel.ResultImagePath = dialog.FileName;
-        }
+            var dialog = new SaveFileDialog {Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                var tmp = ViewModel.ResultImagePath;
+                var bmp = new Bitmap(tmp);
+                ViewModel.ResultImagePath = dialog.FileName;
 
-        public EncryptView GetView()
-        {
-            return mView;
+                switch (dialog.FilterIndex)
+                {
+                    case 0:
+                        bmp.Save(dialog.FileName, ImageFormat.Png);
+                        break;
+                    case 1:
+                        bmp.Save(dialog.FileName, ImageFormat.Bmp);
+                        break;
+                }
+            }
         }
     }
 }

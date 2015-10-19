@@ -1,27 +1,11 @@
 ﻿namespace ImageToolApp.Models
 {
-    public class EncryptViewModel : BaseViewModel
+    public class EncryptViewModel : BaseTabViewModel
     {
-        private UICommand mChooseImageCommand;
         private UICommand mSaveImageCommand;
-        private string mText;
         private UICommand mEncryptCommand;
-        private string mSourceImagePath;
         private string mResultImagePath;
-
-        public UICommand ChooseImageCommand
-        {
-            get { return mChooseImageCommand; }
-            set
-            {
-                if (value.Equals(mChooseImageCommand))
-                {
-                    return;
-                }
-                mChooseImageCommand = value;
-                OnPropertyChanged("ChooseImageCommand");
-            }
-        }
+        private UICommand mEncryptWithAesCommand;
 
         public UICommand SaveImageCommand
         {
@@ -34,6 +18,20 @@
                 }
                 mSaveImageCommand = value;
                 OnPropertyChanged("SaveImageCommand");
+            }
+        }
+
+        public UICommand EncryptWithAesCommand
+        {
+            get { return mEncryptWithAesCommand; }
+            set
+            {
+                if (value.Equals(mEncryptWithAesCommand))
+                {
+                    return;
+                }
+                mEncryptWithAesCommand = value;
+                OnPropertyChanged("EncryptWithAesCommand");
             }
         }
 
@@ -51,20 +49,6 @@
             }
         }
 
-        public string Text
-        {
-            get { return mText; }
-            set
-            {
-                if (value.Equals(mText))
-                {
-                    return;
-                }
-                mText = value;
-                OnPropertyChanged("Text");
-            }
-        }
-
         public string ResultImagePath
         {
             get { return mResultImagePath; }
@@ -76,20 +60,6 @@
                 }
                 mResultImagePath = value;
                 OnPropertyChanged("ResultImagePath");
-            }
-        }
-
-        public string SourceImagePath
-        {
-            get { return mSourceImagePath; }
-            set
-            {
-                if (value.Equals(mSourceImagePath))
-                {
-                    return;
-                }
-                mSourceImagePath = value;
-                OnPropertyChanged("SourceImagePath");
             }
         }
     }
