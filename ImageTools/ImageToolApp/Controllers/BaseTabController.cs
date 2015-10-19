@@ -3,7 +3,7 @@ using ImageToolApp.Models;
 
 namespace ImageToolApp.Controllers
 {
-    public abstract class BaseTabController<TView, TViewModel>
+    public abstract class BaseTabController<TView, TViewModel> : IBaseTabController
         where TView : UserControl
         where TViewModel : BaseTabViewModel, new()
     {
@@ -28,5 +28,7 @@ namespace ImageToolApp.Controllers
         {
             return mView;
         }
+
+        public abstract void OpenImage();
     }
 }

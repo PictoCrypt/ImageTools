@@ -8,8 +8,11 @@ namespace ImageToolApp.Models
         private readonly FrameworkElement mEncryptView;
         private UICommand mCloseAppCommand;
         private FrameworkElement mCurrentElement;
-        private UICommand mLoadImageCommand;
         private UICommand mPreferencesCommand;
+        private UICommand mOpenImageCommand;
+        private UICommand mSaveImageCommand;
+        private UICommand mOpenTxtCommand;
+        private UICommand mSaveTxtCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
@@ -17,17 +20,59 @@ namespace ImageToolApp.Models
             mDecryptView = decryptView;
         }
 
-        public UICommand LoadImageCommand
+        public UICommand OpenImageCommand
         {
-            get { return mLoadImageCommand; }
+            get { return mOpenImageCommand; }
             set
             {
-                if (value.Equals(mLoadImageCommand))
+                if (value.Equals(mOpenImageCommand))
                 {
                     return;
                 }
-                mLoadImageCommand = value;
-                OnPropertyChanged("LoadImageCommand");
+                mOpenImageCommand = value;
+                OnPropertyChanged("OpenImageCommand");
+            }
+        }
+
+        public UICommand SaveImageCommand
+        {
+            get { return mSaveImageCommand; }
+            set
+            {
+                if (value.Equals(mSaveImageCommand))
+                {
+                    return;
+                }
+                mSaveImageCommand = value;
+                OnPropertyChanged("SaveImageCommand");
+            }
+        }
+
+        public UICommand OpenTxtCommand
+        {
+            get { return mOpenTxtCommand; }
+            set
+            {
+                if (value.Equals(mOpenTxtCommand))
+                {
+                    return;
+                }
+                mOpenTxtCommand = value;
+                OnPropertyChanged("OpenTxtCommand");
+            }
+        }
+
+        public UICommand SaveTxtCommand
+        {
+            get { return mSaveTxtCommand; }
+            set
+            {
+                if (value.Equals(mSaveTxtCommand))
+                {
+                    return;
+                }
+                mSaveTxtCommand = value;
+                OnPropertyChanged("SaveTxtCommand");
             }
         }
 

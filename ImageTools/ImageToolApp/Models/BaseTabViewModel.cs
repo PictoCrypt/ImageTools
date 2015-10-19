@@ -7,6 +7,7 @@
         private UICommand mTabActionCommand;
 
         private string mText;
+        private bool mEncryptedCheck;
 
         public BaseTabViewModel()
         {
@@ -52,6 +53,20 @@
                 }
                 mPassword = value;
                 OnPropertyChanged("Password");
+            }
+        }
+
+        public bool EncryptedCheck
+        {
+            get { return mEncryptedCheck; }
+            set
+            {
+                if (value.Equals(mEncryptedCheck))
+                {
+                    return;
+                }
+                mEncryptedCheck = value;
+                OnPropertyChanged("EncryptedCheck");
             }
         }
     }

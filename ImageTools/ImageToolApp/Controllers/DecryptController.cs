@@ -2,6 +2,7 @@
 using FunctionLib;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
+using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
@@ -18,11 +19,31 @@ namespace ImageToolApp.Controllers
             ViewModel.TabActionCommand = UICommand.Regular(Decrypt);
         }
 
+        public void SaveTxt()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void OpenImage()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.ShowDialog();
+            dialog.Multiselect = false;
+            if (string.IsNullOrEmpty(dialog.FileName))
+            {
+                return;
+            }
+            ViewModel.GlobalViewModel.ImagePath = dialog.FileName;
+        }
+
         private void Decrypt()
         {
             var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath);
             var result = LeastSignificantBit.DecryptText(bitmap);
-            result = Crypto.Decrypt(result, ViewModel.Password);
+            if (ViewModel.EncryptedCheck)
+            {
+                result = Crypto.Decrypt(result, ViewModel.Password);
+            }
             ViewModel.Text = result;
         }
     }

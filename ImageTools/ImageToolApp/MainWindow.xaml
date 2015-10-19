@@ -20,13 +20,8 @@
                 <RibbonButton SmallImageSource="{StaticResource HelpImage}" />
             </Ribbon.HelpPaneContent>
 
-            <!--<Ribbon.QuickAccessToolBar>
-            </Ribbon.QuickAccessToolBar>-->
-
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu x:Name="RibbonAppMenu" SmallImageSource="{StaticResource MenuImage}">
-                    <RibbonApplicationMenuItem Header="Bild laden..." ImageSource="{StaticResource ImgImage}"
-                                               Command="{Binding LoadImageCommand}" />
                     <RibbonApplicationMenuItem Header="Einstellungen" ImageSource="{StaticResource PreferencesImage}"
                                                Command="{Binding PreferencesCommand}" />
                     <RibbonApplicationMenuItem Header="Beenden" ImageSource="{StaticResource CloseImage}"
@@ -34,9 +29,27 @@
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
-            <RibbonTab Header="Encrypt" />
+            <RibbonTab Header="Encrypt">
+                <RibbonGroup Header="Bild">
+                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}" SmallImageSource="{StaticResource OpenImgImage}"/>
+                    <RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}" SmallImageSource="{StaticResource SaveImage}"/>
+                </RibbonGroup>
+                <RibbonGroup Header="Text">
+                    <RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}" SmallImageSource="{StaticResource OpenTxtImage}"/>
+                    <!--<RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" SmallImageSource="{StaticResource SaveImage}"/>-->
+                </RibbonGroup>
+            </RibbonTab>
 
-            <RibbonTab Header="Decrypt" />
+            <RibbonTab Header="Decrypt">
+                <RibbonGroup Header="Bild">
+                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}" SmallImageSource="{StaticResource OpenImgImage}"/>
+                    <!--<RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}" SmallImageSource="{StaticResource SaveImage}"/>-->
+                </RibbonGroup>
+                <RibbonGroup Header="Text">
+                    <!--<RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}" SmallImageSource="{StaticResource OpenTxtImage}"/>-->
+                    <RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" SmallImageSource="{StaticResource SaveImage}"/>
+                </RibbonGroup>
+            </RibbonTab>
         </Ribbon>
         <Grid>
             <Grid.ColumnDefinitions>

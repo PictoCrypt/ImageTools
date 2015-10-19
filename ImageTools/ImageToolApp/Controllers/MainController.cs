@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using ImageToolApp.Models;
+using ImageToolApp.Views;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
@@ -10,24 +13,69 @@ namespace ImageToolApp.Controllers
     {
         private readonly Window mView;
         private readonly MainViewModel mViewModel;
+        private readonly EncryptController mEncryptController;
+        private readonly DecryptController mDecryptController;
 
         public MainController(Window mainWindow)
         {
             mView = mainWindow;
 
-            var encryptController = new EncryptController();
-            var decryptController = new DecryptController();
-            mViewModel = new MainViewModel(encryptController.GetView(), decryptController.GetView());
+            mEncryptController = new EncryptController();
+            mDecryptController = new DecryptController();
+            mViewModel = new MainViewModel(mEncryptController.GetView(), mDecryptController.GetView());
             SetupCommands();
             mView.DataContext = mViewModel;
             mView.Show();
         }
 
+        public IBaseTabController CurrentController
+        {
+            get
+            {
+                var view = mViewModel.CurrentElement as EncryptView;
+                if (view != null)
+                {
+                    return mEncryptController;
+                }
+                return mDecryptController;
+            }
+        }
+
         private void SetupCommands()
         {
             mViewModel.CloseAppCommand = UICommand.Regular(CloseApp);
-            mViewModel.LoadImageCommand = UICommand.Regular(LoadImage);
             mViewModel.PreferencesCommand = UICommand.Regular(OpenPreferencesWindow);
+            mViewModel.OpenImageCommand = UICommand.Regular(OpenImage);
+            mViewModel.SaveImageCommand = UICommand.Regular(SaveImage);
+            mViewModel.OpenTxtCommand = UICommand.Regular(OpenTxt);
+            mViewModel.SaveTxtCommand = UICommand.Regular(SaveTxt);
+        }
+
+        private void SaveTxt()
+        {
+            var controller = CurrentController as DecryptController;
+            if (controller != null)
+            {
+                controller.SaveTxt();
+            }
+        }
+
+        private void OpenTxt()
+        {
+            var controller = CurrentController as EncryptController;
+            if (controller != null)
+            {
+                controller.OpenTxt();
+            }
+        }
+
+        private void SaveImage()
+        {
+            var controller = CurrentController as EncryptController;
+            if (controller != null)
+            {
+                controller.SaveImage();
+            }
         }
 
         private void OpenPreferencesWindow()
@@ -39,16 +87,9 @@ namespace ImageToolApp.Controllers
             throw new NotImplementedException();
         }
 
-        private void LoadImage()
+        private void OpenImage()
         {
-            var dialog = new OpenFileDialog();
-            dialog.ShowDialog();
-            dialog.Multiselect = false;
-            if (string.IsNullOrEmpty(dialog.FileName))
-            {
-                return;
-            }
-            mViewModel.GlobalViewModel.ImagePath = dialog.FileName;
+            CurrentController.OpenImage();
         }
 
         private void CloseApp()

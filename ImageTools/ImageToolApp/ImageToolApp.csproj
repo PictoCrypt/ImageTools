@@ -58,6 +58,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Models\GlobalViewModel.cs" />
     <Compile Include="WpfHelpers\PasswordHelper.cs" />
     <Page Include="App.xaml">
@@ -146,6 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Preferences.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\SaveAs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Text.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
