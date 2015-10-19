@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using FunctionLib.Helper;
 
-namespace FunctionLib
+namespace FunctionLib.Steganography
 {
     public static class LeastSignificantBit
     {

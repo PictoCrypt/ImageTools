@@ -2,6 +2,8 @@
 using System.Drawing.Imaging;
 using System.IO;
 using FunctionLib;
+using FunctionLib.Cryptography;
+using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 using Microsoft.Win32;

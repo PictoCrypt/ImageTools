@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FunctionLib
+namespace FunctionLib.Cryptography
 {
     public static class Crypto
     {
