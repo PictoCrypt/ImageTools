@@ -22,7 +22,7 @@ namespace ImageToolApp.Controllers
 
             mEncryptController = new EncryptController();
             mDecryptController = new DecryptController();
-            mViewModel = new MainViewModel(mEncryptController.GetView(), mDecryptController.GetView());
+            mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
             mView.Show();

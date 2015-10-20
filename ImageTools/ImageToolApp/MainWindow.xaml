@@ -53,15 +53,14 @@
         </Ribbon>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="150"/>
-                <ColumnDefinition Width="5" MaxWidth="5" MinWidth="5"/>
-                <ColumnDefinition Width="200" MinWidth="25"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" MaxWidth="200" />
             </Grid.ColumnDefinitions>
-            
-            <ContentControl Grid.Column="0" Content="{Binding CurrentElement}" />
-            <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Stretch" />
-            <Image Grid.Column="2" Source="{Binding GlobalViewModel.ImagePath}" />
+            <ContentControl Grid.Column="0" Content="{Binding CurrentElement}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Expander Grid.Column="1" ExpandDirection="Left" Width="Auto" Height="Auto" IsExpanded="False"
+                      VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Image Source="{Binding GlobalViewModel.ImagePath}" Stretch="Uniform" />
+            </Expander>
         </Grid>
-        
     </DockPanel>
 </RibbonWindow>

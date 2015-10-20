@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows.Input;
 using FunctionLib;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
@@ -19,7 +20,6 @@ namespace ImageToolApp.Controllers
 
         protected override void RegisterCommands()
         {
-            base.RegisterCommands();
             ViewModel.TabActionCommand = UICommand.Regular(Encrypt);
         }
 
@@ -59,6 +59,7 @@ namespace ImageToolApp.Controllers
 
         private void Encrypt()
         {
+            App.Current.MainWindow.Cursor = Cursors.Wait;
             using (var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath))
             {
                 var text = ViewModel.Text;
@@ -75,6 +76,7 @@ namespace ImageToolApp.Controllers
                     ViewModel.GlobalViewModel.ResultImagePath = path;
                 }
             }
+            App.Current.MainWindow.Cursor = Cursors.Arrow;
         }
     }
 }

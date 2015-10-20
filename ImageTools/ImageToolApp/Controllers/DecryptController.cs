@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Input;
 using FunctionLib;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
@@ -17,7 +18,6 @@ namespace ImageToolApp.Controllers
 
         protected override void RegisterCommands()
         {
-            base.RegisterCommands();
             ViewModel.TabActionCommand = UICommand.Regular(Decrypt);
         }
 
@@ -28,6 +28,7 @@ namespace ImageToolApp.Controllers
 
         private void Decrypt()
         {
+            App.Current.MainWindow.Cursor = Cursors.Wait;
             string result;
             using (var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath))
             {
@@ -39,6 +40,7 @@ namespace ImageToolApp.Controllers
                 result = Crypto.Decrypt(result, ViewModel.Password);
             }
             ViewModel.Text = result;
+            App.Current.MainWindow.Cursor = Cursors.Arrow;
         }
     }
 }

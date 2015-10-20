@@ -10,27 +10,21 @@ namespace ImageToolApp.Controllers
         where TView : UserControl
         where TViewModel : BaseTabViewModel, new()
     {
-        private readonly TView mView;
         protected readonly TViewModel ViewModel;
 
         protected BaseTabController()
         {
-            mView = CreateView();
+            View = CreateView();
             ViewModel = new TViewModel();
-            mView.DataContext = ViewModel;
+            View.DataContext = ViewModel;
             RegisterCommands();
         }
 
         protected abstract TView CreateView();
 
-        protected virtual void RegisterCommands()
-        {
-        }
+        protected abstract void RegisterCommands();
 
-        public TView GetView()
-        {
-            return mView;
-        }
+        public TView View { get; }
 
         public void OpenImage()
         {

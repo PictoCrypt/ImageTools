@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Windows;
 using FunctionLib;
 
 namespace ImageToolApp.Models
@@ -70,7 +71,19 @@ namespace ImageToolApp.Models
 
         public string ImagePath
         {
-            get { return mImagePath; }
+            get
+            {
+                if(!string.IsNullOrEmpty(mImagePath))
+                    return mImagePath;
+
+                var myResourceDictionary = new ResourceDictionary
+                {
+                    Source = new Uri("/ImageToolApp;component/Resources/ResourceDictionary.xaml",
+                        UriKind.RelativeOrAbsolute)
+                };
+                var result = myResourceDictionary["NullImage"].ToString();
+                return result;
+            }
             set
             {
                 if (value.Equals(mImagePath))
