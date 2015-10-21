@@ -45,6 +45,7 @@
     <Compile Include="Cryptography\Crypt.cs" />
     <Compile Include="EncryptionMethod.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
+    <Compile Include="Helper\Pixel.cs" />
     <Compile Include="ImageFunctionLib.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteganographicMethod.cs" />

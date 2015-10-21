@@ -41,6 +41,9 @@
                                   SmallImageSource="{StaticResource OpenTxtImage}" />
                     <!--<RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" SmallImageSource="{StaticResource SaveImage}"/>-->
                 </RibbonGroup>
+                <RibbonGroup Header="Bild">
+                    <RibbonButton Label="Veränderte Pixel" Command="{Binding ChangedPixelsCommand}" IsEnabled="{Binding GlobalViewModel.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"/>
+                </RibbonGroup>
             </RibbonTab>
 
             <RibbonTab Header="Decrypt">

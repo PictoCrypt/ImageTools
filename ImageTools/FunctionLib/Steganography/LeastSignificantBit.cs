@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography
@@ -57,6 +60,7 @@ namespace FunctionLib.Steganography
                                 if ((pixelElementIndex - 1)%3 < 2)
                                 {
                                     lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
+                                    ChangedPixels.Add(new Pixel(j, i));
                                 }
 
                                 // return the bitmap with the text hidden in
@@ -117,6 +121,7 @@ namespace FunctionLib.Steganography
                                 }
 
                                 lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
+                                ChangedPixels.Add(new Pixel(j, i));
                             }
                                 break;
                         }
@@ -209,6 +214,20 @@ namespace FunctionLib.Steganography
 
             lockBitmap.UnlockBits();
             return result;
+        }
+
+        public override string ChangeColor(string srcPath, Color color)
+        {
+            var tmp = Path.GetTempFileName();
+            var dest = Path.GetTempFileName();
+            File.Copy(srcPath, tmp, true);
+            using (var bitmap = new Bitmap(tmp))
+            {
+                ImageFunctionLib.ChangeColor(bitmap, color, ChangedPixels);
+                bitmap.Save(dest, ImageFormat.Bmp);
+            }
+            File.Copy(dest, tmp, true);
+            return tmp;
         }
 
         private static int ReverseBits(int n)

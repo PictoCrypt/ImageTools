@@ -79,5 +79,42 @@ namespace ImageToolApp.Controllers
             }
             Application.Current.MainWindow.Cursor = Cursors.Arrow;
         }
+
+        public void ChangedPixels()
+        {
+            var path = StegaCrypt.ChangeColor(ViewModel.GlobalViewModel.ResultImagePath, Color.Red);
+            var view = new ImagePresentation();
+            var viewModel = new ImagePresentationViewModel(path)
+            {
+                SaveCommand = UICommand.Regular(() =>
+                {
+                    var dialog = new SaveFileDialog { Filter = "Png Image|*.png|Bitmap Image|*.bmp" };
+                    var dialogResult = dialog.ShowDialog();
+                    if (dialogResult.HasValue && dialogResult.Value)
+                    {
+                        var tmp = path;
+                        using (var bmp = new Bitmap(tmp))
+                        {
+                            if (File.Exists(dialog.FileName))
+                            {
+                                File.Delete(dialog.FileName);
+                            }
+
+                            switch (dialog.FilterIndex)
+                            {
+                                case 0:
+                                    bmp.Save(dialog.FileName, ImageFormat.Png);
+                                    break;
+                                case 1:
+                                    bmp.Save(dialog.FileName, ImageFormat.Bmp);
+                                    break;
+                            }
+                        }
+                    }
+                })
+            };
+            view.DataContext = viewModel;
+            view.Show();
+        }
     }
 }

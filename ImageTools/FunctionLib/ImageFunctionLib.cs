@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using FunctionLib.Helper;
@@ -33,6 +34,17 @@ namespace FunctionLib
                 }
             }
             return diffBm;
+        }
+
+        public static void ChangeColor(Bitmap src, Color color, IEnumerable<Pixel> changedPixels)
+        {
+            var lockBitmap = new LockBitmap(src);
+            lockBitmap.LockBits();
+            foreach (var changedPixel in changedPixels)
+            {
+                lockBitmap.SetPixel(changedPixel.X, changedPixel.Y, color);
+            }
+            lockBitmap.UnlockBits();
         }
 
         public static Bitmap ChangeColor(Bitmap src, Color color)

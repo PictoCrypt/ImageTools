@@ -61,7 +61,11 @@
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\PreferencesController.cs" />
     <Compile Include="Models\GlobalViewModel.cs" />
+    <Compile Include="Models\ImagePresentationViewModel.cs" />
     <Compile Include="Models\PreferencesViewModel.cs" />
+    <Compile Include="Views\ImagePresentation.xaml.cs">
+      <DependentUpon>ImagePresentation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>
@@ -110,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EncryptView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImagePresentation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
