@@ -13,6 +13,7 @@ namespace ImageToolApp.Models
         private UICommand mPreferencesCommand;
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
+        private UICommand mChangedPixelsCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
@@ -131,6 +132,20 @@ namespace ImageToolApp.Models
                 }
                 mCurrentElement = value;
                 OnPropertyChanged("CurrentElement");
+            }
+        }
+
+        public UICommand ChangedPixelsCommand
+        {
+            get { return mChangedPixelsCommand; }
+            set
+            {
+                if (value.Equals(mChangedPixelsCommand))
+                {
+                    return;
+                }
+                mChangedPixelsCommand = value;
+                OnPropertyChanged("ChangedPixelsCommand");
             }
         }
     }

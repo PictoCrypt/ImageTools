@@ -44,6 +44,16 @@ namespace ImageToolApp.Controllers
             mViewModel.SaveImageCommand = UICommand.Regular(SaveImage);
             mViewModel.OpenTxtCommand = UICommand.Regular(OpenTxt);
             mViewModel.SaveTxtCommand = UICommand.Regular(SaveTxt);
+            mViewModel.ChangedPixelsCommand = UICommand.Regular(ChangedPixels);
+        }
+
+        private void ChangedPixels()
+        {
+            var controller = CurrentController as EncryptController;
+            if (controller != null)
+            {
+                controller.ChangedPixels();
+            }
         }
 
         private void SaveTxt()
