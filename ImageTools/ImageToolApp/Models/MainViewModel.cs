@@ -8,10 +8,10 @@ namespace ImageToolApp.Models
         private readonly FrameworkElement mEncryptView;
         private UICommand mCloseAppCommand;
         private FrameworkElement mCurrentElement;
-        private UICommand mPreferencesCommand;
         private UICommand mOpenImageCommand;
-        private UICommand mSaveImageCommand;
         private UICommand mOpenTxtCommand;
+        private UICommand mPreferencesCommand;
+        private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)

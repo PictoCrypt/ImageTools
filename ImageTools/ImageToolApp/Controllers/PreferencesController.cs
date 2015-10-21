@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.IO;
 using System.Reflection;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
@@ -52,14 +53,16 @@ namespace ImageToolApp.Controllers
 
         private void SaveToConfig()
         {
-            var appPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var configFile = System.IO.Path.Combine(appPath, "App.config");
+            var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var configFile = Path.Combine(appPath, "App.config");
             var configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
 
             config.AppSettings.Settings["Password"].Value = mViewModel.Password;
-            config.AppSettings.Settings["SelectedEncryptionMethod"].Value = mViewModel.SelectedEncryptionMethod.ToString();
-            config.AppSettings.Settings["SelectedSteganographicMethod"].Value = mViewModel.SelectedSteganographicMethod.ToString();
+            config.AppSettings.Settings["SelectedEncryptionMethod"].Value =
+                mViewModel.SelectedEncryptionMethod.ToString();
+            config.AppSettings.Settings["SelectedSteganographicMethod"].Value =
+                mViewModel.SelectedSteganographicMethod.ToString();
             config.Save();
         }
     }

@@ -7,8 +7,8 @@ namespace FunctionLib.Cryptography
     public class AESCrypt : Crypt
     {
         /// <summary>
-        /// Encrypt the given string using .  The string can be decrypted using
-        /// Decrypt().  The password parameters must match.
+        ///     Encrypt the given string using .  The string can be decrypted using
+        ///     Decrypt().  The password parameters must match.
         /// </summary>
         public override string Encrypt(string textToBeEncrypted, string password)
         {
@@ -58,8 +58,8 @@ namespace FunctionLib.Cryptography
         }
 
         /// <summary>
-        /// Decrypt the given string.  Assumes the string was encrypted using
-        /// Encrypt(), using an identical password.
+        ///     Decrypt the given string.  Assumes the string was encrypted using
+        ///     Encrypt(), using an identical password.
         /// </summary>
         public override string Decrypt(string textToBeDecrypted, string password)
         {

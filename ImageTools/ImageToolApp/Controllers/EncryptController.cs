@@ -3,7 +3,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -24,7 +23,7 @@ namespace ImageToolApp.Controllers
 
         public void SaveImage()
         {
-            var dialog = new SaveFileDialog { Filter = "Png Image|*.png|Bitmap Image|*.bmp" };
+            var dialog = new SaveFileDialog {Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
@@ -46,11 +45,10 @@ namespace ImageToolApp.Controllers
                             bmp.Save(dialog.FileName, ImageFormat.Bmp);
                             break;
                     }
-                    
                 }
             }
         }
-        
+
         public void OpenTxt()
         {
             var dialog = new OpenFileDialog {Filter = "Text File|*.txt"};
@@ -70,7 +68,6 @@ namespace ImageToolApp.Controllers
                 if (ViewModel.EncryptedCheck)
                 {
                     text = Crypt.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
-                
                 }
                 var result = StegaCrypt.Encrypt(bitmap, text);
                 if (result != null)

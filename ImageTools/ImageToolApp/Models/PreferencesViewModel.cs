@@ -7,19 +7,20 @@ namespace ImageToolApp.Models
 {
     public class PreferencesViewModel : BaseViewModel
     {
+        private UICommand mCancelCommand;
         private string mPassword;
+        private UICommand mSaveCommand;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
-        private UICommand mSaveCommand;
-        private UICommand mCancelCommand;
 
         public PreferencesViewModel(GlobalViewModel model)
         {
             Model = model;
-            EncryptionMethods = new ObservableCollection<EncryptionMethod>(Enum.GetValues(typeof(EncryptionMethod))
+            EncryptionMethods = new ObservableCollection<EncryptionMethod>(Enum.GetValues(typeof (EncryptionMethod))
                 .Cast<EncryptionMethod>());
-            SteganographicMethods = new ObservableCollection<SteganographicMethod>(Enum.GetValues(typeof(SteganographicMethod))
-                .Cast<SteganographicMethod>());
+            SteganographicMethods =
+                new ObservableCollection<SteganographicMethod>(Enum.GetValues(typeof (SteganographicMethod))
+                    .Cast<SteganographicMethod>());
         }
 
         public GlobalViewModel Model { get; private set; }

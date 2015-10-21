@@ -6,10 +6,10 @@ namespace ImageToolApp.Controllers
 {
     public class MainController
     {
+        private readonly DecryptController mDecryptController;
+        private readonly EncryptController mEncryptController;
         private readonly Window mView;
         private readonly MainViewModel mViewModel;
-        private readonly EncryptController mEncryptController;
-        private readonly DecryptController mDecryptController;
 
         public MainController(Window mainWindow)
         {

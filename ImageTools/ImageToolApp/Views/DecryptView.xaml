@@ -23,7 +23,7 @@
 
         <TextBox Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
                  VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True"
-                 Text="{Binding Text}" Background="DarkGray"/>
+                 Text="{Binding Text}" Background="DarkGray" />
 
         <GroupBox Grid.Row="1" Header="Encryption" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid>
@@ -33,7 +33,7 @@
                 </Grid.ColumnDefinitions>
 
                 <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encrypted" HorizontalAlignment="Left"
-                          Margin="3" IsChecked="{Binding EncryptedCheck}"/>
+                          Margin="3" IsChecked="{Binding EncryptedCheck}" />
                 <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                              helpers:PasswordHelper.Attach="True"
                              helpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"

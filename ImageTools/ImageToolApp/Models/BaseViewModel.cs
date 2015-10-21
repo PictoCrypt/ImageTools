@@ -6,6 +6,11 @@ namespace ImageToolApp.Models
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
+        public GlobalViewModel GlobalViewModel
+        {
+            get { return GlobalViewModel.Instance; }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -15,11 +20,6 @@ namespace ImageToolApp.Models
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-
-        public GlobalViewModel GlobalViewModel
-        {
-            get { return GlobalViewModel.Instance; }
         }
     }
 }
