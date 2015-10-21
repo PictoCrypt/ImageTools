@@ -1,11 +1,6 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
-using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
@@ -85,7 +80,10 @@ namespace ImageToolApp.Controllers
             *   Define a standard Password
             */
             var preferncesController = new PreferencesController();
-            preferncesController.OpenDialog();
+            if (preferncesController.OpenDialog())
+            {
+                mEncryptController.InitializeCryptings();
+            }
         }
 
         private void OpenImage()

@@ -36,7 +36,7 @@ namespace ImageToolApp.Controllers
             mView.Close();
         }
 
-        public void OpenDialog()
+        public bool OpenDialog()
         {
             var result = mView.ShowDialog();
             if (result.HasValue && result.Value)
@@ -45,7 +45,9 @@ namespace ImageToolApp.Controllers
                 mViewModel.Model.Password = mViewModel.Password;
                 mViewModel.SelectedEncryptionMethod = mViewModel.SelectedEncryptionMethod;
                 mViewModel.SelectedSteganographicMethod = mViewModel.SelectedSteganographicMethod;
+                return true;
             }
+            return false;
         }
 
         private void SaveToConfig()

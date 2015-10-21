@@ -17,24 +17,7 @@ namespace ImageToolApp.Controllers
 
         protected BaseTabController()
         {
-            switch (GlobalViewModel.Instance.SelectedEncryptionMethod)
-            {
-                case EncryptionMethod.AES:
-                    Crypt = new AESCrypt();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            switch (GlobalViewModel.Instance.SelectedSteganographicMethod)
-            {
-                case SteganographicMethod.LSB:
-                    StegaCrypt = new LeastSignificantBit();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
+            InitializeCryptings();
             View = CreateView();
             ViewModel = new TViewModel();
             View.DataContext = ViewModel;
@@ -64,6 +47,27 @@ namespace ImageToolApp.Controllers
             var tmp = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(dialog.FileName));
             File.Copy(dialog.FileName, tmp);
             ViewModel.GlobalViewModel.ImagePath = tmp;
+        }
+
+        public void InitializeCryptings()
+        {
+            switch (GlobalViewModel.Instance.SelectedEncryptionMethod)
+            {
+                case EncryptionMethod.AES:
+                    Crypt = new AESCrypt();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            switch (GlobalViewModel.Instance.SelectedSteganographicMethod)
+            {
+                case SteganographicMethod.LSB:
+                    StegaCrypt = new LeastSignificantBit();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }
