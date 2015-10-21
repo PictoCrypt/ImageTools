@@ -31,23 +31,28 @@
 
             <RibbonTab Header="Encrypt">
                 <RibbonGroup Header="Bild">
-                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}" SmallImageSource="{StaticResource OpenImgImage}"/>
-                    <RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}" SmallImageSource="{StaticResource SaveImage}"/>
+                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
+                                  SmallImageSource="{StaticResource OpenImgImage}" />
+                    <RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}"
+                                  SmallImageSource="{StaticResource SaveImage}" />
                 </RibbonGroup>
                 <RibbonGroup Header="Text">
-                    <RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}" SmallImageSource="{StaticResource OpenTxtImage}"/>
+                    <RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}"
+                                  SmallImageSource="{StaticResource OpenTxtImage}" />
                     <!--<RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" SmallImageSource="{StaticResource SaveImage}"/>-->
                 </RibbonGroup>
             </RibbonTab>
 
             <RibbonTab Header="Decrypt">
                 <RibbonGroup Header="Bild">
-                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}" SmallImageSource="{StaticResource OpenImgImage}"/>
+                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
+                                  SmallImageSource="{StaticResource OpenImgImage}" />
                     <!--<RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}" SmallImageSource="{StaticResource SaveImage}"/>-->
                 </RibbonGroup>
                 <RibbonGroup Header="Text">
                     <!--<RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}" SmallImageSource="{StaticResource OpenTxtImage}"/>-->
-                    <RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" SmallImageSource="{StaticResource SaveImage}"/>
+                    <RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}"
+                                  SmallImageSource="{StaticResource SaveImage}" />
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
@@ -56,8 +61,10 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition x:Name="SecColumn" Width="Auto" MaxWidth="200" />
             </Grid.ColumnDefinitions>
-            <ContentControl Grid.Column="0" Content="{Binding CurrentElement}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Expander Grid.Column="1" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <ContentControl Grid.Column="0" Content="{Binding CurrentElement}" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch" />
+            <Expander Grid.Column="1" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Top"
+                      HorizontalAlignment="Right">
                 <Image Source="{Binding GlobalViewModel.ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center"
                        Width="{Binding ElementName=SecColumn, Path=MaxWidth}" />
             </Expander>

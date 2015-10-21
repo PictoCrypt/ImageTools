@@ -2,12 +2,12 @@
 {
     public class BaseTabViewModel : BaseViewModel
     {
+        private bool mEncryptedCheck;
         private string mPassword;
 
         private UICommand mTabActionCommand;
 
         private string mText;
-        private bool mEncryptedCheck;
 
         public BaseTabViewModel()
         {

@@ -12,7 +12,8 @@ namespace ImageToolApp
     {
         [STAThread]
         public static void Main()
-        {var application = new App();
+        {
+            var application = new App();
             application.InitializeComponent();
 
             // Global Exception Handler

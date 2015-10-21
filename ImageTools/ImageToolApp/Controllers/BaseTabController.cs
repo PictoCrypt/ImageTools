@@ -28,10 +28,6 @@ namespace ImageToolApp.Controllers
 
         public StegaCrypt StegaCrypt { get; set; }
 
-        protected abstract TView CreateView();
-
-        protected abstract void RegisterCommands();
-
         public TView View { get; }
 
         public void OpenImage()
@@ -48,6 +44,10 @@ namespace ImageToolApp.Controllers
             File.Copy(dialog.FileName, tmp);
             ViewModel.GlobalViewModel.ImagePath = tmp;
         }
+
+        protected abstract TView CreateView();
+
+        protected abstract void RegisterCommands();
 
         public void InitializeCryptings()
         {

@@ -2,8 +2,6 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using FunctionLib.Cryptography;
-using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -30,7 +28,7 @@ namespace ImageToolApp.Controllers
             {
                 using (var stream = File.CreateText(dialog.FileName))
                 {
-                    stream.Write(ViewModel.Text); 
+                    stream.Write(ViewModel.Text);
                 }
             }
         }
