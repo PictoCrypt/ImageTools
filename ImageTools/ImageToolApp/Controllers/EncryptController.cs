@@ -3,8 +3,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using FunctionLib;
-using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
@@ -71,10 +69,10 @@ namespace ImageToolApp.Controllers
                 var text = ViewModel.Text;
                 if (ViewModel.EncryptedCheck)
                 {
-                    text = Crypto.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
+                    text = Crypt.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
                 
                 }
-                var result = LeastSignificantBit.Encrypt(bitmap, text);
+                var result = StegaCrypt.Encrypt(bitmap, text);
                 if (result != null)
                 {
                     var path = Path.GetTempFileName().Replace("tmp", "png");

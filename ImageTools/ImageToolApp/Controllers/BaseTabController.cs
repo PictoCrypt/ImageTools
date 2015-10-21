@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Controls;
+using FunctionLib;
+using FunctionLib.Cryptography;
+using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using Microsoft.Win32;
 
@@ -14,11 +17,33 @@ namespace ImageToolApp.Controllers
 
         protected BaseTabController()
         {
+            switch (GlobalViewModel.Instance.SelectedEncryptionMethod)
+            {
+                case EncryptionMethod.AES:
+                    Crypt = new AESCrypt();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            switch (GlobalViewModel.Instance.SelectedSteganographicMethod)
+            {
+                case SteganographicMethod.LSB:
+                    StegaCrypt = new LeastSignificantBit();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             View = CreateView();
             ViewModel = new TViewModel();
             View.DataContext = ViewModel;
             RegisterCommands();
         }
+
+        public Crypt Crypt { get; set; }
+
+        public StegaCrypt StegaCrypt { get; set; }
 
         protected abstract TView CreateView();
 
@@ -35,7 +60,7 @@ namespace ImageToolApp.Controllers
             {
                 return;
             }
-            
+
             var tmp = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(dialog.FileName));
             File.Copy(dialog.FileName, tmp);
             ViewModel.GlobalViewModel.ImagePath = tmp;

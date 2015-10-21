@@ -1,26 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace FunctionLib.Cryptography
 {
-    public static class Crypto
+    public class AESCrypt : Crypt
     {
-        private static readonly byte[] Salt = Encoding.ASCII.GetBytes("jasdh7834y8hfeur73rsharks214");
-
         /// <summary>
-        ///     Encrypt the given string using AES.  The string can be decrypted using
-        ///     Decrypt().  The password parameters must match.
+        /// Encrypt the given string using .  The string can be decrypted using
+        /// Decrypt().  The password parameters must match.
         /// </summary>
-        /// <param name="textToBeEncrypted">The text to encrypt.</param>
-        /// <param name="password">A password used to generate a key for encryption.</param>
-        public static string Encrypt(string textToBeEncrypted, string password)
+        public override string Encrypt(string textToBeEncrypted, string password)
         {
-            if (string.IsNullOrEmpty(textToBeEncrypted))
-                throw new ArgumentNullException("textToBeEncrypted");
-            if (string.IsNullOrEmpty(password))
-                throw new ArgumentNullException("password");
+            ParameterCheck(textToBeEncrypted, password);
 
             string result; // Encrypted string to return
             RijndaelManaged aesObj = null; // RijndaelManaged object used to encrypt the data.
@@ -66,17 +58,12 @@ namespace FunctionLib.Cryptography
         }
 
         /// <summary>
-        ///     Decrypt the given string.  Assumes the string was encrypted using
-        ///     Encrypt(), using an identical password.
+        /// Decrypt the given string.  Assumes the string was encrypted using
+        /// Encrypt(), using an identical password.
         /// </summary>
-        /// <param name="textToBeDecrypted">The text to decrypt.</param>
-        /// <param name="password">A password used to generate a key for decryption.</param>
-        public static string Decrypt(string textToBeDecrypted, string password)
+        public override string Decrypt(string textToBeDecrypted, string password)
         {
-            if (string.IsNullOrEmpty(textToBeDecrypted))
-                throw new ArgumentNullException("textToBeDecrypted");
-            if (string.IsNullOrEmpty(password))
-                throw new ArgumentNullException("password");
+            ParameterCheck(textToBeDecrypted, password);
 
             // Declare the RijndaelManaged object
             // used to decrypt the data.
@@ -121,23 +108,6 @@ namespace FunctionLib.Cryptography
             }
 
             return result;
-        }
-
-        private static byte[] ReadByteArray(Stream s)
-        {
-            var rawLength = new byte[sizeof (int)];
-            if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length)
-            {
-                throw new SystemException("Stream did not contain properly formatted byte array");
-            }
-
-            var buffer = new byte[BitConverter.ToInt32(rawLength, 0)];
-            if (s.Read(buffer, 0, buffer.Length) != buffer.Length)
-            {
-                throw new SystemException("Did not read byte array properly");
-            }
-
-            return buffer;
         }
     }
 }

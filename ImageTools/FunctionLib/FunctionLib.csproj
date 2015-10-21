@@ -42,13 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptography\Crypt.cs" />
     <Compile Include="EncryptionMethod.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
     <Compile Include="ImageFunctionLib.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteganographicMethod.cs" />
-    <Compile Include="Cryptography\Crypto.cs" />
+    <Compile Include="Cryptography\AESCrypt.cs" />
     <Compile Include="Steganography\LeastSignificantBit.cs" />
+    <Compile Include="Steganography\StegaCrypt.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

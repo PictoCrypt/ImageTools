@@ -3,9 +3,9 @@ using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography
 {
-    public static class LeastSignificantBit
+    public class LeastSignificantBit : StegaCrypt
     {
-        public static Bitmap Encrypt(Bitmap src, string text)
+        public override Bitmap Encrypt(Bitmap src, string text)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
@@ -135,7 +135,7 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        public static string DecryptText(Bitmap src)
+        public override string DecryptText(Bitmap src)
         {
             var lockBitmap = new LockBitmap(new Bitmap(src));
             lockBitmap.LockBits();

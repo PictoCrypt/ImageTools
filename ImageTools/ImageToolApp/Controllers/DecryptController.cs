@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
-using FunctionLib;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.Models;
@@ -38,19 +37,19 @@ namespace ImageToolApp.Controllers
 
         private void Decrypt()
         {
-            App.Current.MainWindow.Cursor = Cursors.Wait;
+            Application.Current.MainWindow.Cursor = Cursors.Wait;
             string result;
             using (var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath))
             {
-                result = LeastSignificantBit.DecryptText(bitmap);
+                result = StegaCrypt.DecryptText(bitmap);
             }
 
             if (ViewModel.EncryptedCheck)
             {
-                result = Crypto.Decrypt(result, ViewModel.Password);
+                result = Crypt.Decrypt(result, ViewModel.Password);
             }
             ViewModel.Text = result;
-            App.Current.MainWindow.Cursor = Cursors.Arrow;
+            Application.Current.MainWindow.Cursor = Cursors.Arrow;
         }
     }
 }
