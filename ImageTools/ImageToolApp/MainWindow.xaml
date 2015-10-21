@@ -54,12 +54,12 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" MaxWidth="200" />
+                <ColumnDefinition x:Name="SecColumn" Width="Auto" MaxWidth="200" />
             </Grid.ColumnDefinitions>
             <ContentControl Grid.Column="0" Content="{Binding CurrentElement}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Expander Grid.Column="1" ExpandDirection="Left" Width="Auto" Height="Auto" IsExpanded="False"
-                      VerticalAlignment="Top" HorizontalAlignment="Right">
-                <Image Source="{Binding GlobalViewModel.ImagePath}" Stretch="Uniform" />
+            <Expander Grid.Column="1" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Image Source="{Binding GlobalViewModel.ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center"
+                       Width="{Binding ElementName=SecColumn, Path=MaxWidth}" />
             </Expander>
         </Grid>
     </DockPanel>
