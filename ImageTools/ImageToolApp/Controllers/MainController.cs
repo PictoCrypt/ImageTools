@@ -84,7 +84,8 @@ namespace ImageToolApp.Controllers
             *   Define a standard path
             *   Define a standard Password
             */
-            throw new NotImplementedException();
+            var preferncesController = new PreferencesController();
+            preferncesController.OpenDialog();
         }
 
         private void OpenImage()

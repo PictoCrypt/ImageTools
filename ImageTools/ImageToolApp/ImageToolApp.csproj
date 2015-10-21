@@ -59,7 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\IBaseTabController.cs" />
+    <Compile Include="Controllers\PreferencesController.cs" />
     <Compile Include="Models\GlobalViewModel.cs" />
+    <Compile Include="Models\PreferencesViewModel.cs" />
+    <Compile Include="Views\Preferences.xaml.cs">
+      <DependentUpon>Preferences.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WpfHelpers\PasswordHelper.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -105,6 +110,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EncryptView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Preferences.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

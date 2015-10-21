@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Reflection;
 using System.Windows;
 using FunctionLib;
 
@@ -33,9 +34,14 @@ namespace ImageToolApp.Models
 
         private void ReadAppConfigData()
         {
-            foreach (string key in ConfigurationManager.AppSettings)
+            var appPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var configFile = System.IO.Path.Combine(appPath, "App.config");
+            var configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFile };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+
+            foreach (string key in config.AppSettings.Settings.AllKeys)
             {
-                var value = ConfigurationManager.AppSettings[key];
+                var value = config.AppSettings.Settings[key].Value;
                 switch (key)
                 {
                     case "Password":

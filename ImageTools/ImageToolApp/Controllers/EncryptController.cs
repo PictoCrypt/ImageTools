@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using FunctionLib;
 using FunctionLib.Cryptography;
@@ -54,12 +55,17 @@ namespace ImageToolApp.Controllers
         
         public void OpenTxt()
         {
-            throw new System.NotImplementedException();
+            var dialog = new OpenFileDialog {Filter = "Text File|*.txt"};
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                ViewModel.Text = File.ReadAllText(dialog.FileName);
+            }
         }
 
         private void Encrypt()
         {
-            App.Current.MainWindow.Cursor = Cursors.Wait;
+            Application.Current.MainWindow.Cursor = Cursors.Wait;
             using (var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath))
             {
                 var text = ViewModel.Text;
@@ -76,7 +82,7 @@ namespace ImageToolApp.Controllers
                     ViewModel.GlobalViewModel.ResultImagePath = path;
                 }
             }
-            App.Current.MainWindow.Cursor = Cursors.Arrow;
+            Application.Current.MainWindow.Cursor = Cursors.Arrow;
         }
     }
 }

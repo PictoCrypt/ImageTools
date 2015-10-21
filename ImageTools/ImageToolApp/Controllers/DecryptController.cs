@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Input;
 using FunctionLib;
 using FunctionLib.Cryptography;
@@ -23,7 +25,15 @@ namespace ImageToolApp.Controllers
 
         public void SaveTxt()
         {
-            throw new System.NotImplementedException();
+            var dialog = new SaveFileDialog {Filter = "Text File|*.txt"};
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                using (var stream = File.CreateText(dialog.FileName))
+                {
+                    stream.Write(ViewModel.Text); 
+                }
+            }
         }
 
         private void Decrypt()

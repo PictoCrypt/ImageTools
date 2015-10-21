@@ -58,7 +58,7 @@
 
         public bool EncryptedCheck
         {
-            get { return mEncryptedCheck; }
+            get { return mEncryptedCheck || !string.IsNullOrEmpty(Password); }
             set
             {
                 if (value.Equals(mEncryptedCheck))
