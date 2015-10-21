@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
         mc:Ignorable="d"
+        Icon="../Resources/Images/Preferences.png"
         Title="Eigenschaften" Height="170" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>

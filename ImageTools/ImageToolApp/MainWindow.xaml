@@ -3,7 +3,7 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              mc:Ignorable="d"
+              mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png"
               Title="ImageTool" Height="500" Width="600" Loaded="RibbonWindow_Loaded">
 
     <RibbonWindow.Resources>
@@ -21,7 +21,7 @@
             </Ribbon.HelpPaneContent>
 
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu x:Name="RibbonAppMenu" SmallImageSource="{StaticResource MenuImage}">
+                <RibbonApplicationMenu x:Name="RibbonAppMenu" SmallImageSource="{StaticResource MenueImage}">
                     <RibbonApplicationMenuItem Header="Einstellungen" ImageSource="{StaticResource PreferencesImage}"
                                                Command="{Binding PreferencesCommand}" />
                     <RibbonApplicationMenuItem Header="Beenden" ImageSource="{StaticResource CloseImage}"
@@ -32,30 +32,31 @@
             <RibbonTab Header="Encrypt">
                 <RibbonGroup Header="Bild">
                     <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
-                                  SmallImageSource="{StaticResource OpenImgImage}" />
+                                  SmallImageSource="{StaticResource OpenPictureImage}" />
                     <RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}"
-                                  SmallImageSource="{StaticResource SaveImage}" />
+                                  SmallImageSource="{StaticResource SaveAsImage}" />
                 </RibbonGroup>
                 <RibbonGroup Header="Text">
                     <RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}"
-                                  SmallImageSource="{StaticResource OpenTxtImage}" />
+                                  SmallImageSource="{StaticResource OpenDocumentImage}" />
                     <!--<RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" SmallImageSource="{StaticResource SaveImage}"/>-->
                 </RibbonGroup>
                 <RibbonGroup Header="Bild">
-                    <RibbonButton Label="Veränderte Pixel" Command="{Binding ChangedPixelsCommand}" IsEnabled="{Binding GlobalViewModel.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"/>
+                    <RibbonButton Label="Veränderte Pixel" Command="{Binding ChangedPixelsCommand}" IsEnabled="{Binding GlobalViewModel.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                                  SmallImageSource="{StaticResource PaintPixelsImage}"/>
                 </RibbonGroup>
             </RibbonTab>
 
             <RibbonTab Header="Decrypt">
                 <RibbonGroup Header="Bild">
                     <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
-                                  SmallImageSource="{StaticResource OpenImgImage}" />
+                                  SmallImageSource="{StaticResource OpenPictureImage}" />
                     <!--<RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}" SmallImageSource="{StaticResource SaveImage}"/>-->
                 </RibbonGroup>
                 <RibbonGroup Header="Text">
                     <!--<RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}" SmallImageSource="{StaticResource OpenTxtImage}"/>-->
                     <RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}"
-                                  SmallImageSource="{StaticResource SaveImage}" />
+                                  SmallImageSource="{StaticResource SaveAsImage}" />
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
@@ -69,7 +70,7 @@
             <Expander Grid.Column="1" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Top"
                       HorizontalAlignment="Right">
                 <Image Source="{Binding GlobalViewModel.ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center"
-                       Width="{Binding ElementName=SecColumn, Path=MaxWidth}" />
+                           Width="{Binding ElementName=SecColumn, Path=MaxWidth}"/>
             </Expander>
         </Grid>
     </DockPanel>

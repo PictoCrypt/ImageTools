@@ -1,22 +1,22 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:converters="clr-namespace:ImageToolApp.Converters"
-                    xmlns:helpers="clr-namespace:ImageToolApp.WpfHelpers">
+                    xmlns:converters="clr-namespace:ImageToolApp.Converters">
 
     <!-- Localizable Strings -->
     <!--<system:String x:Key="ImageFallbackValue">No Image loaded.</system:String>-->
 
     <!-- Images -->
-    <ImageSource x:Key="NullImage">Images/NullImage.jpg</ImageSource>
     <ImageSource x:Key="HelpImage">Images/Help.png</ImageSource>
-    <ImageSource x:Key="MenuImage">Images/Menu.png</ImageSource>
-    <ImageSource x:Key="OpenImgImage">Images/Img.png</ImageSource>
-    <ImageSource x:Key="SaveImage">Images/Save.png</ImageSource>
+    <ImageSource x:Key="MenueImage">Images/Menue.png</ImageSource>
     <ImageSource x:Key="CloseImage">Images/Close.png</ImageSource>
     <ImageSource x:Key="PreferencesImage">Images/Preferences.png</ImageSource>
+    <ImageSource x:Key="OpenPictureImage">Images/Picture_128.png</ImageSource>
     <ImageSource x:Key="SaveAsImage">Images/SaveAs.png</ImageSource>
-    <ImageSource x:Key="OpenTxtImage">Images/Text.png</ImageSource>
+    <ImageSource x:Key="OpenDocumentImage">Images/Document.png</ImageSource>
+    <ImageSource x:Key="PaintPixelsImage">Images/PaintPixels.png</ImageSource>
+    <ImageSource x:Key="OpenImage">Images/Open.png</ImageSource>
+    <ImageSource x:Key="BrokenImage">Images/BrokenImage.png</ImageSource>
 
     <!-- Converters -->
     <converters:ImageToBoolConverter x:Key="ImageToBoolConverter" />

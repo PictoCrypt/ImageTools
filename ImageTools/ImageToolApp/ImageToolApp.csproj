@@ -38,6 +38,9 @@
   <PropertyGroup>
     <StartupObject>ImageToolApp.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>PictoCrypt.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -145,31 +148,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\NullImage.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Help.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Menu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Img.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Save.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\Close.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Resources\Images\Document.png" />
+    <Resource Include="Resources\Images\Help.png" />
+    <Resource Include="Resources\Images\Menue.png" />
+    <Resource Include="Resources\Images\PaintPixels.png" />
+    <Resource Include="Resources\Images\Picture.png" />
+    <Resource Include="Resources\Images\Picture_128.png" />
     <Resource Include="Resources\Images\Preferences.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\SaveAs.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\Text.png" />
+    <Resource Include="Resources\Images\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\BrokenImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\PictoCrypt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Ico\PictoCrypt.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PictoCrypt.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

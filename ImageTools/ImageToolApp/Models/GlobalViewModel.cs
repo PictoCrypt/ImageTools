@@ -3,6 +3,9 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using FunctionLib;
 
 namespace ImageToolApp.Models
@@ -15,6 +18,7 @@ namespace ImageToolApp.Models
         private string mResultImagePath;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
+        private FrameworkElement mImageOrNullImage;
 
         public GlobalViewModel()
         {
@@ -59,7 +63,7 @@ namespace ImageToolApp.Models
                     Source = new Uri("/ImageToolApp;component/Resources/ResourceDictionary.xaml",
                         UriKind.RelativeOrAbsolute)
                 };
-                var result = myResourceDictionary["NullImage"].ToString();
+                var result = myResourceDictionary["BrokenImage"].ToString();
                 return result;
             }
             set
