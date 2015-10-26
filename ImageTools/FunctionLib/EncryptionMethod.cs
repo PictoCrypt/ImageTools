@@ -2,6 +2,7 @@
 {
     public enum EncryptionMethod
     {
-        AES = 0
+        AES = 0,
+        Twofish = 1
     }
 }

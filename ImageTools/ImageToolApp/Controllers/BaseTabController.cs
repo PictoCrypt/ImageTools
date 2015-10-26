@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows.Controls;
 using FunctionLib;
 using FunctionLib.Cryptography;
+using FunctionLib.Cryptography.Twofish;
 using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using Microsoft.Win32;
@@ -56,6 +58,10 @@ namespace ImageToolApp.Controllers
                 case EncryptionMethod.AES:
                     Crypt = new AESCrypt();
                     break;
+                case EncryptionMethod.Twofish:
+                    Crypt = new Twofish();
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

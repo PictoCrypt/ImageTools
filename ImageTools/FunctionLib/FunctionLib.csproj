@@ -43,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\Crypt.cs" />
+    <Compile Include="Cryptography\Twofish\Twofish.cs" />
+    <Compile Include="Cryptography\Twofish\TwofishBase.cs" />
+    <Compile Include="Cryptography\Twofish\TwofishEncryption.cs" />
     <Compile Include="EncryptionMethod.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
     <Compile Include="Helper\Pixel.cs" />

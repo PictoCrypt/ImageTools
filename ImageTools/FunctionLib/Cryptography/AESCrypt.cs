@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -109,6 +108,26 @@ namespace FunctionLib.Cryptography
             }
 
             return result;
+        }
+
+        public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void GenerateKey()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void GenerateIV()
+        {
+            throw new NotImplementedException();
         }
     }
 }
