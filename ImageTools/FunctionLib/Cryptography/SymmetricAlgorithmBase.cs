@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace FunctionLib.Cryptography
     public static class SymmetricAlgorithmBase
     {
         private const int Iterations = 2;
-        private const int KeySize = 256;
+        private static int KeySize = 256;
         private const string Salt = "jasdh7834y8hfeur73rsharks214"; // Random
         private const string Vector = "8947az34awl34kjq"; // Random
 
@@ -32,6 +33,7 @@ namespace FunctionLib.Cryptography
 
             using (var cipher = new T())
             {
+                KeySize = cipher.LegalKeySizes.Max().MaxSize;
                 var passwordBytes = new Rfc2898DeriveBytes(password, saltBytes, Iterations);
                 var keyBytes = passwordBytes.GetBytes(KeySize / 8);
 
@@ -92,7 +94,14 @@ namespace FunctionLib.Cryptography
 
                 cipher.Clear();
             }
-            return Encoding.UTF8.GetString(decrypted, 0, decryptedByteCount);
+
+            var result = Encoding.UTF8.GetString(decrypted, 0, decryptedByteCount);
+            if (typeof(T) == typeof(Twofish.Twofish))
+            {
+                var index = result.IndexOf("\0", StringComparison.Ordinal);
+                return result.Remove(index, result.Length - index);
+            }
+            return result;
         }
     }
 }
