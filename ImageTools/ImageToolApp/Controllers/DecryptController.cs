@@ -1,7 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
+using FunctionLib;
+using FunctionLib.Cryptography;
+using FunctionLib.Cryptography.Twofish;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -44,7 +49,32 @@ namespace ImageToolApp.Controllers
 
             if (ViewModel.EncryptedCheck)
             {
-                result = Crypt.Decrypt(result, ViewModel.Password);
+                switch (ViewModel.GlobalViewModel.SelectedEncryptionMethod)
+                {
+                    case EncryptionMethod.AES:
+                        result = SymmetricAlgorithmBase.Decrypt(result, ViewModel.Password);
+                        break;
+
+                    case EncryptionMethod.DES:
+                        result = SymmetricAlgorithmBase.Decrypt<DESCryptoServiceProvider>(result, ViewModel.Password);
+                        break;
+                    case EncryptionMethod.RC2:
+                        result = SymmetricAlgorithmBase.Decrypt<RC2CryptoServiceProvider>(result, ViewModel.Password);
+                        break;
+                    case EncryptionMethod.Rijndael:
+                        result = SymmetricAlgorithmBase.Decrypt<RijndaelManaged>(result, ViewModel.Password);
+                        break;
+                    case EncryptionMethod.TripleDES:
+                        result = SymmetricAlgorithmBase.Decrypt<TripleDESCryptoServiceProvider>(result, ViewModel.Password);
+                        break;
+
+                    case EncryptionMethod.Twofish:
+                        result = SymmetricAlgorithmBase.Decrypt<Twofish>(result, ViewModel.Password);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
             ViewModel.Text = result;
             Application.Current.MainWindow.Cursor = Cursors.Arrow;
