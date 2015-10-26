@@ -25,4 +25,9 @@
     <!--<converters:BitmapImageToBitmapConveter x:Key="BitmapToImageSourceConverter" />-->
 
     <!-- Styles -->
+    <ResourceDictionary x:Key="GlobalStyle">
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="/PresentationFramework.Aero2;component/themes/aero2.normalcolor.xaml" />
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
 </ResourceDictionary>

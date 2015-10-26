@@ -50,17 +50,6 @@ namespace ImageToolApp.Controllers
         
         public void InitializeCryptings()
         {
-            switch (GlobalViewModel.Instance.SelectedEncryptionMethod)
-            {
-                case EncryptionMethod.AES:
-                case EncryptionMethod.Twofish:
-                    //SymmetricAlgorithmBase = typeof(SymmetricAlgorithmBase);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
             switch (GlobalViewModel.Instance.SelectedSteganographicMethod)
             {
                 case SteganographicMethod.LSB:

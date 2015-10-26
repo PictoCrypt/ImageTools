@@ -14,6 +14,7 @@ namespace ImageToolApp.Models
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mChangedPixelsCommand;
+        private UICommand mOpenHelpCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
@@ -102,6 +103,20 @@ namespace ImageToolApp.Models
                 }
                 mCloseAppCommand = value;
                 OnPropertyChanged("CloseAppCommand");
+            }
+        }
+
+        public UICommand OpenHelpCommand
+        {
+            get { return mOpenHelpCommand; }
+            set
+            {
+                if (value.Equals(mOpenHelpCommand))
+                {
+                    return;
+                }
+                mOpenHelpCommand = value;
+                OnPropertyChanged("OpenHelpCommand");
             }
         }
 

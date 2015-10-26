@@ -6,6 +6,16 @@ namespace FunctionLib.Helper
 {
     public static class MethodHelper
     {
+        public static string ExecutiongPath
+        {
+            get
+            {
+                var path = Path.GetDirectoryName
+                    (System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+                return path;
+            }
+        }
+
         public static byte[] StringToByteArray(string str)
         {
             var result = new ASCIIEncoding();

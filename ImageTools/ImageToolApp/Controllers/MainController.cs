@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+using FunctionLib.Helper;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 
@@ -45,6 +47,13 @@ namespace ImageToolApp.Controllers
             mViewModel.OpenTxtCommand = UICommand.Regular(OpenTxt);
             mViewModel.SaveTxtCommand = UICommand.Regular(SaveTxt);
             mViewModel.ChangedPixelsCommand = UICommand.Regular(ChangedPixels);
+            mViewModel.OpenHelpCommand = UICommand.Regular(OpenHelp);
+        }
+
+        private void OpenHelp()
+        {
+            var executionPath = MethodHelper.ExecutiongPath;
+            System.Diagnostics.Process.Start(Path.Combine(executionPath, "Help.pdf"));
         }
 
         private void ChangedPixels()
@@ -89,7 +98,7 @@ namespace ImageToolApp.Controllers
             *   Define a standard path
             *   Define a standard Password
             */
-            var preferncesController = new PreferencesController();
+            var preferncesController = new PreferencesController(mView);
             if (preferncesController.OpenDialog())
             {
                 mEncryptController.InitializeCryptings();

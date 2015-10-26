@@ -1,9 +1,13 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
+using FunctionLib;
 using FunctionLib.Cryptography;
+using FunctionLib.Cryptography.Twofish;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -68,7 +72,32 @@ namespace ImageToolApp.Controllers
                 var text = ViewModel.Text;
                 if (ViewModel.EncryptedCheck)
                 {
-                    text = SymmetricAlgorithmBase.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
+                    switch (ViewModel.GlobalViewModel.SelectedEncryptionMethod)
+                    {
+                        case EncryptionMethod.AES:
+                            text = SymmetricAlgorithmBase.Encrypt(text, ViewModel.Password);
+                            break;
+
+                        case EncryptionMethod.DES:
+                            text = SymmetricAlgorithmBase.Encrypt<DESCryptoServiceProvider>(text, ViewModel.Password);
+                            break;
+                        case EncryptionMethod.RC2:
+                            text = SymmetricAlgorithmBase.Encrypt<RC2CryptoServiceProvider>(text, ViewModel.Password);
+                            break;
+                        case EncryptionMethod.Rijndael:
+                            text = SymmetricAlgorithmBase.Encrypt<RijndaelManaged>(text, ViewModel.Password);
+                            break;
+                        case EncryptionMethod.TripleDES:
+                            text = SymmetricAlgorithmBase.Encrypt<TripleDESCryptoServiceProvider>(text, ViewModel.Password);
+                            break;
+
+                        case EncryptionMethod.Twofish:
+                            text = SymmetricAlgorithmBase.Encrypt<Twofish>(text, ViewModel.Password);
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
                 var result = StegaCrypt.Encrypt(bitmap, text);
                 if (result != null)

@@ -5,19 +5,10 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png"
               Title="ImageTool" Height="500" Width="600" Loaded="RibbonWindow_Loaded">
-
-    <RibbonWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/ResourceDictionary.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </RibbonWindow.Resources>
-
     <DockPanel LastChildFill="True">
         <Ribbon DockPanel.Dock="Top" SelectedIndex="{Binding SelectedRibbonTabIndex, Mode=OneWayToSource}">
             <Ribbon.HelpPaneContent>
-                <RibbonButton SmallImageSource="{StaticResource HelpImage}" />
+                <RibbonButton SmallImageSource="{StaticResource HelpImage}" Command="{Binding OpenHelpCommand}" />
             </Ribbon.HelpPaneContent>
 
             <Ribbon.ApplicationMenu>

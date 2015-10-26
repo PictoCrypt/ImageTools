@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 
@@ -11,11 +12,13 @@ namespace ImageToolApp.Controllers
         private readonly Preferences mView;
         private readonly PreferencesViewModel mViewModel;
 
-        public PreferencesController()
+        public PreferencesController(Window owner)
         {
             mView = new Preferences();
             mViewModel = new PreferencesViewModel(GlobalViewModel.Instance);
             RegisterCommands();
+            mView.Owner = owner;
+            mView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             mView.DataContext = mViewModel;
         }
 

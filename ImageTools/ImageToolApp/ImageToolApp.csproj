@@ -42,6 +42,7 @@
     <ApplicationIcon>PictoCrypt.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -173,7 +174,11 @@
   <ItemGroup>
     <Resource Include="PictoCrypt.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)Resources\Help.pdf" "$(TargetDir)" /S /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

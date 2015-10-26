@@ -4,13 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
-        mc:Ignorable="d"
-        Icon="../Resources/Images/Preferences.png"
-        Title="Eigenschaften" Height="170" Width="300">
+        mc:Ignorable="d" Icon="../Resources/Images/Preferences.png"
+        Title="Eigenschaften" Height="175" Width="315" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -21,8 +20,8 @@
 
         <Label Grid.Column="0" Grid.Row="0" Content="Standard Passwort:" Margin="5" HorizontalAlignment="Right"
                VerticalAlignment="Top" />
-        <PasswordBox Grid.Column="1" Grid.Row="0" Width="120" wpfHelpers:PasswordHelper.Attach="True"
-                     wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
+        <PasswordBox Grid.Column="1" Grid.Row="0" wpfHelpers:PasswordHelper.Attach="True"
+                     wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" HorizontalAlignment="Stretch" 
                      Margin="5" />
 
         <Label Grid.Column="0" Grid.Row="1" Content="Text-Verschlüsselungsalg.:" Margin="5" HorizontalAlignment="Right"
