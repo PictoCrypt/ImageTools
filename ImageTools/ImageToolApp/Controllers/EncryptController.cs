@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using FunctionLib.Cryptography;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -67,7 +68,7 @@ namespace ImageToolApp.Controllers
                 var text = ViewModel.Text;
                 if (ViewModel.EncryptedCheck)
                 {
-                    text = Crypt.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
+                    text = SymmetricAlgorithmBase.Encrypt(ViewModel.Text ?? "", ViewModel.Password);
                 }
                 var result = StegaCrypt.Encrypt(bitmap, text);
                 if (result != null)

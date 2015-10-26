@@ -17,9 +17,9 @@ namespace ImageToolApp.Annotations
     /// </summary>
     /// <example>
     ///     <code>
-    /// [CanBeNull] public object Test() { return null; }
+    /// [CanBeNull] public object SymmetricAlgorithmBase() { return null; }
     /// public void UseTest() {
-    ///   var p = Test();
+    ///   var p = SymmetricAlgorithmBase();
     ///   var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
     /// }
     /// </code>
@@ -316,7 +316,7 @@ namespace ImageToolApp.Annotations
     /// [CannotApplyEqualityOperator]
     /// class NoEquality { }
     /// class UsesNoEquality {
-    ///   public void Test() {
+    ///   public void SymmetricAlgorithmBase() {
     ///     var ca1 = new NoEquality();
     ///     var ca2 = new NoEquality();
     ///     if (ca1 != null) { // OK

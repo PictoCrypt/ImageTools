@@ -3,6 +3,10 @@
     public enum EncryptionMethod
     {
         AES = 0,
-        Twofish = 1
+        DES = 1,
+        RC2 = 2,
+        Rijndael = 3,
+        TripleDES = 4,
+        Twofish = 5
     }
 }

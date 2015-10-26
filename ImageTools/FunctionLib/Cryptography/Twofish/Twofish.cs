@@ -1,12 +1,10 @@
-﻿using System.IO;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Security.Cryptography;
 
 namespace FunctionLib.Cryptography.Twofish
 {
-    public sealed class Twofish : Crypt
+    public sealed class Twofish : SymmetricAlgorithm
     {
-        public Twofish(CipherMode mode = CipherMode.ECB)
+        public Twofish()
         {
             LegalKeySizesValue = new[] { new KeySizes(128, 256, 64) }; // this allows us to have 128,192,256 key sizes
 
@@ -17,9 +15,9 @@ namespace FunctionLib.Cryptography.Twofish
 
             Padding = PaddingMode.Zeros;
 
-            Mode = mode;
+            Mode = CipherMode.ECB;
         }
-
+        
         /// <summary>
         /// Creates an object that supports ICryptoTransform that can be used to encrypt data using the Twofish encryption algorithm.
         /// </summary>
@@ -66,7 +64,7 @@ namespace FunctionLib.Cryptography.Twofish
             Key = new byte[KeySize / 8];
 
             // set the array to all 0 - implement a random key generation mechanism later probably based on PRNG
-            for (var i = Key.GetLowerBound(0); i < Key.GetUpperBound(0); i++)
+            for (int i = Key.GetLowerBound(0); i < Key.GetUpperBound(0); i++)
             {
                 Key[i] = 0;
             }
@@ -79,61 +77,12 @@ namespace FunctionLib.Cryptography.Twofish
         {
             set
             {
-                switch (value)
+                if (!value.HasFlag(CipherMode.CBC) || !value.HasFlag(CipherMode.ECB))
                 {
-                    case CipherMode.CBC:
-                        break;
-                    case CipherMode.ECB:
-                        break;
-                    default:
-                        throw (new CryptographicException("Specified CipherMode is not supported."));
+                    throw (new CryptographicException("Specified CipherMode is not supported."));
                 }
-                this.ModeValue = value;
+                ModeValue = value;
             }
-        }
-
-        public override string Encrypt(string textToBeEncrypted, string password)
-        {
-            var ms = new MemoryStream();
-
-            // create an encoder
-            ICryptoTransform encode = new ToBase64Transform();
-
-            //create Twofish Encryptor from this instance
-            var plainText = StringToByteArray(textToBeEncrypted);
-            // we use the plainText as the IV as in ECB mode the IV is not used
-            var encrypt = CreateEncryptor(Key, plainText); 
-
-            // we have to work backwords defining the last link in the chain first
-            var cryptostreamEncode = new CryptoStream(ms, encode, CryptoStreamMode.Write);
-            var cryptostream = new CryptoStream(cryptostreamEncode, encrypt, CryptoStreamMode.Write);
-
-            cryptostream.Write(plainText, 0, plainText.Length);
-            cryptostream.Close();
-            return Encoding.Default.GetString(ms.ToArray());
-        }
-
-        public override string Decrypt(string textToBeDecrypted, string password)
-        {
-            // create a decoder
-            ICryptoTransform decode = new FromBase64Transform();
-
-            var plainText = StringToByteArray(textToBeDecrypted);
-            //create DES Decryptor from our des instance
-            var decrypt = CreateDecryptor(Key, plainText);
-
-            var msD = new MemoryStream();
-
-            //create crypto stream set to read and do a Twofish decryption transform on incoming bytes
-            var cryptostreamD = new CryptoStream(msD, decrypt, CryptoStreamMode.Write);
-            var cryptostreamDecode = new CryptoStream(cryptostreamD, decode, CryptoStreamMode.Write);
-            
-            //write out the decrypted stream
-            cryptostreamDecode.Write(plainText, 0, plainText.Length);
-
-            cryptostreamDecode.Close();
-
-            return Encoding.Default.GetString(msD.ToArray());
         }
     }
 }
