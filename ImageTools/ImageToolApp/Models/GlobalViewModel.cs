@@ -3,9 +3,6 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using FunctionLib;
 
 namespace ImageToolApp.Models
@@ -18,7 +15,6 @@ namespace ImageToolApp.Models
         private string mResultImagePath;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
-        private FrameworkElement mImageOrNullImage;
 
         public GlobalViewModel()
         {

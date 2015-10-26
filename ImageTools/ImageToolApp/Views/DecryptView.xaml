@@ -33,7 +33,10 @@
             </Grid>
         </GroupBox>
 
-        <Button Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Decrypt"
-                Command="{Binding TabActionCommand}" Margin="3" />
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Button HorizontalAlignment="Right" Content="Decrypt"
+                    Command="{Binding TabActionCommand}" Margin="3" />            
+        </StackPanel>
     </Grid>
 </UserControl>
