@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionLib", "FunctionLib\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToolApp", "ImageToolApp\ImageToolApp.csproj", "{D523E1DC-5788-4E27-921D-D3B97FB78208}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptographicTest", "CryptographicTest\CryptographicTest.csproj", "{0785A441-D43A-4A91-9C4D-7089746A8EB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D523E1DC-5788-4E27-921D-D3B97FB78208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D523E1DC-5788-4E27-921D-D3B97FB78208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D523E1DC-5788-4E27-921D-D3B97FB78208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0785A441-D43A-4A91-9C4D-7089746A8EB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0785A441-D43A-4A91-9C4D-7089746A8EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0785A441-D43A-4A91-9C4D-7089746A8EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0785A441-D43A-4A91-9C4D-7089746A8EB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
