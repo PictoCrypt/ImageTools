@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace FunctionLib.Helper
@@ -10,8 +11,7 @@ namespace FunctionLib.Helper
         {
             get
             {
-                var path = Path.GetDirectoryName
-                    (System.Reflection.Assembly.GetExecutingAssembly().Location);
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 return path;
             }
         }

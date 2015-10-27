@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using FunctionLib;
 
-namespace ImageToolApp.Models
+namespace ImageToolApp.ViewModels
 {
     public class PreferencesViewModel : BaseViewModel
     {
@@ -13,20 +13,12 @@ namespace ImageToolApp.Models
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
 
-        public PreferencesViewModel(GlobalViewModel model)
+        public PreferencesViewModel()
         {
-            Model = model;
-            EncryptionMethods = new ObservableCollection<EncryptionMethod>(Enum.GetValues(typeof (EncryptionMethod))
-                .Cast<EncryptionMethod>());
-            SteganographicMethods =
-                new ObservableCollection<SteganographicMethod>(Enum.GetValues(typeof (SteganographicMethod))
-                    .Cast<SteganographicMethod>());
+            Password = PreferencesModel.Password;
+            SelectedEncryptionMethod = PreferencesModel.SelectedEncryptionMethod;
+            SelectedSteganographicMethod = PreferencesModel.SelectedSteganographicMethod;
         }
-
-        public GlobalViewModel Model { get; private set; }
-
-        public ObservableCollection<EncryptionMethod> EncryptionMethods { get; set; }
-        public ObservableCollection<SteganographicMethod> SteganographicMethods { get; set; }
 
         public string Password
         {

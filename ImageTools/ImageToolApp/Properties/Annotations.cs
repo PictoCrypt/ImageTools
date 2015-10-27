@@ -164,7 +164,7 @@ namespace ImageToolApp.Annotations
     /// <example>
     ///     <code>
     ///  public class Foo : INotifyPropertyChanged {
-    ///    public event PropertyChangedEventHandler PropertyChanged;
+    ///    public event PropertyChangedEventHandler PropertyChangedModel;
     ///    [NotifyPropertyChangedInvocator]
     ///    protected virtual void NotifyChanged(string propertyName) { ... }
     /// 

@@ -2,6 +2,7 @@
 using System.Windows;
 using FunctionLib.Helper;
 using ImageToolApp.Models;
+using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 
 namespace ImageToolApp.Controllers
@@ -16,7 +17,6 @@ namespace ImageToolApp.Controllers
         public MainController(Window mainWindow)
         {
             mView = mainWindow;
-
             mEncryptController = new EncryptController();
             mDecryptController = new DecryptController();
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
@@ -25,7 +25,7 @@ namespace ImageToolApp.Controllers
             mView.Show();
         }
 
-        public IBaseTabController CurrentController
+        private IBaseTabController CurrentController
         {
             get
             {
@@ -50,7 +50,7 @@ namespace ImageToolApp.Controllers
             mViewModel.OpenHelpCommand = UICommand.Regular(OpenHelp);
         }
 
-        private void OpenHelp()
+        private static void OpenHelp()
         {
             var executionPath = MethodHelper.ExecutiongPath;
             System.Diagnostics.Process.Start(Path.Combine(executionPath, "Help.pdf"));
@@ -94,6 +94,7 @@ namespace ImageToolApp.Controllers
 
         private void OpenPreferencesWindow()
         {
+            // TODO
             /*  Open new Window where you can choose which Encryption-Algorithm you want to use.
             *   Define a standard path
             *   Define a standard Password
@@ -101,7 +102,8 @@ namespace ImageToolApp.Controllers
             var preferncesController = new PreferencesController(mView);
             if (preferncesController.OpenDialog())
             {
-                mEncryptController.InitializeCryptings();
+                mDecryptController.PreferencesSaved();
+                mEncryptController.PreferencesSaved();
             }
         }
 

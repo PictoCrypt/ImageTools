@@ -1,8 +1,6 @@
-﻿using System.Configuration;
-using System.IO;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using ImageToolApp.Models;
+using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 
 namespace ImageToolApp.Controllers
@@ -15,7 +13,7 @@ namespace ImageToolApp.Controllers
         public PreferencesController(Window owner)
         {
             mView = new Preferences();
-            mViewModel = new PreferencesViewModel(GlobalViewModel.Instance);
+            mViewModel = new PreferencesViewModel();
             RegisterCommands();
             mView.Owner = owner;
             mView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -45,28 +43,11 @@ namespace ImageToolApp.Controllers
             var result = mView.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                SaveToConfig();
-                mViewModel.Model.Password = mViewModel.Password;
-                mViewModel.SelectedEncryptionMethod = mViewModel.SelectedEncryptionMethod;
-                mViewModel.SelectedSteganographicMethod = mViewModel.SelectedSteganographicMethod;
+                PreferencesModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(), 
+                    mViewModel.SelectedSteganographicMethod.ToString());
                 return true;
             }
             return false;
-        }
-
-        private void SaveToConfig()
-        {
-            var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var configFile = Path.Combine(appPath, "App.config");
-            var configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
-            var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
-
-            config.AppSettings.Settings["Password"].Value = mViewModel.Password;
-            config.AppSettings.Settings["SelectedEncryptionMethod"].Value =
-                mViewModel.SelectedEncryptionMethod.ToString();
-            config.AppSettings.Settings["SelectedSteganographicMethod"].Value =
-                mViewModel.SelectedSteganographicMethod.ToString();
-            config.Save();
         }
     }
 }

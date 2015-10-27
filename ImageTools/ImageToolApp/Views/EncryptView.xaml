@@ -33,7 +33,11 @@
             </Grid>
         </GroupBox>
 
-        <Button Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Encrypt"
-                Command="{Binding TabActionCommand}" Margin="3" />
+        <StackPanel Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
+            <ComboBox ItemsSource="{Binding SteganographicMethods}" SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
+            <ComboBox ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}" Margin="3" />
+            <Button HorizontalAlignment="Right" Content="Encrypt" Command="{Binding TabActionCommand}" Margin="3" />
+        </StackPanel>
+        
     </Grid>
 </UserControl>

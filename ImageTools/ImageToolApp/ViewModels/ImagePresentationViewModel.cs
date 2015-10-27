@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ImageToolApp.Models
+﻿namespace ImageToolApp.ViewModels
 {
     public class ImagePresentationViewModel : BaseViewModel
     {

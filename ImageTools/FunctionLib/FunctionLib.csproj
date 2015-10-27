@@ -58,7 +58,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteganographicMethod.cs" />
     <Compile Include="Steganography\LeastSignificantBit.cs" />
-    <Compile Include="Steganography\StegaCrypt.cs" />
+    <Compile Include="Steganography\SteganographicAlgorithm.cs" />
+    <Compile Include="Steganography\SteganographicAlgorithmBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

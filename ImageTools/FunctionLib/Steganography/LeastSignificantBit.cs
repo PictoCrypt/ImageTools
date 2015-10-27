@@ -6,9 +6,9 @@ using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography
 {
-    public class LeastSignificantBit : StegaCrypt
+    public class LeastSignificantBit : SteganographicAlgorithm
     {
-        public override Bitmap Encrypt(Bitmap src, string text)
+        public override Bitmap Encrypt(Bitmap src, string value)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
@@ -63,21 +63,21 @@ namespace FunctionLib.Steganography
                                     ChangedPixels.Add(new Pixel(j, i));
                                 }
 
-                                // return the bitmap with the text hidden in
+                                // return the bitmap with the value hidden in
                                 lockBitmap.UnlockBits();
                                 return result;
                             }
 
                             // check if all characters has been hidden
-                            if (charIndex >= text.Length)
+                            if (charIndex >= value.Length)
                             {
-                                // start adding zeros to mark the end of the text
+                                // start adding zeros to mark the end of the value
                                 state = State.FillingWithZeros;
                             }
                             else
                             {
                                 // move to the next character and process again
-                                charValue = text[charIndex++];
+                                charValue = value[charIndex++];
                             }
                         }
 
@@ -140,7 +140,7 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        public override string DecryptText(Bitmap src)
+        public override string Decrypt(Bitmap src)
         {
             var lockBitmap = new LockBitmap(new Bitmap(src));
             lockBitmap.LockBits();
@@ -148,7 +148,7 @@ namespace FunctionLib.Steganography
             var colorUnitIndex = 0;
             var charValue = 0;
 
-            // holds the text that will be extracted from the image
+            // holds the value that will be extracted from the image
             var result = string.Empty;
 
             // pass through the rows
@@ -189,7 +189,7 @@ namespace FunctionLib.Steganography
                         colorUnitIndex++;
 
                         // if 8 bits has been added,
-                        // then add the current character to the result text
+                        // then add the current character to the result value
                         if (colorUnitIndex%8 == 0)
                         {
                             // reverse? of course, since each time the process occurs
@@ -205,7 +205,7 @@ namespace FunctionLib.Steganography
                             // convert the character value from int to char
                             var c = (char) charValue;
 
-                            // add the current character to the result text
+                            // add the current character to the result value
                             result += c.ToString();
                         }
                     }

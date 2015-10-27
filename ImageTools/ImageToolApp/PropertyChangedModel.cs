@@ -2,15 +2,10 @@
 using System.Runtime.CompilerServices;
 using ImageToolApp.Annotations;
 
-namespace ImageToolApp.Models
+namespace ImageToolApp
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public class PropertyChangedModel : INotifyPropertyChanged
     {
-        public GlobalViewModel GlobalViewModel
-        {
-            get { return GlobalViewModel.Instance; }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

@@ -8,19 +8,15 @@ using FunctionLib;
 using FunctionLib.Cryptography;
 using FunctionLib.Cryptography.Blowfish;
 using FunctionLib.Cryptography.Twofish;
-using ImageToolApp.Models;
+using FunctionLib.Steganography;
+using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public class DecryptController : BaseTabController<DecryptView, DecryptViewModel>
+    public class DecryptController : BaseTabController<DecryptView, BaseTabViewModel>
     {
-        protected override DecryptView CreateView()
-        {
-            return new DecryptView();
-        }
-
         protected override void RegisterCommands()
         {
             ViewModel.TabActionCommand = UICommand.Regular(Decrypt);
@@ -43,14 +39,14 @@ namespace ImageToolApp.Controllers
         {
             Application.Current.MainWindow.Cursor = Cursors.Wait;
             string result;
-            using (var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath))
+            using (var bitmap = new Bitmap(ViewModel.ImagePath))
             {
-                result = StegaCrypt.DecryptText(bitmap);
+                result = SteganographicAlgorithmBase.Decrypt(bitmap);
             }
 
             if (ViewModel.EncryptedCheck)
             {
-                switch (ViewModel.GlobalViewModel.SelectedEncryptionMethod)
+                switch (ViewModel.SelectedEncryptionMethod)
                 {
                     case EncryptionMethod.AES:
                         result = SymmetricAlgorithmBase.Decrypt(result, ViewModel.Password);
