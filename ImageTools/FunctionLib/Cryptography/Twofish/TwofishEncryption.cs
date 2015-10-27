@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+using System;
+using System.Security.Cryptography;
 
 namespace FunctionLib.Cryptography.Twofish
 {
@@ -92,45 +93,28 @@ namespace FunctionLib.Cryptography.Twofish
 			int inputCount
 			)
 		{
-			byte[] outputBuffer;// = new byte[0];
+			byte[] result;
 			
 			if (inputCount>0)
 			{
-				outputBuffer = new byte[16]; // blocksize
-				uint[] x=new uint[4];
+				int rest = inputCount % 16;
+				int bufsize = inputCount - rest;
+				if( rest > 0 ) bufsize += 16;
+				result = new byte[bufsize];
+				Array.Copy(inputBuffer,0,result,0,inputCount);
 
-				// load it up
-				for (int i=0;i<4;i++) // should be okay as we have already said to pad with zeros
-				{
-					x[i]= (uint)(inputBuffer[i*4+3+inputOffset]<<24) | (uint)(inputBuffer[i*4+2+inputOffset] << 16) | 
-						(uint)(inputBuffer[i*4+1+inputOffset] << 8) | (uint)(inputBuffer[i*4+0+inputOffset]);
+				for(int i = inputCount; i < bufsize; i++) 
+					result[i] = (byte)0;
+				TransformBlock(result,0,bufsize,result,0);
 
-				}
-
-				if (encryptionDirection == EncryptionDirection.Encrypting)
-				{
-					blockEncrypt(ref x);
-				}
-				else
-				{
-					blockDecrypt(ref x);
-				}
-
-				// load it up
-				for (int i=0;i<4;i++)
-				{
-					outputBuffer[i*4+0] = b0(x[i]);
-					outputBuffer[i*4+1] = b1(x[i]);
-					outputBuffer[i*4+2] = b2(x[i]);
-					outputBuffer[i*4+3] = b3(x[i]);
-				}
 			}
 			else
 			{
-				outputBuffer = new byte[0]; // the .NET framework doesn't like it if you return null - this calms it down
+				//outputBuffer = new byte[0];
+				result = new byte[inputCount]; // the .NET framework doesn't like it if you return null - this calms it down
 			}
 			
-			return outputBuffer;
+			return result;
 		}
 
 		// not worked out this property yet - placing break points here just don't get caught.

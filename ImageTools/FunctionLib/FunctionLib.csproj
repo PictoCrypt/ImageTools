@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptography\Blowfish\Blowfish.cs" />
+    <Compile Include="Cryptography\Blowfish\BlowfishAlgorithm.cs" />
+    <Compile Include="Cryptography\Blowfish\BlowfishCBC.cs" />
+    <Compile Include="Cryptography\Blowfish\BlowfishTables.cs" />
     <Compile Include="Cryptography\SymmetricAlgorithmBase.cs" />
     <Compile Include="Cryptography\Twofish\Twofish.cs" />
     <Compile Include="Cryptography\Twofish\TwofishBase.cs" />

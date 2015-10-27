@@ -1,4 +1,4 @@
-﻿//#define		FEISTEL	 
+//#define		FEISTEL	 
 
 using System.Security.Cryptography;
 

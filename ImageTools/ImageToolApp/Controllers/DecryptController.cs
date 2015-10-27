@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using FunctionLib;
 using FunctionLib.Cryptography;
+using FunctionLib.Cryptography.Blowfish;
 using FunctionLib.Cryptography.Twofish;
 using ImageToolApp.Models;
 using ImageToolApp.Views;
@@ -70,6 +71,10 @@ namespace ImageToolApp.Controllers
 
                     case EncryptionMethod.Twofish:
                         result = SymmetricAlgorithmBase.Decrypt<Twofish>(result, ViewModel.Password);
+                        break;
+
+                    case EncryptionMethod.Blowfish:
+                        result = SymmetricAlgorithmBase.Encrypt<BlowfishAlgorithm>(result, ViewModel.Password);
                         break;
 
                     default:

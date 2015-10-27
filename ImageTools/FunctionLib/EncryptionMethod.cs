@@ -7,6 +7,7 @@
         RC2 = 2,
         Rijndael = 3,
         TripleDES = 4,
-        Twofish = 5
+        Twofish = 5,
+        Blowfish = 6
     }
 }
