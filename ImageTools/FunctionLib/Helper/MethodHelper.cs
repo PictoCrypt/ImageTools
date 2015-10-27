@@ -11,7 +11,7 @@ namespace FunctionLib.Helper
             get
             {
                 var path = Path.GetDirectoryName
-                    (System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+                    (System.Reflection.Assembly.GetExecutingAssembly().Location);
                 return path;
             }
         }
