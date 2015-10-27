@@ -1,3 +1,5 @@
+// REFERENCE http://www.codeproject.com/Articles/483490/XCrypt-Encryption-and-decryption-class-wrapper
+
 using System.Security.Cryptography;
 
 namespace FunctionLib.Cryptography.Twofish

@@ -1,3 +1,5 @@
+// REFERENCE http://www.codeproject.com/Articles/483490/XCrypt-Encryption-and-decryption-class-wrapper
+
 
 /* 
   Copyright 2001-2003 Markus Hahn <markus_hahn@gmx.net>

@@ -1,3 +1,5 @@
+// REFERENCE http://www.codeproject.com/Articles/483490/XCrypt-Encryption-and-decryption-class-wrapper
+
 //#define		FEISTEL	 
 
 using System.Security.Cryptography;
