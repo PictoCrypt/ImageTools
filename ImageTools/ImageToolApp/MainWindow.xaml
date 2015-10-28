@@ -8,64 +8,68 @@
               Title="ImageTool" Height="500" Width="600">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="0" Grid.Column="0" SelectedIndex="{Binding SelectedRibbonTabIndex, Mode=OneWayToSource}">
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <GroupBox>
+                <GroupBox.Header>
+                    <Image Source="{StaticResource MenueImage}"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <Button Command="{Binding PreferencesCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                        <Image Source="{StaticResource CloseImage}" />
+                    </Button>
+                    <Button Command="{Binding CloseAppCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                        <Image Source="{StaticResource CloseImage}" />
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Bilder">
+                <StackPanel Orientation="Vertical">
+                    <Button Command="{Binding OpenImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                        <Image Source="{StaticResource OpenPictureImage}" />
+                    </Button>
+                    <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}">
+                        <Image Source="{StaticResource SaveAsImage}" />
+                    </Button>
+                    <Button Command="{Binding ChangedPixelsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}">
+                        <Image Source="{StaticResource PaintPixelsImage}" />
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Text">
+                <StackPanel Orientation="Vertical">
+                    <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                        <Image Source="{StaticResource OpenDocumentImage}" />
+                    </Button>
+                    <Button Command="{Binding SaveTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}">
+                        <Image Source="{StaticResource SaveAsImage}" />
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        
+        <TabControl Grid.Row="0" Grid.Column="1" SelectedIndex="{Binding SelectedRibbonTabIndex, Mode=OneWayToSource}">
             <TabItem Header="Encrypt">
-                <!--<RibbonGroup Header="Bild">
-                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
-                                  SmallImageSource="{StaticResource OpenPictureImage}" />
-                    <RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}" IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
-                                  SmallImageSource="{StaticResource SaveAsImage}" />
-                </RibbonGroup>
-                <RibbonGroup Header="Text">
-                    <RibbonButton Label="Öffnen" Command="{Binding OpenTxtCommand}"
-                                  SmallImageSource="{StaticResource OpenDocumentImage}" />
-                </RibbonGroup>
-                <RibbonGroup Header="Bild">
-                    <RibbonButton Label="Veränderte Pixel" Command="{Binding ChangedPixelsCommand}" IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
-                                  SmallImageSource="{StaticResource PaintPixelsImage}"/>
-                </RibbonGroup>-->
-
-                <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition x:Name="SecColumn" Width="Auto" MaxWidth="200" />
-                </Grid.ColumnDefinitions>-->
                 <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                <!--<ContentControl Content="{Binding CurrentElement}" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"/>-->
             </TabItem>
             <TabItem Header="Decrypt">
-                <!--<RibbonGroup Header="Bild">
-                    <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
-                                  SmallImageSource="{StaticResource OpenPictureImage}" />
-                </RibbonGroup>
-                <RibbonGroup Header="Text">
-                    <RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
-                                  SmallImageSource="{StaticResource SaveAsImage}" />
-                </RibbonGroup>-->
                 <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                <!--<ContentControl Content="{Binding CurrentElement}" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"/>-->
             </TabItem>
         </TabControl>
 
-        <!--<Button Grid.Row="0" Grid.Column="1" Command="{Binding OpenHelpCommand}" 
-                Style="{StaticResource ButtonWithoutBorderStyle}" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <Image Source="{StaticResource HelpImage}" />
-        </Button>-->
     </Grid>
 
-            <!--<Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu x:Name="RibbonAppMenu" SmallImageSource="{StaticResource MenueImage}">
-                    <RibbonApplicationMenuItem Header="Einstellungen" ImageSource="{StaticResource PreferencesImage}"
-                                               Command="{Binding PreferencesCommand}" />
-                    <RibbonApplicationMenuItem Header="Beenden" ImageSource="{StaticResource CloseImage}"
-                                               Command="{Binding CloseAppCommand}" />
-                </RibbonApplicationMenu>
-            </Ribbon.ApplicationMenu>-->
+            <!--<Button Grid.Row="0" Grid.Column="1" Command="{Binding OpenHelpCommand}" 
+                    Style="{StaticResource ButtonWithoutBorderStyle}" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Image Source="{StaticResource HelpImage}" />
+            </Button>-->
 </controls:MetroWindow>

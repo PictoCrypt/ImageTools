@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToolApp", "ImageToolAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptographicTest", "CryptographicTest\CryptographicTest.csproj", "{0785A441-D43A-4A91-9C4D-7089746A8EB0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52D4AFB7-5309-450D-A6E4-99C54972AB90}"
+	ProjectSection(SolutionItems) = preProject
+		TODOS.txt = TODOS.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

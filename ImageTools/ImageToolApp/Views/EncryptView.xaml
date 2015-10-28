@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:ImageToolApp.WpfHelpers"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="300" Margin="5">
+             d:DesignHeight="250" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="28" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -21,7 +21,7 @@
                  VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
                  Text="{Binding Text}" />
 
-        <GroupBox Grid.Row="1" Header="Encryption" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <GroupBox Grid.Row="1" Grid.Column="0" Header="Encryption" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -37,7 +37,7 @@
             </Grid>
         </GroupBox>
 
-        <StackPanel Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding SteganographicMethods}" SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
             <ComboBox ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}" Margin="3" />
             <Button HorizontalAlignment="Right" Content="Encrypt" Command="{Binding TabActionCommand}" Margin="3" IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}"/>

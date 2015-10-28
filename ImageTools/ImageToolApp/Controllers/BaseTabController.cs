@@ -1,7 +1,5 @@
 ﻿using System.IO;
 using System.Windows.Controls;
-using FunctionLib.Steganography;
-using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using Microsoft.Win32;
 
