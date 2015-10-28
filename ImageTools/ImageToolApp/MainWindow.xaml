@@ -62,7 +62,7 @@
             </Button>
         </StackPanel>
 
-        <TabControl Grid.Row="0" Grid.Column="1" SelectedIndex="{Binding SelectedRibbonTabIndex, Mode=OneWayToSource}">
+        <TabControl x:Name="TabControl" Grid.Row="0" Grid.Column="1">
             <TabItem Header="Encrypt">
                 <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </TabItem>

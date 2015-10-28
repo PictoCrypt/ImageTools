@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace ImageToolApp.ViewModels
 {
@@ -6,6 +7,7 @@ namespace ImageToolApp.ViewModels
     {
         private FrameworkElement mDecryptView;
         private FrameworkElement mEncryptView;
+        private FrameworkElement mCurrentElement;
         private UICommand mCloseAppCommand;
         private UICommand mOpenImageCommand;
         private UICommand mOpenTxtCommand;
@@ -17,8 +19,8 @@ namespace ImageToolApp.ViewModels
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
-            mEncryptView = encryptView;
-            mDecryptView = decryptView;
+            EncryptView = encryptView;
+            DecryptView = decryptView;
         }
 
         public UICommand OpenImageCommand
@@ -144,6 +146,20 @@ namespace ImageToolApp.ViewModels
                 }
                 mDecryptView = value;
                 OnPropertyChanged("DecryptView");
+            }
+        }
+
+        public FrameworkElement CurrentElement
+        {
+            get { return mCurrentElement; }
+            set
+            {
+                if (value.Equals(mCurrentElement))
+                {
+                    return;
+                }
+                mCurrentElement = value;
+                OnPropertyChanged("CurrentElement");
             }
         }
 
