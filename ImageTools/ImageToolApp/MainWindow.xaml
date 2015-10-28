@@ -36,7 +36,7 @@
                         <Image Source="{StaticResource OpenPictureImage}" />
                     </Button>
                     <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                            IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}">
+                        IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}">
                         <Image Source="{StaticResource SaveAsImage}" />
                     </Button>
                     <Button Command="{Binding ChangedPixelsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
