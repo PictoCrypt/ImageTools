@@ -1,26 +1,31 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
 namespace ImageToolApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        private UICommand mChangedPixelsCommand;
+        private UICommand mCloseAppCommand;
+        private FrameworkElement mCurrentElement;
         private FrameworkElement mDecryptView;
         private FrameworkElement mEncryptView;
-        private FrameworkElement mCurrentElement;
-        private UICommand mCloseAppCommand;
+        private UICommand mOpenHelpCommand;
         private UICommand mOpenImageCommand;
         private UICommand mOpenTxtCommand;
         private UICommand mPreferencesCommand;
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
-        private UICommand mChangedPixelsCommand;
-        private UICommand mOpenHelpCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
+            CurrentElement = encryptView;
             EncryptView = encryptView;
             DecryptView = decryptView;
+        }
+
+        public bool EncryptSelected
+        {
+            set { CurrentElement = value ? EncryptView : DecryptView; }
         }
 
         public UICommand OpenImageCommand

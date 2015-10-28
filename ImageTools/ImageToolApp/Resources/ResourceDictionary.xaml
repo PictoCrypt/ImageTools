@@ -29,7 +29,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <!--<Setter Property="Style" Value="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />-->
     </Style>
-    
+
     <DataTemplate x:Key="WindowIconTemplate">
         <Grid Width="{TemplateBinding Width}"
                   Height="{TemplateBinding Height}"
@@ -42,4 +42,18 @@
             </Grid.OpacityMask>
         </Grid>
     </DataTemplate>
+
+    <Style x:Key="AutoDisableAndOutGrayImage" TargetType="Image">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
+                <Setter Property="IsEnabled" Value="True" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="False">
+                <Setter Property="IsEnabled" Value="False" />
+            </DataTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

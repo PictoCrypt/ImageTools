@@ -22,48 +22,56 @@
                     <Image Source="{StaticResource MenueImage}"/>
                 </GroupBox.Header>
                 <StackPanel Orientation="Vertical">
-                    <Button Command="{Binding PreferencesCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                    <Button Command="{Binding PreferencesCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            ToolTip="Eigenschaften">
                         <Image Source="{StaticResource CloseImage}" />
                     </Button>
-                    <Button Command="{Binding CloseAppCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                    <Button Command="{Binding CloseAppCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            ToolTip="Applikation schließen">
                         <Image Source="{StaticResource CloseImage}" />
                     </Button>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Bilder">
                 <StackPanel Orientation="Vertical">
-                    <Button Command="{Binding OpenImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                    <Button Command="{Binding OpenImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            ToolTip="Bild öffnen">
                         <Image Source="{StaticResource OpenPictureImage}" />
                     </Button>
-                    <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                        IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}">
-                        <Image Source="{StaticResource SaveAsImage}" />
+                    <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}" 
+                            IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                            ToolTip="Bild speichern">
+                        <Image Source="{StaticResource SaveAsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
                     <Button Command="{Binding ChangedPixelsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                            IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}">
-                        <Image Source="{StaticResource PaintPixelsImage}" />
+                            IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                            ToolTip="Veränderte Pixel anzeigen">
+                        <Image Source="{StaticResource PaintPixelsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Text">
                 <StackPanel Orientation="Vertical">
-                    <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                    <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            ToolTip="Text importieren">
                         <Image Source="{StaticResource OpenDocumentImage}" />
                     </Button>
                     <Button Command="{Binding SaveTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                            IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}">
-                        <Image Source="{StaticResource SaveAsImage}" />
+                            IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
+                            ToolTip="Text speichern">
+                        <Image Source="{StaticResource SaveAsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
                 </StackPanel>
             </GroupBox>
 
-            <Button Command="{Binding OpenHelpCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+            <Button Command="{Binding OpenHelpCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                    ToolTip="Hilfe">
                 <Image Source="{StaticResource HelpImage}" Width="25" />
             </Button>
         </StackPanel>
 
-        <TabControl x:Name="TabControl" Grid.Row="0" Grid.Column="1">
-            <TabItem Header="Encrypt">
+        <TabControl Grid.Row="0" Grid.Column="1">
+            <TabItem Header="Encrypt" IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
                 <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </TabItem>
             <TabItem Header="Decrypt">
