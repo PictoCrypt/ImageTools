@@ -40,11 +40,13 @@
                     </Button>
                     <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}" 
                             IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                            Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                             ToolTip="Bild speichern">
                         <Image Source="{StaticResource SaveAsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
                     <Button Command="{Binding ChangedPixelsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                            Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                             ToolTip="Veränderte Pixel anzeigen">
                         <Image Source="{StaticResource PaintPixelsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
@@ -53,11 +55,13 @@
             <GroupBox Header="Text">
                 <StackPanel Orientation="Vertical">
                     <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                             ToolTip="Text importieren">
                         <Image Source="{StaticResource OpenDocumentImage}" />
                     </Button>
                     <Button Command="{Binding SaveTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
+                            Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementDecryptToVisibilityConverter}}"
                             ToolTip="Text speichern">
                         <Image Source="{StaticResource SaveAsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>

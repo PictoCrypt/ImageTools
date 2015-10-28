@@ -22,7 +22,8 @@
     <converters:ImageToBoolConverter x:Key="ImageToBoolConverter" />
     <converters:IsStringNullConverter x:Key="IsStringNullConverter" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    <!--<converters:BitmapImageToBitmapConveter x:Key="BitmapToImageSourceConverter" />-->
+    <converters:FrameworkElementEncryptToVisibilityConverter x:Key="FrameworkElementEncryptToVisibilityConverter" />
+    <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
 
     <!-- Styles -->
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -50,6 +51,12 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="False">
                 <Setter Property="IsEnabled" Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="Visible">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="Collapsed">
+                <Setter Property="Visibility" Value="Collapsed" />
             </DataTrigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.5" />

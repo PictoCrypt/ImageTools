@@ -24,38 +24,14 @@ namespace ImageToolApp.Controllers
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
-
-            //mView.TabControl.SelectionChanged += TabControlOnSelectionChanged;
-            //mView.Closing += ViewOnClosing;
-
             mView.Show();
         }
-
-        //private void ViewOnClosing(object sender, CancelEventArgs cancelEventArgs)
-        //{
-        //    //Unregister Events
-        //    mView.TabControl.SelectionChanged -= TabControlOnSelectionChanged;
-        //    mView.Closing -= ViewOnClosing;
-        //}
-
-        //private void TabControlOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
-        //{
-        //    var tabControl = sender as TabControl;
-        //    if (tabControl != null)
-        //    {
-        //        var selectedTab = tabControl.SelectedItem as TabItem;
-        //        if (selectedTab != null)
-        //        {
-        //            mViewModel.CurrentElement = (FrameworkElement) (selectedTab.Content as ContentControl).Content;
-        //        }
-        //    }
-        //}
 
         private IBaseTabController CurrentController
         {
             get
             {
-                var view = mViewModel.EncryptView as EncryptView;
+                var view = mViewModel.CurrentElement as EncryptView;
                 if (view != null)
                 {
                     return mEncryptController;

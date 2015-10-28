@@ -77,6 +77,8 @@
   <ItemGroup>
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\PreferencesController.cs" />
+    <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
+    <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
     <Compile Include="Models\PreferencesModel.cs" />
     <Compile Include="PropertyChangedModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
