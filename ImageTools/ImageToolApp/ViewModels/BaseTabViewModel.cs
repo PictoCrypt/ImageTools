@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using FunctionLib;
 
 namespace ImageToolApp.ViewModels
@@ -150,5 +148,7 @@ namespace ImageToolApp.ViewModels
                 OnPropertyChanged("ResultImagePath");
             }
         }
+
+
     }
 }

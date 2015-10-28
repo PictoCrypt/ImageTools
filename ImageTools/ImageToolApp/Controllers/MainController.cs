@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
 using FunctionLib.Helper;
-using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 
@@ -29,7 +28,7 @@ namespace ImageToolApp.Controllers
         {
             get
             {
-                var view = mViewModel.CurrentElement as EncryptView;
+                var view = mViewModel.EncryptView as EncryptView;
                 if (view != null)
                 {
                     return mEncryptController;

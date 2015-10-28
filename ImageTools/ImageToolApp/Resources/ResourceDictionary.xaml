@@ -30,4 +30,9 @@
             <ResourceDictionary Source="/PresentationFramework.Aero2;component/themes/aero2.normalcolor.xaml" />
         </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
+
+    <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+        <Setter Property="BorderThickness" Value="0" />
+        <!--<Setter Property="Style" Value="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />-->
+    </Style>
 </ResourceDictionary>

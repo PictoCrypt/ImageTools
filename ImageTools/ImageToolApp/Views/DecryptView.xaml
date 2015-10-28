@@ -5,19 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:ImageToolApp.WpfHelpers"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="300" Margin="5">
+             d:DesignHeight="250" d:DesignWidth="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="28" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
+        <TextBox Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
                  VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True"
                  Text="{Binding Text}" Background="DarkGray" />
 
-        <GroupBox Grid.Row="1" Header="Encryption" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <GroupBox Grid.Column="0" Grid.Row="1" Header="Encryption" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -34,10 +38,16 @@
         </GroupBox>
 
 
-        <StackPanel Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding SteganographicMethods}" SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
             <ComboBox ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}" Margin="3" />
             <Button HorizontalAlignment="Right" Content="Decrypt" Command="{Binding TabActionCommand}" Margin="3" IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}"/>
         </StackPanel>
+
+        <Expander Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Stretch"
+                      HorizontalAlignment="Right">
+            <Image Source="{Binding CurrentElement.DataContext.ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center"
+                           Width="{Binding ElementName=SecColumn, Path=MaxWidth}"/>
+        </Expander>
     </Grid>
 </UserControl>

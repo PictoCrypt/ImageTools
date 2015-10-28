@@ -4,10 +4,9 @@ namespace ImageToolApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private readonly FrameworkElement mDecryptView;
-        private readonly FrameworkElement mEncryptView;
+        private FrameworkElement mDecryptView;
+        private FrameworkElement mEncryptView;
         private UICommand mCloseAppCommand;
-        private FrameworkElement mCurrentElement;
         private UICommand mOpenImageCommand;
         private UICommand mOpenTxtCommand;
         private UICommand mPreferencesCommand;
@@ -120,33 +119,31 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public int SelectedRibbonTabIndex
+        public FrameworkElement EncryptView
         {
+            get { return mEncryptView; }
             set
             {
-                switch (value)
-                {
-                    case 0:
-                        CurrentElement = mEncryptView;
-                        break;
-                    case 1:
-                        CurrentElement = mDecryptView;
-                        break;
-                }
-            }
-        }
-
-        public FrameworkElement CurrentElement
-        {
-            get { return mCurrentElement; }
-            set
-            {
-                if (value.Equals(mCurrentElement))
+                if (value.Equals(mEncryptView))
                 {
                     return;
                 }
-                mCurrentElement = value;
-                OnPropertyChanged("CurrentElement");
+                mEncryptView = value;
+                OnPropertyChanged("EncryptView");
+            }
+        }
+
+        public FrameworkElement DecryptView
+        {
+            get { return mDecryptView; }
+            set
+            {
+                if (value.Equals(mDecryptView))
+                {
+                    return;
+                }
+                mDecryptView = value;
+                OnPropertyChanged("DecryptView");
             }
         }
 

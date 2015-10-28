@@ -1,27 +1,22 @@
-﻿<RibbonWindow x:Class="ImageToolApp.MainWindow"
+﻿<controls:MetroWindow x:Class="ImageToolApp.MainWindow"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
               mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png"
-              Title="ImageTool" Height="500" Width="600" Loaded="RibbonWindow_Loaded">
-    <DockPanel LastChildFill="True">
-        <Ribbon DockPanel.Dock="Top" SelectedIndex="{Binding SelectedRibbonTabIndex, Mode=OneWayToSource}">
-            <Ribbon.HelpPaneContent>
-                <RibbonButton SmallImageSource="{StaticResource HelpImage}" Command="{Binding OpenHelpCommand}" />
-            </Ribbon.HelpPaneContent>
+              Title="ImageTool" Height="500" Width="600">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu x:Name="RibbonAppMenu" SmallImageSource="{StaticResource MenueImage}">
-                    <RibbonApplicationMenuItem Header="Einstellungen" ImageSource="{StaticResource PreferencesImage}"
-                                               Command="{Binding PreferencesCommand}" />
-                    <RibbonApplicationMenuItem Header="Beenden" ImageSource="{StaticResource CloseImage}"
-                                               Command="{Binding CloseAppCommand}" />
-                </RibbonApplicationMenu>
-            </Ribbon.ApplicationMenu>
-
-            <RibbonTab Header="Encrypt">
-                <RibbonGroup Header="Bild">
+        <TabControl Grid.Row="0" Grid.Column="0" SelectedIndex="{Binding SelectedRibbonTabIndex, Mode=OneWayToSource}">
+            <TabItem Header="Encrypt">
+                <!--<RibbonGroup Header="Bild">
                     <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
                                   SmallImageSource="{StaticResource OpenPictureImage}" />
                     <RibbonButton Label="Speichern" Command="{Binding SaveImageCommand}" IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
@@ -34,32 +29,43 @@
                 <RibbonGroup Header="Bild">
                     <RibbonButton Label="Veränderte Pixel" Command="{Binding ChangedPixelsCommand}" IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                                   SmallImageSource="{StaticResource PaintPixelsImage}"/>
-                </RibbonGroup>
-            </RibbonTab>
+                </RibbonGroup>-->
 
-            <RibbonTab Header="Decrypt">
-                <RibbonGroup Header="Bild">
+                <!--<Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition x:Name="SecColumn" Width="Auto" MaxWidth="200" />
+                </Grid.ColumnDefinitions>-->
+                <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <!--<ContentControl Content="{Binding CurrentElement}" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"/>-->
+            </TabItem>
+            <TabItem Header="Decrypt">
+                <!--<RibbonGroup Header="Bild">
                     <RibbonButton Label="Öffnen" Command="{Binding OpenImageCommand}"
                                   SmallImageSource="{StaticResource OpenPictureImage}" />
                 </RibbonGroup>
                 <RibbonGroup Header="Text">
                     <RibbonButton Label="Speichern" Command="{Binding SaveTxtCommand}" IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
                                   SmallImageSource="{StaticResource SaveAsImage}" />
-                </RibbonGroup>
-            </RibbonTab>
-        </Ribbon>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition x:Name="SecColumn" Width="Auto" MaxWidth="200" />
-            </Grid.ColumnDefinitions>
-            <ContentControl Grid.Column="0" Content="{Binding CurrentElement}" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch" />
-            <Expander Grid.Column="1" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Top"
-                      HorizontalAlignment="Right">
-                <Image Source="{Binding CurrentElement.DataContext.ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center"
-                           Width="{Binding ElementName=SecColumn, Path=MaxWidth}"/>
-            </Expander>
-        </Grid>
-    </DockPanel>
-</RibbonWindow>
+                </RibbonGroup>-->
+                <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <!--<ContentControl Content="{Binding CurrentElement}" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"/>-->
+            </TabItem>
+        </TabControl>
+
+        <!--<Button Grid.Row="0" Grid.Column="1" Command="{Binding OpenHelpCommand}" 
+                Style="{StaticResource ButtonWithoutBorderStyle}" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Image Source="{StaticResource HelpImage}" />
+        </Button>-->
+    </Grid>
+
+            <!--<Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu x:Name="RibbonAppMenu" SmallImageSource="{StaticResource MenueImage}">
+                    <RibbonApplicationMenuItem Header="Einstellungen" ImageSource="{StaticResource PreferencesImage}"
+                                               Command="{Binding PreferencesCommand}" />
+                    <RibbonApplicationMenuItem Header="Beenden" ImageSource="{StaticResource CloseImage}"
+                                               Command="{Binding CloseAppCommand}" />
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>-->
+</controls:MetroWindow>
