@@ -1,6 +1,7 @@
 MainWindow.xaml 
 	-  evtl. Splitbuttons für Sidebar
 	- Sidebar ein/ausklappen? oder Hover
+	- Icons neu holen!
 
 Preferences.xaml
 	- Define Standardpath, Image path must be selected
@@ -10,3 +11,6 @@ Testing
 
 BaseTabController.cs
 	- Tmp-Files löschen nach gebrauch?
+
+Enum
+	- Eventuell die Enums löschen, per Inface enumerieren - http://stackoverflow.com/questions/26733/getting-all-types-that-implement-an-interface

@@ -25,14 +25,21 @@
     <!--<converters:BitmapImageToBitmapConveter x:Key="BitmapToImageSourceConverter" />-->
 
     <!-- Styles -->
-    <ResourceDictionary x:Key="GlobalStyle">
-        <ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary Source="/PresentationFramework.Aero2;component/themes/aero2.normalcolor.xaml" />
-        </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
         <Setter Property="BorderThickness" Value="0" />
         <!--<Setter Property="Style" Value="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />-->
     </Style>
+    
+    <DataTemplate x:Key="WindowIconTemplate">
+        <Grid Width="{TemplateBinding Width}"
+                  Height="{TemplateBinding Height}"
+                  Margin="4"
+                  Background="{DynamicResource IdealForegroundColorBrush}"
+                  RenderOptions.EdgeMode="Aliased"
+                  RenderOptions.BitmapScalingMode="HighQuality">
+            <Grid.OpacityMask>
+                <ImageBrush ImageSource="../PictoCrypt.ico" />
+            </Grid.OpacityMask>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

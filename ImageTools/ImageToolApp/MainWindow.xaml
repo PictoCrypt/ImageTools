@@ -4,8 +4,9 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-              mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png"
-              Title="ImageTool" Height="500" Width="600">
+              mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png" ShowIconOnTitleBar="True" 
+              IconTemplate="{StaticResource WindowIconTemplate}"
+              Title="ImageTool" Height="500" Width="600" ShowTitleBar="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
@@ -55,8 +56,12 @@
                     </Button>
                 </StackPanel>
             </GroupBox>
+
+            <Button Command="{Binding OpenHelpCommand}" Style="{StaticResource ButtonWithoutBorderStyle}">
+                <Image Source="{StaticResource HelpImage}" Width="25" />
+            </Button>
         </StackPanel>
-        
+
         <TabControl Grid.Row="0" Grid.Column="1" SelectedIndex="{Binding SelectedRibbonTabIndex, Mode=OneWayToSource}">
             <TabItem Header="Encrypt">
                 <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
@@ -67,9 +72,4 @@
         </TabControl>
 
     </Grid>
-
-            <!--<Button Grid.Row="0" Grid.Column="1" Command="{Binding OpenHelpCommand}" 
-                    Style="{StaticResource ButtonWithoutBorderStyle}" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Image Source="{StaticResource HelpImage}" />
-            </Button>-->
 </controls:MetroWindow>
