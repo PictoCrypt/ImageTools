@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ImageToolApp.Models
+namespace ImageToolApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {

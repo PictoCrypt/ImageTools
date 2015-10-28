@@ -1,4 +1,5 @@
 ﻿using System;
+using FunctionLib;
 using FunctionLib.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,12 +10,12 @@ namespace CryptographicTest
     {
         public override string Encrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Encrypt(value, password);
+            return SymmetricAlgorithmBase.Encrypt(this, EncryptionMethod.AES, value, password);
         }
 
         public override string Decrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Decrypt(value, password);
+            return SymmetricAlgorithmBase.Decrypt(this, EncryptionMethod.AES, value, password);
         }
     }
 }

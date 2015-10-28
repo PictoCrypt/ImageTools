@@ -1,6 +1,5 @@
-﻿using System;
+﻿using FunctionLib;
 using FunctionLib.Cryptography;
-using FunctionLib.Cryptography.Twofish;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CryptographicTest
@@ -10,12 +9,12 @@ namespace CryptographicTest
     {
         public override string Encrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Encrypt<Twofish>(value, password);
+            return SymmetricAlgorithmBase.Encrypt(this, EncryptionMethod.Twofish, value, password);
         }
 
         public override string Decrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Decrypt<Twofish>(value, password);
+            return SymmetricAlgorithmBase.Decrypt(this, EncryptionMethod.Twofish, value, password);
         }
     }
 }

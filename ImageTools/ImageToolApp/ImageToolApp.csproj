@@ -64,9 +64,13 @@
   <ItemGroup>
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\PreferencesController.cs" />
-    <Compile Include="Models\GlobalViewModel.cs" />
-    <Compile Include="Models\ImagePresentationViewModel.cs" />
-    <Compile Include="Models\PreferencesViewModel.cs" />
+    <Compile Include="Models\PreferencesModel.cs" />
+    <Compile Include="PropertyChangedModel.cs" />
+    <Compile Include="ViewModels\BaseTabViewModel.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\PreferencesViewModel.cs" />
     <Compile Include="Views\ImagePresentation.xaml.cs">
       <DependentUpon>ImagePresentation.xaml</DependentUpon>
     </Compile>
@@ -84,10 +88,6 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\IsStringNullConverter.cs" />
-    <Compile Include="Models\BaseTabViewModel.cs" />
-    <Compile Include="Models\BaseViewModel.cs" />
-    <Compile Include="Models\DecryptViewModel.cs" />
-    <Compile Include="Models\MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UICommand.cs" />
     <Compile Include="Views\DecryptView.xaml.cs">
@@ -131,7 +131,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\EncryptViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

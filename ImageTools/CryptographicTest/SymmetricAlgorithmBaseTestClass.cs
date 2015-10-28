@@ -6,6 +6,8 @@ namespace CryptographicTest
 {
     public abstract class SymmetricAlgorithmBaseTestClass : ISymmetricAlgorithmBaseTestClass
     {
+        //TODO: Falschtests
+
         private Stopwatch mStopwatch;
         private TimeSpan mEncryptionTime;
         private TimeSpan mDecryptionTime;

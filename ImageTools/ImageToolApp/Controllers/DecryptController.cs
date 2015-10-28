@@ -8,19 +8,15 @@ using FunctionLib;
 using FunctionLib.Cryptography;
 using FunctionLib.Cryptography.Blowfish;
 using FunctionLib.Cryptography.Twofish;
-using ImageToolApp.Models;
+using FunctionLib.Steganography;
+using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public class DecryptController : BaseTabController<DecryptView, DecryptViewModel>
+    public class DecryptController : BaseTabController<DecryptView, BaseTabViewModel>
     {
-        protected override DecryptView CreateView()
-        {
-            return new DecryptView();
-        }
-
         protected override void RegisterCommands()
         {
             ViewModel.TabActionCommand = UICommand.Regular(Decrypt);
@@ -43,44 +39,16 @@ namespace ImageToolApp.Controllers
         {
             Application.Current.MainWindow.Cursor = Cursors.Wait;
             string result;
-            using (var bitmap = new Bitmap(ViewModel.GlobalViewModel.ImagePath))
+            using (var bitmap = new Bitmap(ViewModel.ImagePath))
             {
-                result = StegaCrypt.DecryptText(bitmap);
+                result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap);
             }
 
             if (ViewModel.EncryptedCheck)
             {
-                switch (ViewModel.GlobalViewModel.SelectedEncryptionMethod)
-                {
-                    case EncryptionMethod.AES:
-                        result = SymmetricAlgorithmBase.Decrypt(result, ViewModel.Password);
-                        break;
-
-                    case EncryptionMethod.DES:
-                        result = SymmetricAlgorithmBase.Decrypt<DESCryptoServiceProvider>(result, ViewModel.Password);
-                        break;
-                    case EncryptionMethod.RC2:
-                        result = SymmetricAlgorithmBase.Decrypt<RC2CryptoServiceProvider>(result, ViewModel.Password);
-                        break;
-                    case EncryptionMethod.Rijndael:
-                        result = SymmetricAlgorithmBase.Decrypt<RijndaelManaged>(result, ViewModel.Password);
-                        break;
-                    case EncryptionMethod.TripleDES:
-                        result = SymmetricAlgorithmBase.Decrypt<TripleDESCryptoServiceProvider>(result, ViewModel.Password);
-                        break;
-
-                    case EncryptionMethod.Twofish:
-                        result = SymmetricAlgorithmBase.Decrypt<Twofish>(result, ViewModel.Password);
-                        break;
-
-                    case EncryptionMethod.Blowfish:
-                        result = SymmetricAlgorithmBase.Encrypt<BlowfishAlgorithm>(result, ViewModel.Password);
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result, ViewModel.Password);
             }
+
             ViewModel.Text = result;
             Application.Current.MainWindow.Cursor = Cursors.Arrow;
         }

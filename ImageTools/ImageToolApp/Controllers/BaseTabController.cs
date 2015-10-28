@@ -1,39 +1,44 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows.Controls;
-using FunctionLib;
 using FunctionLib.Steganography;
 using ImageToolApp.Models;
+using ImageToolApp.ViewModels;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
     public abstract class BaseTabController<TView, TViewModel> : IBaseTabController
-        where TView : UserControl
-        where TViewModel : BaseTabViewModel, new()
+        where TView : UserControl, new() where TViewModel : BaseTabViewModel, new()
     {
+        // TODO: Tmp-Files löschen nach gebrauch?
+
+
         protected readonly TViewModel ViewModel;
 
         protected BaseTabController()
         {
-            InitializeCryptings();
             View = CreateView();
             ViewModel = new TViewModel();
             View.DataContext = ViewModel;
-            RegisterCommands();
+            InitializeController();
         }
 
-        //public Type SymmetricAlgorithmBase { get; private set; }
-
-        public StegaCrypt StegaCrypt { get; set; }
+        private void InitializeController()
+        {
+            RegisterCommands();
+        }
 
         public TView View { get; }
 
         public void OpenImage()
         {
-            var dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                InitialDirectory = ViewModel.PreferencesModel.StandardPath
+            };
+
             dialog.ShowDialog();
-            dialog.Multiselect = false;
             if (string.IsNullOrEmpty(dialog.FileName))
             {
                 return;
@@ -41,23 +46,21 @@ namespace ImageToolApp.Controllers
 
             var tmp = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(dialog.FileName));
             File.Copy(dialog.FileName, tmp);
-            ViewModel.GlobalViewModel.ImagePath = tmp;
+            ViewModel.ImagePath = tmp;
         }
 
-        protected abstract TView CreateView();
+        private TView CreateView()
+        {
+            return new TView();
+        }
 
         protected abstract void RegisterCommands();
-        
-        public void InitializeCryptings()
+
+        public void PreferencesSaved()
         {
-            switch (GlobalViewModel.Instance.SelectedSteganographicMethod)
-            {
-                case SteganographicMethod.LSB:
-                    StegaCrypt = new LeastSignificantBit();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            ViewModel.Password = ViewModel.PreferencesModel.Password;
+            ViewModel.SelectedEncryptionMethod = ViewModel.PreferencesModel.SelectedEncryptionMethod;
+            ViewModel.SelectedSteganographicMethod = ViewModel.PreferencesModel.SelectedSteganographicMethod;
         }
     }
 }
