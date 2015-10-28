@@ -43,10 +43,9 @@
             <Button HorizontalAlignment="Right" Content="Encrypt" Command="{Binding TabActionCommand}" Margin="3" IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}"/>
         </StackPanel>
 
-        <Expander Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Stretch"
-                      HorizontalAlignment="Right">
-            <Image Source="{Binding CurrentElement.DataContext.ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center"
-                           Width="{Binding ElementName=SecColumn, Path=MaxWidth}"/>
+        <Expander Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left" Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
+                  IsExpanded="False" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+            <Image Source="{Binding ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center" />
         </Expander>
     </Grid>
 </UserControl>

@@ -45,9 +45,8 @@
         </StackPanel>
 
         <Expander Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Stretch"
-                      HorizontalAlignment="Right">
-            <Image Source="{Binding CurrentElement.DataContext.ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center"
-                           Width="{Binding ElementName=SecColumn, Path=MaxWidth}"/>
+                  Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}" HorizontalAlignment="Right">
+            <Image Source="{Binding ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center" />
         </Expander>
     </Grid>
 </UserControl>

@@ -24,6 +24,7 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converters:FrameworkElementEncryptToVisibilityConverter x:Key="FrameworkElementEncryptToVisibilityConverter" />
     <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
+    <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
 
     <!-- Styles -->
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
