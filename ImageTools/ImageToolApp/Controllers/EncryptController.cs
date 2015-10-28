@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
@@ -69,38 +70,11 @@ namespace ImageToolApp.Controllers
                 var text = ViewModel.Text;
                 if (ViewModel.EncryptedCheck)
                 {
-                    switch (ViewModel.SelectedEncryptionMethod)
-                    {
-                        case EncryptionMethod.AES:
-                            text = SymmetricAlgorithmBase.Encrypt(text, ViewModel.Password);
-                            break;
-
-                        case EncryptionMethod.DES:
-                            text = SymmetricAlgorithmBase.Encrypt<DESCryptoServiceProvider>(text, ViewModel.Password);
-                            break;
-                        case EncryptionMethod.RC2:
-                            text = SymmetricAlgorithmBase.Encrypt<RC2CryptoServiceProvider>(text, ViewModel.Password);
-                            break;
-                        case EncryptionMethod.Rijndael:
-                            text = SymmetricAlgorithmBase.Encrypt<RijndaelManaged>(text, ViewModel.Password);
-                            break;
-                        case EncryptionMethod.TripleDES:
-                            text = SymmetricAlgorithmBase.Encrypt<TripleDESCryptoServiceProvider>(text, ViewModel.Password);
-                            break;
-
-                        case EncryptionMethod.Twofish:
-                            text = SymmetricAlgorithmBase.Encrypt<Twofish>(text, ViewModel.Password);
-                            break;
-
-                        case EncryptionMethod.Blowfish:
-                            text = SymmetricAlgorithmBase.Encrypt<BlowfishAlgorithm>(text, ViewModel.Password);
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+                    text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text, ViewModel.Password);
                 }
-                var result = SteganographicAlgorithmBase.Encrypt(bitmap, text);
+
+
+                var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, text);
                 if (result != null)
                 {
                     var path = Path.GetTempFileName().Replace("tmp", "png");

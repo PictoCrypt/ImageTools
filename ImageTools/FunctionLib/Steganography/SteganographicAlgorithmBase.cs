@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
+using FunctionLib.Cryptography;
 
 namespace FunctionLib.Steganography
 {
@@ -7,9 +9,30 @@ namespace FunctionLib.Steganography
     {
         private static SteganographicAlgorithm mLastAccessedAlgorithm;
 
-        public static Bitmap Encrypt(Bitmap src, string value)
+        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, string value)
         {
-            return Encrypt<LeastSignificantBit>(src, value);
+            var encryptionType = MethodNameToType(method);
+            var baseType = typeof(SteganographicAlgorithmBase);
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
+            if (extractedMethod != null)
+            {
+                return (Bitmap) extractedMethod.MakeGenericMethod(encryptionType)
+                    .Invoke(obj, new object[] { src, value });
+            }
+            throw new ArgumentException(baseType.ToString());
+        }
+
+        public static string Decrypt(object obj, SteganographicMethod method, Bitmap src)
+        {
+            var encryptionType = MethodNameToType(method);
+            var baseType = typeof(SteganographicAlgorithmBase);
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
+            if (extractedMethod != null)
+            {
+                return extractedMethod.MakeGenericMethod(encryptionType)
+                    .Invoke(obj, new object[] { src }).ToString();
+            }
+            throw new ArgumentException(baseType.ToString());
         }
 
         public static Bitmap Encrypt<T>(Bitmap src, string value) 
@@ -20,10 +43,6 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        public static string Decrypt(Bitmap src)
-        {
-            return Decrypt<LeastSignificantBit>(src);
-        }
 
         public static string Decrypt<T>(Bitmap src)
             where T : SteganographicAlgorithm, new()
@@ -47,6 +66,16 @@ namespace FunctionLib.Steganography
                 result = mLastAccessedAlgorithm.ChangeColor(srcPath, color);
             }
             return result;
+        }
+
+        private static Type MethodNameToType(SteganographicMethod method)
+        {
+            switch (method)
+            {
+                case SteganographicMethod.LSB:
+                    return typeof (LeastSignificantBit);
+            }
+            throw new ArgumentOutOfRangeException(nameof(method), method, null);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace FunctionLib
 {
-    //TODO: Als Klasse mit Methoden!
     public enum EncryptionMethod
     {
         AES = 0,

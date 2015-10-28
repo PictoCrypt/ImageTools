@@ -41,42 +41,14 @@ namespace ImageToolApp.Controllers
             string result;
             using (var bitmap = new Bitmap(ViewModel.ImagePath))
             {
-                result = SteganographicAlgorithmBase.Decrypt(bitmap);
+                result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap);
             }
 
             if (ViewModel.EncryptedCheck)
             {
-                switch (ViewModel.SelectedEncryptionMethod)
-                {
-                    case EncryptionMethod.AES:
-                        result = SymmetricAlgorithmBase.Decrypt(result, ViewModel.Password);
-                        break;
-
-                    case EncryptionMethod.DES:
-                        result = SymmetricAlgorithmBase.Decrypt<DESCryptoServiceProvider>(result, ViewModel.Password);
-                        break;
-                    case EncryptionMethod.RC2:
-                        result = SymmetricAlgorithmBase.Decrypt<RC2CryptoServiceProvider>(result, ViewModel.Password);
-                        break;
-                    case EncryptionMethod.Rijndael:
-                        result = SymmetricAlgorithmBase.Decrypt<RijndaelManaged>(result, ViewModel.Password);
-                        break;
-                    case EncryptionMethod.TripleDES:
-                        result = SymmetricAlgorithmBase.Decrypt<TripleDESCryptoServiceProvider>(result, ViewModel.Password);
-                        break;
-
-                    case EncryptionMethod.Twofish:
-                        result = SymmetricAlgorithmBase.Decrypt<Twofish>(result, ViewModel.Password);
-                        break;
-
-                    case EncryptionMethod.Blowfish:
-                        result = SymmetricAlgorithmBase.Encrypt<BlowfishAlgorithm>(result, ViewModel.Password);
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result, ViewModel.Password);
             }
+
             ViewModel.Text = result;
             Application.Current.MainWindow.Cursor = Cursors.Arrow;
         }

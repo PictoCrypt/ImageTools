@@ -4,8 +4,8 @@ namespace CryptographicTest
 {
     public interface ISymmetricAlgorithmBaseTestClass
     {
-        [TestMethod]
         void NormalEncryptionTest();
+        void LongTextEncryptionTest();
         string Encrypt(string value, string password);
         string Decrypt(string value, string password);
     }
