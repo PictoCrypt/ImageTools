@@ -42,6 +42,9 @@
     <ApplicationIcon>PictoCrypt.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MaterialDesignColors">
+      <HintPath>..\Resources\MaterialDesignThemes\MaterialDesignColors.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignThemes.Wpf">
       <HintPath>..\Resources\MaterialDesignThemes\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
