@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Controls;
 using ImageToolApp.ViewModels;
+using ImageToolApp.Views;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers

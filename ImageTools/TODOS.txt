@@ -4,6 +4,12 @@ MainWindow.xaml
 	- Icons neu holen!
 	- Buttons wieder funktionsfähig machen
 
+UserControl
+	- Basis rausziehen?
+	- Evtl. UC Namen, Controller reingeben
+
+	- Resize Grid nach Expander
+
 Preferences.xaml
 	- Define Standardpath, Image path must be selected
 

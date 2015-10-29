@@ -14,6 +14,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="Auto" MaxWidth="200" />
         </Grid.ColumnDefinitions>
 
@@ -44,7 +45,9 @@
             <Button HorizontalAlignment="Right" Content="Decrypt" Command="{Binding TabActionCommand}" Margin="3" IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}"/>
         </StackPanel>
 
-        <Expander Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Stretch"
+        <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0" HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch" Visibility="{Binding ElementName=ImageExpander, Path=IsExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <Expander x:Name="ImageExpander" Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left" IsExpanded="False" VerticalAlignment="Stretch"
                   Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}" HorizontalAlignment="Right">
             <Image Source="{Binding ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center" />
         </Expander>
