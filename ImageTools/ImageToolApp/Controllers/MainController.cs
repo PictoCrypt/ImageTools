@@ -1,7 +1,5 @@
 ﻿using System.IO;
-using System.Windows;
 using FunctionLib.Helper;
-using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 
@@ -11,14 +9,14 @@ namespace ImageToolApp.Controllers
     {
         private readonly DecryptController mDecryptController;
         private readonly EncryptController mEncryptController;
-        private readonly Window mView;
+        private readonly MainWindow mView;
         private readonly MainViewModel mViewModel;
 
-        public MainController(Window mainWindow)
+        public MainController(MainWindow mainWindow)
         {
             mView = mainWindow;
-            mEncryptController = new EncryptController();
-            mDecryptController = new DecryptController();
+            mEncryptController = new EncryptController("Encrypt", false);
+            mDecryptController = new DecryptController("Decrypt", true);
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
@@ -29,8 +27,8 @@ namespace ImageToolApp.Controllers
         {
             get
             {
-                var view = mViewModel.CurrentElement as EncryptView;
-                if (view != null)
+                var view = mViewModel.CurrentElement as BaseTabView;
+                if (view != null && view.ViewName == "Encrypt")
                 {
                     return mEncryptController;
                 }
@@ -41,7 +39,7 @@ namespace ImageToolApp.Controllers
         private void SetupCommands()
         {
             mViewModel.CloseAppCommand = UICommand.Regular(CloseApp);
-            mViewModel.PreferencesCommand = UICommand.Regular(OpenPreferencesWindow);
+            mViewModel.SettingsCommand = UICommand.Regular(OpenSettingsWindow);
             mViewModel.OpenImageCommand = UICommand.Regular(OpenImage);
             mViewModel.SaveImageCommand = UICommand.Regular(SaveImage);
             mViewModel.OpenTxtCommand = UICommand.Regular(OpenTxt);
@@ -92,18 +90,18 @@ namespace ImageToolApp.Controllers
             }
         }
 
-        private void OpenPreferencesWindow()
+        private void OpenSettingsWindow()
         {
             // TODO
             /*  Open new Window where you can choose which Encryption-Algorithm you want to use.
             *   Define a standard path
             *   Define a standard Password
             */
-            var preferncesController = new PreferencesController(mView);
-            if (preferncesController.OpenDialog())
+            var settingsController = new SettingsController(mView);
+            if (settingsController.OpenDialog())
             {
-                mDecryptController.PreferencesSaved();
-                mEncryptController.PreferencesSaved();
+                mDecryptController.SettingsSaved();
+                mEncryptController.SettingsSaved();
             }
         }
 

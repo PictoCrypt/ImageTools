@@ -9,11 +9,11 @@ using FunctionLib.Helper;
 
 namespace ImageToolApp.Models
 {
-    public class PreferencesModel
+    public class SettingsModel
     {
-        private static PreferencesModel mInstance;
+        private static SettingsModel mInstance;
 
-        public PreferencesModel(ObservableCollection<EncryptionMethod> encryptionMethods = null, ObservableCollection<SteganographicMethod> steganographicMethods = null)
+        public SettingsModel(ObservableCollection<EncryptionMethod> encryptionMethods = null, ObservableCollection<SteganographicMethod> steganographicMethods = null)
         {
             LoadConfig();
             EncryptionMethods = encryptionMethods ?? new ObservableCollection<EncryptionMethod>(Enum.GetValues(typeof(EncryptionMethod))
@@ -26,13 +26,13 @@ namespace ImageToolApp.Models
 
         public ObservableCollection<EncryptionMethod> EncryptionMethods { get; private set; }
 
-        public static PreferencesModel Instance
+        public static SettingsModel Instance
         {
             get
             {
                 if (mInstance == null)
                 {
-                    mInstance = new PreferencesModel();
+                    mInstance = new SettingsModel();
                 }
                 return mInstance;
             }
@@ -76,7 +76,7 @@ namespace ImageToolApp.Models
             }
         }
 
-        public void SaveToConfig(string password, string encryptionMethod, string steganographicMethod)
+        public void SaveToConfig(string password, string encryptionMethod, string steganographicMethod, string standardPath)
         {
             var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var configFile = Path.Combine(appPath, "App.config");
@@ -86,8 +86,9 @@ namespace ImageToolApp.Models
             config.AppSettings.Settings["Password"].Value = password;
             config.AppSettings.Settings["SelectedEncryptionMethod"].Value = encryptionMethod;
             config.AppSettings.Settings["SelectedSteganographicMethod"].Value = steganographicMethod;
+            config.AppSettings.Settings["StandardPath"].Value = standardPath;
             config.Save();
-            mInstance = new PreferencesModel(EncryptionMethods, SteganographicMethods);
+            mInstance = new SettingsModel(EncryptionMethods, SteganographicMethods);
         }
     }
 }

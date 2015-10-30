@@ -42,12 +42,26 @@
     <ApplicationIcon>PictoCrypt.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\Resources\MashApps.Metro\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors">
+      <HintPath>..\Resources\MaterialDesignThemes\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf">
+      <HintPath>..\Resources\MaterialDesignThemes\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\MashApps.Metro\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -63,19 +77,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\IBaseTabController.cs" />
-    <Compile Include="Controllers\PreferencesController.cs" />
-    <Compile Include="Models\PreferencesModel.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
+    <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="PropertyChangedModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\PreferencesViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\BaseTabView.xaml.cs">
+      <DependentUpon>BaseTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImagePresentation.xaml.cs">
       <DependentUpon>ImagePresentation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Preferences.xaml.cs">
-      <DependentUpon>Preferences.xaml</DependentUpon>
+    <Compile Include="Views\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfHelpers\PasswordHelper.cs" />
     <Page Include="App.xaml">
@@ -90,12 +110,6 @@
     <Compile Include="Converters\IsStringNullConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UICommand.cs" />
-    <Compile Include="Views\DecryptView.xaml.cs">
-      <DependentUpon>DecryptView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EncryptView.xaml.cs">
-      <DependentUpon>EncryptView.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,11 +127,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecryptView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EncryptView.xaml">
+    <Page Include="Views\BaseTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,7 +135,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Preferences.xaml">
+    <Page Include="Views\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -140,6 +150,9 @@
     <None Include="App.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\Help.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FunctionLib\FunctionLib.csproj">
@@ -148,24 +161,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\Close.png" />
-    <Resource Include="Resources\Images\Document.png" />
     <Resource Include="Resources\Images\Help.png" />
-    <Resource Include="Resources\Images\Menue.png" />
-    <Resource Include="Resources\Images\PaintPixels.png" />
-    <Resource Include="Resources\Images\Picture.png" />
-    <Resource Include="Resources\Images\Picture_128.png" />
-    <Resource Include="Resources\Images\Preferences.png" />
-    <Resource Include="Resources\Images\SaveAs.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Open.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\BrokenImage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\PictoCrypt.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Ico\PictoCrypt.ico" />
@@ -173,10 +169,28 @@
   <ItemGroup>
     <Resource Include="PictoCrypt.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\Changed.png" />
+    <Resource Include="Resources\Images\CloseApp.png" />
+    <Resource Include="Resources\Images\Image.png" />
+    <Resource Include="Resources\Images\Save.png" />
+    <Resource Include="Resources\Images\Settings.png" />
+    <Resource Include="Resources\Images\Text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\PictoCrypt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Lock.png" />
+    <Resource Include="Resources\Images\Unlock.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)Resources\Help.pdf" "$(TargetDir)" /S /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

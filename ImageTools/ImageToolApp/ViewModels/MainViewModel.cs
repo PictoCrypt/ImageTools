@@ -4,22 +4,28 @@ namespace ImageToolApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private readonly FrameworkElement mDecryptView;
-        private readonly FrameworkElement mEncryptView;
+        private UICommand mChangedPixelsCommand;
         private UICommand mCloseAppCommand;
         private FrameworkElement mCurrentElement;
+        private FrameworkElement mDecryptView;
+        private FrameworkElement mEncryptView;
+        private UICommand mOpenHelpCommand;
         private UICommand mOpenImageCommand;
         private UICommand mOpenTxtCommand;
-        private UICommand mPreferencesCommand;
+        private UICommand mSettingsCommand;
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
-        private UICommand mChangedPixelsCommand;
-        private UICommand mOpenHelpCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
-            mEncryptView = encryptView;
-            mDecryptView = decryptView;
+            CurrentElement = encryptView;
+            EncryptView = encryptView;
+            DecryptView = decryptView;
+        }
+
+        public bool EncryptSelected
+        {
+            set { CurrentElement = value ? EncryptView : DecryptView; }
         }
 
         public UICommand OpenImageCommand
@@ -78,17 +84,17 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public UICommand PreferencesCommand
+        public UICommand SettingsCommand
         {
-            get { return mPreferencesCommand; }
+            get { return mSettingsCommand; }
             set
             {
-                if (value.Equals(mPreferencesCommand))
+                if (value.Equals(mSettingsCommand))
                 {
                     return;
                 }
-                mPreferencesCommand = value;
-                OnPropertyChanged("PreferencesCommand");
+                mSettingsCommand = value;
+                OnPropertyChanged("SettingsCommand");
             }
         }
 
@@ -120,19 +126,31 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public int SelectedRibbonTabIndex
+        public FrameworkElement EncryptView
         {
+            get { return mEncryptView; }
             set
             {
-                switch (value)
+                if (value.Equals(mEncryptView))
                 {
-                    case 0:
-                        CurrentElement = mEncryptView;
-                        break;
-                    case 1:
-                        CurrentElement = mDecryptView;
-                        break;
+                    return;
                 }
+                mEncryptView = value;
+                OnPropertyChanged("EncryptView");
+            }
+        }
+
+        public FrameworkElement DecryptView
+        {
+            get { return mDecryptView; }
+            set
+            {
+                if (value.Equals(mDecryptView))
+                {
+                    return;
+                }
+                mDecryptView = value;
+                OnPropertyChanged("DecryptView");
             }
         }
 

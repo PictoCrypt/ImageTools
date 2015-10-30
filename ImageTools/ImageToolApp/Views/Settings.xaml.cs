@@ -3,11 +3,11 @@
 namespace ImageToolApp.Views
 {
     /// <summary>
-    ///     Interaction logic for Preferences.xaml
+    ///     Interaction logic for Settings.xaml
     /// </summary>
-    public partial class Preferences : Window
+    public partial class Settings : Window
     {
-        public Preferences()
+        public Settings()
         {
             InitializeComponent();
         }

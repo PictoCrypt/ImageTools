@@ -19,7 +19,7 @@ namespace ImageToolApp
             // Global Exception Handler
             Current.DispatcherUnhandledException += UnhandeledExceptionTrapper;
             application.MainWindow = new MainWindow();
-            var controller = new MainController(application.MainWindow);
+            var controller = new MainController((MainWindow) application.MainWindow);
 
             application.Run();
         }

@@ -4,9 +4,9 @@ namespace ImageToolApp.ViewModels
 {
     public abstract class BaseViewModel : PropertyChangedModel
     {
-        public PreferencesModel PreferencesModel
+        public SettingsModel SettingsModel
         {
-            get { return PreferencesModel.Instance; }
+            get { return SettingsModel.Instance; }
         }
     }
 }

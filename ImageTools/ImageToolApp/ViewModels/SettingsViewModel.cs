@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using FunctionLib;
+﻿using FunctionLib;
 
 namespace ImageToolApp.ViewModels
 {
-    public class PreferencesViewModel : BaseViewModel
+    public class SettingsViewModel : BaseViewModel
     {
         private UICommand mCancelCommand;
         private string mPassword;
         private UICommand mSaveCommand;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
+        private UICommand mChoosePathCommand;
+        private string mStandardPath;
 
-        public PreferencesViewModel()
+        public SettingsViewModel()
         {
-            Password = PreferencesModel.Password;
-            SelectedEncryptionMethod = PreferencesModel.SelectedEncryptionMethod;
-            SelectedSteganographicMethod = PreferencesModel.SelectedSteganographicMethod;
+            Password = SettingsModel.Password;
+            StandardPath = SettingsModel.StandardPath;
+            SelectedEncryptionMethod = SettingsModel.SelectedEncryptionMethod;
+            SelectedSteganographicMethod = SettingsModel.SelectedSteganographicMethod;
         }
 
         public string Password
@@ -31,6 +31,17 @@ namespace ImageToolApp.ViewModels
                 }
                 mPassword = value;
                 OnPropertyChanged("Password");
+            }
+        }
+
+        public string StandardPath
+        {
+            get { return mStandardPath; }
+            set
+            {
+                if (value == mStandardPath) return;
+                mStandardPath = value;
+                OnPropertyChanged("StandardPath");
             }
         }
 
@@ -85,6 +96,17 @@ namespace ImageToolApp.ViewModels
                 }
                 mCancelCommand = value;
                 OnPropertyChanged("CancelCommand");
+            }
+        }
+
+        public UICommand ChoosePathCommand
+        {
+            get { return mChoosePathCommand; }
+            set
+            {
+                if (Equals(value, mChoosePathCommand)) return;
+                mChoosePathCommand = value;
+                OnPropertyChanged("ChoosePathCommand");
             }
         }
     }
