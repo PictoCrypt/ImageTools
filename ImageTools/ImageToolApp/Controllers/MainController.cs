@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -51,7 +52,7 @@ namespace ImageToolApp.Controllers
         private static void OpenHelp()
         {
             var executionPath = MethodHelper.ExecutiongPath;
-            System.Diagnostics.Process.Start(Path.Combine(executionPath, "Help.pdf"));
+            Process.Start(Path.Combine(executionPath, "Help.pdf"));
         }
 
         private void ChangedPixels()

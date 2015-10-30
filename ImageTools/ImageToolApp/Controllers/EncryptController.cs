@@ -68,11 +68,13 @@ namespace ImageToolApp.Controllers
                 var text = ViewModel.Text;
                 if (ViewModel.EncryptedCheck)
                 {
-                    text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text, ViewModel.Password);
+                    text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text,
+                        ViewModel.Password);
                 }
 
 
-                var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, text);
+                var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
+                    text);
                 if (result != null)
                 {
                     var path = Path.GetTempFileName().Replace("tmp", "png");

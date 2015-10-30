@@ -27,18 +27,19 @@
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
 
     <!-- Styles -->
-    <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+    <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button"
+           BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
         <Setter Property="BorderThickness" Value="0" />
         <!--<Setter Property="Style" Value="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />-->
     </Style>
 
     <DataTemplate x:Key="WindowIconTemplate">
         <Grid Width="{TemplateBinding Width}"
-                  Height="{TemplateBinding Height}"
-                  Margin="4"
-                  Background="{DynamicResource IdealForegroundColorBrush}"
-                  RenderOptions.EdgeMode="Aliased"
-                  RenderOptions.BitmapScalingMode="HighQuality">
+              Height="{TemplateBinding Height}"
+              Margin="4"
+              Background="{DynamicResource IdealForegroundColorBrush}"
+              RenderOptions.EdgeMode="Aliased"
+              RenderOptions.BitmapScalingMode="HighQuality">
             <Grid.OpacityMask>
                 <ImageBrush ImageSource="../PictoCrypt.ico" />
             </Grid.OpacityMask>
@@ -47,16 +48,24 @@
 
     <Style x:Key="AutoDisableAndOutGrayImage" TargetType="Image">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="True">
+            <DataTrigger
+                Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}"
+                Value="True">
                 <Setter Property="IsEnabled" Value="True" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="False">
+            <DataTrigger
+                Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}"
+                Value="False">
                 <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="Visible">
+            <DataTrigger
+                Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}"
+                Value="Visible">
                 <Setter Property="Visibility" Value="Visible" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="Collapsed">
+            <DataTrigger
+                Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}"
+                Value="Collapsed">
                 <Setter Property="Visibility" Value="Collapsed" />
             </DataTrigger>
             <Trigger Property="IsEnabled" Value="False">
@@ -67,17 +76,22 @@
 
     <Style x:Key="TabItemImageStyle" TargetType="Image">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}" Value="True">
+            <DataTrigger
+                Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}"
+                Value="True">
                 <Setter Property="Opacity" Value="1" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}" Value="False">
+            <DataTrigger
+                Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}"
+                Value="False">
                 <Setter Property="Opacity" Value="0.5" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="TextBoxIsReadOnlyStyle" TargetType="TextBox">
-        <Setter Property="IsReadOnly" Value="{Binding TextBoxReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+        <Setter Property="IsReadOnly"
+                Value="{Binding TextBoxReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsReadOnly}" Value="True">
                 <Setter Property="Background" Value="DarkGray" />

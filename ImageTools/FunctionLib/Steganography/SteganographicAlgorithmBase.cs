@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using FunctionLib.Cryptography;
 
 namespace FunctionLib.Steganography
 {
@@ -12,12 +11,12 @@ namespace FunctionLib.Steganography
         public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, string value)
         {
             var encryptionType = MethodNameToType(method);
-            var baseType = typeof(SteganographicAlgorithmBase);
+            var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
             if (extractedMethod != null)
             {
                 return (Bitmap) extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new object[] { src, value });
+                    .Invoke(obj, new object[] {src, value});
             }
             throw new ArgumentException(baseType.ToString());
         }
@@ -25,17 +24,17 @@ namespace FunctionLib.Steganography
         public static string Decrypt(object obj, SteganographicMethod method, Bitmap src)
         {
             var encryptionType = MethodNameToType(method);
-            var baseType = typeof(SteganographicAlgorithmBase);
+            var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new object[] { src }).ToString();
+                    .Invoke(obj, new object[] {src}).ToString();
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt<T>(Bitmap src, string value) 
+        public static Bitmap Encrypt<T>(Bitmap src, string value)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();

@@ -59,7 +59,7 @@ namespace ImageToolApp.Controllers
             var result = mView.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                SettingsModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(), 
+                SettingsModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(),
                     mViewModel.SelectedSteganographicMethod.ToString(), mViewModel.StandardPath);
                 return true;
             }

@@ -13,18 +13,22 @@ namespace ImageToolApp.Models
     {
         private static SettingsModel mInstance;
 
-        public SettingsModel(ObservableCollection<EncryptionMethod> encryptionMethods = null, ObservableCollection<SteganographicMethod> steganographicMethods = null)
+        public SettingsModel(ObservableCollection<EncryptionMethod> encryptionMethods = null,
+            ObservableCollection<SteganographicMethod> steganographicMethods = null)
         {
             LoadConfig();
-            EncryptionMethods = encryptionMethods ?? new ObservableCollection<EncryptionMethod>(Enum.GetValues(typeof(EncryptionMethod))
-                    .Cast<EncryptionMethod>());
-            SteganographicMethods = steganographicMethods ?? new ObservableCollection<SteganographicMethod>(Enum.GetValues(typeof(SteganographicMethod))
-                    .Cast<SteganographicMethod>());
+            EncryptionMethods = encryptionMethods ??
+                                new ObservableCollection<EncryptionMethod>(Enum.GetValues(typeof (EncryptionMethod))
+                                    .Cast<EncryptionMethod>());
+            SteganographicMethods = steganographicMethods ??
+                                    new ObservableCollection<SteganographicMethod>(
+                                        Enum.GetValues(typeof (SteganographicMethod))
+                                            .Cast<SteganographicMethod>());
         }
 
-        public ObservableCollection<SteganographicMethod> SteganographicMethods { get; private set; }
+        public ObservableCollection<SteganographicMethod> SteganographicMethods { get; }
 
-        public ObservableCollection<EncryptionMethod> EncryptionMethods { get; private set; }
+        public ObservableCollection<EncryptionMethod> EncryptionMethods { get; }
 
         public static SettingsModel Instance
         {
@@ -48,7 +52,10 @@ namespace ImageToolApp.Models
 
         public void LoadConfig()
         {
-            var configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = Path.Combine(MethodHelper.ExecutiongPath, "App.config") };
+            var configFileMap = new ExeConfigurationFileMap
+            {
+                ExeConfigFilename = Path.Combine(MethodHelper.ExecutiongPath, "App.config")
+            };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
 
             foreach (var key in config.AppSettings.Settings.AllKeys)
@@ -60,7 +67,9 @@ namespace ImageToolApp.Models
                         Password = value ?? string.Empty;
                         break;
                     case "StandardPath":
-                        StandardPath = !string.IsNullOrEmpty(value) ? value : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                        StandardPath = !string.IsNullOrEmpty(value)
+                            ? value
+                            : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                         break;
                     case "SelectedEncryptionMethod":
                         EncryptionMethod encryptMethod;
@@ -76,11 +85,12 @@ namespace ImageToolApp.Models
             }
         }
 
-        public void SaveToConfig(string password, string encryptionMethod, string steganographicMethod, string standardPath)
+        public void SaveToConfig(string password, string encryptionMethod, string steganographicMethod,
+            string standardPath)
         {
             var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var configFile = Path.Combine(appPath, "App.config");
-            var configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFile };
+            var configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
 
             config.AppSettings.Settings["Password"].Value = password;

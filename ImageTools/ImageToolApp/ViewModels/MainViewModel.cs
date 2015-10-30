@@ -12,9 +12,9 @@ namespace ImageToolApp.ViewModels
         private UICommand mOpenHelpCommand;
         private UICommand mOpenImageCommand;
         private UICommand mOpenTxtCommand;
-        private UICommand mSettingsCommand;
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
+        private UICommand mSettingsCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {

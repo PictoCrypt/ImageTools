@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using FunctionLib;
+﻿using FunctionLib;
 using FunctionLib.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

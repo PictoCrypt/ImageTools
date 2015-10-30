@@ -148,7 +148,5 @@ namespace ImageToolApp.ViewModels
                 OnPropertyChanged("ResultImagePath");
             }
         }
-
-
     }
 }

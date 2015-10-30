@@ -30,7 +30,7 @@ namespace FunctionLib.Helper
 
         public static byte[] StreamToByteArray(Stream s)
         {
-            var rawLength = new byte[sizeof(int)];
+            var rawLength = new byte[sizeof (int)];
             if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length)
             {
                 throw new SystemException("Stream did not contain properly formatted byte array");

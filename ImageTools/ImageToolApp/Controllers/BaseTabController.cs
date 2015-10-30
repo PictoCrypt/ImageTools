@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -21,11 +20,6 @@ namespace ImageToolApp.Controllers
             InitializeController();
         }
 
-        private void InitializeController()
-        {
-            RegisterCommands();
-        }
-
         public BaseTabView View { get; }
 
         public void OpenImage()
@@ -45,6 +39,11 @@ namespace ImageToolApp.Controllers
             var tmp = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(dialog.FileName));
             File.Copy(dialog.FileName, tmp);
             ViewModel.ImagePath = tmp;
+        }
+
+        private void InitializeController()
+        {
+            RegisterCommands();
         }
 
         private BaseTabView CreateView(string buttonName, bool textBlockReadOnly)

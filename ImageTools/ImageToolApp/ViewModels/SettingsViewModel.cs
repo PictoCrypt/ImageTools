@@ -5,11 +5,11 @@ namespace ImageToolApp.ViewModels
     public class SettingsViewModel : BaseViewModel
     {
         private UICommand mCancelCommand;
+        private UICommand mChoosePathCommand;
         private string mPassword;
         private UICommand mSaveCommand;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
-        private UICommand mChoosePathCommand;
         private string mStandardPath;
 
         public SettingsViewModel()

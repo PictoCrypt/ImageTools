@@ -1,26 +1,26 @@
 ﻿<controls:MetroWindow x:Class="ImageToolApp.MainWindow"
-              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-              xmlns:imageToolApp="clr-namespace:ImageToolApp"
-              mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png" ShowIconOnTitleBar="True" 
-              IconTemplate="{StaticResource WindowIconTemplate}"
-              Title="ImageTool" Height="500" Width="600" ShowTitleBar="True">
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:imageToolApp="clr-namespace:ImageToolApp"
+                      mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png" ShowIconOnTitleBar="True"
+                      IconTemplate="{StaticResource WindowIconTemplate}"
+                      Title="ImageTool" Height="500" Width="600" ShowTitleBar="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
             <GroupBox>
                 <GroupBox.Header>
-                    <Image Source="{StaticResource MenuImage}"/>
+                    <Image Source="{StaticResource MenuImage}" />
                 </GroupBox.Header>
                 <StackPanel Orientation="Vertical">
                     <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
@@ -32,7 +32,7 @@
                         <Image Source="{StaticResource CloseAppImage}" />
                     </Button>
                     <Button Command="{Binding OpenHelpCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                    ToolTip="Hilfe">
+                            ToolTip="Hilfe">
                         <Image Source="{StaticResource HelpImage}" Width="25" />
                     </Button>
                 </StackPanel>
@@ -43,7 +43,7 @@
                             ToolTip="Bild öffnen">
                         <Image Source="{StaticResource Image}" />
                     </Button>
-                    <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}" 
+                    <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                             Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                             ToolTip="Bild speichern">
@@ -77,15 +77,19 @@
         <TabControl Grid.Row="0" Grid.Column="1">
             <TabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
                 <TabItem.Header>
-                    <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encrypt" Style="{StaticResource TabItemImageStyle}"/>
+                    <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encrypt"
+                           Style="{StaticResource TabItemImageStyle}" />
                 </TabItem.Header>
-                <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt" Style="{StaticResource TabItemImageStyle}"/>
+                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt"
+                           Style="{StaticResource TabItemImageStyle}" />
                 </TabItem.Header>
-                <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
             </TabItem>
         </TabControl>
 

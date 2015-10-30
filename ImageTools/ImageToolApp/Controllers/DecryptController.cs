@@ -44,7 +44,8 @@ namespace ImageToolApp.Controllers
 
             if (ViewModel.EncryptedCheck)
             {
-                result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result, ViewModel.Password);
+                result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result,
+                    ViewModel.Password);
             }
 
             ViewModel.Text = result;

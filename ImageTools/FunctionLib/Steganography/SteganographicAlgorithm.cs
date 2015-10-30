@@ -7,19 +7,20 @@ namespace FunctionLib.Steganography
 {
     public abstract class SteganographicAlgorithm : IDisposable
     {
-        protected List<Pixel> ChangedPixels { get; }
-
         public SteganographicAlgorithm()
         {
             ChangedPixels = new List<Pixel>();
         }
 
-        public abstract Bitmap Encrypt(Bitmap src, string value);
-        public abstract string Decrypt(Bitmap src);
-        public abstract string ChangeColor(string srcPath, Color color);
+        protected List<Pixel> ChangedPixels { get; }
+
         public void Dispose()
         {
             // GNDN
         }
+
+        public abstract Bitmap Encrypt(Bitmap src, string value);
+        public abstract string Decrypt(Bitmap src);
+        public abstract string ChangeColor(string srcPath, Color color);
     }
 }

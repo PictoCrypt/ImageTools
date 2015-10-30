@@ -6,9 +6,9 @@ namespace CryptographicTest
     public static class Constants
     {
         public const string NormalText = "Ich bin der Testtext. " +
-                              "Dieser kann natürlich verändert werden. " +
-                              "Hier noch ein paar Sonderzeichen" +
-                              "!äü?ß][&_.\"§\"!§";
+                                         "Dieser kann natürlich verändert werden. " +
+                                         "Hier noch ein paar Sonderzeichen" +
+                                         "!äü?ß][&_.\"§\"!§";
 
         public const string Password = "IchBinDasTestPasswort!";
         private static readonly string LoremIpsum = Path.Combine(MethodHelper.ExecutiongPath, "LoremIpsum.txt");

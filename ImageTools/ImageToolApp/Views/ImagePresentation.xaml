@@ -8,12 +8,12 @@
         Title="ImagePresentation" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="28"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="28" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Speichern" 
-                 Command="{Binding SaveCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Speichern"
+                Command="{Binding SaveCommand}" />
         <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding Image}" />
     </Grid>
 </Window>
