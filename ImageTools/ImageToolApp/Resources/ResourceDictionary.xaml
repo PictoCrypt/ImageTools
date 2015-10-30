@@ -68,14 +68,11 @@
     <Style x:Key="TabItemImageStyle" TargetType="Image">
         <Style.Triggers>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}" Value="True">
-                <Setter Property="IsEnabled" Value="True" />
+                <Setter Property="Opacity" Value="1" />
             </DataTrigger>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}" Value="False">
-                <Setter Property="IsEnabled" Value="False" />
-            </DataTrigger>
-            <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.5" />
-            </Trigger>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 </ResourceDictionary>
