@@ -12,7 +12,7 @@ namespace ImageToolApp.ViewModels
         private UICommand mOpenHelpCommand;
         private UICommand mOpenImageCommand;
         private UICommand mOpenTxtCommand;
-        private UICommand mPreferencesCommand;
+        private UICommand mSettingsCommand;
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
 
@@ -84,17 +84,17 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public UICommand PreferencesCommand
+        public UICommand SettingsCommand
         {
-            get { return mPreferencesCommand; }
+            get { return mSettingsCommand; }
             set
             {
-                if (value.Equals(mPreferencesCommand))
+                if (value.Equals(mSettingsCommand))
                 {
                     return;
                 }
-                mPreferencesCommand = value;
-                OnPropertyChanged("PreferencesCommand");
+                mSettingsCommand = value;
+                OnPropertyChanged("SettingsCommand");
             }
         }
 

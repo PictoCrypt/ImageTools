@@ -6,15 +6,15 @@ using ImageToolApp.Views;
 
 namespace ImageToolApp.Controllers
 {
-    public class PreferencesController
+    public class SettingsController
     {
-        private readonly Preferences mView;
-        private readonly PreferencesViewModel mViewModel;
+        private readonly Settings mView;
+        private readonly SettingsViewModel mViewModel;
 
-        public PreferencesController(Window owner)
+        public SettingsController(Window owner)
         {
-            mView = new Preferences();
-            mViewModel = new PreferencesViewModel();
+            mView = new Settings();
+            mViewModel = new SettingsViewModel();
             RegisterCommands();
             mView.Owner = owner;
             mView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -33,7 +33,7 @@ namespace ImageToolApp.Controllers
             var dialog = new FolderBrowserDialog
             {
                 ShowNewFolderButton = true,
-                SelectedPath = PreferencesModel.Instance.StandardPath
+                SelectedPath = SettingsModel.Instance.StandardPath
             };
             var dialogResult = dialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
@@ -59,7 +59,7 @@ namespace ImageToolApp.Controllers
             var result = mView.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                PreferencesModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(), 
+                SettingsModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(), 
                     mViewModel.SelectedSteganographicMethod.ToString(), mViewModel.StandardPath);
                 return true;
             }

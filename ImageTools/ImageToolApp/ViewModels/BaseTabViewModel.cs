@@ -18,9 +18,9 @@ namespace ImageToolApp.ViewModels
 
         public BaseTabViewModel()
         {
-            Password = PreferencesModel.Password;
-            SelectedSteganographicMethod = PreferencesModel.SelectedSteganographicMethod;
-            SelectedEncryptionMethod = PreferencesModel.SelectedEncryptionMethod;
+            Password = SettingsModel.Password;
+            SelectedSteganographicMethod = SettingsModel.SelectedSteganographicMethod;
+            SelectedEncryptionMethod = SettingsModel.SelectedEncryptionMethod;
         }
 
         public UICommand TabActionCommand
@@ -53,7 +53,7 @@ namespace ImageToolApp.ViewModels
 
         public ObservableCollection<EncryptionMethod> EncryptionMethods
         {
-            get { return PreferencesModel.EncryptionMethods; }
+            get { return SettingsModel.EncryptionMethods; }
         }
 
         public SteganographicMethod SelectedSteganographicMethod
@@ -72,7 +72,7 @@ namespace ImageToolApp.ViewModels
 
         public ObservableCollection<SteganographicMethod> SteganographicMethods
         {
-            get { return PreferencesModel.SteganographicMethods; }
+            get { return SettingsModel.SteganographicMethods; }
         }
 
         public string Text

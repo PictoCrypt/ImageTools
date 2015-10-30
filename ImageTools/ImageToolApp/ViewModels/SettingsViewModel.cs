@@ -2,7 +2,7 @@
 
 namespace ImageToolApp.ViewModels
 {
-    public class PreferencesViewModel : BaseViewModel
+    public class SettingsViewModel : BaseViewModel
     {
         private UICommand mCancelCommand;
         private string mPassword;
@@ -12,12 +12,12 @@ namespace ImageToolApp.ViewModels
         private UICommand mChoosePathCommand;
         private string mStandardPath;
 
-        public PreferencesViewModel()
+        public SettingsViewModel()
         {
-            Password = PreferencesModel.Password;
-            StandardPath = PreferencesModel.StandardPath;
-            SelectedEncryptionMethod = PreferencesModel.SelectedEncryptionMethod;
-            SelectedSteganographicMethod = PreferencesModel.SelectedSteganographicMethod;
+            Password = SettingsModel.Password;
+            StandardPath = SettingsModel.StandardPath;
+            SelectedEncryptionMethod = SettingsModel.SelectedEncryptionMethod;
+            SelectedSteganographicMethod = SettingsModel.SelectedSteganographicMethod;
         }
 
         public string Password

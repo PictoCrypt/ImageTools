@@ -8,15 +8,15 @@
 
     <!-- Images -->
     <ImageSource x:Key="HelpImage">Images/Help.png</ImageSource>
-    <ImageSource x:Key="MenueImage">Images/Menue.png</ImageSource>
-    <ImageSource x:Key="CloseImage">Images/Close.png</ImageSource>
-    <ImageSource x:Key="PreferencesImage">Images/Preferences.png</ImageSource>
-    <ImageSource x:Key="OpenPictureImage">Images/Picture_128.png</ImageSource>
-    <ImageSource x:Key="SaveAsImage">Images/SaveAs.png</ImageSource>
-    <ImageSource x:Key="OpenDocumentImage">Images/Document.png</ImageSource>
-    <ImageSource x:Key="PaintPixelsImage">Images/PaintPixels.png</ImageSource>
-    <ImageSource x:Key="OpenImage">Images/Open.png</ImageSource>
-    <ImageSource x:Key="BrokenImage">Images/BrokenImage.png</ImageSource>
+    <ImageSource x:Key="MenuImage">Images/Menu.png</ImageSource>
+    <ImageSource x:Key="CloseAppImage">Images/CloseApp.png</ImageSource>
+    <ImageSource x:Key="SettingsImage">Images/Settings.png</ImageSource>
+    <ImageSource x:Key="Image">Images/Image.png</ImageSource>
+    <ImageSource x:Key="SaveImage">Images/Save.png</ImageSource>
+    <ImageSource x:Key="TextImage">Images/Text.png</ImageSource>
+    <ImageSource x:Key="Changed">Images/Changed.png</ImageSource>
+    <ImageSource x:Key="Lock">Images/Lock.png</ImageSource>
+    <ImageSource x:Key="Unlock">Images/Unlock.png</ImageSource>
 
     <!-- Converters -->
     <converters:ImageToBoolConverter x:Key="ImageToBoolConverter" />
@@ -47,17 +47,31 @@
 
     <Style x:Key="AutoDisableAndOutGrayImage" TargetType="Image">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="True">
                 <Setter Property="IsEnabled" Value="True" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="False">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="False">
                 <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="Visible">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="Visible">
                 <Setter Property="Visibility" Value="Visible" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="Collapsed">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="Collapsed">
                 <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TabItemImageStyle" TargetType="Image">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}" Value="True">
+                <Setter Property="IsEnabled" Value="True" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}, Path=IsSelected}" Value="False">
+                <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.5" />

@@ -34,7 +34,7 @@ namespace ImageToolApp.Controllers
             var dialog = new OpenFileDialog
             {
                 Multiselect = false,
-                InitialDirectory = ViewModel.PreferencesModel.StandardPath
+                InitialDirectory = ViewModel.SettingsModel.StandardPath
             };
 
             dialog.ShowDialog();
@@ -55,11 +55,11 @@ namespace ImageToolApp.Controllers
 
         protected abstract void RegisterCommands();
 
-        public void PreferencesSaved()
+        public void SettingsSaved()
         {
-            ViewModel.Password = ViewModel.PreferencesModel.Password;
-            ViewModel.SelectedEncryptionMethod = ViewModel.PreferencesModel.SelectedEncryptionMethod;
-            ViewModel.SelectedSteganographicMethod = ViewModel.PreferencesModel.SelectedSteganographicMethod;
+            ViewModel.Password = ViewModel.SettingsModel.Password;
+            ViewModel.SelectedEncryptionMethod = ViewModel.SettingsModel.SelectedEncryptionMethod;
+            ViewModel.SelectedSteganographicMethod = ViewModel.SettingsModel.SelectedSteganographicMethod;
         }
     }
 }

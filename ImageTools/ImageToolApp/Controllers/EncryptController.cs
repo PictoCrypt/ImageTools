@@ -96,7 +96,7 @@ namespace ImageToolApp.Controllers
                     var dialog = new SaveFileDialog
                     {
                         Filter = "Png Image|*.png|Bitmap Image|*.bmp",
-                        InitialDirectory = ViewModel.PreferencesModel.StandardPath
+                        InitialDirectory = ViewModel.SettingsModel.StandardPath
                     };
                     var dialogResult = dialog.ShowDialog();
                     if (dialogResult.HasValue && dialogResult.Value)

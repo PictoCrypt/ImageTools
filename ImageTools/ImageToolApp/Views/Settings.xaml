@@ -1,11 +1,11 @@
-﻿<Window x:Class="ImageToolApp.Views.Preferences"
+﻿<Window x:Class="ImageToolApp.Views.Settings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
-        mc:Ignorable="d" Icon="../Resources/Images/Preferences.png"
-        Title="Eigenschaften" Height="220" Width="400" ResizeMode="NoResize">
+        mc:Ignorable="d" Icon="../Resources/Images/Settings.png"
+        Title="Einstellungen" Height="220" Width="400" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

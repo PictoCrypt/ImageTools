@@ -19,16 +19,16 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
             <GroupBox>
                 <GroupBox.Header>
-                    <Image Source="{StaticResource MenueImage}"/>
+                    <Image Source="{StaticResource MenuImage}"/>
                 </GroupBox.Header>
                 <StackPanel Orientation="Vertical">
-                    <Button Command="{Binding PreferencesCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                            ToolTip="Eigenschaften">
-                        <Image Source="{StaticResource CloseImage}" />
+                    <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                            ToolTip="Einstellungen">
+                        <Image Source="{StaticResource SettingsImage}" />
                     </Button>
                     <Button Command="{Binding CloseAppCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             ToolTip="Applikation schließen">
-                        <Image Source="{StaticResource CloseImage}" />
+                        <Image Source="{StaticResource CloseAppImage}" />
                     </Button>
                 </StackPanel>
             </GroupBox>
@@ -36,19 +36,19 @@
                 <StackPanel Orientation="Vertical">
                     <Button Command="{Binding OpenImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             ToolTip="Bild öffnen">
-                        <Image Source="{StaticResource OpenPictureImage}" />
+                        <Image Source="{StaticResource Image}" />
                     </Button>
                     <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}" 
                             IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                             Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                             ToolTip="Bild speichern">
-                        <Image Source="{StaticResource SaveAsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                        <Image Source="{StaticResource SaveImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
                     <Button Command="{Binding ChangedPixelsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                             Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                             ToolTip="Veränderte Pixel anzeigen">
-                        <Image Source="{StaticResource PaintPixelsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                        <Image Source="{StaticResource Changed}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
                 </StackPanel>
             </GroupBox>
@@ -57,13 +57,13 @@
                     <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                             ToolTip="Text importieren">
-                        <Image Source="{StaticResource OpenDocumentImage}" />
+                        <Image Source="{StaticResource TextImage}" />
                     </Button>
                     <Button Command="{Binding SaveTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                             IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
                             Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementDecryptToVisibilityConverter}}"
                             ToolTip="Text speichern">
-                        <Image Source="{StaticResource SaveAsImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                        <Image Source="{StaticResource SaveImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
                     </Button>
                 </StackPanel>
             </GroupBox>
@@ -75,10 +75,16 @@
         </StackPanel>
 
         <TabControl Grid.Row="0" Grid.Column="1">
-            <TabItem Header="Encrypt" IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
+            <TabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
+                <TabItem.Header>
+                    <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encrypt" Style="{StaticResource TabItemImageStyle}"/>
+                </TabItem.Header>
                 <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </TabItem>
-            <TabItem Header="Decrypt">
+            <TabItem>
+                <TabItem.Header>
+                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt" Style="{StaticResource TabItemImageStyle}"/>
+                </TabItem.Header>
                 <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </TabItem>
         </TabControl>

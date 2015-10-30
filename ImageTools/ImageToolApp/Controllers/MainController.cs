@@ -43,7 +43,7 @@ namespace ImageToolApp.Controllers
         private void SetupCommands()
         {
             mViewModel.CloseAppCommand = UICommand.Regular(CloseApp);
-            mViewModel.PreferencesCommand = UICommand.Regular(OpenPreferencesWindow);
+            mViewModel.SettingsCommand = UICommand.Regular(OpenSettingsWindow);
             mViewModel.OpenImageCommand = UICommand.Regular(OpenImage);
             mViewModel.SaveImageCommand = UICommand.Regular(SaveImage);
             mViewModel.OpenTxtCommand = UICommand.Regular(OpenTxt);
@@ -94,18 +94,18 @@ namespace ImageToolApp.Controllers
             }
         }
 
-        private void OpenPreferencesWindow()
+        private void OpenSettingsWindow()
         {
             // TODO
             /*  Open new Window where you can choose which Encryption-Algorithm you want to use.
             *   Define a standard path
             *   Define a standard Password
             */
-            var preferncesController = new PreferencesController(mView);
-            if (preferncesController.OpenDialog())
+            var settingsController = new SettingsController(mView);
+            if (settingsController.OpenDialog())
             {
-                mDecryptController.PreferencesSaved();
-                mEncryptController.PreferencesSaved();
+                mDecryptController.SettingsSaved();
+                mEncryptController.SettingsSaved();
             }
         }
 
