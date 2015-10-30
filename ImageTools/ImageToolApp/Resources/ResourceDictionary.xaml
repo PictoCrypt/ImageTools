@@ -75,4 +75,16 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="TextBoxIsReadOnlyStyle" TargetType="TextBox">
+        <Setter Property="IsReadOnly" Value="{Binding TextBoxReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsReadOnly}" Value="True">
+                <Setter Property="Background" Value="DarkGray" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsReadOnly}" Value="False">
+                <Setter Property="Background" Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

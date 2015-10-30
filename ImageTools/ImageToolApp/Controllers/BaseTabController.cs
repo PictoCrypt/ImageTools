@@ -1,22 +1,21 @@
-﻿using System.IO;
-using System.Windows.Controls;
+﻿using System;
+using System.IO;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public abstract class BaseTabController<TView, TViewModel> : IBaseTabController
-        where TView : UserControl, new() where TViewModel : BaseTabViewModel, new()
+    public abstract class BaseTabController<TViewModel> : IBaseTabController where TViewModel : BaseTabViewModel, new()
     {
         // TODO: Tmp-Files löschen nach gebrauch?
 
 
         protected readonly TViewModel ViewModel;
 
-        protected BaseTabController()
+        protected BaseTabController(string viewName, bool textBoxReadOnly)
         {
-            View = CreateView();
+            View = CreateView(viewName, textBoxReadOnly);
             ViewModel = new TViewModel();
             View.DataContext = ViewModel;
             InitializeController();
@@ -27,7 +26,7 @@ namespace ImageToolApp.Controllers
             RegisterCommands();
         }
 
-        public TView View { get; }
+        public BaseTabView View { get; }
 
         public void OpenImage()
         {
@@ -48,9 +47,9 @@ namespace ImageToolApp.Controllers
             ViewModel.ImagePath = tmp;
         }
 
-        private TView CreateView()
+        private BaseTabView CreateView(string buttonName, bool textBlockReadOnly)
         {
-            return new TView();
+            return new BaseTabView(buttonName, textBlockReadOnly);
         }
 
         protected abstract void RegisterCommands();

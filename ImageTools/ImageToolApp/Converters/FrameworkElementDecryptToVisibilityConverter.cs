@@ -10,8 +10,8 @@ namespace ImageToolApp.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var currentElement = value as DecryptView;
-            if (currentElement == null)
+            var currentElement = value as BaseTabView;
+            if (currentElement != null && currentElement.ViewName == "Decrypt")
             {
                 return Visibility.Collapsed;
             }

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
-using FunctionLib;
 using FunctionLib.Cryptography;
-using FunctionLib.Cryptography.Blowfish;
-using FunctionLib.Cryptography.Twofish;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -17,8 +11,12 @@ using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public class EncryptController : BaseTabController<EncryptView, BaseTabViewModel>
+    public class EncryptController : BaseTabController<BaseTabViewModel>
     {
+        public EncryptController(string viewName, bool textBoxReadOnly) : base(viewName, textBoxReadOnly)
+        {
+        }
+
         protected override void RegisterCommands()
         {
             ViewModel.TabActionCommand = UICommand.Regular(Encrypt);

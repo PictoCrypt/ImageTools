@@ -1,22 +1,20 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
-using FunctionLib;
 using FunctionLib.Cryptography;
-using FunctionLib.Cryptography.Blowfish;
-using FunctionLib.Cryptography.Twofish;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
-using ImageToolApp.Views;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public class DecryptController : BaseTabController<DecryptView, BaseTabViewModel>
+    public class DecryptController : BaseTabController<BaseTabViewModel>
     {
+        public DecryptController(string viewName, bool textBoxReadOnly) : base(viewName, textBoxReadOnly)
+        {
+        }
+
         protected override void RegisterCommands()
         {
             ViewModel.TabActionCommand = UICommand.Regular(Decrypt);

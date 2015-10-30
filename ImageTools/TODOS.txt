@@ -1,13 +1,8 @@
 MainWindow.xaml 
 	-  evtl. Splitbuttons für Sidebar
 	- Sidebar ein/ausklappen? oder Hover
-	- Icons neu holen!
-	- Buttons wieder funktionsfähig machen
 
 UserControl
-	- Basis rausziehen?
-	- Evtl. UC Namen, Controller reingeben
-
 	- Resize Grid nach Expander
 
 Testing

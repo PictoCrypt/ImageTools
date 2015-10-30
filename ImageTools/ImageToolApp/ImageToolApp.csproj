@@ -88,6 +88,9 @@
     <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\BaseTabView.xaml.cs">
+      <DependentUpon>BaseTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImagePresentation.xaml.cs">
       <DependentUpon>ImagePresentation.xaml</DependentUpon>
     </Compile>
@@ -107,12 +110,6 @@
     <Compile Include="Converters\IsStringNullConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UICommand.cs" />
-    <Compile Include="Views\DecryptView.xaml.cs">
-      <DependentUpon>DecryptView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EncryptView.xaml.cs">
-      <DependentUpon>EncryptView.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -130,11 +127,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecryptView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EncryptView.xaml">
+    <Page Include="Views\BaseTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

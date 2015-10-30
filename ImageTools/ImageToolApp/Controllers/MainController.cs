@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.IO;
 using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -19,8 +15,8 @@ namespace ImageToolApp.Controllers
         public MainController(MainWindow mainWindow)
         {
             mView = mainWindow;
-            mEncryptController = new EncryptController();
-            mDecryptController = new DecryptController();
+            mEncryptController = new EncryptController("Encrypt", false);
+            mDecryptController = new DecryptController("Decrypt", true);
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
@@ -31,8 +27,8 @@ namespace ImageToolApp.Controllers
         {
             get
             {
-                var view = mViewModel.CurrentElement as EncryptView;
-                if (view != null)
+                var view = mViewModel.CurrentElement as BaseTabView;
+                if (view != null && view.ViewName == "Encrypt")
                 {
                     return mEncryptController;
                 }
