@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using FunctionLib;
+﻿using FunctionLib;
 
 namespace ImageToolApp.ViewModels
 {
@@ -12,10 +9,13 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveCommand;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
+        private UICommand mChoosePathCommand;
+        private string mStandardPath;
 
         public PreferencesViewModel()
         {
             Password = PreferencesModel.Password;
+            StandardPath = PreferencesModel.StandardPath;
             SelectedEncryptionMethod = PreferencesModel.SelectedEncryptionMethod;
             SelectedSteganographicMethod = PreferencesModel.SelectedSteganographicMethod;
         }
@@ -31,6 +31,17 @@ namespace ImageToolApp.ViewModels
                 }
                 mPassword = value;
                 OnPropertyChanged("Password");
+            }
+        }
+
+        public string StandardPath
+        {
+            get { return mStandardPath; }
+            set
+            {
+                if (value == mStandardPath) return;
+                mStandardPath = value;
+                OnPropertyChanged("StandardPath");
             }
         }
 
@@ -85,6 +96,17 @@ namespace ImageToolApp.ViewModels
                 }
                 mCancelCommand = value;
                 OnPropertyChanged("CancelCommand");
+            }
+        }
+
+        public UICommand ChoosePathCommand
+        {
+            get { return mChoosePathCommand; }
+            set
+            {
+                if (Equals(value, mChoosePathCommand)) return;
+                mChoosePathCommand = value;
+                OnPropertyChanged("ChoosePathCommand");
             }
         }
     }

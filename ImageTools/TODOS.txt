@@ -10,9 +10,6 @@ UserControl
 
 	- Resize Grid nach Expander
 
-Preferences.xaml
-	- Define Standardpath, Image path must be selected
-
 Testing
 	- Falschtests
 
@@ -20,6 +17,4 @@ BaseTabController.cs
 	- Tmp-Files löschen nach gebrauch?
 
 Enum
-	- Eventuell die Enums löschen, per Inface enumerieren 
-	- http://stackoverflow.com/questions/26733/getting-all-types-that-implement-an-interface
-	- https://www.google.de/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=c%23%20get%20all%20classes%20implementing%20interface
+- Enums umstellen, da sonst überall darüber enumeriert werden muss.

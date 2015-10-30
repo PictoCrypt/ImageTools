@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Forms;
 using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -24,6 +25,21 @@ namespace ImageToolApp.Controllers
         {
             mViewModel.SaveCommand = UICommand.Regular(Save);
             mViewModel.CancelCommand = UICommand.Regular(Cancel);
+            mViewModel.ChoosePathCommand = UICommand.Regular(ChoosePath);
+        }
+
+        private void ChoosePath()
+        {
+            var dialog = new FolderBrowserDialog
+            {
+                ShowNewFolderButton = true,
+                SelectedPath = PreferencesModel.Instance.StandardPath
+            };
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                mViewModel.StandardPath = dialog.SelectedPath;
+            }
         }
 
         private void Cancel()
@@ -44,7 +60,7 @@ namespace ImageToolApp.Controllers
             if (result.HasValue && result.Value)
             {
                 PreferencesModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(), 
-                    mViewModel.SelectedSteganographicMethod.ToString());
+                    mViewModel.SelectedSteganographicMethod.ToString(), mViewModel.StandardPath);
                 return true;
             }
             return false;

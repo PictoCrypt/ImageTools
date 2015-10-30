@@ -76,7 +76,7 @@ namespace ImageToolApp.Models
             }
         }
 
-        public void SaveToConfig(string password, string encryptionMethod, string steganographicMethod)
+        public void SaveToConfig(string password, string encryptionMethod, string steganographicMethod, string standardPath)
         {
             var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var configFile = Path.Combine(appPath, "App.config");
@@ -86,6 +86,7 @@ namespace ImageToolApp.Models
             config.AppSettings.Settings["Password"].Value = password;
             config.AppSettings.Settings["SelectedEncryptionMethod"].Value = encryptionMethod;
             config.AppSettings.Settings["SelectedSteganographicMethod"].Value = steganographicMethod;
+            config.AppSettings.Settings["StandardPath"].Value = standardPath;
             config.Save();
             mInstance = new PreferencesModel(EncryptionMethods, SteganographicMethods);
         }
