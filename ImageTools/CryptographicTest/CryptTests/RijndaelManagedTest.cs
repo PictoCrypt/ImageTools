@@ -2,19 +2,19 @@
 using FunctionLib.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest
+namespace CryptographicTest.CryptTests
 {
     [TestClass]
-    public class DesTest : SymmetricAlgorithmBaseTestClass
+    public class RijndaelManagedTest : SymmetricAlgorithmBaseTestClass
     {
         public override string Encrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Encrypt(this, EncryptionMethod.DES, value, password);
+            return SymmetricAlgorithmBase.Encrypt(this, EncryptionMethod.Rijndael, value, password);
         }
 
         public override string Decrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Decrypt(this, EncryptionMethod.DES, value, password);
+            return SymmetricAlgorithmBase.Decrypt(this, EncryptionMethod.Rijndael, value, password);
         }
     }
 }
