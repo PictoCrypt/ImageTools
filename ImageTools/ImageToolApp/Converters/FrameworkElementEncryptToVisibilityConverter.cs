@@ -13,9 +13,9 @@ namespace ImageToolApp.Converters
             var currentElement = value as BaseTabView;
             if (currentElement != null && currentElement.ViewName == "Encrypt")
             {
-                return Visibility.Collapsed;
+                return Visibility.Visible;
             }
-            return Visibility.Visible;
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
