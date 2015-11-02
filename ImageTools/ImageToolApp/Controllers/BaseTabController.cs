@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
+using System.Windows.Controls;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -19,11 +21,25 @@ namespace ImageToolApp.Controllers
             ViewModel = new TViewModel();
             View.DataContext = ViewModel;
             InitializeController();
+            View.ImageExpander.Expanded += ImageExpanderEvent;
+            View.ImageExpander.Collapsed += ImageExpanderEvent;
+        }
+
+        private void ImageExpanderEvent(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var expander = sender as Expander;
+            ResizeImageExpanderGrid(expander, expander.IsExpanded);
+        }
+
+        private void ResizeImageExpanderGrid(UIElement expander, bool expanded)
+        {
+            var column = View.Grid.ColumnDefinitions[Grid.GetColumn(expander)];
+            column.Width = new GridLength(1.0, expanded ? GridUnitType.Star : GridUnitType.Auto);
         }
 
         public virtual void UnregisterEvents()
         {
-            
+            View.ImageExpander.Expanded -= ImageExpanderEvent;
         }
 
         public BaseTabView View { get; }
