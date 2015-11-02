@@ -22,11 +22,11 @@
                 <Image Source="{StaticResource MenuImage}"/>
             </Button>
 
-            <StackPanel x:Name="StackPanel" Orientation="Vertical" Visibility="Hidden" Style="{StaticResource TestStyle}">
+            <StackPanel x:Name="StackPanel" Orientation="Vertical" Visibility="Hidden" Style="{StaticResource StackPanelSlideInStyle}">
                 <GroupBox>
-                    <GroupBox.Header>
+                    <!--<GroupBox.Header>
                         <Image Source="{StaticResource MenuImage}" />
-                    </GroupBox.Header>
+                    </GroupBox.Header>-->
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 ToolTip="Einstellungen">

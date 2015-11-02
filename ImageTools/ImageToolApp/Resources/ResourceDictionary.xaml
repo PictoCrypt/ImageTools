@@ -102,7 +102,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="TestStyle" TargetType="StackPanel">
+    <Style x:Key="StackPanelSlideInStyle" TargetType="StackPanel">
         <Setter Property="Visibility" Value="Hidden"/>
         <Setter Property="Opacity" Value="0"/>
         <Style.Triggers>
@@ -110,7 +110,7 @@
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.5" />
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:2.0" />
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
