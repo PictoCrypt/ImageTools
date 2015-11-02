@@ -76,28 +76,27 @@
                 </GroupBox>
             </StackPanel>
         </StackPanel>
-
-        <TabControl Grid.Row="0" Grid.Column="1">
-            <TabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
-                <TabItem.Header>
+       
+        <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1">
+            <controls:MetroTabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
+                <controls:MetroTabItem.Header>
                     <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encrypt"
                            Style="{StaticResource TabItemImageStyle}" />
-                </TabItem.Header>
+                </controls:MetroTabItem.Header>
                 <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch" />
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt"
+            </controls:MetroTabItem>
+            <controls:MetroTabItem>
+                <controls:MetroTabItem.Header>
+                <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt"
                            Style="{StaticResource TabItemImageStyle}" />
-                </TabItem.Header>
-                <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
+            </controls:MetroTabItem.Header>
+            <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch" />
-            </TabItem>
-        </TabControl>
-        
+            </controls:MetroTabItem>
+        </controls:MetroAnimatedTabControl>
+       
         <controls:ProgressRing Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" 
                                VerticalAlignment="Stretch" Margin="2" IsActive="False" IsEnabled="True" IsLarge="True" />
-
     </Grid>
 </controls:MetroWindow>

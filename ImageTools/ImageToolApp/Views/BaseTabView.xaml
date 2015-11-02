@@ -28,7 +28,8 @@
                   HorizontalAlignment="Stretch" Header="Text">
             <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
                  VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
-                 Text="{Binding Text}" Style="{StaticResource TextBoxIsReadOnlyStyle}" />
+                 Text="{Binding Text}" Style="{StaticResource TextBoxIsReadOnlyStyle}" 
+                     controls:TextBoxHelper.Watermark="Secret Text..." />
         </Expander>
 
         <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch" 
@@ -54,7 +55,7 @@
                 <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                              helpers:PasswordHelper.Attach="True"
                              helpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
-                             IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
+                             IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" controls:TextBoxHelper.Watermark="Password..."/>
             </Grid>
         </GroupBox>
 
