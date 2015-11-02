@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography
@@ -44,8 +45,8 @@ namespace FunctionLib.Steganography
                     var g = pixel.G - pixel.G % 2;
                     var b = pixel.B - pixel.B % 2;
 
-                    // for each pixel, pass through its elements (RGB)
-                    for (var n = 0; n < additionalParam; n++)
+                    // for each pixel, pass through its elements (RGB) = 3
+                    for (var n = 0; n < 3; n++)
                     {
                         // check if new 8 bits has been processed
                         if (pixelElementIndex % 8 == 0)
@@ -56,7 +57,7 @@ namespace FunctionLib.Steganography
                             {
                                 // apply the last pixel on the image
                                 // even if only a part of its elements have been affected
-                                if ((pixelElementIndex - 1) % additionalParam < 2)
+                                if ((pixelElementIndex - 1) % 3 < 2)
                                 {
                                     lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
                                     ChangedPixels.Add(new Pixel(j, i));
@@ -81,7 +82,7 @@ namespace FunctionLib.Steganography
                         }
 
                         // check which pixel element has the turn to hide a bit in its LSB
-                        switch (pixelElementIndex % additionalParam)
+                        switch (pixelElementIndex % 3)
                         {
                             case 0:
                             {
@@ -148,7 +149,7 @@ namespace FunctionLib.Steganography
             var charValue = 0;
 
             // holds the value that will be extracted from the image
-            var result = string.Empty;
+            var result = new StringBuilder();
 
             // pass through the rows
             for (var i = 0; i < lockBitmap.Height; i++)
@@ -158,10 +159,10 @@ namespace FunctionLib.Steganography
                 {
                     var pixel = lockBitmap.GetPixel(j, i);
 
-                    // for each pixel, pass through its elements (RGB)
-                    for (var n = 0; n < additionalParam; n++)
+                    // for each pixel, pass through its elements (RGB) = 3
+                    for (var n = 0; n < 3; n++)
                     {
-                        switch (colorUnitIndex % additionalParam)
+                        switch (colorUnitIndex % 3)
                         {
                             case 0:
                             {
@@ -198,21 +199,21 @@ namespace FunctionLib.Steganography
                             // can only be 0 if it is the stop character (the 8 zeros)
                             if (charValue == 0)
                             {
-                                return result;
+                                return result.ToString();
                             }
 
                             // convert the character value from int to char
                             var c = (char) charValue;
 
                             // add the current character to the result value
-                            result += c.ToString();
+                            result.Append(c);;
                         }
                     }
                 }
             }
 
             lockBitmap.UnlockBits();
-            return result;
+            return result.ToString();
         }
 
         public override string ChangeColor(string srcPath, Color color)
