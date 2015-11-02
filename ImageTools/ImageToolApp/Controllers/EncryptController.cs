@@ -134,8 +134,7 @@ namespace ImageToolApp.Controllers
                         }
 
 
-                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
-                            text);
+                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, text, ViewModel.NumericUpDownValue);
                         if (result != null)
                         {
                             var path = Path.GetTempFileName().Replace("tmp", "png");

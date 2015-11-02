@@ -6,7 +6,7 @@ using ImageToolApp.Views;
 
 namespace ImageToolApp.Converters
 {
-    public class FrameworkElementDecryptToVisibilityConverter : IValueConverter
+    public class FrameworkElementDecryptToVisibilityConverter : OneWayConveter, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -16,11 +16,6 @@ namespace ImageToolApp.Converters
                 return Visibility.Visible;
             }
             return Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }
