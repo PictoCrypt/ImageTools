@@ -159,7 +159,7 @@
       <Name>FunctionLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\UserControlClassLibrary\UserControlClassLibrary.csproj">
-      <Project>{6C9FC726-54A4-434B-B1D0-D4AFCFF75DA0}</Project>
+      <Project>{6c9fc726-54a4-434b-b1d0-d4afcff75da0}</Project>
       <Name>UserControlClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
