@@ -16,6 +16,7 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
+        private bool mProgressing;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {

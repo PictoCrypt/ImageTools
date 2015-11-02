@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
@@ -14,9 +16,11 @@ namespace ImageToolApp.Controllers
 
 
         protected readonly TViewModel ViewModel;
+        protected MainController MainController;
 
-        protected BaseTabController(string viewName, bool textBoxReadOnly)
+        protected BaseTabController(MainController mainController, string viewName, bool textBoxReadOnly)
         {
+            MainController = mainController;
             View = CreateView(viewName, textBoxReadOnly);
             ViewModel = new TViewModel();
             View.DataContext = ViewModel;
@@ -43,6 +47,17 @@ namespace ImageToolApp.Controllers
         }
 
         public BaseTabView View { get; }
+
+        protected ProgressRing ProgressRing
+        {
+            get
+            {
+                var result = Application.Current.MainWindow.FindChildren<ProgressRing>().FirstOrDefault();
+                return result;
+            }
+        }
+
+
 
         public void OpenImage()
         {

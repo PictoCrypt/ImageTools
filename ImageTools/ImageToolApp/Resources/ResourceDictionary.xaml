@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:converters="clr-namespace:ImageToolApp.Converters">
+                    xmlns:converters="clr-namespace:ImageToolApp.Converters"
+                    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
 
     <!-- Localizable Strings -->
     <!--<system:String x:Key="ImageFallbackValue">No Image loaded.</system:String>-->
@@ -25,12 +26,12 @@
     <converters:FrameworkElementEncryptToVisibilityConverter x:Key="FrameworkElementEncryptToVisibilityConverter" />
     <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    <converters:InvertBooleanConverter x:Key="InvertBooleanConverter" />
 
     <!-- Styles -->
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button"
            BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
         <Setter Property="BorderThickness" Value="0" />
-        <!--<Setter Property="Style" Value="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />-->
     </Style>
 
     <DataTemplate x:Key="WindowIconTemplate">

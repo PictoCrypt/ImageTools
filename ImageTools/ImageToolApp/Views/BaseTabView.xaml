@@ -6,11 +6,13 @@
              xmlns:helpers="clr-namespace:ImageToolApp.WpfHelpers"
              xmlns:pathChooser="clr-namespace:UserControlClassLibrary.PathChooser;assembly=UserControlClassLibrary"
              xmlns:documentChooser="clr-namespace:UserControlClassLibrary.DocumentChooser;assembly=UserControlClassLibrary"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400">
     <Grid x:Name="Grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

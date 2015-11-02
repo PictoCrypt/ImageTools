@@ -7,6 +7,7 @@
                       mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png" ShowIconOnTitleBar="True"
                       IconTemplate="{StaticResource WindowIconTemplate}"
                       Title="ImageTool" Height="500" Width="600" ShowTitleBar="True">
+    <!--IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}"-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
@@ -23,9 +24,6 @@
 
             <StackPanel x:Name="StackPanel" Orientation="Vertical" Visibility="Hidden" Style="{StaticResource StackPanelSlideInStyle}">
                 <GroupBox>
-                    <!--<GroupBox.Header>
-                        <Image Source="{StaticResource MenuImage}" />
-                    </GroupBox.Header>-->
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 ToolTip="Einstellungen">
@@ -97,6 +95,9 @@
                                 VerticalAlignment="Stretch" />
             </TabItem>
         </TabControl>
+        
+        <controls:ProgressRing Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" 
+                               VerticalAlignment="Stretch" Margin="2" IsActive="False" IsEnabled="True" IsLarge="True" />
 
     </Grid>
 </controls:MetroWindow>
