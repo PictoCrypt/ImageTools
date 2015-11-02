@@ -6,9 +6,11 @@
              xmlns:helpers="clr-namespace:ImageToolApp.WpfHelpers"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400">
-    <Grid>
+    <Grid x:Name="Grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -18,12 +20,22 @@
             <ColumnDefinition Width="Auto" MaxWidth="200" />
         </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
+        <Expander Grid.Column="0" Grid.Row="0" ExpandDirection="Down" IsExpanded="True" VerticalAlignment="Stretch" 
+                  HorizontalAlignment="Stretch" Header="Text">
+            <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
                  VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
-
                  Text="{Binding Text}" Style="{StaticResource TextBoxIsReadOnlyStyle}" />
+        </Expander>
 
-        <GroupBox Grid.Column="0" Grid.Row="1" Header="Encryption" HorizontalAlignment="Stretch"
+        <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch" 
+                  HorizontalAlignment="Stretch" Header="Bild">
+        </Expander>
+
+        <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch" 
+                  HorizontalAlignment="Stretch" Header="Dokument">
+        </Expander>
+
+        <GroupBox Grid.Column="0" Grid.Row="3" Header="Encryption" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -41,7 +53,7 @@
         </GroupBox>
 
 
-        <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right"
+        <StackPanel Grid.Column="0" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding SteganographicMethods}"
                       SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
@@ -53,11 +65,11 @@
                     IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />
         </StackPanel>
 
-        <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0"
+        <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="5" Grid.Row="0"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Visibility="{Binding ElementName=ImageExpander, Path=IsExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
-        <Expander x:Name="ImageExpander" Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left"
+        <Expander x:Name="ImageExpander" Grid.Column="2" Grid.Row="0" Grid.RowSpan="5" ExpandDirection="Left"
                   IsExpanded="False" VerticalAlignment="Stretch"
                   Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
                   HorizontalAlignment="Right">

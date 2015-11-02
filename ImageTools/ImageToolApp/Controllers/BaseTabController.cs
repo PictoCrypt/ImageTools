@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -18,6 +19,11 @@ namespace ImageToolApp.Controllers
             ViewModel = new TViewModel();
             View.DataContext = ViewModel;
             InitializeController();
+        }
+
+        public virtual void UnregisterEvents()
+        {
+            
         }
 
         public BaseTabView View { get; }

@@ -1,21 +1,80 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
+using Image = System.Windows.Controls.Image;
 
 namespace ImageToolApp.Controllers
 {
     public class EncryptController : BaseTabController<BaseTabViewModel>
     {
+        private readonly List<Expander> mExpanders;
+
         public EncryptController(string viewName, bool textBoxReadOnly) : base(viewName, textBoxReadOnly)
         {
+            mExpanders = View.FindChildren<Expander>().Where(x => x.Content.GetType() != typeof(Image)).ToList();
+            foreach (var expander in mExpanders)
+            {
+                expander.Expanded += ExpanderOnExpanded;
+                expander.Collapsed += ExpanderOnCollapsed;
+            }
         }
+
+        private bool mHandling;
+
+        public override void UnregisterEvents()
+        {
+            base.UnregisterEvents();
+            foreach (var expander in mExpanders)
+            {
+                expander.Expanded -= ExpanderOnExpanded;
+                expander.Collapsed -= ExpanderOnCollapsed;
+            }
+        }
+
+        private void ExpanderOnExpanded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (!mHandling)
+            {
+                var expander = sender as Expander;
+                mHandling = true;
+                foreach (var exp in mExpanders)
+                {
+                    exp.IsExpanded = false;
+                    var row = View.Grid.RowDefinitions[Grid.GetRow(exp)];
+                    row.Height = GridLength.Auto;
+                }
+
+                expander.IsExpanded = true;
+                View.Grid.RowDefinitions[Grid.GetRow(expander)].Height = new GridLength(1, GridUnitType.Star);
+                routedEventArgs.Handled = true;
+                mHandling = false;
+            }
+        }
+
+        private void ExpanderOnCollapsed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            foreach (var exp in mExpanders)
+            {
+                exp.IsExpanded = false;
+                var row = View.Grid.RowDefinitions[Grid.GetRow(exp)];
+                row.Height = GridLength.Auto;
+            }
+            routedEventArgs.Handled = true;
+        }
+
 
         protected override void RegisterCommands()
         {

@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
@@ -16,12 +18,26 @@ namespace ImageToolApp.Controllers
         public MainController(MainWindow mainWindow)
         {
             mView = mainWindow;
+            mView.Closing += ViewOnClosing;
             mEncryptController = new EncryptController("Encrypt", false);
             mDecryptController = new DecryptController("Decrypt", true);
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
             mView.Show();
+        }
+
+        private void ViewOnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            UnregisterEvents();
+
+        }
+
+        private void UnregisterEvents()
+        {
+            mEncryptController.UnregisterEvents();
+
+            mView.Closing -= ViewOnClosing;
         }
 
         private IBaseTabController CurrentController
