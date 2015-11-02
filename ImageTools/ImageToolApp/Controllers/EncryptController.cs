@@ -14,6 +14,7 @@ using ImageToolApp.Views;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
+using UserControlClassLibrary;
 using Image = System.Windows.Controls.Image;
 
 namespace ImageToolApp.Controllers
@@ -24,7 +25,7 @@ namespace ImageToolApp.Controllers
 
         public EncryptController(string viewName, bool textBoxReadOnly) : base(viewName, textBoxReadOnly)
         {
-            mExpanders = View.FindChildren<Expander>().Where(x => x.Content.GetType() != typeof(Image)).ToList();
+            mExpanders = View.FindChildren<Expander>().Where(x => x.Content != null && x.Content.GetType() != typeof(Image)).ToList();
             foreach (var expander in mExpanders)
             {
                 expander.Expanded += ExpanderOnExpanded;

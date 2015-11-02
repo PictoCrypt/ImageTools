@@ -1,4 +1,6 @@
-﻿namespace ImageToolApp.ViewModels
+﻿using UserControlClassLibrary;
+
+namespace ImageToolApp.ViewModels
 {
     public class ImagePresentationViewModel : BaseViewModel
     {

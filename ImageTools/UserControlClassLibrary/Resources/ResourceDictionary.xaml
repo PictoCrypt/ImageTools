@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Localizable Strings -->
+    <!--<system:String x:Key="ImageFallbackValue">No Image loaded.</system:String>-->
+
+    <!-- Images -->
+    
+    <!-- Converters -->
+    
+    <!-- Resources -->
+    <!--<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="GlassButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>-->
+</ResourceDictionary>

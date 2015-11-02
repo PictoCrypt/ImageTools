@@ -6,6 +6,7 @@ using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using Microsoft.Win32;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {

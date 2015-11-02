@@ -81,7 +81,6 @@
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="Models\SettingsModel.cs" />
-    <Compile Include="PropertyChangedModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
@@ -108,7 +107,6 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\IsStringNullConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="UICommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -157,6 +155,10 @@
     <ProjectReference Include="..\FunctionLib\FunctionLib.csproj">
       <Project>{8DF508C2-07F4-486A-89B1-DB17A5166216}</Project>
       <Name>FunctionLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserControlClassLibrary\UserControlClassLibrary.csproj">
+      <Project>{6C9FC726-54A4-434B-B1D0-D4AFCFF75DA0}</Project>
+      <Name>UserControlClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

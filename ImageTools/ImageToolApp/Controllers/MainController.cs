@@ -5,6 +5,7 @@ using System.IO;
 using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {

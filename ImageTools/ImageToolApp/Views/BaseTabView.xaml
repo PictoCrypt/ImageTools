@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:ImageToolApp.WpfHelpers"
+             xmlns:pathChooser="clr-namespace:UserControlClassLibrary.PathChooser;assembly=UserControlClassLibrary"
+             xmlns:documentChooser="clr-namespace:UserControlClassLibrary.DocumentChooser;assembly=UserControlClassLibrary"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400">
     <Grid x:Name="Grid">
@@ -29,10 +31,12 @@
 
         <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch" 
                   HorizontalAlignment="Stretch" Header="Bild">
+            <pathChooser:PathChooser />
         </Expander>
 
         <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch" 
                   HorizontalAlignment="Stretch" Header="Dokument">
+            <documentChooser:DocumentChooser />
         </Expander>
 
         <GroupBox Grid.Column="0" Grid.Row="3" Header="Encryption" HorizontalAlignment="Stretch"

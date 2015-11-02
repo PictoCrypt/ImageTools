@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ImageToolApp.Annotations;
+using UserControlClassLibrary.Annotations;
 
-namespace ImageToolApp
+namespace UserControlClassLibrary
 {
     public class PropertyChangedModel : INotifyPropertyChanged
     {
