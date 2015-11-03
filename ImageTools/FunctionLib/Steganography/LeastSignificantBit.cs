@@ -91,6 +91,7 @@ namespace FunctionLib.Steganography
                                 {
                                     if (state == State.Hiding)
                                     {
+                                        //TODO: Hier müsste der Punkt sein!
                                         // the rightmost bit in the character will be (charValue % 2)
                                         // to put this value instead of the LSB of the pixel element
                                         // just add it to it
