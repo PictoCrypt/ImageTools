@@ -73,6 +73,8 @@ namespace FunctionLib.Steganography
             {
                 case SteganographicMethod.LSB:
                     return typeof (LeastSignificantBit);
+                case SteganographicMethod.TestMethod:
+                    return typeof (LeastSignificantBitByMarius);
             }
             throw new ArgumentOutOfRangeException(nameof(method), method, null);
         }

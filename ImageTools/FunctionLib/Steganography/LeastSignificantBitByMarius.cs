@@ -1,5 +1,9 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Text;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography
@@ -22,6 +26,10 @@ namespace FunctionLib.Steganography
                 else
                     textBytes = textBytes.Concat(charByte).ToArray();
             }
+
+            // 8 Nullen um das Ende zu erkennen
+            var nullPointer = new int[8] {0, 0, 0, 0, 0, 0, 0, 0};
+            textBytes = textBytes.Concat(nullPointer).ToArray();
 
             for (var x = 0; x < lockBitmap.Width; x++)
             {
@@ -54,8 +62,9 @@ namespace FunctionLib.Steganography
                         }
                     }
                     lockBitmap.SetPixel(x, y, Color.FromArgb(GetInt(r), GetInt(g), GetInt(b)));
+                    ChangedPixels.Add(new Pixel(x, y));
 
-                    if (charIndex + 1 < textBytes.Length)
+                    if (charIndex + 1 == textBytes.Length)
                     {
                         lockBitmap.UnlockBits();
                         return result;
@@ -113,12 +122,86 @@ namespace FunctionLib.Steganography
 
         public override string Decrypt(Bitmap src, int additionalParam)
         {
-            throw new System.NotImplementedException();
+            var result = new Bitmap(src);
+            var lockBitmap = new LockBitmap(result);
+            lockBitmap.LockBits();
+
+            var byteList = new List<int>();
+
+            for (var x = 0; x < lockBitmap.Width; x++)
+            {
+                for (var y = 0; y < lockBitmap.Height; y++)
+                {
+                    var pixel = lockBitmap.GetPixel(x, y);
+                    var r = GetByte(pixel.R);
+                    var g = GetByte(pixel.G);
+                    var b = GetByte(pixel.B);
+
+                    for (var red = 0; red < additionalParam; red++)
+                    {
+                        byteList.Add(r[red + 8 - additionalParam]);
+                    }
+                    for (var green = 0; green < additionalParam; green++)
+                    {
+                        byteList.Add(g[green + 8 - additionalParam]);
+
+                    }
+                    for (var blue = 0; blue < additionalParam; blue++)
+                    {
+                        byteList.Add(b[blue + 8 - additionalParam]);
+
+                    }
+
+                    if (byteList[byteList.Count - 8] == 0)
+                    {
+                        int zeroCounter = 0;
+                        var end = byteList.GetRange(byteList.Count - 8, 8);
+                        foreach (var count in end)
+                        {
+                            if (count == 0)
+                                zeroCounter++;
+                        }
+                        if (zeroCounter == 8)
+                        {
+                            lockBitmap.UnlockBits();
+                            return ConvertToString(byteList);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private string ConvertToString(List<int> byteList)
+        {
+            var builder = new StringBuilder();
+            while (byteList.Count > 0)
+            {
+                var byteArray = byteList.ToArray();
+                var zwischen = new int[8];
+                for (var i = 0; i < 8; i++)
+                {
+                    zwischen[i] = byteArray[i];
+                }
+                byteList.RemoveRange(0, 8);
+                builder.Append((char)GetInt(zwischen));
+                zwischen = new int[8];
+            }
+            return builder.ToString();
         }
 
         public override string ChangeColor(string srcPath, Color color)
         {
-            throw new System.NotImplementedException();
+            var tmp = Path.GetTempFileName();
+            var dest = Path.GetTempFileName();
+            File.Copy(srcPath, tmp, true);
+            using (var bitmap = new Bitmap(tmp))
+            {
+                ImageFunctionLib.ChangeColor(bitmap, color, ChangedPixels);
+                bitmap.Save(dest, ImageFormat.Bmp);
+            }
+            File.Copy(dest, tmp, true);
+            return tmp;
         }
     }
 }
