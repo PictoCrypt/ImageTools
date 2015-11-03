@@ -10,6 +10,8 @@ namespace FunctionLib.Steganography
 {
     public class LeastSignificantBitByMarius : SteganographicAlgorithm
     {
+        private readonly int[] mNullPointer = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+
         public override Bitmap Encrypt(Bitmap src, string value, int additionalParam = 3)
         {
             var result = new Bitmap(src);
@@ -28,8 +30,7 @@ namespace FunctionLib.Steganography
             }
 
             // 8 Nullen um das Ende zu erkennen
-            var nullPointer = new int[8] {0, 0, 0, 0, 0, 0, 0, 0};
-            textBytes = textBytes.Concat(nullPointer).ToArray();
+            textBytes = textBytes.Concat(mNullPointer).ToArray();
 
             for (var x = 0; x < lockBitmap.Width; x++)
             {
@@ -149,8 +150,9 @@ namespace FunctionLib.Steganography
                     for (var blue = 0; blue < additionalParam; blue++)
                     {
                         byteList.Add(b[blue + 8 - additionalParam]);
-
                     }
+
+                    var index = IndexOf(byteList, mNullPointer);
 
                     if (byteList[byteList.Count - 8] == 0)
                     {
@@ -170,6 +172,22 @@ namespace FunctionLib.Steganography
                 }
             }
             return null;
+        }
+
+        public static int IndexOf<T>(IEnumerable<T> collection,
+                                IEnumerable<T> sequence)
+        {
+            var ccount = collection.Count();
+            var scount = sequence.Count();
+
+            if (scount > ccount) return -1;
+
+            if (collection.Take(scount).SequenceEqual(sequence)) return 0;
+
+            int index = Enumerable.Range(1, ccount - scount + 1)
+                                  .FirstOrDefault(i => collection.Skip(i).Take(scount).SequenceEqual(sequence));
+            if (index == 0) return -1;
+            return index;
         }
 
         private string ConvertToString(List<int> byteList)
