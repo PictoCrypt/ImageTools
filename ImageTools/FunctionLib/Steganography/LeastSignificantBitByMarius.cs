@@ -22,13 +22,9 @@ namespace FunctionLib.Steganography
             get
             {
                 var builder = new StringBuilder();
-                for (var i = 0; i < 8 - mSignificantIndicator; i++)
-                {
-                    builder.Append("0");
-                }
-                builder.Append(GetNextBit);
-                builder.Append(GetNextBit);
-                builder.Append(GetNextBit);
+                builder.Insert(0, GetNextBit);
+                builder.Insert(0, GetNextBit);
+                builder.Insert(0, GetNextBit);
                 var result = Convert.ToInt32(builder.ToString(), 2);
                 return result;
             }
@@ -47,9 +43,23 @@ namespace FunctionLib.Steganography
                 {
                     return 0;
                 }
-                return GetByte(mTextBytes[mCharIndex])[mBitIndex++];
+                return GetBit(mTextBytes[mCharIndex], mBitIndex++);
             }
         }
+
+        /// <summary>
+        /// Gets the bit of this byte on a specific position.
+        /// </summary>
+        /// <param name="b">Byte</param>
+        /// <param name="index">Index. Index of 0 is the most significant bit.</param>
+        /// <returns></returns>
+        private int GetBit(byte b, int index)
+        {
+            FEHLER
+            var bit = (b & (1 >> index));
+            return bit;
+        }
+
 
         public override Bitmap Encrypt(Bitmap src, string value, int additionalParam = 3)
         {
@@ -114,25 +124,25 @@ namespace FunctionLib.Steganography
             return (value & result);
         }
 
-        private int[] GetByte(int number)
-        {
-            var fill = "";
-            var binary = Convert.ToString(number, 2);
-            if (binary.Length != 8)
-            {
-                for (var i = 0; i < 8 -binary.Length; i++)
-                {
-                    fill += 0;
-                }
-                binary = fill + binary;
-            }
-            var result = new int[8];
-            for (var i = 0; i < binary.Length; i++)
-            {
-                result[i] = int.Parse(binary.Substring(i, 1));
-            }
-            return result;
-        }
+        //private int[] GetByte(int number)
+        //{
+        //    var fill = "";
+        //    var binary = Convert.ToString(number, 2);
+        //    if (binary.Length != 8)
+        //    {
+        //        for (var i = 0; i < 8 - binary.Length; i++)
+        //        {
+        //            fill += 0;
+        //        }
+        //        binary = fill + binary;
+        //    }
+        //    var result = new int[8];
+        //    for (var i = 0; i < binary.Length; i++)
+        //    {
+        //        result[i] = int.Parse(binary.Substring(i, 1));
+        //    }
+        //    return result;
+        //}
 
         public override string Decrypt(Bitmap src, int additionalParam)
         {
@@ -150,20 +160,18 @@ namespace FunctionLib.Steganography
                 for (var x = 0; x < lockBitmap.Width; x++)
                 {
                     var pixel = lockBitmap.GetPixel(x, y);
-                    var r = GetByte(pixel.R);
-                    for (var i = r.Length - additionalParam; i < r.Length; i++)
+
+                    for (var i = 0; i < additionalParam; i++)
                     {
-                        listOfBits.Add(r[i]);
+                        listOfBits.Add(GetBit(pixel.R, additionalParam - 1 - i));
                     }
-                    var g = GetByte(pixel.G);
-                    for (var i = g.Length - additionalParam; i < g.Length; i++)
+                    for (var i = 0; i < additionalParam; i++)
                     {
-                        listOfBits.Add(g[i]);
+                        listOfBits.Add(GetBit(pixel.G, additionalParam - 1 - i));
                     }
-                    var b = GetByte(pixel.B);
-                    for (var i = b.Length - additionalParam; i < b.Length; i++)
+                    for (var i = 0; i < additionalParam; i++)
                     {
-                        listOfBits.Add(b[i]);
+                        listOfBits.Add(GetBit(pixel.B, additionalParam - 1 - i));
                     }
 
                     // Check for End (1 Byte of 0)
@@ -176,11 +184,16 @@ namespace FunctionLib.Steganography
                         {
                             listOfBits.RemoveRange(min, listOfBits.Count - min);
                             lockBitmap.UnlockBits();
-                            while (listOfBits.Count > 0)
+                            var listOfByte = new List<byte>();
+                            var range = listOfBits.GetRange(0, 8);
+                            listOfBits.RemoveRange(0, 8);
+                            var b = GetByte(range);
+                            listOfByte.Add(b);
+
+                            while (listOfByte.Count > 0)
                             {
-                                var range = listOfBits.GetRange(0, 8);
-                                listOfBits.RemoveRange(0, 8);
-                                builder.Append(GetString(range));
+                                builder.Append((char) listOfByte.First());
+                                listOfByte.Remove(listOfByte.First());
                             }
                             return builder.ToString();
                         }
@@ -190,15 +203,15 @@ namespace FunctionLib.Steganography
             throw new SystemException("Error, anything happened (or maybe not).");
         }
 
-        private string GetString(List<int> listOfBits)
+        private byte GetByte(IEnumerable<int> listOfBits)
         {
             var builder = new StringBuilder();
             foreach (var bit in listOfBits)
             {
                 builder.Append(bit);
             }
-            var result = (char)Convert.ToInt32(builder.ToString(), 2);
-            return result.ToString();
+            var result = Convert.ToInt32(builder.ToString(), 2);
+            return Convert.ToByte(result);
         }
 
         public static int IndexOf<T>(IEnumerable<T> collection,
