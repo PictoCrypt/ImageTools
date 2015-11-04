@@ -13,3 +13,6 @@ BaseTabController.cs
 
 Enum
 - Enums umstellen, da sonst überall darüber enumeriert werden muss.
+
+Stega Algorithmen
+	- Funktion welche zurück gibt, wie viele Zeichen maximal!

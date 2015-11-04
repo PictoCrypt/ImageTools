@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -11,6 +12,44 @@ namespace FunctionLib.Steganography
     public class LeastSignificantBitByMarius : SteganographicAlgorithm
     {
         private readonly int[] mNullPointer = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+        private List<int[]> mTextBytes;
+        private int mCharIndex;
+        private int mBitIndex;
+        private int mSignificantIndicator;
+
+        private int GetNextByte
+        {
+            get
+            {
+                var builder = new StringBuilder();
+                for (var i = 0; i < 8 - mSignificantIndicator; i++)
+                {
+                    builder.Append("0");
+                }
+                builder.Append(GetNextBit);
+                builder.Append(GetNextBit);
+                builder.Append(GetNextBit);
+                var result = Convert.ToInt32(builder.ToString(), 2);
+                return result;
+            }
+        }
+
+        private int GetNextBit
+        {
+            get
+            {
+                if (mBitIndex == 7)
+                {
+                    mCharIndex++;
+                    mBitIndex = 0;
+                }
+                if (mCharIndex > mTextBytes.Count - 1)
+                {
+                    return 0;
+                }
+                return mTextBytes[mCharIndex][mBitIndex++];
+            }
+        }
 
         public override Bitmap Encrypt(Bitmap src, string value, int additionalParam = 3)
         {
@@ -18,54 +57,35 @@ namespace FunctionLib.Steganography
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
 
-            var charIndex = 0;
-            int[] textBytes = null;
-            foreach (var obj in value)
+            mCharIndex = 0;
+            mBitIndex = 0;
+            mSignificantIndicator = additionalParam;
+            // 8 Nullen um das Ende zu erkennen
+            var bytes = MethodHelper.StringToByteArray(value).Select(x => GetByte(x));
+            mTextBytes = new List<int[]>(bytes) {mNullPointer};
+            if (mTextBytes.Sum(textByte => textByte.Length)  % 8 != 0)
             {
-                var charByte = GetByte(obj);
-                if (textBytes == null)
-                    textBytes = charByte;
-                else
-                    textBytes = textBytes.Concat(charByte).ToArray();
+                throw new ArgumentException("Not a valid multiple of 8. (Missing some bits?)");
             }
 
-            // 8 Nullen um das Ende zu erkennen
-            textBytes = textBytes.Concat(mNullPointer).ToArray();
 
-            for (var x = 0; x < lockBitmap.Width; x++)
+            for (var y = 0; y < lockBitmap.Height; y++)
             {
-                for (var y = 0; y < lockBitmap.Height; y++)
+                for (var x = 0; x < lockBitmap.Width; x++)
                 {
                     var pixel = lockBitmap.GetPixel(x, y);
-                    var r = GetByte(pixel.R);
-                    var g = GetByte(pixel.G);
-                    var b = GetByte(pixel.B);
+                    var r = ClearLeastSignificantBit(pixel.R, additionalParam);
+                    var g = ClearLeastSignificantBit(pixel.G, additionalParam);
+                    var b = ClearLeastSignificantBit(pixel.B, additionalParam);
+                    
+                    r = r + GetNextByte;
+                    g = g + GetNextByte;
+                    b = b + GetNextByte;
 
-                    for (var red = 0; red < additionalParam; red++)
-                    {
-                        if (charIndex + 1 < textBytes.Length)
-                        {
-                            r[red + 8 - additionalParam] = textBytes[charIndex++];
-                        }
-                    }
-                    for (var green = 0; green < additionalParam; green++)
-                    {
-                        if (charIndex + 1 < textBytes.Length)
-                        {
-                            g[green + 8 - additionalParam] = textBytes[charIndex++];
-                        }
-                    }
-                    for (var blue = 0; blue < additionalParam; blue++)
-                    {
-                        if (charIndex + 1 < textBytes.Length)
-                        {
-                            b[blue + 8 - additionalParam] = textBytes[charIndex++];
-                        }
-                    }
-                    lockBitmap.SetPixel(x, y, Color.FromArgb(GetInt(r), GetInt(g), GetInt(b)));
+                    lockBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
                     ChangedPixels.Add(new Pixel(x, y));
 
-                    if (charIndex + 1 == textBytes.Length)
+                    if (mCharIndex > mTextBytes.Count - 1 || mCharIndex == mTextBytes.Count - 1 && mBitIndex == 7)
                     {
                         lockBitmap.UnlockBits();
                         return result;
@@ -78,15 +98,20 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        private int GetInt(int[] b)
+        private int ClearLeastSignificantBit(int value, int lsbIndicator)
         {
-            var b1 = new int[8] { 128, 64, 32, 16, 8, 4, 2, 1 };
-            var result = 0;
-            for (var i = 0; i < b.Length; i++)
+            var builder = new StringBuilder();
+            for (var i = 0; i < 8 - lsbIndicator; i++)
             {
-                result += b1[i] * b[i];
+                builder.Append("1");
             }
-            return result;
+            for (var i = 0; i < lsbIndicator; i++)
+            {
+                builder.Append("0");
+            }
+
+            var result = Convert.ToInt32(builder.ToString(), 2);
+            return (value & result);
         }
 
         private int[] GetByte(int number)
@@ -123,55 +148,69 @@ namespace FunctionLib.Steganography
 
         public override string Decrypt(Bitmap src, int additionalParam)
         {
-            var result = new Bitmap(src);
-            var lockBitmap = new LockBitmap(result);
+            var builder = new StringBuilder();
+            var lockBitmap = new LockBitmap(src);
             lockBitmap.LockBits();
 
-            var byteList = new List<int>();
+            mCharIndex = 0;
+            mBitIndex = 0;
+            var listOfBits = new List<int>();
+            mSignificantIndicator = additionalParam;
 
-            for (var x = 0; x < lockBitmap.Width; x++)
+            for (var y = 0; y < lockBitmap.Height; y++)
             {
-                for (var y = 0; y < lockBitmap.Height; y++)
+                for (var x = 0; x < lockBitmap.Width; x++)
                 {
                     var pixel = lockBitmap.GetPixel(x, y);
                     var r = GetByte(pixel.R);
+                    for (var i = r.Length - additionalParam; i < r.Length; i++)
+                    {
+                        listOfBits.Add(r[i]);
+                    }
                     var g = GetByte(pixel.G);
+                    for (var i = g.Length - additionalParam; i < g.Length; i++)
+                    {
+                        listOfBits.Add(g[i]);
+                    }
                     var b = GetByte(pixel.B);
-
-                    for (var red = 0; red < additionalParam; red++)
+                    for (var i = b.Length - additionalParam; i < b.Length; i++)
                     {
-                        byteList.Add(r[red + 8 - additionalParam]);
-                    }
-                    for (var green = 0; green < additionalParam; green++)
-                    {
-                        byteList.Add(g[green + 8 - additionalParam]);
-
-                    }
-                    for (var blue = 0; blue < additionalParam; blue++)
-                    {
-                        byteList.Add(b[blue + 8 - additionalParam]);
+                        listOfBits.Add(b[i]);
                     }
 
-                    var index = IndexOf(byteList, mNullPointer);
-
-                    if (byteList[byteList.Count - 8] == 0)
+                    // Check for End (1 Byte of 0)
+                    var index = IndexOf(listOfBits, mNullPointer);
+                    if (index > -1)
                     {
-                        int zeroCounter = 0;
-                        var end = byteList.GetRange(byteList.Count - 8, 8);
-                        foreach (var count in end)
+                        var rest = index % 8;
+                        var min = index + (8 - rest) + 8;
+                        if (listOfBits.Count >= min)
                         {
-                            if (count == 0)
-                                zeroCounter++;
-                        }
-                        if (zeroCounter == 8)
-                        {
+                            listOfBits.RemoveRange(min, listOfBits.Count - min);
                             lockBitmap.UnlockBits();
-                            return ConvertToString(byteList);
+                            while (listOfBits.Count > 0)
+                            {
+                                var range = listOfBits.GetRange(0, 8);
+                                listOfBits.RemoveRange(0, 8);
+                                builder.Append(GetString(range));
+                            }
+                            return builder.ToString();
                         }
                     }
                 }
             }
-            return null;
+            throw new SystemException("Error, anything happened (or maybe not).");
+        }
+
+        private string GetString(List<int> listOfBits)
+        {
+            var builder = new StringBuilder();
+            foreach (var bit in listOfBits)
+            {
+                builder.Append(bit);
+            }
+            var result = (char) Convert.ToInt32(builder.ToString(), 2);
+            return result.ToString();
         }
 
         public static int IndexOf<T>(IEnumerable<T> collection,
@@ -190,23 +229,6 @@ namespace FunctionLib.Steganography
             return index;
         }
 
-        private string ConvertToString(List<int> byteList)
-        {
-            var builder = new StringBuilder();
-            while (byteList.Count > 0)
-            {
-                var byteArray = byteList.ToArray();
-                var zwischen = new int[8];
-                for (var i = 0; i < 8; i++)
-                {
-                    zwischen[i] = byteArray[i];
-                }
-                byteList.RemoveRange(0, 8);
-                builder.Append((char)GetInt(zwischen));
-                zwischen = new int[8];
-            }
-            return builder.ToString();
-        }
 
         public override string ChangeColor(string srcPath, Color color)
         {
