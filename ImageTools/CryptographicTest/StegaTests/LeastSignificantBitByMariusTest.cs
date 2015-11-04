@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CryptographicTest.StegaTests
 {
     [TestClass]
-    public class LeastSignificantBitTestByMarius : SteganographicAlogithmBaseTestClass
+    public class LeastSignificantBitByMariusTest : SteganographicAlogithmBaseTestClass
     {
         public override Bitmap Encrypt(Bitmap src, string value, int additionalParam)
         {
