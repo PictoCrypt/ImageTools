@@ -12,7 +12,7 @@ namespace FunctionLib.Steganography
     public class LeastSignificantBitByMarius : SteganographicAlgorithm
     {
         private readonly int[] mNullPointer = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
-        private List<int[]> mTextBytes;
+        private List<byte> mTextBytes;
         private int mCharIndex;
         private int mBitIndex;
         private int mSignificantIndicator;
@@ -47,7 +47,7 @@ namespace FunctionLib.Steganography
                 {
                     return 0;
                 }
-                return mTextBytes[mCharIndex][mBitIndex++];
+                return GetByte(mTextBytes[mCharIndex])[mBitIndex++];
             }
         }
 
@@ -61,11 +61,11 @@ namespace FunctionLib.Steganography
             mBitIndex = 0;
             mSignificantIndicator = additionalParam;
             // 8 Nullen um das Ende zu erkennen
-            var bytes = MethodHelper.StringToByteArray(value).Select(x => GetByte(x));
-            mTextBytes = new List<int[]>(bytes) {mNullPointer};
-            if (mTextBytes.Sum(textByte => textByte.Length)  % 8 != 0)
+            mTextBytes = MethodHelper.StringToByteArray(value).ToList();
+            mTextBytes.Add(0);
+            if (mTextBytes.Count != value.Length + 1)
             {
-                throw new ArgumentException("Not a valid multiple of 8. (Missing some bits?)");
+                throw new ArgumentException("Anything failed, maybe.");
             }
 
 
