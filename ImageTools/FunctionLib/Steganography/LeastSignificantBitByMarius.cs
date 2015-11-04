@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -12,51 +13,22 @@ namespace FunctionLib.Steganography
     public class LeastSignificantBitByMarius : SteganographicAlgorithm
     {
         private readonly int[] mNullPointer = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
-        private List<byte> mTextBytes;
-        private int mCharIndex;
-        private int mBitIndex;
         private int mSignificantIndicator;
 
-        /// <summary>
-        /// Gets the bit of this byte on a specific position.
-        /// </summary>
-        /// <param name="b">Byte</param>
-        /// <param name="index">Index. Index of 0 is the most significant bit.</param>
-        /// <returns></returns>
-        private int GetBit(byte b, int index)
-        {
-            var x = Math.Pow(2, 7 - index);
-            var bit = b & Convert.ToByte(x);
-            return bit > 0 ? 1 : 0;
-
-            //var bit = (b & (1 >> index - 1));
-            //return bit;
-        }
-
-        private byte GetByte(byte b, int index)
-        {
-            var builder = new StringBuilder();
-            builder.Append(GetBit(b, index));
-            builder.Append(GetBit(b, index));
-            builder.Append(GetBit(b, index));
-            var result = Convert.ToInt32(builder.ToString(), 2);
-            return Convert.ToByte(result);
-        }
-
-
-        public override Bitmap Encrypt(Bitmap src, string value, int additionalParam = 3)
+        public override Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
 
-            mCharIndex = 0;
-            mBitIndex = 0;
-            mSignificantIndicator = additionalParam;
+            //mSignificantIndicator = significantIndicator;
+            var byteIndex = 0;
+            var bitIndex = 0;
+
+            var bytes = MethodHelper.StringToByteArray(value).ToList();
             // 8 Nullen um das Ende zu erkennen
-            mTextBytes = MethodHelper.StringToByteArray(value).ToList();
-            mTextBytes.Add(0);
-            if (mTextBytes.Count != value.Length + 1)
+            bytes.Add(0);
+            if (bytes.Count != value.Length + 1)
             {
                 throw new ArgumentException("Anything failed, maybe.");
             }
@@ -66,18 +38,18 @@ namespace FunctionLib.Steganography
                 for (var x = 0; x < lockBitmap.Width; x++)
                 {
                     var pixel = lockBitmap.GetPixel(x, y);
-                    var r = ClearLeastSignificantBit(pixel.R, additionalParam);
-                    var g = ClearLeastSignificantBit(pixel.G, additionalParam);
-                    var b = ClearLeastSignificantBit(pixel.B, additionalParam);
+                    var r = ClearLeastSignificantBit(pixel.R, significantIndicator);
+                    var g = ClearLeastSignificantBit(pixel.G, significantIndicator);
+                    var b = ClearLeastSignificantBit(pixel.B, significantIndicator);
                     
-                    r = r + GetByte(mTextBytes[mCharIndex], mBitIndex++);
-                    g = g + GetByte(mTextBytes[mCharIndex], mBitIndex++);
-                    b = b + GetByte(mTextBytes[mCharIndex], mBitIndex++);
+                    r = r + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
+                    g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
+                    b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
 
                     lockBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
                     ChangedPixels.Add(new Pixel(x, y));
 
-                    if (mCharIndex > mTextBytes.Count - 1 || mCharIndex == mTextBytes.Count - 1 && mBitIndex == 7)
+                    if (byteIndex > bytes.Count - 1 || byteIndex == bytes.Count - 1 && bitIndex == 7)
                     {
                         lockBitmap.UnlockBits();
                         return result;
@@ -87,6 +59,53 @@ namespace FunctionLib.Steganography
 
 
             lockBitmap.UnlockBits();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the bit of this byte on a specific position.
+        /// </summary>
+        /// <param name="b">Byte</param>
+        /// <param name="index">Index. Index of 0 is the most significant bit.</param>
+        /// <returns></returns>
+        private int GetBit(byte b, int index)
+        {
+            var builder = new StringBuilder("00000000");
+            builder.Remove(index, 1);
+            builder.Insert(index, 1);
+
+            var result = Convert.ToInt32(builder.ToString(), 2);
+            return (b & result) > 0 ? 1 : 0;
+
+            //var x = Math.Pow(2, 7 - index);
+            //var bit = b & Convert.ToByte(x);
+            //return bit > 0 ? 1 : 0;
+
+            //var bit = (b & (1 >> index - 1));
+            //return bit;
+        }
+
+        private byte CurrentByte(List<byte> b, ref int byteIndex, ref int bitIndex, int significantIndicator)
+        {
+            var builder = new StringBuilder();
+            for (var i = 0; i < significantIndicator; i++)
+            {
+                if (bitIndex == 8)
+                {
+                    byteIndex++;
+                    bitIndex = 0;
+                }
+                if (byteIndex >= b.Count)
+                {
+                    //throw new IndexOutOfRangeException("byteIndex");
+                    return 0;
+                }
+                var bit = GetBit(b[byteIndex], bitIndex++);
+                builder.Append(bit);
+            }
+
+            var result = Convert.ToByte(builder.ToString(), 2);
+            Debug.WriteLine(result);
             return result;
         }
 
@@ -106,36 +125,13 @@ namespace FunctionLib.Steganography
             return (value & result);
         }
 
-        //private int[] GetByte(int number)
-        //{
-        //    var fill = "";
-        //    var binary = Convert.ToString(number, 2);
-        //    if (binary.Length != 8)
-        //    {
-        //        for (var i = 0; i < 8 - binary.Length; i++)
-        //        {
-        //            fill += 0;
-        //        }
-        //        binary = fill + binary;
-        //    }
-        //    var result = new int[8];
-        //    for (var i = 0; i < binary.Length; i++)
-        //    {
-        //        result[i] = int.Parse(binary.Substring(i, 1));
-        //    }
-        //    return result;
-        //}
-
-        public override string Decrypt(Bitmap src, int additionalParam)
+        public override string Decrypt(Bitmap src, int significantIndicator)
         {
-            var builder = new StringBuilder();
             var lockBitmap = new LockBitmap(src);
             lockBitmap.LockBits();
 
-            mCharIndex = 0;
-            mBitIndex = 0;
-            var listOfBits = new List<int>();
-            mSignificantIndicator = additionalParam;
+            var byteList = new List<byte>();
+            var bitHolder = new List<int>();
 
             for (var y = 0; y < lockBitmap.Height; y++)
             {
@@ -143,76 +139,67 @@ namespace FunctionLib.Steganography
                 {
                     var pixel = lockBitmap.GetPixel(x, y);
 
-                    for (var i = 0; i < additionalParam; i++)
+                    for (var i = 0; i < significantIndicator; i++)
                     {
-                        listOfBits.Add(GetBit(pixel.R, additionalParam - 1 - i));
+                        var bit = GetBit(pixel.R, 8 - significantIndicator + i);
+                        bitHolder.Add(bit);
                     }
-                    for (var i = 0; i < additionalParam; i++)
+
+                    for (var i = 0; i < significantIndicator; i++)
                     {
-                        listOfBits.Add(GetBit(pixel.G, additionalParam - 1 - i));
+                        var bit = GetBit(pixel.G, 8 - significantIndicator + i);
+                        bitHolder.Add(bit);
                     }
-                    for (var i = 0; i < additionalParam; i++)
+
+                    for (var i = 0; i < significantIndicator; i++)
                     {
-                        listOfBits.Add(GetBit(pixel.B, additionalParam - 1 - i));
+                        var bit = GetBit(pixel.B, 8 - significantIndicator + i);
+                        bitHolder.Add(bit);
                     }
+
+                    byteList = DecryptHelper(byteList, bitHolder);
 
                     // Check for End (1 Byte of 0)
-                    var index = IndexOf(listOfBits, mNullPointer);
+                    var index = byteList.IndexOf(0);
                     if (index > -1)
                     {
-                        var rest = index % 8;
-                        var min = index + (8 - rest) + 8;
-                        if (listOfBits.Count >= min)
+                        if (byteList.Count - 1 > index)
                         {
-                            listOfBits.RemoveRange(min, listOfBits.Count - min);
-                            lockBitmap.UnlockBits();
-                            var listOfByte = new List<byte>();
-                            var range = listOfBits.GetRange(0, 8);
-                            listOfBits.RemoveRange(0, 8);
-                            var b = GetByte(range);
-                            listOfByte.Add(b);
-
-                            while (listOfByte.Count > 0)
-                            {
-                                builder.Append((char) listOfByte.First());
-                                listOfByte.Remove(listOfByte.First());
-                            }
-                            return builder.ToString();
+                            byteList.RemoveRange(index, byteList.Count);
                         }
+                        byteList.RemoveAt(index);
+                        var builder = new StringBuilder();
+                        while (byteList.Count > 0)
+                        {
+                            var element = byteList.First();
+                            builder.Append((char)element);
+                            byteList.Remove(element);
+                        }
+                        return builder.ToString();
                     }
                 }
             }
             throw new SystemException("Error, anything happened (or maybe not).");
         }
 
-        private byte GetByte(IEnumerable<int> listOfBits)
+        private List<byte> DecryptHelper(List<byte> bytes, List<int> bitHolder)
         {
             var builder = new StringBuilder();
-            foreach (var bit in listOfBits)
+            while (bitHolder.Count >= 8 - builder.Length)
             {
-                builder.Append(bit);
+                var value = bitHolder.First();
+                bitHolder.Remove(value);
+                builder.Append(value);
+                if (builder.Length == 8)
+                {
+                    var result = Convert.ToByte(builder.ToString(), 2);
+                    builder = new StringBuilder();
+                    bytes.Add(result);
+                }
             }
-            var result = Convert.ToInt32(builder.ToString(), 2);
-            return Convert.ToByte(result);
+            return bytes;
         }
-
-        public static int IndexOf<T>(IEnumerable<T> collection,
-                                IEnumerable<T> sequence)
-        {
-            var ccount = collection.Count();
-            var scount = sequence.Count();
-
-            if (scount > ccount) return -1;
-
-            if (collection.Take(scount).SequenceEqual(sequence)) return 0;
-
-            int index = Enumerable.Range(1, ccount - scount + 1)
-                                  .FirstOrDefault(i => collection.Skip(i).Take(scount).SequenceEqual(sequence));
-            if (index == 0) return -1;
-            return index;
-        }
-
-
+        
         public override string ChangeColor(string srcPath, Color color)
         {
             var tmp = Path.GetTempFileName();

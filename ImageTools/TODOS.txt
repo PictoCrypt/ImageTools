@@ -16,3 +16,6 @@ Enum
 
 Stega Algorithmen
 	- Funktion welche zurück gibt, wie viele Zeichen maximal!
+
+Output-Fehler
+	-Output-Errors beheben!
