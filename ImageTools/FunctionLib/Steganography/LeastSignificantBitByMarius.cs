@@ -116,32 +116,20 @@ namespace FunctionLib.Steganography
 
         private int[] GetByte(int number)
         {
-            var rest = number;
-            var result = new int[8] { 128, 64, 32, 16, 8, 4, 2, 1 };
-            var fillBit = false;
-
-            for (var i = 0; i < result.Length; i++)
+            var fill = "";
+            var binary = Convert.ToString(number, 2);
+            if (binary.Length != 8)
             {
-                if (fillBit)
+                for (var i = 0; i < 8 -binary.Length; i++)
                 {
-                    result[i] = 0;
-                    continue;
+                    fill += 0;
                 }
-
-                rest = rest % result[i];
-                if (rest != number)
-                {
-                    result[i] = 1;
-                    if (rest == 0)
-                    {
-                        fillBit = true;
-                        continue;
-                    }
-                }
-                else
-                {
-                    result[i] = 0;
-                }
+                binary = fill + binary;
+            }
+            var result = new int[8];
+            for (var i = 0; i < binary.Length; i++)
+            {
+                result[i] = int.Parse(binary.Substring(i, 1));
             }
             return result;
         }
@@ -209,7 +197,7 @@ namespace FunctionLib.Steganography
             {
                 builder.Append(bit);
             }
-            var result = (char) Convert.ToInt32(builder.ToString(), 2);
+            var result = (char)Convert.ToInt32(builder.ToString(), 2);
             return result.ToString();
         }
 
