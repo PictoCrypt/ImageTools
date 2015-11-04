@@ -17,19 +17,6 @@ namespace FunctionLib.Steganography
         private int mBitIndex;
         private int mSignificantIndicator;
 
-        private int GetNextByte
-        {
-            get
-            {
-                var builder = new StringBuilder();
-                builder.Insert(0, GetNextBit);
-                builder.Insert(0, GetNextBit);
-                builder.Insert(0, GetNextBit);
-                var result = Convert.ToInt32(builder.ToString(), 2);
-                return result;
-            }
-        }
-
         private int GetNextBit
         {
             get
@@ -55,9 +42,25 @@ namespace FunctionLib.Steganography
         /// <returns></returns>
         private int GetBit(byte b, int index)
         {
-            FEHLER
-            var bit = (b & (1 >> index));
-            return bit;
+            var x = Math.Pow(2, 7 - index);
+            var bit = b & Convert.ToByte(x);
+            return bit > 0 ? 1 : 0;
+
+            //var bit = (b & (1 >> index - 1));
+            //return bit;
+        }
+
+        private byte GetByte(byte b, int index)
+        {
+            var builder = new StringBuilder();
+            builder.Append(GetBit(b, index));
+            index++;
+            builder.Append(GetBit(b, index));
+            index++;
+            builder.Append(GetBit(b, index));
+            index++;
+            var result = Convert.ToInt32(builder.ToString(), 2);
+            return Convert.ToByte(result);
         }
 
 
@@ -88,9 +91,9 @@ namespace FunctionLib.Steganography
                     var g = ClearLeastSignificantBit(pixel.G, additionalParam);
                     var b = ClearLeastSignificantBit(pixel.B, additionalParam);
                     
-                    r = r + GetNextByte;
-                    g = g + GetNextByte;
-                    b = b + GetNextByte;
+                    r = r + GetByte(mTextBytes[mCharIndex], mBitIndex);
+                    g = g + GetByte(mTextBytes[mCharIndex], mBitIndex);
+                    b = b + GetByte(mTextBytes[mCharIndex], mBitIndex);
 
                     lockBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
                     ChangedPixels.Add(new Pixel(x, y));
