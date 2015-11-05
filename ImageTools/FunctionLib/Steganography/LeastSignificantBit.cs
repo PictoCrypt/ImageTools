@@ -1,221 +1,205 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Text;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography
 {
     public class LeastSignificantBit : SteganographicAlgorithm
     {
-        public override Bitmap Encrypt(Bitmap src, string value)
+        public override Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
 
-            // initially, we'll be hiding characters in the image
-            var state = State.Hiding;
+            var byteIndex = 0;
+            var bitIndex = 0;
 
-            // holds the index of the character that is being hidden
-            var charIndex = 0;
-
-            // holds the value of the character converted to integer
-            var charValue = 0;
-
-            // holds the index of the color element (R or G or B) that is currently being processed
-            long pixelElementIndex = 0;
-
-            // holds the number of trailing zeros that have been added when finishing the process
-            var zeros = 0;
-
-            // hold pixel elements
-
-            // pass through the rows
-            for (var i = 0; i < lockBitmap.Height; i++)
+            var bytes = MethodHelper.StringToByteArray(value).ToList();
+            // 8 Nullen um das Ende zu erkennen
+            bytes.Add(0);
+            if (bytes.Count != value.Length + 1)
             {
-                // pass through each row
-                for (var j = 0; j < lockBitmap.Width; j++)
+                throw new ArgumentException("Anything failed, maybe.");
+            }
+
+            for (var y = 0; y < lockBitmap.Height; y++)
+            {
+                for (var x = 0; x < lockBitmap.Width; x++)
                 {
-                    // holds the pixel that is currently being processed
-                    var pixel = lockBitmap.GetPixel(j, i);
+                    var pixel = lockBitmap.GetPixel(x, y);
+                    var r = ClearLeastSignificantBit(pixel.R, significantIndicator);
+                    var g = ClearLeastSignificantBit(pixel.G, significantIndicator);
+                    var b = ClearLeastSignificantBit(pixel.B, significantIndicator);
+                    
+                    r = r + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
+                    g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
+                    b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
 
-                    // now, clear the least significant bit (LSB) from each pixel element
-                    var r = pixel.R - pixel.R%2;
-                    var g = pixel.G - pixel.G%2;
-                    var b = pixel.B - pixel.B%2;
+                    lockBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
+                    ChangedPixels.Add(new Pixel(x, y));
 
-                    // for each pixel, pass through its elements (RGB)
-                    for (var n = 0; n < 3; n++)
+                    if (byteIndex > bytes.Count - 1 || byteIndex == bytes.Count - 1 && bitIndex == 7)
                     {
-                        // check if new 8 bits has been processed
-                        if (pixelElementIndex%8 == 0)
-                        {
-                            // check if the whole process has finished
-                            // we can say that it's finished when 8 zeros are added
-                            if (state == State.FillingWithZeros && zeros == 8)
-                            {
-                                // apply the last pixel on the image
-                                // even if only a part of its elements have been affected
-                                if ((pixelElementIndex - 1)%3 < 2)
-                                {
-                                    lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
-                                    ChangedPixels.Add(new Pixel(j, i));
-                                }
-
-                                // return the bitmap with the value hidden in
-                                lockBitmap.UnlockBits();
-                                return result;
-                            }
-
-                            // check if all characters has been hidden
-                            if (charIndex >= value.Length)
-                            {
-                                // start adding zeros to mark the end of the value
-                                state = State.FillingWithZeros;
-                            }
-                            else
-                            {
-                                // move to the next character and process again
-                                charValue = value[charIndex++];
-                            }
-                        }
-
-                        // check which pixel element has the turn to hide a bit in its LSB
-                        switch (pixelElementIndex%3)
-                        {
-                            case 0:
-                            {
-                                if (state == State.Hiding)
-                                {
-                                    // the rightmost bit in the character will be (charValue % 2)
-                                    // to put this value instead of the LSB of the pixel element
-                                    // just add it to it
-                                    // recall that the LSB of the pixel element had been cleared
-                                    // before this operation
-                                    r += charValue%2;
-
-                                    // removes the added rightmost bit of the character
-                                    // such that next time we can reach the next one
-                                    charValue /= 2;
-                                }
-                            }
-                                break;
-                            case 1:
-                            {
-                                if (state == State.Hiding)
-                                {
-                                    g += charValue%2;
-
-                                    charValue /= 2;
-                                }
-                            }
-                                break;
-                            case 2:
-                            {
-                                if (state == State.Hiding)
-                                {
-                                    b += charValue%2;
-
-                                    charValue /= 2;
-                                }
-
-                                lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
-                                ChangedPixels.Add(new Pixel(j, i));
-                            }
-                                break;
-                        }
-
-                        pixelElementIndex++;
-
-                        if (state == State.FillingWithZeros)
-                        {
-                            // increment the value of zeros until it is 8
-                            zeros++;
-                        }
+                        lockBitmap.UnlockBits();
+                        return result;
                     }
                 }
             }
+
+
             lockBitmap.UnlockBits();
             return result;
         }
 
-        public override string Decrypt(Bitmap src)
+        /// <summary>
+        /// Gets the bit of this byte on a specific position.
+        /// </summary>
+        /// <param name="b">Byte</param>
+        /// <param name="index">Index. Index of 0 is the most significant bit.</param>
+        /// <returns></returns>
+        private int GetBit(byte b, int index)
         {
-            var lockBitmap = new LockBitmap(new Bitmap(src));
+            var builder = new StringBuilder("00000000");
+            builder.Remove(index, 1);
+            builder.Insert(index, 1);
+
+            var result = Convert.ToInt32(builder.ToString(), 2);
+            return (b & result) > 0 ? 1 : 0;
+
+            //var x = Math.Pow(2, 7 - index);
+            //var bit = b & Convert.ToByte(x);
+            //return bit > 0 ? 1 : 0;
+
+            //var bit = (b & (1 >> index - 1));
+            //return bit;
+        }
+
+        private byte CurrentByte(List<byte> b, ref int byteIndex, ref int bitIndex, int significantIndicator)
+        {
+            var builder = new StringBuilder();
+            for (var i = 0; i < significantIndicator; i++)
+            {
+                if (bitIndex == 8)
+                {
+                    byteIndex++;
+                    bitIndex = 0;
+                }
+                if (byteIndex >= b.Count)
+                {
+                    return 0;
+                }
+                var bit = GetBit(b[byteIndex], bitIndex++);
+                builder.Append(bit);
+            }
+
+            var result = Convert.ToByte(builder.ToString(), 2);
+            return result;
+        }
+
+        private int ClearLeastSignificantBit(int value, int lsbIndicator)
+        {
+            var builder = new StringBuilder();
+            for (var i = 0; i < 8 - lsbIndicator; i++)
+            {
+                builder.Append("1");
+            }
+            for (var i = 0; i < lsbIndicator; i++)
+            {
+                builder.Append("0");
+            }
+
+            var result = Convert.ToInt32(builder.ToString(), 2);
+            return (value & result);
+        }
+
+        public override string Decrypt(Bitmap src, int significantIndicator)
+        {
+            var lockBitmap = new LockBitmap(src);
             lockBitmap.LockBits();
 
-            var colorUnitIndex = 0;
-            var charValue = 0;
+            var byteList = new List<byte>();
+            var bitHolder = new List<int>();
 
-            // holds the value that will be extracted from the image
-            var result = string.Empty;
-
-            // pass through the rows
-            for (var i = 0; i < lockBitmap.Height; i++)
+            for (var y = 0; y < lockBitmap.Height; y++)
             {
-                // pass through each row
-                for (var j = 0; j < lockBitmap.Width; j++)
+                for (var x = 0; x < lockBitmap.Width; x++)
                 {
-                    var pixel = lockBitmap.GetPixel(j, i);
+                    var pixel = lockBitmap.GetPixel(x, y);
 
-                    // for each pixel, pass through its elements (RGB)
-                    for (var n = 0; n < 3; n++)
+                    for (var i = 0; i < significantIndicator; i++)
                     {
-                        switch (colorUnitIndex%3)
+                        var bit = GetBit(pixel.R, 8 - significantIndicator + i);
+                        bitHolder.Add(bit);
+                    }
+
+                    for (var i = 0; i < significantIndicator; i++)
+                    {
+                        var bit = GetBit(pixel.G, 8 - significantIndicator + i);
+                        bitHolder.Add(bit);
+                    }
+
+                    for (var i = 0; i < significantIndicator; i++)
+                    {
+                        var bit = GetBit(pixel.B, 8 - significantIndicator + i);
+                        bitHolder.Add(bit);
+                    }
+
+                    byteList = DecryptHelper(byteList, bitHolder);
+
+                    // Check for End (1 Byte of 0)
+                    var index = byteList.IndexOf(0);
+                    if (index > -1)
+                    {
+                        if (byteList.Count - 1 > index)
                         {
-                            case 0:
-                            {
-                                // get the LSB from the pixel element (will be pixel.R % 2)
-                                // then add one bit to the right of the current character
-                                // this can be done by (charValue = charValue * 2)
-                                // replace the added bit (which value is by default 0) with
-                                // the LSB of the pixel element, simply by addition
-                                charValue = charValue*2 + pixel.R%2;
-                            }
-                                break;
-                            case 1:
-                            {
-                                charValue = charValue*2 + pixel.G%2;
-                            }
-                                break;
-                            case 2:
-                            {
-                                charValue = charValue*2 + pixel.B%2;
-                            }
-                                break;
+                            byteList.RemoveRange(index, byteList.Count);
                         }
-
-                        colorUnitIndex++;
-
-                        // if 8 bits has been added,
-                        // then add the current character to the result value
-                        if (colorUnitIndex%8 == 0)
+                        byteList.RemoveAt(index);
+                        var builder = new StringBuilder();
+                        while (byteList.Count > 0)
                         {
-                            // reverse? of course, since each time the process occurs
-                            // on the right (for simplicity)
-                            charValue = ReverseBits(charValue);
-
-                            // can only be 0 if it is the stop character (the 8 zeros)
-                            if (charValue == 0)
-                            {
-                                return result;
-                            }
-
-                            // convert the character value from int to char
-                            var c = (char) charValue;
-
-                            // add the current character to the result value
-                            result += c.ToString();
+                            var element = byteList.First();
+                            builder.Append((char)element);
+                            byteList.Remove(element);
                         }
+                        return builder.ToString();
                     }
                 }
             }
-
-            lockBitmap.UnlockBits();
-            return result;
+            throw new SystemException("Error, anything happened (or maybe not).");
         }
 
+        /// <summary>
+        /// Summarizing 8 bits to 1 byte and adding to the bytes list.
+        /// </summary>
+        /// <param name="bytes">List for holding the ended bytes.</param>
+        /// <param name="bitHolder">List for holding the bits.</param>
+        /// <returns></returns>
+        private List<byte> DecryptHelper(List<byte> bytes, ICollection<int> bitHolder)
+        {
+            var builder = new StringBuilder();
+            while (bitHolder.Count >= 8 - builder.Length)
+            {
+                var value = bitHolder.First();
+                bitHolder.Remove(value);
+                builder.Append(value);
+                if (builder.Length == 8)
+                {
+                    var result = Convert.ToByte(builder.ToString(), 2);
+                    builder = new StringBuilder();
+                    bytes.Add(result);
+                }
+            }
+            return bytes;
+        }
+        
         public override string ChangeColor(string srcPath, Color color)
         {
             var tmp = Path.GetTempFileName();
@@ -229,25 +213,5 @@ namespace FunctionLib.Steganography
             File.Copy(dest, tmp, true);
             return tmp;
         }
-
-        private static int ReverseBits(int n)
-        {
-            var result = 0;
-
-            for (var i = 0; i < 8; i++)
-            {
-                result = result*2 + n%2;
-
-                n /= 2;
-            }
-
-            return result;
-        }
-
-        private enum State
-        {
-            Hiding,
-            FillingWithZeros
-        };
     }
 }

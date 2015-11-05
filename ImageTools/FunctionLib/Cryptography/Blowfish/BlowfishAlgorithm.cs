@@ -12,415 +12,384 @@ using System.Security.Cryptography;
 
 namespace FunctionLib.Cryptography.Blowfish
 {
-	public class BlowfishAlgorithm : SymmetricAlgorithm, ICryptoTransform
-	{
-		// in factory mode the Blowfish instances are always null,
-		// they get only initialized in transformation mode
+    public class BlowfishAlgorithm : SymmetricAlgorithm, ICryptoTransform
+    {
+        // in factory mode the Blowfish instances are always null,
+        // they get only initialized in transformation mode
 
-		Blowfish m_bf;
-		BlowfishCBC m_bfc;
-		bool m_blIsEncryptor;
-
-
-		// factory settings
-
-		RNGCryptoServiceProvider m_rng;
-
-		/// <summary>
-		/// constructor
-		/// </summary>
-		public BlowfishAlgorithm() : base()
-		{
-			m_bf = null;
-			m_bfc = null;
-
-			// FIXME: are we supposed to create a default key and IV?
-			IVValue = null;
-			KeyValue = null;
-			KeySizeValue = Blowfish.MAXKEYLENGTH * 8;
-
-			LegalBlockSizesValue = new KeySizes[1];
-			LegalBlockSizesValue[0] = new KeySizes(BlockSize, BlockSize, 8);
-
-			LegalKeySizesValue = new KeySizes[1];
-			LegalKeySizesValue[0] = new KeySizes(0, Blowfish.MAXKEYLENGTH * 8, 8);
-
-			ModeValue = CipherMode.ECB;
-
-			m_rng = null;
-		}
-
-		BlowfishAlgorithm
-			(
-			byte[] key,
-			byte[] iv,
-			bool blCBC,
-			bool blIsEncryptor
-			)
-		{
-			if (null == key) GenerateKey(); else Key = key;
- 
-			if (blCBC)
-			{
-			    if (null == iv) GenerateIV(); else IV = iv;
-
-				m_bf = null;
-				m_bfc = new BlowfishCBC(KeyValue, IVValue);
-			}
-			else
-			{
-				m_bf = new Blowfish(KeyValue);
-				m_bfc = null;
-			}
-			
-			m_blIsEncryptor = blIsEncryptor;
-		}
+        private readonly Blowfish m_bf;
+        private readonly BlowfishCBC m_bfc;
+        private readonly bool m_blIsEncryptor;
 
 
-		/// <summary>
-		/// checks if a key is weak (and perhaps shouldn't be used)
-		/// </summary>
-		/// <param name="key">
-		/// the key material to test against
-		/// </param>
-		/// <returns>
-		/// true: key is "weak" / false: key passed the test
-		/// </returns>
-		public static bool IsWeakKey
-			(byte[] key)
-		{
-			BlowfishAlgorithm bfAlg = new BlowfishAlgorithm(key, null, false, true);
-			
-			return bfAlg.m_bf.IsWeakKey;
-		}
+        // factory settings
+
+        private RNGCryptoServiceProvider m_rng;
+
+        /// <summary>
+        ///     constructor
+        /// </summary>
+        public BlowfishAlgorithm()
+        {
+            m_bf = null;
+            m_bfc = null;
+
+            // FIXME: are we supposed to create a default key and IV?
+            IVValue = null;
+            KeyValue = null;
+            KeySizeValue = Blowfish.MAXKEYLENGTH*8;
+
+            LegalBlockSizesValue = new KeySizes[1];
+            LegalBlockSizesValue[0] = new KeySizes(BlockSize, BlockSize, 8);
+
+            LegalKeySizesValue = new KeySizes[1];
+            LegalKeySizesValue[0] = new KeySizes(0, Blowfish.MAXKEYLENGTH*8, 8);
+
+            ModeValue = CipherMode.ECB;
+
+            m_rng = null;
+        }
+
+        private BlowfishAlgorithm
+            (
+            byte[] key,
+            byte[] iv,
+            bool blCBC,
+            bool blIsEncryptor
+            )
+        {
+            if (null == key) GenerateKey();
+            else Key = key;
+
+            if (blCBC)
+            {
+                if (null == iv) GenerateIV();
+                else IV = iv;
+
+                m_bf = null;
+                m_bfc = new BlowfishCBC(KeyValue, IVValue);
+            }
+            else
+            {
+                m_bf = new Blowfish(KeyValue);
+                m_bfc = null;
+            }
+
+            m_blIsEncryptor = blIsEncryptor;
+        }
 
 
-		// SymmetricAlgorithm ...
+        // SymmetricAlgorithm ...
 
 
-		/// <summary>
-		/// the Blowfish block size, can only be set to the same value
-		/// </summary>
-		public override int BlockSize
-		{
-			get
-			{
-				return Blowfish.BLOCKSIZE * 8;
-			}
-			set
-			{
-				// (we only support 64bit block sizes, although Blowfish is
-				//  also thinkable with 128bit blocks or even more)
-				if (value != Blowfish.BLOCKSIZE * 8)
-				{
-					throw new CryptographicException("illegal blocksize");
-				}
-			}
-		}
+        /// <summary>
+        ///     the Blowfish block size, can only be set to the same value
+        /// </summary>
+        public override int BlockSize
+        {
+            get { return Blowfish.BLOCKSIZE*8; }
+            set
+            {
+                // (we only support 64bit block sizes, although Blowfish is
+                //  also thinkable with 128bit blocks or even more)
+                if (value != Blowfish.BLOCKSIZE*8)
+                {
+                    throw new CryptographicException("illegal blocksize");
+                }
+            }
+        }
 
-		/// <summary>
-		/// the initialization vector, used in the factory
-		/// </summary>
-		public override byte[] IV
-		{
-			get
-			{
-				return IVValue;
-			}
-			set
-			{
-				if (null == value) 
-				{
-					throw new ArgumentNullException();
-				}
-				if (value.Length != Blowfish.BLOCKSIZE) 
-				{
-					throw new CryptographicException("illegal IV length");
-				}
-				IVValue = value;
-			}
-		}
+        /// <summary>
+        ///     the initialization vector, used in the factory
+        /// </summary>
+        public override byte[] IV
+        {
+            get { return IVValue; }
+            set
+            {
+                if (null == value)
+                {
+                    throw new ArgumentNullException();
+                }
+                if (value.Length != Blowfish.BLOCKSIZE)
+                {
+                    throw new CryptographicException("illegal IV length");
+                }
+                IVValue = value;
+            }
+        }
 
-		/// <summary>
-		/// the key, used in the factory
-		/// </summary>
-		public override byte[] Key
-		{
-			get
-			{
-				return KeyValue;
-			}
-			set
-			{
-				if (null == value) 
-				{
-					throw new ArgumentNullException("key cannot be null");
-				}
-				// FIXME: according to the documentation we don't validate the
-				//        key, can this be correct? additionally it is confusing
-				//        because the key size can actually be changed, so what
-				//        happens then to the key material already set?
-				KeyValue = value;
-			}
-		}
+        /// <summary>
+        ///     the key, used in the factory
+        /// </summary>
+        public override byte[] Key
+        {
+            get { return KeyValue; }
+            set
+            {
+                if (null == value)
+                {
+                    throw new ArgumentNullException("key cannot be null");
+                }
+                // FIXME: according to the documentation we don't validate the
+                //        key, can this be correct? additionally it is confusing
+                //        because the key size can actually be changed, so what
+                //        happens then to the key material already set?
+                KeyValue = value;
+            }
+        }
 
-		/// <summary>
-		/// the key length (for auto generation only)
-		/// </summary>
-		public override int KeySize
-		{
-			get
-			{
-				return KeySizeValue;
-			}
-			set
-			{
-				KeySizes ks = LegalKeySizes[0];
-				if ((0 != (value % ks.SkipSize)) ||
-					(value > ks.MaxSize) ||
-					(value < ks.MinSize))
-				{
-					throw new CryptographicException("invalid key size");
-				}
-				KeySizeValue = value;
-			}
-		}
+        /// <summary>
+        ///     the key length (for auto generation only)
+        /// </summary>
+        public override int KeySize
+        {
+            get { return KeySizeValue; }
+            set
+            {
+                var ks = LegalKeySizes[0];
+                if ((0 != (value%ks.SkipSize)) ||
+                    (value > ks.MaxSize) ||
+                    (value < ks.MinSize))
+                {
+                    throw new CryptographicException("invalid key size");
+                }
+                KeySizeValue = value;
+            }
+        }
 
-		public override KeySizes[] LegalBlockSizes
-		{
-			get
-			{
-				return LegalBlockSizesValue;
-			}
-		}
-	
-		public override KeySizes[] LegalKeySizes
-		{
-			get
-			{
-				return LegalKeySizesValue;
-			}
-		}
+        public override KeySizes[] LegalBlockSizes
+        {
+            get { return LegalBlockSizesValue; }
+        }
 
-		public override CipherMode Mode
-		{
-			get
-			{
-				return ModeValue;
-			}
-			set
-			{
-				// FIXME: we only support ECB and CBC, so is it ok
-				//        to raise an exception even if the requested
-				//        mode itself is a valid one?
-				if (value != CipherMode.CBC &&
-					value != CipherMode.ECB)
-				{
-					throw new CryptographicException("only ECB and CBC are supported");
-				}
-				ModeValue = value;
-			}
-		}
+        public override KeySizes[] LegalKeySizes
+        {
+            get { return LegalKeySizesValue; }
+        }
 
-		// the factory methods are just simple mappings to the private constructors
+        public override CipherMode Mode
+        {
+            get { return ModeValue; }
+            set
+            {
+                // FIXME: we only support ECB and CBC, so is it ok
+                //        to raise an exception even if the requested
+                //        mode itself is a valid one?
+                if (value != CipherMode.CBC &&
+                    value != CipherMode.ECB)
+                {
+                    throw new CryptographicException("only ECB and CBC are supported");
+                }
+                ModeValue = value;
+            }
+        }
 
-		public override ICryptoTransform CreateEncryptor
-			(
-			byte[] key,
-			byte[] iv
-			)
-		{
-			BlowfishAlgorithm result = new BlowfishAlgorithm(
-				key, 
-				iv, 
-				(CipherMode.CBC == ModeValue),
-				true);
+        // ICryptoTransform ...
 
-			result.Padding = Padding;
-			return result;
-		}
+        public bool CanReuseTransform
+        {
+            get { return true; }
+        }
 
-		public override ICryptoTransform CreateDecryptor
-			(
-			byte[] key,
-			byte[] iv
-			)
-		{
-			BlowfishAlgorithm result = new BlowfishAlgorithm(
-				key, 
-				iv, 
-				(CipherMode.CBC == ModeValue),
-				false);
+        public bool CanTransformMultipleBlocks
+        {
+            get { return true; }
+        }
 
-			result.Padding = Padding;
-			return result;
-		}
+        public int InputBlockSize
+        {
+            get { return Blowfish.BLOCKSIZE; }
+        }
 
-		// FIXME: is our generator strategy here good enough?
-		//        (and why does the base class actually not offer a decent default?)
+        public int OutputBlockSize
+        {
+            get { return Blowfish.BLOCKSIZE; }
+        }
 
-		public override void GenerateKey()
-		{
-			if (null == m_rng) m_rng = new RNGCryptoServiceProvider();
-			
-			KeyValue = new byte[KeySizeValue / 8];
-			m_rng.GetBytes(KeyValue);		
-		}
+        public int TransformBlock
+            (
+            byte[] bufIn,
+            int nOfsIn,
+            int nCount,
+            byte[] bufOut,
+            int nOfsOut
+            )
+        {
+            // NOTE: we assume that the caller understands the meaning of
+            //	     this method and that only even byte boundaries are
+            //       given, thus we do not cache any data left internally
 
-		public override void GenerateIV()
-		{
-			if (null == m_rng) m_rng = new RNGCryptoServiceProvider();
-			
-			IVValue = new byte[Blowfish.BLOCKSIZE];
-			m_rng.GetBytes(IVValue);		
-		}
+            var nResult = 0;
 
-		// ICryptoTransform ...
+            if (null != m_bfc)
+            {
+                if (m_blIsEncryptor)
+                {
+                    nResult = m_bfc.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+                else
+                {
+                    nResult = m_bfc.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+            }
+            else if (null != m_bf)
+            {
+                if (m_blIsEncryptor)
+                {
+                    nResult = m_bf.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+                else
+                {
+                    nResult = m_bf.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+            }
+            else
+            {
+                nResult = 0;
+            }
 
-		public bool CanReuseTransform
-		{
-			get
-			{
-				return true;
-			}
-		}
+            return nResult*Blowfish.BLOCKSIZE;
+        }
 
-		public bool CanTransformMultipleBlocks
-		{
-			get
-			{
-				return true;
-			}
-		}
+        public byte[] TransformFinalBlock
+            (
+            byte[] inBuf,
+            int nOfs,
+            int nCount
+            )
+        {
+            byte[] result;
 
-		public int InputBlockSize
-		{
-			get
-			{
-				return Blowfish.BLOCKSIZE;
-			}
-		}
+            if (m_blIsEncryptor)
+            {
+                // we need to take over whatever we got, pad it with the right
+                // scheme and then encrypt or decrypt it
 
-		public int OutputBlockSize
-		{
-			get
-			{
-				return Blowfish.BLOCKSIZE;
-			}
-		}
+                var nRest = nCount%Blowfish.BLOCKSIZE;
 
-		public int TransformBlock
-			(
-			byte[] bufIn,
-			int nOfsIn,
-			int nCount,
-			byte[] bufOut,
-			int nOfsOut
-			)
-		{
-			// NOTE: we assume that the caller understands the meaning of
-			//	     this method and that only even byte boundaries are
-			//       given, thus we do not cache any data left internally
+                // NOTE: the padding schemes may result into different data length,
+                //       while zero padding just fills up the last block PKCS7 might
+                //       need an extra block to store its length information
 
-			int nResult = 0;
+                var nBufSize = nCount - nRest;
+                int nFill;
 
-			if (null != m_bfc)
-			{
-				if (m_blIsEncryptor)
-				{
-					nResult = m_bfc.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
-				}
-				else
-				{
-					nResult = m_bfc.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
-				}
-			}
-			else if (null != m_bf)
-			{
-				if (m_blIsEncryptor)
-				{
-					nResult = m_bf.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
-				}
-				else
-				{
-					nResult = m_bf.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
-				}
-			}
-			else
-			{
-				nResult = 0;
-			}
+                if (PaddingMode.PKCS7 == PaddingValue)
+                {
+                    nBufSize += Blowfish.BLOCKSIZE;
+                    nFill = Blowfish.BLOCKSIZE - nRest;
+                }
+                else
+                {
+                    if (0 < nRest) nBufSize += Blowfish.BLOCKSIZE;
+                    nFill = 0;
+                }
 
-			return nResult * Blowfish.BLOCKSIZE;
-		}
+                result = new byte[nBufSize];
+                Array.Copy(inBuf, nOfs, result, 0, nCount);
 
-		public byte[] TransformFinalBlock
-			(
-			byte[] inBuf,
-			int nOfs,
-			int nCount
-			)
-		{
-			byte[] result;
+                for (var nI = nCount; nI < nBufSize; nI++)
+                {
+                    result[nI] = (byte) nFill;
+                }
 
-			if (m_blIsEncryptor)
-			{
-				// we need to take over whatever we got, pad it with the right
-				// scheme and then encrypt or decrypt it
+                TransformBlock(result, 0, nBufSize, result, 0);
+            }
+            else
+            {
+                var lastBlocks = new byte[nCount];
+                if (0 < nCount)
+                {
+                    TransformBlock(inBuf, nOfs, nCount, lastBlocks, 0);
 
-				int nRest = nCount % Blowfish.BLOCKSIZE;
+                    if (PaddingMode.PKCS7 == PaddingValue)
+                    {
+                        nCount -= lastBlocks[nCount - 1];
+                    }
 
-				// NOTE: the padding schemes may result into different data length,
-				//       while zero padding just fills up the last block PKCS7 might
-				//       need an extra block to store its length information
+                    result = new byte[nCount];
+                    Array.Copy(lastBlocks, 0, result, 0, nCount);
+                }
+                else
+                {
+                    // (that will be an empty array)
+                    result = lastBlocks;
+                }
+            }
 
-				int nBufSize = nCount - nRest;
-				int nFill;  
+            return result;
+        }
 
-				if (PaddingMode.PKCS7 == PaddingValue)
-				{
-					nBufSize += Blowfish.BLOCKSIZE;
-					nFill = Blowfish.BLOCKSIZE - nRest;
-				}
-				else
-				{
-					if (0 < nRest) nBufSize += Blowfish.BLOCKSIZE;
-					nFill = 0;
-				}
 
-				result = new byte[nBufSize];
-				Array.Copy(inBuf, nOfs, result, 0, nCount);
-            
-				for (int nI = nCount; nI < nBufSize; nI++)
-				{
-					result[nI] = (byte)nFill;
-				}
+        /// <summary>
+        ///     checks if a key is weak (and perhaps shouldn't be used)
+        /// </summary>
+        /// <param name="key">
+        ///     the key material to test against
+        /// </param>
+        /// <returns>
+        ///     true: key is "weak" / false: key passed the test
+        /// </returns>
+        public static bool IsWeakKey
+            (byte[] key)
+        {
+            var bfAlg = new BlowfishAlgorithm(key, null, false, true);
 
-				TransformBlock(result, 0, nBufSize, result, 0);
-			}
-			else
-			{
-				byte[] lastBlocks = new byte[nCount];
-				if (0 < nCount)
-				{
-					TransformBlock(inBuf, nOfs, nCount, lastBlocks, 0);
-					
-					if (PaddingMode.PKCS7 == PaddingValue)
-					{
-					  nCount -= lastBlocks[nCount - 1];
-					}
-					
-					result = new byte[nCount];
-					Array.Copy(lastBlocks, 0, result, 0, nCount);
-				}
-				else
-				{
-					// (that will be an empty array)
-					result = lastBlocks;
-				}			
-			}
+            return bfAlg.m_bf.IsWeakKey;
+        }
 
-			return result;
-		}
-	}
+        // the factory methods are just simple mappings to the private constructors
+
+        public override ICryptoTransform CreateEncryptor
+            (
+            byte[] key,
+            byte[] iv
+            )
+        {
+            var result = new BlowfishAlgorithm(
+                key,
+                iv,
+                (CipherMode.CBC == ModeValue),
+                true);
+
+            result.Padding = Padding;
+            return result;
+        }
+
+        public override ICryptoTransform CreateDecryptor
+            (
+            byte[] key,
+            byte[] iv
+            )
+        {
+            var result = new BlowfishAlgorithm(
+                key,
+                iv,
+                (CipherMode.CBC == ModeValue),
+                false);
+
+            result.Padding = Padding;
+            return result;
+        }
+
+        // FIXME: is our generator strategy here good enough?
+        //        (and why does the base class actually not offer a decent default?)
+
+        public override void GenerateKey()
+        {
+            if (null == m_rng) m_rng = new RNGCryptoServiceProvider();
+
+            KeyValue = new byte[KeySizeValue/8];
+            m_rng.GetBytes(KeyValue);
+        }
+
+        public override void GenerateIV()
+        {
+            if (null == m_rng) m_rng = new RNGCryptoServiceProvider();
+
+            IVValue = new byte[Blowfish.BLOCKSIZE];
+            m_rng.GetBytes(IVValue);
+        }
+    }
 }

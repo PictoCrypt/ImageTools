@@ -1,17 +1,16 @@
 ﻿using System.Drawing;
 using System.IO;
-using System.Windows;
-using System.Windows.Input;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using Microsoft.Win32;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {
     public class DecryptController : BaseTabController<BaseTabViewModel>
     {
-        public DecryptController(string viewName, bool textBoxReadOnly) : base(viewName, textBoxReadOnly)
+        public DecryptController(MainController mainController, string viewName, bool textBoxReadOnly) : base(mainController, viewName, textBoxReadOnly)
         {
         }
 
@@ -35,20 +34,25 @@ namespace ImageToolApp.Controllers
 
         private void Decrypt()
         {
-            Application.Current.MainWindow.Cursor = Cursors.Wait;
-            string result;
-            using (var bitmap = new Bitmap(ViewModel.ImagePath))
+            using (var handler = new HandleJobController(ProgressRing))
             {
-                result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap);
-            }
+                handler.Progress(() =>
+                {
+                    string result;
+                    using (var bitmap = new Bitmap(ViewModel.ImagePath))
+                    {
+                        result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, ViewModel.NumericUpDownValue);
+                    }
 
-            if (ViewModel.EncryptedCheck)
-            {
-                result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result, ViewModel.Password);
-            }
+                    if (ViewModel.EncryptedCheck)
+                    {
+                        result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result,
+                            ViewModel.Password);
+                    }
 
-            ViewModel.Text = result;
-            Application.Current.MainWindow.Cursor = Cursors.Arrow;
+                    ViewModel.Text = result;                    
+                });
+            }
         }
     }
 }

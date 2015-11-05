@@ -2,21 +2,15 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest
+namespace CryptographicTest.CryptTests
 {
     public abstract class SymmetricAlgorithmBaseTestClass : ISymmetricAlgorithmBaseTestClass
     {
+        private TimeSpan mDecryptionTime;
+        private TimeSpan mEncryptionTime;
         //TODO: Falschtests
 
         private Stopwatch mStopwatch;
-        private TimeSpan mEncryptionTime;
-        private TimeSpan mDecryptionTime;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            mStopwatch = new Stopwatch();
-        }
 
         [TestMethod]
         public void NormalEncryptionTest()
@@ -42,9 +36,19 @@ namespace CryptographicTest
             WriteToOutput();
         }
 
+        public abstract string Encrypt(string value, string password);
+
+        public abstract string Decrypt(string value, string password);
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            mStopwatch = new Stopwatch();
+        }
+
         private void WriteToOutput()
         {
-            Trace.WriteLine(this.GetType() + "- TEST");
+            Trace.WriteLine(GetType() + "- TEST");
             Trace.WriteLine("Encryption-Time: " + mEncryptionTime);
             Trace.WriteLine("Decryption-Time: " + mDecryptionTime);
             Trace.WriteLine("");
@@ -71,9 +75,5 @@ namespace CryptographicTest
             Assert.IsFalse(string.IsNullOrEmpty(encrypted));
             return encrypted;
         }
-
-        public abstract string Encrypt(string value, string password);
-
-        public abstract string Decrypt(string value, string password);
     }
 }

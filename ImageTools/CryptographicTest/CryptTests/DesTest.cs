@@ -1,9 +1,8 @@
-﻿using System.Security.Cryptography;
-using FunctionLib;
+﻿using FunctionLib;
 using FunctionLib.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest
+namespace CryptographicTest.CryptTests
 {
     [TestClass]
     public class DesTest : SymmetricAlgorithmBaseTestClass

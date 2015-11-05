@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace CryptographicTest
+﻿namespace CryptographicTest.CryptTests
 {
     public interface ISymmetricAlgorithmBaseTestClass
     {

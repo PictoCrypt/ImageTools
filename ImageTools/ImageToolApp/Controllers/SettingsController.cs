@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {
@@ -59,7 +60,7 @@ namespace ImageToolApp.Controllers
             var result = mView.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                SettingsModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(), 
+                SettingsModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(),
                     mViewModel.SelectedSteganographicMethod.ToString(), mViewModel.StandardPath);
                 return true;
             }

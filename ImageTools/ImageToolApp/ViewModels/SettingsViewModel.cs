@@ -1,15 +1,17 @@
-﻿using FunctionLib;
+﻿using System.Collections.ObjectModel;
+using FunctionLib;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
         private UICommand mCancelCommand;
+        private UICommand mChoosePathCommand;
         private string mPassword;
         private UICommand mSaveCommand;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
-        private UICommand mChoosePathCommand;
         private string mStandardPath;
 
         public SettingsViewModel()
@@ -69,6 +71,16 @@ namespace ImageToolApp.ViewModels
                 }
                 mSelectedSteganographicMethod = value;
             }
+        }
+
+        public ObservableCollection<EncryptionMethod> EncryptionMethods
+        {
+            get { return SettingsModel.EncryptionMethods; }
+        }
+
+        public ObservableCollection<SteganographicMethod> SteganographicMethods
+        {
+            get { return SettingsModel.SteganographicMethods; }
         }
 
         public UICommand SaveCommand

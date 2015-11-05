@@ -2,26 +2,26 @@
 using System.Threading;
 using System.Windows.Input;
 
-namespace ImageToolApp
+namespace UserControlClassLibrary
 {
-    public delegate void IdeskCommandExecuteDelegate(object parameter);
+    public delegate void CommandExecuteDelegate(object parameter);
 
-    public delegate bool IdeskCommandCanExecuteDelegate(object parameter);
+    public delegate bool CommandCanExecuteDelegate(object parameter);
 
-    public delegate void IdeskCommandNoParamExecuteDelegate();
+    public delegate void CommandNoParamExecuteDelegate();
 
-    public delegate bool IdeskCommandNoParamCanExecuteDelegate();
+    public delegate bool CommandNoParamCanExecuteDelegate();
 
     public class UICommand : ICommand
     {
-        private readonly IdeskCommandCanExecuteDelegate mActionCanExecute;
-        private readonly IdeskCommandExecuteDelegate mActionExecute;
-        private readonly IdeskCommandNoParamCanExecuteDelegate mActionNoParamCanExecute;
-        private readonly IdeskCommandNoParamExecuteDelegate mActionNoParamExecute;
+        private readonly CommandCanExecuteDelegate mActionCanExecute;
+        private readonly CommandExecuteDelegate mActionExecute;
+        private readonly CommandNoParamCanExecuteDelegate mActionNoParamCanExecute;
+        private readonly CommandNoParamExecuteDelegate mActionNoParamExecute;
         private readonly bool mStartInThread;
 
         private UICommand
-            (IdeskCommandExecuteDelegate actionExecute, IdeskCommandCanExecuteDelegate actionCanExecute = null,
+            (CommandExecuteDelegate actionExecute, CommandCanExecuteDelegate actionCanExecute = null,
                 bool startInThread = false)
         {
             mActionExecute = actionExecute;
@@ -30,8 +30,8 @@ namespace ImageToolApp
         }
 
         private UICommand
-            (IdeskCommandNoParamExecuteDelegate actionExecute,
-                IdeskCommandNoParamCanExecuteDelegate actionCanExecute = null,
+            (CommandNoParamExecuteDelegate actionExecute,
+                CommandNoParamCanExecuteDelegate actionCanExecute = null,
                 bool startInThread = false)
         {
             mActionNoParamExecute = actionExecute;
@@ -73,21 +73,21 @@ namespace ImageToolApp
         }
 
         public static UICommand Regular
-            (IdeskCommandNoParamExecuteDelegate actionExecute,
-                IdeskCommandNoParamCanExecuteDelegate actionCanExecute = null)
+            (CommandNoParamExecuteDelegate actionExecute,
+                CommandNoParamCanExecuteDelegate actionCanExecute = null)
         {
             return new UICommand(actionExecute, actionCanExecute, false);
         }
 
-        public static UICommand Regular(IdeskCommandExecuteDelegate actionExecute,
-            IdeskCommandCanExecuteDelegate actionCanExecute = null)
+        public static UICommand Regular(CommandExecuteDelegate actionExecute,
+            CommandCanExecuteDelegate actionCanExecute = null)
         {
             return new UICommand(actionExecute, actionCanExecute, false);
         }
 
         public static UICommand Thread
-            (IdeskCommandNoParamExecuteDelegate actionExecute,
-                IdeskCommandNoParamCanExecuteDelegate actionCanExecute = null)
+            (CommandNoParamExecuteDelegate actionExecute,
+                CommandNoParamCanExecuteDelegate actionCanExecute = null)
         {
             return new UICommand(actionExecute, actionCanExecute, true);
         }

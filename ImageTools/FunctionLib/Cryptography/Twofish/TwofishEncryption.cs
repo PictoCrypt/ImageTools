@@ -5,157 +5,142 @@ using System.Security.Cryptography;
 
 namespace FunctionLib.Cryptography.Twofish
 {
-	/// <summary>
-	/// Summary description for TwofishEncryption.
-	/// </summary>
-	internal class TwofishEncryption : TwofishBase, ICryptoTransform
-	{
-		public TwofishEncryption(int keyLen, ref byte[] key, ref byte[] iv, CipherMode cMode, EncryptionDirection direction)
-		{
-			// convert our key into an array of ints
-			for (int i=0;i<key.Length/4;i++)
-			{
-				Key[i] = (uint)( key[i*4+3]<<24) | (uint)(key[i*4+2] << 16) | (uint)(key[i*4+1] << 8) | (uint)(key[i*4+0]);
-			}
+    /// <summary>
+    ///     Summary description for TwofishEncryption.
+    /// </summary>
+    internal class TwofishEncryption : TwofishBase, ICryptoTransform
+    {
+        // not worked out this property yet - placing break points here just don't get caught.
 
-			cipherMode = cMode;
+        // I normally set this to false when block encrypting so that I can work on one block at a time
+        // but for compression and stream type ciphers this can be set to true so that you get all the data
 
-			// we only need to convert our IV if we are using CBC
-			if (cipherMode == CipherMode.CBC)
-			{
-				for (int i=0;i<4;i++)
-				{
-					IV[i] = (uint)( iv[i*4+3]<<24) | (uint)(iv[i*4+2] << 16) | (uint)(iv[i*4+1] << 8) | (uint)(iv[i*4+0]);
-				}
-			}
+        private readonly EncryptionDirection encryptionDirection;
 
-			encryptionDirection = direction;
-			reKey(keyLen,ref Key);
-		}
+        public TwofishEncryption(int keyLen, ref byte[] key, ref byte[] iv, CipherMode cMode,
+            EncryptionDirection direction)
+        {
+            // convert our key into an array of ints
+            for (var i = 0; i < key.Length/4; i++)
+            {
+                Key[i] = (uint) (key[i*4 + 3] << 24) | (uint) (key[i*4 + 2] << 16) | (uint) (key[i*4 + 1] << 8) |
+                         key[i*4 + 0];
+            }
 
-		// need to have this method due to IDisposable - just can't think of a reason to use it for in this class
-		public void Dispose()
-		{
-		}
+            cipherMode = cMode;
 
+            // we only need to convert our IV if we are using CBC
+            if (cipherMode == CipherMode.CBC)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    IV[i] = (uint) (iv[i*4 + 3] << 24) | (uint) (iv[i*4 + 2] << 16) | (uint) (iv[i*4 + 1] << 8) |
+                            iv[i*4 + 0];
+                }
+            }
 
-		/// <summary>
-		/// Transform a block depending on whether we are encrypting or decrypting
-		/// </summary>
-		/// <param name="inputBuffer"></param>
-		/// <param name="inputOffset"></param>
-		/// <param name="inputCount"></param>
-		/// <param name="outputBuffer"></param>
-		/// <param name="outputOffset"></param>
-		/// <returns></returns>
-		public int TransformBlock(
-			byte[] inputBuffer,
-			int inputOffset,
-			int inputCount,
-			byte[] outputBuffer,
-			int outputOffset
-			)
-		{			
-			uint[] x=new uint[4];
+            encryptionDirection = direction;
+            reKey(keyLen, ref Key);
+        }
 
-			// load it up
-			for (int i=0;i<4;i++)
-			{
-				x[i]= (uint)(inputBuffer[i*4+3+inputOffset]<<24) | (uint)(inputBuffer[i*4+2+inputOffset] << 16) | 
-					(uint)(inputBuffer[i*4+1+inputOffset] << 8) | (uint)(inputBuffer[i*4+0+inputOffset]);
-
-			}
-
-			if (encryptionDirection == EncryptionDirection.Encrypting)
-			{
-				blockEncrypt(ref x);
-			}
-			else
-			{
-				blockDecrypt(ref x);
-			}
+        // need to have this method due to IDisposable - just can't think of a reason to use it for in this class
+        public void Dispose()
+        {
+        }
 
 
-			// load it up
-			for (int i=0;i<4;i++)
-			{
-				outputBuffer[i*4+0+outputOffset] = b0(x[i]);
-				outputBuffer[i*4+1+outputOffset] = b1(x[i]);
-				outputBuffer[i*4+2+outputOffset] = b2(x[i]);
-				outputBuffer[i*4+3+outputOffset] = b3(x[i]);
-			}
+        /// <summary>
+        ///     Transform a block depending on whether we are encrypting or decrypting
+        /// </summary>
+        /// <param name="inputBuffer"></param>
+        /// <param name="inputOffset"></param>
+        /// <param name="inputCount"></param>
+        /// <param name="outputBuffer"></param>
+        /// <param name="outputOffset"></param>
+        /// <returns></returns>
+        public int TransformBlock(
+            byte[] inputBuffer,
+            int inputOffset,
+            int inputCount,
+            byte[] outputBuffer,
+            int outputOffset
+            )
+        {
+            var x = new uint[4];
+
+            // load it up
+            for (var i = 0; i < 4; i++)
+            {
+                x[i] = (uint) (inputBuffer[i*4 + 3 + inputOffset] << 24) |
+                       (uint) (inputBuffer[i*4 + 2 + inputOffset] << 16) |
+                       (uint) (inputBuffer[i*4 + 1 + inputOffset] << 8) | inputBuffer[i*4 + 0 + inputOffset];
+            }
+
+            if (encryptionDirection == EncryptionDirection.Encrypting)
+            {
+                blockEncrypt(ref x);
+            }
+            else
+            {
+                blockDecrypt(ref x);
+            }
 
 
-			return inputCount;
-		}
+            // load it up
+            for (var i = 0; i < 4; i++)
+            {
+                outputBuffer[i*4 + 0 + outputOffset] = b0(x[i]);
+                outputBuffer[i*4 + 1 + outputOffset] = b1(x[i]);
+                outputBuffer[i*4 + 2 + outputOffset] = b2(x[i]);
+                outputBuffer[i*4 + 3 + outputOffset] = b3(x[i]);
+            }
 
-		public byte[] TransformFinalBlock(
-			byte[] inputBuffer,
-			int inputOffset,
-			int inputCount
-			)
-		{
-			byte[] result;
-			
-			if (inputCount>0)
-			{
-				int rest = inputCount % 16;
-				int bufsize = inputCount - rest;
-				if( rest > 0 ) bufsize += 16;
-				result = new byte[bufsize];
-				Array.Copy(inputBuffer,0,result,0,inputCount);
 
-				for(int i = inputCount; i < bufsize; i++) 
-					result[i] = (byte)0;
-				TransformBlock(result,0,bufsize,result,0);
+            return inputCount;
+        }
 
-			}
-			else
-			{
-				//outputBuffer = new byte[0];
-				result = new byte[inputCount]; // the .NET framework doesn't like it if you return null - this calms it down
-			}
-			
-			return result;
-		}
+        public byte[] TransformFinalBlock(
+            byte[] inputBuffer,
+            int inputOffset,
+            int inputCount
+            )
+        {
+            byte[] result;
 
-		// not worked out this property yet - placing break points here just don't get caught.
-		private bool canReuseTransform = true;
-		public bool CanReuseTransform
-		{
-			get
-			{
-				return canReuseTransform;
-			}
-		}
+            if (inputCount > 0)
+            {
+                var rest = inputCount%16;
+                var bufsize = inputCount - rest;
+                if (rest > 0) bufsize += 16;
+                result = new byte[bufsize];
+                Array.Copy(inputBuffer, 0, result, 0, inputCount);
 
-		// I normally set this to false when block encrypting so that I can work on one block at a time
-		// but for compression and stream type ciphers this can be set to true so that you get all the data
-		private bool canTransformMultipleBlocks = false;
-		public bool CanTransformMultipleBlocks
-		{
-			get
-			{
-				return canTransformMultipleBlocks;
-			}
-		}
+                for (var i = inputCount; i < bufsize; i++)
+                    result[i] = 0;
+                TransformBlock(result, 0, bufsize, result, 0);
+            }
+            else
+            {
+                //outputBuffer = new byte[0];
+                result = new byte[inputCount];
+                    // the .NET framework doesn't like it if you return null - this calms it down
+            }
 
-		public int InputBlockSize
-		{
-			get
-			{
-				return inputBlockSize;
-			}
-		}
+            return result;
+        }
 
-		public int OutputBlockSize
-		{
-			get
-			{
-				return outputBlockSize;
-			}
-		}
+        public bool CanReuseTransform { get; } = true;
 
-		private EncryptionDirection encryptionDirection;
-	}
+        public bool CanTransformMultipleBlocks { get; } = false;
+
+        public int InputBlockSize
+        {
+            get { return inputBlockSize; }
+        }
+
+        public int OutputBlockSize
+        {
+            get { return outputBlockSize; }
+        }
+    }
 }

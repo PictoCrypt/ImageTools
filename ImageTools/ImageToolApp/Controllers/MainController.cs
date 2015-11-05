@@ -1,7 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {
@@ -15,12 +19,26 @@ namespace ImageToolApp.Controllers
         public MainController(MainWindow mainWindow)
         {
             mView = mainWindow;
-            mEncryptController = new EncryptController("Encrypt", false);
-            mDecryptController = new DecryptController("Decrypt", true);
+            mView.Closing += ViewOnClosing;
+            mEncryptController = new EncryptController(this, "Encrypt", false);
+            mDecryptController = new DecryptController(this, "Decrypt", true);
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
             mView.Show();
+        }
+
+        private void ViewOnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            UnregisterEvents();
+
+        }
+
+        private void UnregisterEvents()
+        {
+            mEncryptController.UnregisterEvents();
+
+            mView.Closing -= ViewOnClosing;
         }
 
         private IBaseTabController CurrentController
@@ -51,7 +69,7 @@ namespace ImageToolApp.Controllers
         private static void OpenHelp()
         {
             var executionPath = MethodHelper.ExecutiongPath;
-            System.Diagnostics.Process.Start(Path.Combine(executionPath, "Help.pdf"));
+            Process.Start(Path.Combine(executionPath, "Help.pdf"));
         }
 
         private void ChangedPixels()

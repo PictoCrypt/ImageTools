@@ -56,7 +56,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -78,11 +77,14 @@
   <ItemGroup>
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Converters\EqualsLsbConverter.cs" />
     <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
+    <Compile Include="Converters\InvertBooleanConverter.cs" />
+    <Compile Include="Converters\OneWayConveter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs" />
+    <Compile Include="HandleJobController.cs" />
     <Compile Include="Models\SettingsModel.cs" />
-    <Compile Include="PropertyChangedModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
@@ -109,7 +111,6 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\IsStringNullConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="UICommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -158,6 +159,10 @@
     <ProjectReference Include="..\FunctionLib\FunctionLib.csproj">
       <Project>{8DF508C2-07F4-486A-89B1-DB17A5166216}</Project>
       <Name>FunctionLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserControlClassLibrary\UserControlClassLibrary.csproj">
+      <Project>{6c9fc726-54a4-434b-b1d0-d4afcff75da0}</Project>
+      <Name>UserControlClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

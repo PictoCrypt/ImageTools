@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using FunctionLib;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
 {
@@ -15,12 +16,27 @@ namespace ImageToolApp.ViewModels
         private UICommand mTabActionCommand;
 
         private string mText;
+        private int mNumericUpDownValue = 3;
 
         public BaseTabViewModel()
         {
             Password = SettingsModel.Password;
             SelectedSteganographicMethod = SettingsModel.SelectedSteganographicMethod;
             SelectedEncryptionMethod = SettingsModel.SelectedEncryptionMethod;
+        }
+
+        public int NumericUpDownValue
+        {
+            get { return mNumericUpDownValue; }
+            set
+            {
+                if (value.Equals(mNumericUpDownValue))
+                {
+                    return;
+                }
+                mNumericUpDownValue = value;
+                OnPropertyChanged("NumericUpDownValue");
+            }
         }
 
         public UICommand TabActionCommand
@@ -148,7 +164,5 @@ namespace ImageToolApp.ViewModels
                 OnPropertyChanged("ResultImagePath");
             }
         }
-
-
     }
 }
