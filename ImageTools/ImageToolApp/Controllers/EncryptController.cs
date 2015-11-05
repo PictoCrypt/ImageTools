@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -110,7 +111,8 @@ namespace ImageToolApp.Controllers
 
         public void OpenTxt()
         {
-            var dialog = new OpenFileDialog {Filter = "Text File|*.txt"};
+            var dialog = new OpenFileDialog {Filter = "Text File|*.txt",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) };
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {

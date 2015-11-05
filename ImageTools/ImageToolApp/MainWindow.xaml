@@ -18,11 +18,13 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
-            <Button Style="{StaticResource ButtonWithoutBorderStyle}" VerticalAlignment="Top" Click="ButtonBase_OnClick" Margin="5">
-                <Image Source="{StaticResource MenuImage}"/>
+            <Button Style="{StaticResource ButtonWithoutBorderStyle}" VerticalAlignment="Top"
+                    Click="ButtonBase_OnClick" Margin="5">
+                <Image Source="{StaticResource MenuImage}" />
             </Button>
 
-            <StackPanel x:Name="StackPanel" Orientation="Vertical" Visibility="Hidden" Style="{StaticResource StackPanelSlideInStyle}">
+            <StackPanel x:Name="StackPanel" Orientation="Vertical" Visibility="Hidden"
+                        Style="{StaticResource StackPanelSlideInStyle}">
                 <GroupBox>
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
@@ -49,13 +51,16 @@
                                 IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                                 ToolTip="Bild speichern">
-                            <Image Source="{StaticResource SaveImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                            <Image Source="{StaticResource SaveImage}"
+                                   Style="{StaticResource AutoDisableAndOutGrayImage}" />
                         </Button>
-                        <Button Command="{Binding ChangedPixelsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
+                        <Button Command="{Binding ChangedPixelsCommand}"
+                                Style="{StaticResource ButtonWithoutBorderStyle}"
                                 IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                                 ToolTip="Veränderte Pixel anzeigen">
-                            <Image Source="{StaticResource Changed}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                            <Image Source="{StaticResource Changed}"
+                                   Style="{StaticResource AutoDisableAndOutGrayImage}" />
                         </Button>
                     </StackPanel>
                 </GroupBox>
@@ -70,13 +75,14 @@
                                 IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementDecryptToVisibilityConverter}}"
                                 ToolTip="Text speichern">
-                            <Image Source="{StaticResource SaveImage}" Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                            <Image Source="{StaticResource SaveImage}"
+                                   Style="{StaticResource AutoDisableAndOutGrayImage}" />
                         </Button>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
         </StackPanel>
-       
+
         <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1">
             <controls:MetroTabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
                 <controls:MetroTabItem.Header>
@@ -88,15 +94,15 @@
             </controls:MetroTabItem>
             <controls:MetroTabItem>
                 <controls:MetroTabItem.Header>
-                <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt"
+                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt"
                            Style="{StaticResource TabItemImageStyle}" />
-            </controls:MetroTabItem.Header>
-            <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
+                </controls:MetroTabItem.Header>
+                <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch" />
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>
-       
-        <controls:ProgressRing Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" 
-                               VerticalAlignment="Stretch" Margin="2" IsActive="False" IsEnabled="True" IsLarge="True" />
+
+        <controls:ProgressRing Grid.ZIndex="1000" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch" Margin="2" Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}" IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True" />
     </Grid>
 </controls:MetroWindow>

@@ -16,13 +16,27 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
-        private bool mProgressing;
+        private bool mProgressActive = false;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
             CurrentElement = encryptView;
             EncryptView = encryptView;
             DecryptView = decryptView;
+        }
+
+        public bool ProgressActive
+        {
+            get { return mProgressActive; }
+            set
+            {
+                if (value.Equals(mProgressActive))
+                {
+                    return;
+                }
+                mProgressActive = value;
+                OnPropertyChanged("ProgressActive");
+            }
         }
 
         public bool EncryptSelected
