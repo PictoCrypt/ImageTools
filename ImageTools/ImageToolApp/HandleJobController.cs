@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -17,7 +16,7 @@ namespace ImageToolApp
 
         private static void WorkDone()
         {
-            //Thread.Sleep(TimeSpan.FromSeconds(20));
+            //Thread.Sleep(TimeSpan.FromSeconds(5));
             Window.Dispatcher.Invoke(() =>
             {
                 var progress = Window.FindChildren<ProgressRing>().FirstOrDefault();

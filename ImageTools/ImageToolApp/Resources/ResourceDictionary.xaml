@@ -31,8 +31,13 @@
 
     <!-- Styles -->
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button"
-           BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+           BasedOn="{StaticResource  {x:Static  ToolBar.ButtonStyleKey}}">
         <Setter Property="BorderThickness" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.4" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <DataTemplate x:Key="WindowIconTemplate">
@@ -119,7 +124,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style x:Key="NumericUpDownStyle" TargetType="{x:Type controls:NumericUpDown}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding SelectedSteganographicMethod, Converter={StaticResource EqualsLsbConverter}}" Value="True">
@@ -130,4 +135,29 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+
+    <Style x:Key="GroupBoxDisabledStyle" TargetType="{x:Type GroupBox}" BasedOn="{StaticResource MetroGroupBox}">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                <Setter Property="Opacity" Value="0.4" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MetroAnimatedTabControlDisabledStyle" TargetType="{x:Type controls:MetroAnimatedTabControl}" BasedOn="{StaticResource MetroTabControl}">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.4" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    
+    <!--Addtional Resources-->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.GroupBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TabControl.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

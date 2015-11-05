@@ -6,8 +6,8 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       mc:Ignorable="d" Icon="Resources/Images/PictoCrypt.png" ShowIconOnTitleBar="True"
                       IconTemplate="{StaticResource WindowIconTemplate}"
-                      Title="ImageTool" Height="500" Width="600" ShowTitleBar="True">
-    <!--IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}"-->
+                      Title="ImageTool" Height="500" Width="600" ShowTitleBar="True"
+                      IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
@@ -25,7 +25,7 @@
 
             <StackPanel x:Name="StackPanel" Orientation="Vertical" Visibility="Hidden"
                         Style="{StaticResource StackPanelSlideInStyle}">
-                <GroupBox>
+                <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 ToolTip="Einstellungen">
@@ -41,7 +41,7 @@
                         </Button>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox>
+                <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding OpenImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 ToolTip="Bild öffnen">
@@ -64,7 +64,7 @@
                         </Button>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox>
+                <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
@@ -83,7 +83,7 @@
             </StackPanel>
         </StackPanel>
 
-        <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1">
+        <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1" Style="{StaticResource MetroAnimatedTabControlDisabledStyle}">
             <controls:MetroTabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
                 <controls:MetroTabItem.Header>
                     <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encrypt"
@@ -102,7 +102,11 @@
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>
 
-        <controls:ProgressRing Grid.ZIndex="1000" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch" Margin="2" Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}" IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True" />
+        <controls:ProgressRing x:Name="Progress" Grid.ZIndex="1000" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch" Margin="2" 
+                               Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}" 
+                               IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True" 
+                               Foreground="{DynamicResource AccentColorBrush}"/>
     </Grid>
 </controls:MetroWindow>

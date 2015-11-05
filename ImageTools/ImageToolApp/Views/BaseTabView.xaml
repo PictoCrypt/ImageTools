@@ -43,7 +43,7 @@
         </Expander>
 
         <GroupBox Grid.Column="0" Grid.Row="3" Header="Encryption" HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch">
+                  VerticalAlignment="Stretch" Style="{StaticResource GroupBoxDisabledStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
