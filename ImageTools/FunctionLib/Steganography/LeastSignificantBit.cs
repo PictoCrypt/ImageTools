@@ -210,6 +210,7 @@ namespace FunctionLib.Steganography
                     byteList = DecryptHelper(byteList, bitHolder);
 
                     // Check for End (1 Byte of 0)
+                    //TODO: Wie erkennen wir ob es ein Bild oder ein Text oder Dokument ist?
                     var index = byteList.IndexOf(0);
                     if (index > -1)
                     {
