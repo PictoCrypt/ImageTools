@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -32,21 +35,24 @@ namespace FunctionLib.Helper
             return result.GetString(arr);
         }
 
-        public static byte[] StreamToByteArray(Stream s)
+        public static IEnumerable<byte> BitmaptoByteArray(Bitmap src)
         {
-            var rawLength = new byte[sizeof (int)];
-            if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length)
+            var byteList = new List<byte>();
+            var lockBitmap = new LockBitmap(src);
+            lockBitmap.LockBits();
+            for (var i = 0; i < lockBitmap.Height; i++)
             {
-                throw new SystemException("Stream did not contain properly formatted byte array");
+                for (var j = 0; j < lockBitmap.Width; j++)
+                {
+                    var pixel = lockBitmap.GetPixel(j, i);
+                    //var color = pixel.ToArgb();
+                    byteList.Add(pixel.R);
+                    byteList.Add(pixel.G);
+                    byteList.Add(pixel.B);
+                }
             }
-
-            var buffer = new byte[BitConverter.ToInt32(rawLength, 0)];
-            if (s.Read(buffer, 0, buffer.Length) != buffer.Length)
-            {
-                throw new SystemException("Did not read byte array properly");
-            }
-
-            return buffer;
+            lockBitmap.UnlockBits();
+            return byteList;
         }
     }
 }

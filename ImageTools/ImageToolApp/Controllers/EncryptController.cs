@@ -4,11 +4,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Threading;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
@@ -16,6 +13,7 @@ using ImageToolApp.Views;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using UserControlClassLibrary;
+using UserControlClassLibrary.PathChooser;
 using Image = System.Windows.Controls.Image;
 
 namespace ImageToolApp.Controllers
@@ -128,21 +126,44 @@ namespace ImageToolApp.Controllers
             {
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
-                    var text = ViewModel.Text;
-                    if (ViewModel.EncryptedCheck)
+                    var currentExpanderContent = Application.Current.Dispatcher.Invoke(() =>
                     {
-                        text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text,
-                            ViewModel.Password);
+                        return mExpanders.FirstOrDefault(x => x.IsExpanded).Content;
+                    });
+
+                    if (currentExpanderContent is PathChooser)
+                    {
+                        var secretPath =
+                            Application.Current.Dispatcher.Invoke(
+                                () => ((currentExpanderContent as PathChooser).DataContext as PathChooserViewModel).Path);
+                        var value = new Bitmap(secretPath);
+                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
+                            bitmap, value, ViewModel.NumericUpDownValue);
+                        if (result != null)
+                        {
+                            var path = Path.GetTempFileName().Replace("tmp", "png");
+                            result.Save(path);
+                            ViewModel.ResultImagePath = path;
+                        }
                     }
-
-
-                    var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
-                        text, ViewModel.NumericUpDownValue);
-                    if (result != null)
+                    else
                     {
-                        var path = Path.GetTempFileName().Replace("tmp", "png");
-                        result.Save(path);
-                        ViewModel.ResultImagePath = path;
+                        var text = ViewModel.Text;
+                        if (ViewModel.EncryptedCheck)
+                        {
+                            text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text,
+                                ViewModel.Password);
+                        }
+
+
+                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
+                            text, ViewModel.NumericUpDownValue);
+                        if (result != null)
+                        {
+                            var path = Path.GetTempFileName().Replace("tmp", "png");
+                            result.Save(path);
+                            ViewModel.ResultImagePath = path;
+                        }
                     }
                 }
             }));

@@ -63,6 +63,57 @@ namespace FunctionLib.Steganography
             return result;
         }
 
+        public override Bitmap Encrypt(Bitmap src, Bitmap value, int significantIndicator = 3)
+        {
+            var result = new Bitmap(src);
+            var lockBitmap = new LockBitmap(result);
+            lockBitmap.LockBits();
+
+            var byteIndex = 0;
+            var bitIndex = 0;
+
+            var bytes = MethodHelper.BitmaptoByteArray(value).ToList();
+            // 8 Nullen um das Ende zu erkennen
+            bytes.Add(0);
+            if (value == null)
+            {
+                throw new ArgumentException("'value' is null.");
+            }
+
+            if (bytes.Count != (value.Height * value.Width) * 3 + 1)
+            {
+                throw new ArgumentException("Anything failed, maybe.");
+            }
+
+            for (var y = 0; y < lockBitmap.Height; y++)
+            {
+                for (var x = 0; x < lockBitmap.Width; x++)
+                {
+                    var pixel = lockBitmap.GetPixel(x, y);
+                    var r = ClearLeastSignificantBit(pixel.R, significantIndicator);
+                    var g = ClearLeastSignificantBit(pixel.G, significantIndicator);
+                    var b = ClearLeastSignificantBit(pixel.B, significantIndicator);
+
+                    r = r + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
+                    g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
+                    b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
+
+                    lockBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
+                    ChangedPixels.Add(new Pixel(x, y));
+
+                    if (byteIndex > bytes.Count - 1 || byteIndex == bytes.Count - 1 && bitIndex == 7)
+                    {
+                        lockBitmap.UnlockBits();
+                        return result;
+                    }
+                }
+            }
+
+
+            lockBitmap.UnlockBits();
+            return result;
+        }
+
         /// <summary>
         /// Gets the bit of this byte on a specific position.
         /// </summary>

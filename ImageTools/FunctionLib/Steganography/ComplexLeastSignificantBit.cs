@@ -141,6 +141,11 @@ namespace FunctionLib.Steganography
             return result;
         }
 
+        public override Bitmap Encrypt(Bitmap src, Bitmap value, int significantIndicator = 3)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override string Decrypt(Bitmap src, int significantIndicator = 3)
         {
             var lockBitmap = new LockBitmap(new Bitmap(src));
