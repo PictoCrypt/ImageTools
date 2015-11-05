@@ -4,9 +4,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
@@ -122,30 +124,28 @@ namespace ImageToolApp.Controllers
 
         private void Encrypt()
         {
-            using (var handle = new HandleJobController())
+            HandleJobController.Progress((Action)(() =>
             {
-                handle.Progress(() =>
+                using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
-                    using (var bitmap = new Bitmap(ViewModel.ImagePath))
+                    var text = ViewModel.Text;
+                    if (ViewModel.EncryptedCheck)
                     {
-                        var text = ViewModel.Text;
-                        if (ViewModel.EncryptedCheck)
-                        {
-                            text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text,
-                                ViewModel.Password);
-                        }
-
-
-                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, text, ViewModel.NumericUpDownValue);
-                        if (result != null)
-                        {
-                            var path = Path.GetTempFileName().Replace("tmp", "png");
-                            result.Save(path);
-                            ViewModel.ResultImagePath = path;
-                        }
+                        text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text,
+                            ViewModel.Password);
                     }
-                });
-            }
+
+
+                    var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
+                        text, ViewModel.NumericUpDownValue);
+                    if (result != null)
+                    {
+                        var path = Path.GetTempFileName().Replace("tmp", "png");
+                        result.Save(path);
+                        ViewModel.ResultImagePath = path;
+                    }
+                }
+            }));
         }
 
         public void ChangedPixels()

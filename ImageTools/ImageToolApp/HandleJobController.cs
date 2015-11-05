@@ -1,71 +1,54 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using ImageToolApp.ViewModels;
 using MahApps.Metro.Controls;
 
 namespace ImageToolApp
 {
-    public class HandleJobController : IDisposable
+    public static class HandleJobController
     {
         private static readonly Window Window = Application.Current.MainWindow;
-        private readonly MainViewModel mViewModel = Window.DataContext as MainViewModel;
+        private static readonly MainViewModel MainViewModel = Window.DataContext as MainViewModel;
 
-        public void Dispose()
+        private static void WorkDone()
         {
-            var progress = Window.FindChildren<ProgressRing>().FirstOrDefault();
-            if (progress != null)
+            //Thread.Sleep(TimeSpan.FromSeconds(20));
+            Window.Dispatcher.Invoke(() =>
             {
-                mViewModel.ProgressActive = false;
+                var progress = Window.FindChildren<ProgressRing>().FirstOrDefault();
+                if (progress != null)
+                {
+                    MainViewModel.ProgressActive = false;
+                }
+                Window.Cursor = Cursors.Arrow;
 
-                //Window.Dispatcher.Invoke((Action)(() =>
-                //{
-                //    progress.Visibility = Visibility.Collapsed;
-                //    progress.IsActive = false;
-                //}), DispatcherPriority.Background);
-            }
-            Window.Cursor = Cursors.Arrow;
+            }, DispatcherPriority.Background);
         }
         
-        public void Progress(Action action)
+        public static void Progress(Action action)
         {
             var progress = Window.FindChildren<ProgressRing>().FirstOrDefault();
             if (progress != null)
             {
-                mViewModel.ProgressActive = true;
-
-                //Window.Dispatcher.Invoke((Action)(() =>
-                //{
-                //    progress.Visibility = Visibility.Visible;
-                //    progress.IsActive = true;
-                //}), DispatcherPriority.Background);
+                MainViewModel.ProgressActive = true;
             }
             Window.Cursor = Cursors.Wait;
 
-            var worker = new BackgroundWorker
-            {
-                WorkerReportsProgress = false,
-                WorkerSupportsCancellation = false
-            };
-            worker.DoWork += (sender, args) =>
+            var thread = new Thread(() =>
             {
                 action.Invoke();
-            };
-            worker.RunWorkerCompleted += (sender, args) =>
+                WorkDone();
+            })
             {
-                if (args.Cancelled == false && args.Error == null)
-                {
-                    Dispose();
-                }
-                else
-                {
-                    throw args.Error;
-                }
+                IsBackground = true,
+                Name = "EncryptDecryptThread"
             };
-
-            worker.RunWorkerAsync();
+            thread.Start();
         }
     }
 }

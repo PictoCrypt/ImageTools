@@ -18,6 +18,10 @@ namespace FunctionLib.Helper
 
         public static byte[] StringToByteArray(string str)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return new byte[0];
+            }
             var result = new ASCIIEncoding();
             return result.GetBytes(str);
         }

@@ -24,6 +24,11 @@ namespace FunctionLib.Steganography
             var bytes = MethodHelper.StringToByteArray(value).ToList();
             // 8 Nullen um das Ende zu erkennen
             bytes.Add(0);
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException("'value' is null.");
+            }
+
             if (bytes.Count != value.Length + 1)
             {
                 throw new ArgumentException("Anything failed, maybe.");

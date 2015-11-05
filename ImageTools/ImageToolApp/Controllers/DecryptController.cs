@@ -34,25 +34,19 @@ namespace ImageToolApp.Controllers
 
         private void Decrypt()
         {
-            using (var handler = new HandleJobController())
+            string result;
+            using (var bitmap = new Bitmap(ViewModel.ImagePath))
             {
-                handler.Progress(() =>
-                {
-                    string result;
-                    using (var bitmap = new Bitmap(ViewModel.ImagePath))
-                    {
-                        result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, ViewModel.NumericUpDownValue);
-                    }
-
-                    if (ViewModel.EncryptedCheck)
-                    {
-                        result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result,
-                            ViewModel.Password);
-                    }
-
-                    ViewModel.Text = result;                    
-                });
+                result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, ViewModel.NumericUpDownValue);
             }
+
+            if (ViewModel.EncryptedCheck)
+            {
+                result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result,
+                    ViewModel.Password);
+            }
+
+            ViewModel.Text = result;                    
         }
     }
 }
