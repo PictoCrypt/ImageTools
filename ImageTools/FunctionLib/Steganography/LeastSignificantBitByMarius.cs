@@ -12,16 +12,12 @@ namespace FunctionLib.Steganography
 {
     public class LeastSignificantBitByMarius : SteganographicAlgorithm
     {
-        private readonly int[] mNullPointer = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
-        private int mSignificantIndicator;
-
         public override Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
 
-            //mSignificantIndicator = significantIndicator;
             var byteIndex = 0;
             var bitIndex = 0;
 
@@ -97,7 +93,6 @@ namespace FunctionLib.Steganography
                 }
                 if (byteIndex >= b.Count)
                 {
-                    //throw new IndexOutOfRangeException("byteIndex");
                     return 0;
                 }
                 var bit = GetBit(b[byteIndex], bitIndex++);
@@ -182,7 +177,13 @@ namespace FunctionLib.Steganography
             throw new SystemException("Error, anything happened (or maybe not).");
         }
 
-        private List<byte> DecryptHelper(List<byte> bytes, List<int> bitHolder)
+        /// <summary>
+        /// Summarizing 8 bits to 1 byte and adding to the bytes list.
+        /// </summary>
+        /// <param name="bytes">List for holding the ended bytes.</param>
+        /// <param name="bitHolder">List for holding the bits.</param>
+        /// <returns></returns>
+        private List<byte> DecryptHelper(List<byte> bytes, ICollection<int> bitHolder)
         {
             var builder = new StringBuilder();
             while (bitHolder.Count >= 8 - builder.Length)

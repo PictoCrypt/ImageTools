@@ -19,7 +19,7 @@ namespace FunctionLib.Steganography
             // GNDN
         }
 
-        public abstract Bitmap Encrypt(Bitmap src, string value, int significantIndicator);
+        public abstract Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3);
         public abstract string Decrypt(Bitmap src, int significantIndicator);
         public abstract string ChangeColor(string srcPath, Color color);
     }
