@@ -120,7 +120,7 @@ namespace ImageToolApp.Controllers
 
         private void Encrypt()
         {
-            using (var handle = new HandleJobController(ProgressRing))
+            using (var handle = new HandleJobController())
             {
                 handle.Progress(() =>
                 {

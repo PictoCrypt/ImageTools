@@ -34,7 +34,7 @@ namespace ImageToolApp.Controllers
 
         private void Decrypt()
         {
-            using (var handler = new HandleJobController(ProgressRing))
+            using (var handler = new HandleJobController())
             {
                 handler.Progress(() =>
                 {
