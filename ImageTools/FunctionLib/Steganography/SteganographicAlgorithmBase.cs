@@ -53,7 +53,7 @@ namespace FunctionLib.Steganography
 
         public static string ChangeColor(string srcPath, Color color)
         {
-            return ChangeColor<LeastSignificantBit>(srcPath, color);
+            return ChangeColor<ComplexLeastSignificantBit>(srcPath, color);
         }
 
         public static string ChangeColor<T>(string srcPath, Color color)
@@ -73,8 +73,8 @@ namespace FunctionLib.Steganography
             {
                 case SteganographicMethod.LSB:
                     return typeof (LeastSignificantBit);
-                case SteganographicMethod.TestMethod:
-                    return typeof (LeastSignificantBitByMarius);
+                case SteganographicMethod.ComplexLSB:
+                    return typeof (ComplexLeastSignificantBit);
             }
             throw new ArgumentOutOfRangeException(nameof(method), method, null);
         }

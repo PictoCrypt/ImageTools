@@ -3,6 +3,6 @@
     public enum SteganographicMethod
     {
         LSB = 0,
-        TestMethod = 1,
+        ComplexLSB = 1,
     }
 }

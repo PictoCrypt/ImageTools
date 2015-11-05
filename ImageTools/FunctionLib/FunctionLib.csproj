@@ -57,8 +57,8 @@
     <Compile Include="ImageFunctionLib.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteganographicMethod.cs" />
+    <Compile Include="Steganography\ComplexLeastSignificantBit.cs" />
     <Compile Include="Steganography\LeastSignificantBit.cs" />
-    <Compile Include="Steganography\LeastSignificantBitByMarius.cs" />
     <Compile Include="Steganography\SteganographicAlgorithm.cs" />
     <Compile Include="Steganography\SteganographicAlgorithmBase.cs" />
   </ItemGroup>

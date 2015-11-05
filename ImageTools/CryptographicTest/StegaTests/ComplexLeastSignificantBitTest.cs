@@ -6,16 +6,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CryptographicTest.StegaTests
 {
     [TestClass]
-    public class LeastSignificantBitByMariusTest : SteganographicAlogithmBaseTestClass
+    public class ComplexLeastSignificantBitTest : SteganographicAlogithmBaseTestClass
     {
         public override Bitmap Encrypt(Bitmap src, string value, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.TestMethod, src, value, additionalParam);
+            return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.ComplexLSB, src, value, additionalParam);
         }
 
         public override string Decrypt(Bitmap src, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.TestMethod, src, additionalParam);
+            return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.ComplexLSB, src, additionalParam);
         }
     }
 }

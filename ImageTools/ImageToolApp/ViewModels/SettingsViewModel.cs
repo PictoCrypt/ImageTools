@@ -1,4 +1,5 @@
-﻿using FunctionLib;
+﻿using System.Collections.ObjectModel;
+using FunctionLib;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
@@ -70,6 +71,16 @@ namespace ImageToolApp.ViewModels
                 }
                 mSelectedSteganographicMethod = value;
             }
+        }
+
+        public ObservableCollection<EncryptionMethod> EncryptionMethods
+        {
+            get { return SettingsModel.EncryptionMethods; }
+        }
+
+        public ObservableCollection<SteganographicMethod> SteganographicMethods
+        {
+            get { return SettingsModel.SteganographicMethods; }
         }
 
         public UICommand SaveCommand
