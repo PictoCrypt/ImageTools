@@ -2,9 +2,6 @@ MainWindow.xaml
 	-  evtl. Splitbuttons für Sidebar
 	- Sidebar ein/ausklappen? oder Hover
 
-UserControl
-	- Resize Grid nach Expander
-
 Testing
 	- Falschtests
 
@@ -13,9 +10,6 @@ BaseTabController.cs
 
 Enum
 - Enums umstellen, da sonst überall darüber enumeriert werden muss.
-
-Stega Algorithmen
-	- Funktion welche zurück gibt, wie viele Zeichen maximal!
 
 Output-Fehler
 	-Output-Errors beheben!
