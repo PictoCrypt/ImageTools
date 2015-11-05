@@ -100,7 +100,6 @@ namespace FunctionLib.Steganography
             }
 
             var result = Convert.ToByte(builder.ToString(), 2);
-            Debug.WriteLine(result);
             return result;
         }
 

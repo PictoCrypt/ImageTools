@@ -64,7 +64,7 @@
                     Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding SteganographicMethods}"
                       SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
-            <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="255" Minimum="1" Value="{Binding NumericUpDownValue}"
+            <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1" Value="{Binding NumericUpDownValue}"
                                     ToolTip="Number of Bits which should be used from 1 color." Style="{StaticResource NumericUpDownStyle}" />
                 <ComboBox ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}" Margin="3" />
             <Button HorizontalAlignment="Right"
