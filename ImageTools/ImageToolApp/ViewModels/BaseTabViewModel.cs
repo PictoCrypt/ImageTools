@@ -1,15 +1,22 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using FunctionLib;
 using UserControlClassLibrary;
+using Color = System.Windows.Media.Color;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace ImageToolApp.ViewModels
 {
     public class BaseTabViewModel : BaseViewModel
     {
         private bool mEncryptedCheck;
-        private string mImagePath;
+        private string mImagePath = string.Empty;
         private string mPassword;
-        private string mResultImagePath;
+        private string mResultImagePath = string.Empty;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
 
@@ -17,6 +24,7 @@ namespace ImageToolApp.ViewModels
 
         private string mText;
         private int mNumericUpDownValue = 3;
+        private int mCurrentMaxCharacterLength;
 
         public BaseTabViewModel()
         {

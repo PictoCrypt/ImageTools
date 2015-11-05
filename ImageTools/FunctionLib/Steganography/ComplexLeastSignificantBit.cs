@@ -231,6 +231,15 @@ namespace FunctionLib.Steganography
             return tmp;
         }
 
+        public override int MaxEncryptionCount(int squarePixels)
+        {
+            // We are using 3 bits each byte.
+            var lsbs = squarePixels*3;
+            // Each character uses 8 bits.
+            var result = lsbs/8;
+            return result;
+        }
+
         private static int ReverseBits(int n)
         {
             var result = 0;

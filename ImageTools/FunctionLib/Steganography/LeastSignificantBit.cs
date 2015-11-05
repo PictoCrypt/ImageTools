@@ -213,5 +213,19 @@ namespace FunctionLib.Steganography
             File.Copy(dest, tmp, true);
             return tmp;
         }
+
+        public override int MaxEncryptionCount(int squarePixels)
+        {
+            return MaxEncryptionCount(squarePixels, 3);
+        }
+
+        public int MaxEncryptionCount(int squarePixels, int leastSignificantBitIndicator)
+        {
+            // We are using the parameter leastSignificantBitIndicator each byte.
+            var lsbs = squarePixels * leastSignificantBitIndicator;
+            // Each character uses 8 bits.
+            var result = lsbs / 8;
+            return result;
+        }
     }
 }

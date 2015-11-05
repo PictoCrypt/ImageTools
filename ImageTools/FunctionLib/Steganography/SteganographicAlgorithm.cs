@@ -22,5 +22,7 @@ namespace FunctionLib.Steganography
         public abstract Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3);
         public abstract string Decrypt(Bitmap src, int significantIndicator);
         public abstract string ChangeColor(string srcPath, Color color);
+
+        public abstract int MaxEncryptionCount(int squarePixels);
     }
 }

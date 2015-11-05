@@ -27,9 +27,9 @@
         <Expander Grid.Column="0" Grid.Row="0" ExpandDirection="Down" IsExpanded="True" VerticalAlignment="Stretch" 
                   HorizontalAlignment="Stretch" Header="Text">
             <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
-                 VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
-                 Text="{Binding Text}" Style="{StaticResource TextBoxIsReadOnlyStyle}" 
-                     controls:TextBoxHelper.Watermark="Secret Text..." />
+                    VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
+                    Text="{Binding Text}" Style="{StaticResource TextBoxIsReadOnlyStyle}" 
+                        controls:TextBoxHelper.Watermark="Secret Text..." />
         </Expander>
 
         <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch" 
