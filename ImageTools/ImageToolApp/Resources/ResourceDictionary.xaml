@@ -27,6 +27,7 @@
     <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+    <converters:EqualsLsbConverter x:Key="EqualsLsbConverter" />
 
     <!-- Styles -->
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button"
@@ -116,6 +117,17 @@
                     </BeginStoryboard>
                 </Trigger.EnterActions>
             </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="NumericUpDownStyle" TargetType="{x:Type controls:NumericUpDown}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding SelectedSteganographicMethod, Converter={StaticResource EqualsLsbConverter}}" Value="True">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding SelectedSteganographicMethod, Converter={StaticResource EqualsLsbConverter}}" Value="False">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 </ResourceDictionary>

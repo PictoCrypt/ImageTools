@@ -77,9 +77,11 @@
   <ItemGroup>
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Converters\EqualsLsbConverter.cs" />
     <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
+    <Compile Include="Converters\OneWayConveter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="HandleJobController.cs" />
     <Compile Include="Models\SettingsModel.cs" />

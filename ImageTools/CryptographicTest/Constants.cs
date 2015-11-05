@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using FunctionLib.Helper;
 
 namespace CryptographicTest
@@ -13,5 +14,8 @@ namespace CryptographicTest
         public const string Password = "IchBinDasTestPasswort!";
         private static readonly string LoremIpsum = Path.Combine(MethodHelper.ExecutiongPath, "LoremIpsum.txt");
         public static readonly string LongText = File.ReadAllText(LoremIpsum);
+        public static readonly string NormalImage = Path.Combine(MethodHelper.ExecutiongPath, "NormalTest.png");
+        public static readonly Bitmap NormalBitmap = new Bitmap(NormalImage);
+        public const int NormalAdditionalParam = 3;
     }
 }

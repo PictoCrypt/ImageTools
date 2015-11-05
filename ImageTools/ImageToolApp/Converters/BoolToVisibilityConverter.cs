@@ -5,17 +5,12 @@ using System.Windows.Data;
 
 namespace ImageToolApp.Converters
 {
-    public class BoolToVisibilityConverter : IValueConverter
+    public class BoolToVisibilityConverter : OneWayConveter, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var obj = (bool) value;
             return obj ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException("Currently not needed.");
         }
     }
 }

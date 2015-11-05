@@ -1,13 +1,17 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Text;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography
 {
     public class LeastSignificantBit : SteganographicAlgorithm
     {
-        public override Bitmap Encrypt(Bitmap src, string value)
+        public override Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
@@ -40,15 +44,15 @@ namespace FunctionLib.Steganography
                     var pixel = lockBitmap.GetPixel(j, i);
 
                     // now, clear the least significant bit (LSB) from each pixel element
-                    var r = pixel.R - pixel.R%2;
-                    var g = pixel.G - pixel.G%2;
-                    var b = pixel.B - pixel.B%2;
+                    var r = pixel.R - pixel.R % 2;
+                    var g = pixel.G - pixel.G % 2;
+                    var b = pixel.B - pixel.B % 2;
 
                     // for each pixel, pass through its elements (RGB)
                     for (var n = 0; n < 3; n++)
                     {
                         // check if new 8 bits has been processed
-                        if (pixelElementIndex%8 == 0)
+                        if (pixelElementIndex % 8 == 0)
                         {
                             // check if the whole process has finished
                             // we can say that it's finished when 8 zeros are added
@@ -56,7 +60,7 @@ namespace FunctionLib.Steganography
                             {
                                 // apply the last pixel on the image
                                 // even if only a part of its elements have been affected
-                                if ((pixelElementIndex - 1)%3 < 2)
+                                if ((pixelElementIndex - 1) % 3 < 2)
                                 {
                                     lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
                                     ChangedPixels.Add(new Pixel(j, i));
@@ -81,47 +85,48 @@ namespace FunctionLib.Steganography
                         }
 
                         // check which pixel element has the turn to hide a bit in its LSB
-                        switch (pixelElementIndex%3)
+                        switch (pixelElementIndex % 3)
                         {
                             case 0:
-                            {
-                                if (state == State.Hiding)
                                 {
-                                    // the rightmost bit in the character will be (charValue % 2)
-                                    // to put this value instead of the LSB of the pixel element
-                                    // just add it to it
-                                    // recall that the LSB of the pixel element had been cleared
-                                    // before this operation
-                                    r += charValue%2;
+                                    if (state == State.Hiding)
+                                    {
+                                        //TODO: Hier müsste der Punkt sein!
+                                        // the rightmost bit in the character will be (charValue % 2)
+                                        // to put this value instead of the LSB of the pixel element
+                                        // just add it to it
+                                        // recall that the LSB of the pixel element had been cleared
+                                        // before this operation
+                                        r += charValue % 2;
 
-                                    // removes the added rightmost bit of the character
-                                    // such that next time we can reach the next one
-                                    charValue /= 2;
+                                        // removes the added rightmost bit of the character
+                                        // such that next time we can reach the next one
+                                        charValue /= 2;
+                                    }
                                 }
-                            }
                                 break;
                             case 1:
-                            {
-                                if (state == State.Hiding)
                                 {
-                                    g += charValue%2;
+                                    if (state == State.Hiding)
+                                    {
+                                        g += charValue % 2;
 
-                                    charValue /= 2;
+                                        charValue /= 2;
+                                    }
                                 }
-                            }
                                 break;
                             case 2:
-                            {
-                                if (state == State.Hiding)
                                 {
-                                    b += charValue%2;
+                                    if (state == State.Hiding)
+                                    {
+                                        b += charValue % 2;
 
-                                    charValue /= 2;
+                                        charValue /= 2;
+                                    }
+
+                                    lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
+                                    ChangedPixels.Add(new Pixel(j, i));
                                 }
-
-                                lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
-                                ChangedPixels.Add(new Pixel(j, i));
-                            }
                                 break;
                         }
 
@@ -139,7 +144,7 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        public override string Decrypt(Bitmap src)
+        public override string Decrypt(Bitmap src, int significantIndicator = 3)
         {
             var lockBitmap = new LockBitmap(new Bitmap(src));
             lockBitmap.LockBits();
@@ -148,7 +153,7 @@ namespace FunctionLib.Steganography
             var charValue = 0;
 
             // holds the value that will be extracted from the image
-            var result = string.Empty;
+            var result = new StringBuilder();
 
             // pass through the rows
             for (var i = 0; i < lockBitmap.Height; i++)
@@ -158,10 +163,10 @@ namespace FunctionLib.Steganography
                 {
                     var pixel = lockBitmap.GetPixel(j, i);
 
-                    // for each pixel, pass through its elements (RGB)
+                    // for each pixel, pass through its elements (RGB) = 3
                     for (var n = 0; n < 3; n++)
                     {
-                        switch (colorUnitIndex%3)
+                        switch (colorUnitIndex % 3)
                         {
                             case 0:
                             {
@@ -170,17 +175,17 @@ namespace FunctionLib.Steganography
                                 // this can be done by (charValue = charValue * 2)
                                 // replace the added bit (which value is by default 0) with
                                 // the LSB of the pixel element, simply by addition
-                                charValue = charValue*2 + pixel.R%2;
+                                charValue = charValue *2 + pixel.R % 2;
                             }
                                 break;
                             case 1:
                             {
-                                charValue = charValue*2 + pixel.G%2;
+                                charValue = charValue *2 + pixel.G % 2;
                             }
                                 break;
                             case 2:
                             {
-                                charValue = charValue*2 + pixel.B%2;
+                                charValue = charValue *2 + pixel.B % 2;
                             }
                                 break;
                         }
@@ -189,7 +194,7 @@ namespace FunctionLib.Steganography
 
                         // if 8 bits has been added,
                         // then add the current character to the result value
-                        if (colorUnitIndex%8 == 0)
+                        if (colorUnitIndex % 8 == 0)
                         {
                             // reverse? of course, since each time the process occurs
                             // on the right (for simplicity)
@@ -198,21 +203,21 @@ namespace FunctionLib.Steganography
                             // can only be 0 if it is the stop character (the 8 zeros)
                             if (charValue == 0)
                             {
-                                return result;
+                                return result.ToString();
                             }
 
                             // convert the character value from int to char
                             var c = (char) charValue;
 
                             // add the current character to the result value
-                            result += c.ToString();
+                            result.Append(c);;
                         }
                     }
                 }
             }
 
             lockBitmap.UnlockBits();
-            return result;
+            return result.ToString();
         }
 
         public override string ChangeColor(string srcPath, Color color)
@@ -235,7 +240,7 @@ namespace FunctionLib.Steganography
 
             for (var i = 0; i < 8; i++)
             {
-                result = result*2 + n%2;
+                result = result *2 + n % 2;
 
                 n /= 2;
             }
