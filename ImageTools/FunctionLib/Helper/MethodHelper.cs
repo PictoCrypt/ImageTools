@@ -25,13 +25,15 @@ namespace FunctionLib.Helper
             {
                 return new byte[0];
             }
-            var result = new ASCIIEncoding();
-            return result.GetBytes(str);
+            var encoder = Encoding.GetEncoding("ISO-8859-1");
+            var result = encoder.GetBytes(str.ToCharArray());
+            //var result = Encoding.UTF8.GetBytes(str.ToCharArray());
+            return result;
         }
 
         public static string ByteArrayToString(byte[] arr)
         {
-            var result = new ASCIIEncoding();
+            var result = new UTF8Encoding();
             return result.GetString(arr);
         }
 
@@ -57,6 +59,11 @@ namespace FunctionLib.Helper
 
         public static byte[] ToByteArray(object value)
         {
+            if (value == null)
+            {
+                throw new ArgumentException("value is null.");
+            }
+
             var str = value as string;
             if (str != null)
             {

@@ -25,8 +25,9 @@ namespace FunctionLib.Steganography
 
         public Bitmap Encrypt(Bitmap src, object value, int significantIndicator = 3)
         {
-            using (var result = new Bitmap(src))
+            //using (var result = new Bitmap(src))
             {
+                var result = new Bitmap(src);
                 var lockBitmap = new LockBitmap(result);
                 lockBitmap.LockBits();
                 var bytes = MethodHelper.ToByteArray(value);
@@ -38,31 +39,24 @@ namespace FunctionLib.Steganography
 
         public object Decrypt(Bitmap src, Type type, int significantIndifcator = 3)
         {
-            using (var bmp = new Bitmap(src))
+            //using (var bmp = new Bitmap(src))
             {
+                var bmp = new Bitmap(src);
                 var lockBitmap = new LockBitmap(bmp);
                 lockBitmap.LockBits();
-                var bytes = Decrypt(lockBitmap, significantIndifcator).ToList();
+                var bytes = Decrypt(lockBitmap, significantIndifcator);
                 lockBitmap.UnlockBits();
                 if (type == typeof (string))
                 {
-                    var builder = new StringBuilder();
-                    while (bytes.Count > 0)
-                    {
-                        var element = bytes.First();
-                        builder.Append((char)element);
-                        bytes.Remove(element);
-                    }
-                    return builder.ToString();
+                    return Encoding.GetEncoding("ISO-8859-1").GetString(bytes);
+                    //return Encoding.UTF8.GetString(bytes);
                 }
                 if (type == typeof (Bitmap))
                 {
                     //TODO: Wie erkenne ich, wo das ende einer Zeile/Spalte ist?
                 }
-                return null;
-                
+                return null;   
             }
-
         }
 
         protected abstract byte[] Decrypt(LockBitmap src, int significantIndicator = 3);

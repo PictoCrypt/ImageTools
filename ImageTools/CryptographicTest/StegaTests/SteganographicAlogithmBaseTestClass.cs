@@ -31,6 +31,13 @@ namespace CryptographicTest.StegaTests
             WriteToOutput();
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void EncryptionWithoutTextTest()
+        {
+            var encrypted = Encrypt(Constants.NormalBitmap, string.Empty);
+        }
+
         private string Decrypt(Bitmap encrypted)
         {
             mStopwatch.Start();

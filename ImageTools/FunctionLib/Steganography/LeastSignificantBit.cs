@@ -18,7 +18,7 @@ namespace FunctionLib.Steganography
 
             var bytes = value.ToList();
             // 8 Nullen um das Ende zu erkennen
-            bytes.Add(0);
+            bytes.Add(255);
             if (value == null)
             {
                 throw new ArgumentException("'value' is null.");
@@ -148,14 +148,16 @@ namespace FunctionLib.Steganography
 
                     // Check for End (1 Byte of 0)
                     //TODO: Wie erkennen wir ob es ein Bild oder ein Text oder Dokument ist?
-                    var index = byteList.IndexOf(0);
+                    var index = byteList.IndexOf(255);
                     if (index > -1)
                     {
                         if (byteList.Count - 1 > index)
                         {
-                            byteList.RemoveRange(index, byteList.Count);
+                            for (var i = index; i < byteList.Count + 1; i++)
+                            {
+                                byteList.RemoveAt(index);
+                            }
                         }
-                        byteList.RemoveAt(index);
                         return byteList.ToArray();
                     }
                 }
