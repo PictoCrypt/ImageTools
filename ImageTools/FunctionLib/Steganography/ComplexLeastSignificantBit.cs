@@ -8,12 +8,8 @@ namespace FunctionLib.Steganography
 {
     public class ComplexLeastSignificantBit : SteganographicAlgorithm
     {
-        public override Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int significantIndicator = 3)
         {
-            var result = new Bitmap(src);
-            var lockBitmap = new LockBitmap(result);
-            lockBitmap.LockBits();
-
             // initially, we'll be hiding characters in the image
             var state = State.Hiding;
 
@@ -32,13 +28,13 @@ namespace FunctionLib.Steganography
             // hold pixel elements
 
             // pass through the rows
-            for (var i = 0; i < lockBitmap.Height; i++)
+            for (var i = 0; i < src.Height; i++)
             {
                 // pass through each row
-                for (var j = 0; j < lockBitmap.Width; j++)
+                for (var j = 0; j < src.Width; j++)
                 {
                     // holds the pixel that is currently being processed
-                    var pixel = lockBitmap.GetPixel(j, i);
+                    var pixel = src.GetPixel(j, i);
 
                     // now, clear the least significant bit (LSB) from each pixel element
                     var r = pixel.R - pixel.R % 2;
@@ -59,13 +55,10 @@ namespace FunctionLib.Steganography
                                 // even if only a part of its elements have been affected
                                 if ((pixelElementIndex - 1) % 3 < 2)
                                 {
-                                    lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
+                                    src.SetPixel(j, i, Color.FromArgb(r, g, b));
                                     ChangedPixels.Add(new Pixel(j, i));
                                 }
-
-                                // return the bitmap with the value hidden in
-                                lockBitmap.UnlockBits();
-                                return result;
+                                return src;
                             }
 
                             // check if all characters has been hidden
@@ -121,7 +114,7 @@ namespace FunctionLib.Steganography
                                         charValue /= 2;
                                     }
 
-                                    lockBitmap.SetPixel(j, i, Color.FromArgb(r, g, b));
+                                    src.SetPixel(j, i, Color.FromArgb(r, g, b));
                                     ChangedPixels.Add(new Pixel(j, i));
                                 }
                                 break;
@@ -137,20 +130,11 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
-            lockBitmap.UnlockBits();
-            return result;
+            return src;
         }
 
-        public override Bitmap Encrypt(Bitmap src, Bitmap value, int significantIndicator = 3)
+        protected override byte[] Decrypt(LockBitmap src, int significantIndicator = 3)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override string Decrypt(Bitmap src, int significantIndicator = 3)
-        {
-            var lockBitmap = new LockBitmap(new Bitmap(src));
-            lockBitmap.LockBits();
-
             var colorUnitIndex = 0;
             var charValue = 0;
 
@@ -158,12 +142,12 @@ namespace FunctionLib.Steganography
             var result = new StringBuilder();
 
             // pass through the rows
-            for (var i = 0; i < lockBitmap.Height; i++)
+            for (var i = 0; i < src.Height; i++)
             {
                 // pass through each row
-                for (var j = 0; j < lockBitmap.Width; j++)
+                for (var j = 0; j < src.Width; j++)
                 {
-                    var pixel = lockBitmap.GetPixel(j, i);
+                    var pixel = src.GetPixel(j, i);
 
                     // for each pixel, pass through its elements (RGB) = 3
                     for (var n = 0; n < 3; n++)
@@ -205,7 +189,7 @@ namespace FunctionLib.Steganography
                             // can only be 0 if it is the stop character (the 8 zeros)
                             if (charValue == 0)
                             {
-                                return result.ToString();
+                                return MethodHelper.StringToByteArray(result.ToString());
                             }
 
                             // convert the character value from int to char
@@ -217,9 +201,7 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
-
-            lockBitmap.UnlockBits();
-            return result.ToString();
+            return MethodHelper.StringToByteArray(result.ToString());
         }
 
         public override string ChangeColor(string srcPath, Color color)

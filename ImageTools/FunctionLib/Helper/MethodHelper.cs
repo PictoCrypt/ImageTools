@@ -35,7 +35,7 @@ namespace FunctionLib.Helper
             return result.GetString(arr);
         }
 
-        public static IEnumerable<byte> BitmaptoByteArray(Bitmap src)
+        public static byte[] BitmaptoByteArray(Bitmap src)
         {
             var byteList = new List<byte>();
             var lockBitmap = new LockBitmap(src);
@@ -52,7 +52,22 @@ namespace FunctionLib.Helper
                 }
             }
             lockBitmap.UnlockBits();
-            return byteList;
+            return byteList.ToArray();
+        }
+
+        public static byte[] ToByteArray(object value)
+        {
+            var str = value as string;
+            if (str != null)
+            {
+                return StringToByteArray(str);
+            }
+            var bmp = value as Bitmap;
+            if (bmp != null)
+            {
+                return BitmaptoByteArray(bmp);
+            }
+            throw new NotImplementedException("Cant cast object to anything which contains byte[] for me, tho.");
         }
     }
 }

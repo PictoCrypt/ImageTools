@@ -8,33 +8,20 @@ namespace FunctionLib.Steganography
     {
         private static SteganographicAlgorithm mLastAccessedAlgorithm;
 
-        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, string value, int additionalParam)
+        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, object value, int additionalParam)
         {
             var encryptionType = MethodNameToType(method);
             var baseType = typeof (SteganographicAlgorithmBase);
-            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "EncryptText");
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
             if (extractedMethod != null)
             {
                 return (Bitmap) extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new object[] {src, value, additionalParam});
+                    .Invoke(obj, new[] {src, value, additionalParam});
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, Bitmap value, int additionalParam)
-        {
-            var encryptionType = MethodNameToType(method);
-            var baseType = typeof(SteganographicAlgorithmBase);
-            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "EncryptImage");
-            if (extractedMethod != null)
-            {
-                return (Bitmap)extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new object[] { src, value, additionalParam });
-            }
-            throw new ArgumentException(baseType.ToString());
-        }
-
-        public static string Decrypt(object obj, SteganographicMethod method, Bitmap src, int additionalParam)
+        public static string Decrypt(object obj, SteganographicMethod method, Bitmap src, Type type, int additionalParam)
         {
             var encryptionType = MethodNameToType(method);
             var baseType = typeof (SteganographicAlgorithmBase);
@@ -42,12 +29,12 @@ namespace FunctionLib.Steganography
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new object[] {src, additionalParam}).ToString();
+                    .Invoke(obj, new object[] {src, type, additionalParam}).ToString();
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap EncryptText<T>(Bitmap src, string value, int additionalParam)
+        public static Bitmap Encrypt<T>(Bitmap src, object value, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
@@ -55,21 +42,13 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        public static Bitmap EncryptImage<T>(Bitmap src, Bitmap value, int additionalParam)
-    where T : SteganographicAlgorithm, new()
-        {
-            mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Encrypt(src, value, additionalParam);
-            return result;
-        }
 
-
-        public static string DecryptText<T>(Bitmap src, int additionalParam)
+        public static string Decrypt<T>(Bitmap src, Type type, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Decrypt(src, additionalParam);
-            return result;
+            var result = mLastAccessedAlgorithm.Decrypt(src, type, additionalParam);
+            return result.ToString();
         }
 
         public static string ChangeColor(string srcPath, Color color)

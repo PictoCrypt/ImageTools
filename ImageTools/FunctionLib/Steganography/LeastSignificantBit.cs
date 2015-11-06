@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -12,19 +11,15 @@ namespace FunctionLib.Steganography
 {
     public class LeastSignificantBit : SteganographicAlgorithm
     {
-        public override Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int significantIndicator = 3)
         {
-            var result = new Bitmap(src);
-            var lockBitmap = new LockBitmap(result);
-            lockBitmap.LockBits();
-
             var byteIndex = 0;
             var bitIndex = 0;
 
-            var bytes = MethodHelper.StringToByteArray(value).ToList();
+            var bytes = value.ToList();
             // 8 Nullen um das Ende zu erkennen
             bytes.Add(0);
-            if (string.IsNullOrEmpty(value))
+            if (value == null)
             {
                 throw new ArgumentException("'value' is null.");
             }
@@ -34,62 +29,11 @@ namespace FunctionLib.Steganography
                 throw new ArgumentException("Anything failed, maybe.");
             }
 
-            for (var y = 0; y < lockBitmap.Height; y++)
+            for (var y = 0; y < src.Height; y++)
             {
-                for (var x = 0; x < lockBitmap.Width; x++)
+                for (var x = 0; x < src.Width; x++)
                 {
-                    var pixel = lockBitmap.GetPixel(x, y);
-                    var r = ClearLeastSignificantBit(pixel.R, significantIndicator);
-                    var g = ClearLeastSignificantBit(pixel.G, significantIndicator);
-                    var b = ClearLeastSignificantBit(pixel.B, significantIndicator);
-                    
-                    r = r + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
-                    g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
-                    b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
-
-                    lockBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
-                    ChangedPixels.Add(new Pixel(x, y));
-
-                    if (byteIndex > bytes.Count - 1 || byteIndex == bytes.Count - 1 && bitIndex == 7)
-                    {
-                        lockBitmap.UnlockBits();
-                        return result;
-                    }
-                }
-            }
-
-
-            lockBitmap.UnlockBits();
-            return result;
-        }
-
-        public override Bitmap Encrypt(Bitmap src, Bitmap value, int significantIndicator = 3)
-        {
-            var result = new Bitmap(src);
-            var lockBitmap = new LockBitmap(result);
-            lockBitmap.LockBits();
-
-            var byteIndex = 0;
-            var bitIndex = 0;
-
-            var bytes = MethodHelper.BitmaptoByteArray(value).ToList();
-            // 8 Nullen um das Ende zu erkennen
-            bytes.Add(0);
-            if (value == null)
-            {
-                throw new ArgumentException("'value' is null.");
-            }
-
-            if (bytes.Count != (value.Height * value.Width) * 3 + 1)
-            {
-                throw new ArgumentException("Anything failed, maybe.");
-            }
-
-            for (var y = 0; y < lockBitmap.Height; y++)
-            {
-                for (var x = 0; x < lockBitmap.Width; x++)
-                {
-                    var pixel = lockBitmap.GetPixel(x, y);
+                    var pixel = src.GetPixel(x, y);
                     var r = ClearLeastSignificantBit(pixel.R, significantIndicator);
                     var g = ClearLeastSignificantBit(pixel.G, significantIndicator);
                     var b = ClearLeastSignificantBit(pixel.B, significantIndicator);
@@ -98,20 +42,16 @@ namespace FunctionLib.Steganography
                     g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
                     b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, significantIndicator);
 
-                    lockBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
+                    src.SetPixel(x, y, Color.FromArgb(r, g, b));
                     ChangedPixels.Add(new Pixel(x, y));
 
                     if (byteIndex > bytes.Count - 1 || byteIndex == bytes.Count - 1 && bitIndex == 7)
                     {
-                        lockBitmap.UnlockBits();
-                        return result;
+                        return src;
                     }
                 }
             }
-
-
-            lockBitmap.UnlockBits();
-            return result;
+            return src;
         }
 
         /// <summary>
@@ -175,19 +115,16 @@ namespace FunctionLib.Steganography
             return (value & result);
         }
 
-        public override string Decrypt(Bitmap src, int significantIndicator)
+        protected override byte[] Decrypt(LockBitmap src, int significantIndicator = 3)
         {
-            var lockBitmap = new LockBitmap(src);
-            lockBitmap.LockBits();
-
             var byteList = new List<byte>();
             var bitHolder = new List<int>();
 
-            for (var y = 0; y < lockBitmap.Height; y++)
+            for (var y = 0; y < src.Height; y++)
             {
-                for (var x = 0; x < lockBitmap.Width; x++)
+                for (var x = 0; x < src.Width; x++)
                 {
-                    var pixel = lockBitmap.GetPixel(x, y);
+                    var pixel = src.GetPixel(x, y);
 
                     for (var i = 0; i < significantIndicator; i++)
                     {
@@ -219,14 +156,7 @@ namespace FunctionLib.Steganography
                             byteList.RemoveRange(index, byteList.Count);
                         }
                         byteList.RemoveAt(index);
-                        var builder = new StringBuilder();
-                        while (byteList.Count > 0)
-                        {
-                            var element = byteList.First();
-                            builder.Append((char)element);
-                            byteList.Remove(element);
-                        }
-                        return builder.ToString();
+                        return byteList.ToArray();
                     }
                 }
             }
