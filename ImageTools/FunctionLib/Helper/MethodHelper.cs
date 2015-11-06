@@ -23,7 +23,7 @@ namespace FunctionLib.Helper
         {
             if (string.IsNullOrEmpty(str))
             {
-                return new byte[0];
+                throw new ArgumentException("str is null or empty.");
             }
             var encoder = Encoding.GetEncoding("ISO-8859-1");
             var result = encoder.GetBytes(str.ToCharArray());
