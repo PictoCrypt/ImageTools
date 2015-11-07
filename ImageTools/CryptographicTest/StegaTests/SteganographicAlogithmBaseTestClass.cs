@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CryptographicTest.StegaTests
@@ -26,9 +27,16 @@ namespace CryptographicTest.StegaTests
 
             var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(Constants.NormalText.Equals(decrypted));
+            Assert.IsTrue(decrypted.StartsWith(Constants.NormalText));
 
             WriteToOutput();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TargetInvocationException))]
+        public void EncryptionWithoutTextTest()
+        {
+            var encrypted = Encrypt(Constants.NormalBitmap, string.Empty);
         }
 
         private string Decrypt(Bitmap encrypted)

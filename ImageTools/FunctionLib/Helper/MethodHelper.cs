@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -20,33 +23,58 @@ namespace FunctionLib.Helper
         {
             if (string.IsNullOrEmpty(str))
             {
-                return new byte[0];
+                throw new ArgumentException("str is null or empty.");
             }
-            var result = new ASCIIEncoding();
-            return result.GetBytes(str);
+            var encoder = Encoding.GetEncoding("ISO-8859-1");
+            var result = encoder.GetBytes(str.ToCharArray());
+            //var result = Encoding.UTF8.GetBytes(str.ToCharArray());
+            return result;
         }
 
         public static string ByteArrayToString(byte[] arr)
         {
-            var result = new ASCIIEncoding();
+            var result = new UTF8Encoding();
             return result.GetString(arr);
         }
 
-        public static byte[] StreamToByteArray(Stream s)
+        public static byte[] BitmaptoByteArray(Bitmap src)
         {
-            var rawLength = new byte[sizeof (int)];
-            if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length)
+            var byteList = new List<byte>();
+            var lockBitmap = new LockBitmap(src);
+            lockBitmap.LockBits();
+            for (var i = 0; i < lockBitmap.Height; i++)
             {
-                throw new SystemException("Stream did not contain properly formatted byte array");
+                for (var j = 0; j < lockBitmap.Width; j++)
+                {
+                    var pixel = lockBitmap.GetPixel(j, i);
+                    //var color = pixel.ToArgb();
+                    byteList.Add(pixel.R);
+                    byteList.Add(pixel.G);
+                    byteList.Add(pixel.B);
+                }
+            }
+            lockBitmap.UnlockBits();
+            return byteList.ToArray();
+        }
+
+        public static byte[] ToByteArray(object value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentException("value is null.");
             }
 
-            var buffer = new byte[BitConverter.ToInt32(rawLength, 0)];
-            if (s.Read(buffer, 0, buffer.Length) != buffer.Length)
+            var str = value as string;
+            if (str != null)
             {
-                throw new SystemException("Did not read byte array properly");
+                return StringToByteArray(str);
             }
-
-            return buffer;
+            var bmp = value as Bitmap;
+            if (bmp != null)
+            {
+                return BitmaptoByteArray(bmp);
+            }
+            throw new NotImplementedException("Cant cast object to anything which contains byte[] for me, tho.");
         }
     }
 }
