@@ -46,7 +46,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -64,6 +66,7 @@
     <Compile Include="StegaTests\ComplexLeastSignificantBitTest.cs" />
     <Compile Include="StegaTests\LeastSignificantBitTest.cs" />
     <Compile Include="StegaTests\SteganographicAlogithmBaseTestClass.cs" />
+    <Compile Include="ZipFileHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FunctionLib\FunctionLib.csproj">
@@ -72,12 +75,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LoremIpsum.txt">
+    <Content Include="Testfiles\LoremIpsum.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="NormalTest.png">
+    <Content Include="Testfiles\NormalTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Testfiles\TestZip.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -13,10 +13,12 @@ namespace CryptographicTest
 
         public const string Password = "IchBinDasTestPasswort!";
         public const int NormalAdditionalParam = 3;
-        private static readonly string LoremIpsum = Path.Combine(MethodHelper.ExecutiongPath, "LoremIpsum.txt");
+        private static readonly string LoremIpsum = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "LoremIpsum.txt");
         public static readonly string LongText = File.ReadAllText(LoremIpsum);
-        public static readonly string NormalImage = Path.Combine(MethodHelper.ExecutiongPath, "NormalTest.png");
-        public static readonly string EncryptedImage = Path.Combine(MethodHelper.ExecutiongPath, "EncryptedTest.png");
+        public static readonly string NormalImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "NormalTest.png");
+        public static readonly string EncryptedImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "EncryptedTest.png");
         public static readonly Bitmap NormalBitmap = new Bitmap(NormalImage);
+        public static readonly string Testzip = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles",
+            "TestZip.zip");
     }
 }
