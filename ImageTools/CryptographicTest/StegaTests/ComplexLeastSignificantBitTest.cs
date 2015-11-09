@@ -8,15 +8,15 @@ namespace CryptographicTest.StegaTests
     [TestClass]
     public class ComplexLeastSignificantBitTest : SteganographicAlogithmBaseTestClass
     {
-        public override Bitmap Encrypt(Bitmap src, string value, int additionalParam)
+        public override Bitmap Encrypt(Bitmap src, object value, int additionalParam)
         {
             return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.ComplexLSB, src, value,
                 additionalParam);
         }
 
-        public override string Decrypt(Bitmap src, int additionalParam)
+        public override string Decrypt(Bitmap src, ResultingType type, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.ComplexLSB, src, typeof (string),
+            return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.ComplexLSB, src, ResultingType.Text,
                 additionalParam);
         }
     }

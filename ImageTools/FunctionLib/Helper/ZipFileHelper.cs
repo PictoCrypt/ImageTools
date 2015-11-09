@@ -8,7 +8,7 @@ namespace FunctionLib.Helper
 {
     public static class ZipFileHelper
     {
-        public static List<MemoryStream> OpenZip(string path)
+        private static List<MemoryStream> OpenZip(string path)
         {
             var outputStreams = new List<MemoryStream>();
             using (var file = ZipFile.Read(path))

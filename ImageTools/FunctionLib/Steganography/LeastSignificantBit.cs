@@ -21,11 +21,6 @@ namespace FunctionLib.Steganography
                 throw new ArgumentException("'value' is null.");
             }
 
-            if (bytes.Count != value.Length + 1)
-            {
-                throw new ArgumentException("Anything failed, maybe.");
-            }
-
             for (var y = 0; y < src.Height; y++)
             {
                 for (var x = 0; x < src.Width; x++)
@@ -196,19 +191,50 @@ namespace FunctionLib.Steganography
         /// <param name="collection">The collection to search in.</param>
         /// <param name="sequence">The sequence which is searched for.</param>
         /// <returns></returns>
-        public static int IndexOf<T>(IEnumerable<T> collection, IEnumerable<T> sequence)
+        public static int IndexOf<T>(IList<T> collection, IEnumerable<T> sequence)
         {
-            var ccount = collection.Count();
-            var scount = sequence.Count();
+            if (collection == null && collection.Any())
+                return -1;
+            if (sequence == null && collection.Any())
+                return -1;
 
-            if (scount > ccount) return -1;
+            var collectionCount = collection.Count();
+            var seqCount = sequence.Count();
 
-            if (collection.Take(scount).SequenceEqual(sequence)) return 0;
+            if (seqCount > collectionCount)
+                return -1;
 
-            var index = Enumerable.Range(1, ccount - scount + 1)
-                                  .FirstOrDefault(i => collection.Skip(i).Take(scount).SequenceEqual(sequence));
-            if (index == 0) return -1;
-            return index;
+
+            var seqFirst = sequence.First();
+            var items = collection.Where(x => x.Equals(seqFirst));
+            var indexList = new List<int>();
+            foreach (var item in items)
+            {
+                if (indexList.Count == 0)
+                    indexList.Add(collection.IndexOf(item));
+
+            }
+
+
+            var result = -1;
+            foreach (var index in indexList)
+            {
+                if (collectionCount < index + seqCount - 1)
+                    return -1;
+
+                result = index;
+                for (var i = 1; i < seqCount; i++)
+                {
+                    var collItem = collection[index + i];
+                    if (!collItem.Equals(sequence.ElementAt(i)))
+                    {
+                        result = -1;
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
 
     public override string ChangeColor(string srcPath, Color color)

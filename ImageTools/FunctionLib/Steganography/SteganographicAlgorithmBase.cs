@@ -22,7 +22,7 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static string Decrypt(object obj, SteganographicMethod method, Bitmap src, Type type, int additionalParam)
+        public static string Decrypt(object obj, SteganographicMethod method, Bitmap src, ResultingType type, int additionalParam)
         {
             var encryptionType = MethodNameToType(method);
             var baseType = typeof (SteganographicAlgorithmBase);

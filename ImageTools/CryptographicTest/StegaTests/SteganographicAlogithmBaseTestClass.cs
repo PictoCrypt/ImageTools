@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
+using FunctionLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CryptographicTest.StegaTests
@@ -33,23 +34,35 @@ namespace CryptographicTest.StegaTests
         }
 
         [TestMethod]
+        public void EncryptImageTest()
+        {
+            var encrypted = Encrypt(Constants.NormalBitmap, Constants.NormalBitmap);
+
+            var decrypted = Decrypt(encrypted, ResultingType.Image, Constants.NormalAdditionalParam);
+
+            Assert.Equals(encrypted, decrypted);
+
+            WriteToOutput();
+        }
+
+        [TestMethod]
         [ExpectedException(typeof (TargetInvocationException))]
         public void EncryptionWithoutTextTest()
         {
             var encrypted = Encrypt(Constants.NormalBitmap, string.Empty);
         }
 
-        private string Decrypt(Bitmap encrypted)
+        private string Decrypt(Bitmap encrypted, ResultingType type = ResultingType.Text)
         {
             mStopwatch.Start();
-            var decrypted = Decrypt(encrypted, Constants.NormalAdditionalParam);
+            var decrypted = Decrypt(encrypted, type, Constants.NormalAdditionalParam);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
             Assert.IsFalse(string.IsNullOrEmpty(decrypted));
             return decrypted;
         }
 
-        private Bitmap Encrypt(Bitmap src, string value)
+        private Bitmap Encrypt(Bitmap src, object value)
         {
             mStopwatch.Start();
             var encrypted = Encrypt(src, value, Constants.NormalAdditionalParam);
@@ -69,7 +82,7 @@ namespace CryptographicTest.StegaTests
             Trace.WriteLine("");
         }
 
-        public abstract Bitmap Encrypt(Bitmap src, string value, int additionalParam);
-        public abstract string Decrypt(Bitmap src, int additionalParam);
+        public abstract Bitmap Encrypt(Bitmap src, object value, int additionalParam);
+        public abstract string Decrypt(Bitmap src, ResultingType type, int additionalParam);
     }
 }

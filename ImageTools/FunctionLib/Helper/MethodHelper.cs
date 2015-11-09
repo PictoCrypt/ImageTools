@@ -24,6 +24,11 @@ namespace FunctionLib.Helper
             {
                 throw new ArgumentException("str is null or empty.");
             }
+            if (File.Exists(str))
+            {
+                return ZipFileHelper.ZipToBytes(str);
+            }
+
             var encoder = Encoding.GetEncoding("ISO-8859-1");
             var result = encoder.GetBytes(str.ToCharArray());
             //var result = Encoding.UTF8.GetBytes(str.ToCharArray());

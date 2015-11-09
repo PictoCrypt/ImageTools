@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.IO;
+using FunctionLib;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
@@ -41,7 +42,7 @@ namespace ImageToolApp.Controllers
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
                     result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
-                        typeof (string), ViewModel.NumericUpDownValue);
+                        ResultingType.Text, ViewModel.NumericUpDownValue);
                 }
 
                 if (ViewModel.EncryptedCheck)
