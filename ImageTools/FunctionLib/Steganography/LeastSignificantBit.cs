@@ -191,50 +191,36 @@ namespace FunctionLib.Steganography
         /// <param name="collection">The collection to search in.</param>
         /// <param name="sequence">The sequence which is searched for.</param>
         /// <returns></returns>
-        public static int IndexOf<T>(IList<T> collection, IEnumerable<T> sequence)
+        public static int IndexOf(IList<byte> collection, IList<byte> sequence)
         {
-            if (collection == null && collection.Any())
-                return -1;
-            if (sequence == null && collection.Any())
-                return -1;
+            //TODO: Wie können wir das besser lösen?
+            var ccount = collection.Count();
+            var scount = sequence.Count();
 
-            var collectionCount = collection.Count();
-            var seqCount = sequence.Count();
-
-            if (seqCount > collectionCount)
-                return -1;
-
+            if (scount > ccount) return -1;
 
             var seqFirst = sequence.First();
-            var items = collection.Where(x => x.Equals(seqFirst));
-            var indexList = new List<int>();
-            foreach (var item in items)
-            {
-                if (indexList.Count == 0)
-                    indexList.Add(collection.IndexOf(item));
 
+            var last = collection.LastOrDefault(x => x.Equals(seqFirst));
+            if (last == 0)
+            {
+                return -1;
             }
+            var indexLast = collection.IndexOf(last);
 
+            if (collection.Count < indexLast + sequence.Count - 1)
+                return -1;
 
-            var result = -1;
-            foreach (var index in indexList)
+            for (var i = 1; i < sequence.Count; i++)
             {
-                if (collectionCount < index + seqCount - 1)
-                    return -1;
-
-                result = index;
-                for (var i = 1; i < seqCount; i++)
+                var s = sequence[i];
+                var c = collection[indexLast + i];
+                if (!s.Equals(c))
                 {
-                    var collItem = collection[index + i];
-                    if (!collItem.Equals(sequence.ElementAt(i)))
-                    {
-                        result = -1;
-                        break;
-                    }
+                    return -1;
                 }
             }
-
-            return result;
+            return indexLast;
         }
 
     public override string ChangeColor(string srcPath, Color color)
