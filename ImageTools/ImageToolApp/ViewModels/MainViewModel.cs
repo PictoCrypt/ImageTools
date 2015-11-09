@@ -13,10 +13,10 @@ namespace ImageToolApp.ViewModels
         private UICommand mOpenHelpCommand;
         private UICommand mOpenImageCommand;
         private UICommand mOpenTxtCommand;
+        private bool mProgressActive;
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
-        private bool mProgressActive = false;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {

@@ -55,7 +55,7 @@ namespace FunctionLib.Steganography
         }
 
         /// <summary>
-        /// Gets the bit of this byte on a specific position.
+        ///     Gets the bit of this byte on a specific position.
         /// </summary>
         /// <param name="b">Byte</param>
         /// <param name="index">Index. Index of 0 is the most significant bit.</param>
@@ -112,7 +112,7 @@ namespace FunctionLib.Steganography
             }
 
             var result = Convert.ToInt32(builder.ToString(), 2);
-            return (value & result);
+            return value & result;
         }
 
         protected override byte[] Decrypt(LockBitmap src, int significantIndicator = 3)
@@ -166,7 +166,7 @@ namespace FunctionLib.Steganography
         }
 
         /// <summary>
-        /// Summarizing 8 bits to 1 byte and adding to the bytes list.
+        ///     Summarizing 8 bits to 1 byte and adding to the bytes list.
         /// </summary>
         /// <param name="bytes">List for holding the ended bytes.</param>
         /// <param name="bitHolder">List for holding the bits.</param>
@@ -188,7 +188,7 @@ namespace FunctionLib.Steganography
             }
             return bytes;
         }
-        
+
         public override string ChangeColor(string srcPath, Color color)
         {
             var tmp = Path.GetTempFileName();
@@ -211,9 +211,9 @@ namespace FunctionLib.Steganography
         public int MaxEncryptionCount(int squarePixels, int leastSignificantBitIndicator)
         {
             // We are using the parameter leastSignificantBitIndicator each byte.
-            var lsbs = squarePixels * leastSignificantBitIndicator;
+            var lsbs = squarePixels*leastSignificantBitIndicator;
             // Each character uses 8 bits.
-            var result = lsbs / 8;
+            var result = lsbs/8;
             return result;
         }
     }

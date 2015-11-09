@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using FunctionLib.Helper;
 
@@ -55,7 +54,7 @@ namespace FunctionLib.Steganography
                 {
                     //TODO: Wie erkenne ich, wo das ende einer Zeile/Spalte ist?
                 }
-                return null;   
+                return null;
             }
         }
 

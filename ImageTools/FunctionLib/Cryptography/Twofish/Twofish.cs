@@ -20,7 +20,7 @@ namespace FunctionLib.Cryptography.Twofish
             LegalKeySizesValue = new[] {new KeySizes(128, 256, 64)}; // this allows us to have 128,192,256 key sizes
 
             LegalBlockSizesValue = new[] {new KeySizes(128, 128, 0)};
-                // this is in bits - typical of MS - always 16 bytes
+            // this is in bits - typical of MS - always 16 bytes
 
             BlockSize = 128; // set this to 16 bytes we cannot have any other value
             KeySize = 128; // in bits - this can be changed to 128,192,256
@@ -44,7 +44,7 @@ namespace FunctionLib.Cryptography.Twofish
                     case CipherMode.ECB:
                         break;
                     default:
-                        throw (new CryptographicException("Specified CipherMode is not supported."));
+                        throw new CryptographicException("Specified CipherMode is not supported.");
                 }
                 ModeValue = value;
             }

@@ -98,7 +98,7 @@ namespace FunctionLib.Helper
             var cCount = Depth/8;
 
             // Get start index of the specified pixel
-            var i = ((y*Width) + x)*cCount;
+            var i = (y*Width + x)*cCount;
 
             if (i > Pixels.Length - cCount)
                 throw new IndexOutOfRangeException();
@@ -139,7 +139,7 @@ namespace FunctionLib.Helper
             var cCount = Depth/8;
 
             // Get start index of the specified pixel
-            var i = ((y*Width) + x)*cCount;
+            var i = (y*Width + x)*cCount;
 
             if (Depth == 32) // For 32 bpp set Red, Green, Blue and Alpha
             {

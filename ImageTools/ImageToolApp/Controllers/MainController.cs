@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using FunctionLib.Helper;
@@ -28,19 +27,6 @@ namespace ImageToolApp.Controllers
             mView.Show();
         }
 
-        private void ViewOnClosing(object sender, CancelEventArgs cancelEventArgs)
-        {
-            UnregisterEvents();
-
-        }
-
-        private void UnregisterEvents()
-        {
-            mEncryptController.UnregisterEvents();
-
-            mView.Closing -= ViewOnClosing;
-        }
-
         private IBaseTabController CurrentController
         {
             get
@@ -52,6 +38,18 @@ namespace ImageToolApp.Controllers
                 }
                 return mDecryptController;
             }
+        }
+
+        private void ViewOnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            UnregisterEvents();
+        }
+
+        private void UnregisterEvents()
+        {
+            mEncryptController.UnregisterEvents();
+
+            mView.Closing -= ViewOnClosing;
         }
 
         private void SetupCommands()

@@ -16,7 +16,8 @@
 
                 <!-- theme resource -->
                 <!-- change "BaseLight" to the theme you want -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

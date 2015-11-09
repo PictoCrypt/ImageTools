@@ -123,7 +123,7 @@ namespace FunctionLib.Cryptography.Twofish
             {
                 //outputBuffer = new byte[0];
                 result = new byte[inputCount];
-                    // the .NET framework doesn't like it if you return null - this calms it down
+                // the .NET framework doesn't like it if you return null - this calms it down
             }
 
             return result;

@@ -25,10 +25,9 @@ namespace ImageToolApp
                     MainViewModel.ProgressActive = false;
                 }
                 Window.Cursor = Cursors.Arrow;
-
             }, DispatcherPriority.Background);
         }
-        
+
         public static void Progress(Action action)
         {
             var progress = Window.FindChildren<ProgressRing>().FirstOrDefault();

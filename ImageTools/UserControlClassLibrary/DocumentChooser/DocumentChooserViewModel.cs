@@ -4,19 +4,12 @@ namespace UserControlClassLibrary.DocumentChooser
 {
     public class DocumentChooserViewModel : PropertyChangedModel
     {
+        private UICommand mCommand;
+        private string mPath;
+
         public DocumentChooserViewModel()
         {
             Command = UICommand.Regular(Open);
-        }
-
-        private void Open()
-        {
-            var dialog = new OpenFileDialog { Filter = "Word Doc|*.doc|Word Doc|*.docx" };
-            var dialogResult = dialog.ShowDialog();
-            if (dialogResult.HasValue && dialogResult.Value)
-            {
-                Path = dialog.FileName;
-            }
         }
 
         public string Path
@@ -24,7 +17,7 @@ namespace UserControlClassLibrary.DocumentChooser
             get { return mPath; }
             set
             {
-                if(value.Equals(mPath))
+                if (value.Equals(mPath))
                 {
                     return;
                 }
@@ -32,9 +25,6 @@ namespace UserControlClassLibrary.DocumentChooser
                 OnPropertyChanged("Path");
             }
         }
-
-        private UICommand mCommand;
-        private string mPath;
 
         public UICommand Command
         {
@@ -47,6 +37,16 @@ namespace UserControlClassLibrary.DocumentChooser
                 }
                 mCommand = value;
                 OnPropertyChanged("Command");
+            }
+        }
+
+        private void Open()
+        {
+            var dialog = new OpenFileDialog {Filter = "Word Doc|*.doc|Word Doc|*.docx"};
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                Path = dialog.FileName;
             }
         }
     }

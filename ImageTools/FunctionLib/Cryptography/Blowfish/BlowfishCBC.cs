@@ -47,14 +47,14 @@ namespace FunctionLib.Cryptography.Blowfish
         {
             set
             {
-                m_unIvHi = (((uint) value[0]) << 24) |
-                           (((uint) value[1]) << 16) |
-                           (((uint) value[2]) << 8) |
+                m_unIvHi = ((uint) value[0] << 24) |
+                           ((uint) value[1] << 16) |
+                           ((uint) value[2] << 8) |
                            value[3];
 
-                m_unIvLo = (((uint) value[4]) << 24) |
-                           (((uint) value[5]) << 16) |
-                           (((uint) value[6]) << 8) |
+                m_unIvLo = ((uint) value[4] << 24) |
+                           ((uint) value[5] << 16) |
+                           ((uint) value[6] << 8) |
                            value[7];
             }
 

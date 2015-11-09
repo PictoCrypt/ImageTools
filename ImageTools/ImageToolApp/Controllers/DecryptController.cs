@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
@@ -11,7 +10,8 @@ namespace ImageToolApp.Controllers
 {
     public class DecryptController : BaseTabController<BaseTabViewModel>
     {
-        public DecryptController(MainController mainController, string viewName, bool textBoxReadOnly) : base(mainController, viewName, textBoxReadOnly)
+        public DecryptController(MainController mainController, string viewName, bool textBoxReadOnly)
+            : base(mainController, viewName, textBoxReadOnly)
         {
         }
 
@@ -35,12 +35,13 @@ namespace ImageToolApp.Controllers
 
         private void Decrypt()
         {
-            HandleJobController.Progress((Action)(() =>
+            HandleJobController.Progress(() =>
             {
                 string result;
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
-                    result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, typeof(string), ViewModel.NumericUpDownValue);
+                    result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
+                        typeof (string), ViewModel.NumericUpDownValue);
                 }
 
                 if (ViewModel.EncryptedCheck)
@@ -50,7 +51,7 @@ namespace ImageToolApp.Controllers
                 }
 
                 ViewModel.Text = result;
-            }));
+            });
         }
     }
 }

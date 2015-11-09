@@ -33,7 +33,7 @@ namespace CryptographicTest.StegaTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(TargetInvocationException))]
+        [ExpectedException(typeof (TargetInvocationException))]
         public void EncryptionWithoutTextTest()
         {
             var encrypted = Encrypt(Constants.NormalBitmap, string.Empty);

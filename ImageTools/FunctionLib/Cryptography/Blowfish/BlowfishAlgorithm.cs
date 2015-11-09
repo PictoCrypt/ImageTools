@@ -148,7 +148,7 @@ namespace FunctionLib.Cryptography.Blowfish
             set
             {
                 var ks = LegalKeySizes[0];
-                if ((0 != (value%ks.SkipSize)) ||
+                if ((0 != value%ks.SkipSize) ||
                     (value > ks.MaxSize) ||
                     (value < ks.MinSize))
                 {
@@ -350,7 +350,7 @@ namespace FunctionLib.Cryptography.Blowfish
             var result = new BlowfishAlgorithm(
                 key,
                 iv,
-                (CipherMode.CBC == ModeValue),
+                CipherMode.CBC == ModeValue,
                 true);
 
             result.Padding = Padding;
@@ -366,7 +366,7 @@ namespace FunctionLib.Cryptography.Blowfish
             var result = new BlowfishAlgorithm(
                 key,
                 iv,
-                (CipherMode.CBC == ModeValue),
+                CipherMode.CBC == ModeValue,
                 false);
 
             result.Padding = Padding;

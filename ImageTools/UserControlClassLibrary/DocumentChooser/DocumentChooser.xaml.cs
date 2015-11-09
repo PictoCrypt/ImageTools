@@ -3,14 +3,14 @@
 namespace UserControlClassLibrary.DocumentChooser
 {
     /// <summary>
-    /// Interaction logic for DocumentChooser.xaml
+    ///     Interaction logic for DocumentChooser.xaml
     /// </summary>
     public partial class DocumentChooser : UserControl
     {
         public DocumentChooser()
         {
             InitializeComponent();
-            this.DataContext = new DocumentChooserViewModel();
+            DataContext = new DocumentChooserViewModel();
         }
     }
 }

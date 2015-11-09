@@ -83,7 +83,8 @@
             </StackPanel>
         </StackPanel>
 
-        <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1" Style="{StaticResource MetroAnimatedTabControlDisabledStyle}">
+        <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1"
+                                          Style="{StaticResource MetroAnimatedTabControlDisabledStyle}">
             <controls:MetroTabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
                 <controls:MetroTabItem.Header>
                     <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encrypt"
@@ -102,11 +103,11 @@
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>
 
-        <controls:ProgressRing x:Name="Progress" Grid.ZIndex="1000" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+        <controls:ProgressRing x:Name="Progress" Grid.ZIndex="1000" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch" Margin="2" 
-                               Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}" 
-                               IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True" 
-                               Foreground="{DynamicResource AccentColorBrush}"/>
+                               VerticalAlignment="Stretch" Margin="2"
+                               Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}"
+                               IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True"
+                               Foreground="{DynamicResource AccentColorBrush}" />
     </Grid>
 </controls:MetroWindow>

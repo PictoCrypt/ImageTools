@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,23 +28,6 @@ namespace ImageToolApp.Controllers
             View.ImageExpander.Collapsed += ImageExpanderEvent;
         }
 
-        private void ImageExpanderEvent(object sender, RoutedEventArgs routedEventArgs)
-        {
-            var expander = sender as Expander;
-            ResizeImageExpanderGrid(expander, expander.IsExpanded);
-        }
-
-        private void ResizeImageExpanderGrid(UIElement expander, bool expanded)
-        {
-            var column = View.Grid.ColumnDefinitions[Grid.GetColumn(expander)];
-            column.Width = new GridLength(1.0, expanded ? GridUnitType.Star : GridUnitType.Auto);
-        }
-
-        public virtual void UnregisterEvents()
-        {
-            View.ImageExpander.Expanded -= ImageExpanderEvent;
-        }
-
         public BaseTabView View { get; }
 
         protected ProgressRing ProgressRing
@@ -56,7 +38,6 @@ namespace ImageToolApp.Controllers
                 return result;
             }
         }
-
 
 
         public void OpenImage()
@@ -76,6 +57,23 @@ namespace ImageToolApp.Controllers
             var tmp = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(dialog.FileName));
             File.Copy(dialog.FileName, tmp);
             ViewModel.ImagePath = tmp;
+        }
+
+        private void ImageExpanderEvent(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var expander = sender as Expander;
+            ResizeImageExpanderGrid(expander, expander.IsExpanded);
+        }
+
+        private void ResizeImageExpanderGrid(UIElement expander, bool expanded)
+        {
+            var column = View.Grid.ColumnDefinitions[Grid.GetColumn(expander)];
+            column.Width = new GridLength(1.0, expanded ? GridUnitType.Star : GridUnitType.Auto);
+        }
+
+        public virtual void UnregisterEvents()
+        {
+            View.ImageExpander.Expanded -= ImageExpanderEvent;
         }
 
         private void InitializeController()

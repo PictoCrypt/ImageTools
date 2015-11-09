@@ -25,7 +25,7 @@ namespace FunctionLib
                     var b = Math.Abs(col1.B - col2.B);
 
                     //Invert the difference average
-                    var dif = 255 - ((r + g + b)/3);
+                    var dif = 255 - (r + g + b)/3;
 
                     //Create new grayscale rgb colour
                     var newcol = Color.FromArgb(dif, dif, dif);

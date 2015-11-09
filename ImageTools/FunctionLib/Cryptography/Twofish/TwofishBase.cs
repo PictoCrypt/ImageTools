@@ -17,14 +17,14 @@ namespace FunctionLib.Cryptography.Twofish
             Decrypting
         }
 
+        private readonly int[] numRounds = {0, ROUNDS_128, ROUNDS_192, ROUNDS_256};
+
         protected CipherMode cipherMode = CipherMode.ECB;
 
         protected int inputBlockSize = BLOCK_SIZE/8;
         protected uint[] IV = {0, 0, 0, 0}; // this should be one block size
         protected uint[] Key = {0, 0, 0, 0, 0, 0, 0, 0}; //new int[MAX_KEY_BITS/32];
         private int keyLength;
-
-        private readonly int[] numRounds = {0, ROUNDS_128, ROUNDS_192, ROUNDS_256};
         protected int outputBlockSize = BLOCK_SIZE/8;
         private int rounds;
 
@@ -95,7 +95,7 @@ namespace FunctionLib.Cryptography.Twofish
 
 
             /* Now perform the MDS matrix multiply inline. */
-            return (uint) ((M00(b[0]) ^ M01(b[1]) ^ M02(b[2]) ^ M03(b[3]))) ^
+            return (uint) (M00(b[0]) ^ M01(b[1]) ^ M02(b[2]) ^ M03(b[3])) ^
                    (uint) ((M10(b[0]) ^ M11(b[1]) ^ M12(b[2]) ^ M13(b[3])) << 8) ^
                    (uint) ((M20(b[0]) ^ M21(b[1]) ^ M22(b[2]) ^ M23(b[3])) << 16) ^
                    (uint) ((M30(b[0]) ^ M31(b[1]) ^ M32(b[2]) ^ M33(b[3])) << 24);
@@ -280,7 +280,7 @@ namespace FunctionLib.Cryptography.Twofish
 
             for (i = r = 0; i < 2; i++)
             {
-                r ^= (i > 0) ? k0 : k1; /* merge in 32 more key bits */
+                r ^= i > 0 ? k0 : k1; /* merge in 32 more key bits */
                 for (j = 0; j < 4; j++) /* shift one byte at a time */
                     RS_rem(ref r);
             }
@@ -303,9 +303,9 @@ namespace FunctionLib.Cryptography.Twofish
 //#define		REENTRANT			  1	/* nonzero forces reentrant code (slightly slower) */
 
         private static readonly int INPUT_WHITEN = 0; /* subkey array indices */
-        private static readonly int OUTPUT_WHITEN = (INPUT_WHITEN + BLOCK_SIZE/32);
-        private static readonly int ROUND_SUBKEYS = (OUTPUT_WHITEN + BLOCK_SIZE/32); /* use 2 * (# rounds) */
-        private static readonly int TOTAL_SUBKEYS = (ROUND_SUBKEYS + 2*MAX_ROUNDS);
+        private static readonly int OUTPUT_WHITEN = INPUT_WHITEN + BLOCK_SIZE/32;
+        private static readonly int ROUND_SUBKEYS = OUTPUT_WHITEN + BLOCK_SIZE/32; /* use 2 * (# rounds) */
+        private static readonly int TOTAL_SUBKEYS = ROUND_SUBKEYS + 2*MAX_ROUNDS;
 
         #endregion
 
@@ -325,8 +325,8 @@ namespace FunctionLib.Cryptography.Twofish
         {
             var b = (byte) (x >> 24);
             // TODO: maybe change g2 and g3 to bytes			 
-            var g2 = (uint) (((b << 1) ^ (((b & 0x80) == 0x80) ? RS_GF_FDBK : 0)) & 0xFF);
-            var g3 = (uint) (((b >> 1) & 0x7F) ^ (((b & 1) == 1) ? RS_GF_FDBK >> 1 : 0) ^ g2);
+            var g2 = (uint) (((b << 1) ^ ((b & 0x80) == 0x80 ? RS_GF_FDBK : 0)) & 0xFF);
+            var g3 = (uint) (((b >> 1) & 0x7F) ^ ((b & 1) == 1 ? RS_GF_FDBK >> 1 : 0) ^ g2);
             x = (x << 8) ^ (g3 << 24) ^ (g2 << 16) ^ (g3 << 8) ^ b;
         }
 
@@ -358,13 +358,13 @@ namespace FunctionLib.Cryptography.Twofish
 
         private static int LFSR1(int x)
         {
-            return (((x) >> 1) ^ ((((x) & 0x01) == 0x01) ? MDS_GF_FDBK/2 : 0));
+            return (x >> 1) ^ ((x & 0x01) == 0x01 ? MDS_GF_FDBK/2 : 0);
         }
 
         private static int LFSR2(int x)
         {
-            return (((x) >> 2) ^ ((((x) & 0x02) == 0x02) ? MDS_GF_FDBK/2 : 0) ^
-                    ((((x) & 0x01) == 0x01) ? MDS_GF_FDBK/4 : 0));
+            return (x >> 2) ^ ((x & 0x02) == 0x02 ? MDS_GF_FDBK/2 : 0) ^
+                   ((x & 0x01) == 0x01 ? MDS_GF_FDBK/4 : 0);
         }
 
         // TODO: not the most efficient use of code but it allows us to update the code a lot quicker we can possibly optimize this code once we have got it all working
@@ -487,25 +487,25 @@ namespace FunctionLib.Cryptography.Twofish
         private static readonly int P_00 = 1; /* "outermost" permutation */
         private static readonly int P_01 = 0;
         private static readonly int P_02 = 0;
-        private static readonly int P_03 = (P_01 ^ 1); /* "extend" to larger key sizes */
+        private static readonly int P_03 = P_01 ^ 1; /* "extend" to larger key sizes */
         private static readonly int P_04 = 1;
 
         private static readonly int P_10 = 0;
         private static readonly int P_11 = 0;
         private static readonly int P_12 = 1;
-        private static readonly int P_13 = (P_11 ^ 1);
+        private static readonly int P_13 = P_11 ^ 1;
         private static readonly int P_14 = 0;
 
         private static readonly int P_20 = 1;
         private static readonly int P_21 = 1;
         private static readonly int P_22 = 0;
-        private static readonly int P_23 = (P_21 ^ 1);
+        private static readonly int P_23 = P_21 ^ 1;
         private static readonly int P_24 = 0;
 
         private static readonly int P_30 = 0;
         private static readonly int P_31 = 1;
         private static readonly int P_32 = 1;
-        private static readonly int P_33 = (P_31 ^ 1);
+        private static readonly int P_33 = P_31 ^ 1;
         private static readonly int P_34 = 1;
 
         /* fixed 8x8 permutation S-boxes */
@@ -617,37 +617,37 @@ namespace FunctionLib.Cryptography.Twofish
         // left rotation
         private static uint ROL(uint x, int n)
         {
-            return (((x) << ((n) & 0x1F)) | (x) >> (32 - ((n) & 0x1F)));
+            return (x << (n & 0x1F)) | x >> (32 - (n & 0x1F));
         }
 
         // right rotation
         private static uint ROR(uint x, int n)
         {
-            return (((x) >> ((n) & 0x1F)) | ((x) << (32 - ((n) & 0x1F))));
+            return (x >> (n & 0x1F)) | (x << (32 - (n & 0x1F)));
         }
 
         // first byte
         protected static byte b0(uint x)
         {
-            return (byte) (x); //& 0xFF);
+            return (byte) x; //& 0xFF);
         }
 
         // second byte
         protected static byte b1(uint x)
         {
-            return (byte) ((x >> 8)); // & (0xFF));
+            return (byte) (x >> 8); // & (0xFF));
         }
 
         // third byte
         protected static byte b2(uint x)
         {
-            return (byte) ((x >> 16)); // & (0xFF));
+            return (byte) (x >> 16); // & (0xFF));
         }
 
         // fourth byte
         protected static byte b3(uint x)
         {
-            return (byte) ((x >> 24)); // & (0xFF));
+            return (byte) (x >> 24); // & (0xFF));
         }
 
         #endregion

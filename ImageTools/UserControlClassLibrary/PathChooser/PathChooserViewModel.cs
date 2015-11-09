@@ -4,19 +4,12 @@ namespace UserControlClassLibrary.PathChooser
 {
     public class PathChooserViewModel : PropertyChangedModel
     {
+        private UICommand mCommand;
+        private string mPath;
+
         public PathChooserViewModel()
         {
             Command = UICommand.Regular(Open);
-        }
-
-        private void Open()
-        {
-            var dialog = new OpenFileDialog { Filter = "Png Image|*.png|Bitmap Image|*.bmp" };
-            var dialogResult = dialog.ShowDialog();
-            if (dialogResult.HasValue && dialogResult.Value)
-            {
-                Path = dialog.FileName;
-            }
         }
 
         public string Path
@@ -24,7 +17,7 @@ namespace UserControlClassLibrary.PathChooser
             get { return mPath; }
             set
             {
-                if(value.Equals(mPath))
+                if (value.Equals(mPath))
                 {
                     return;
                 }
@@ -32,9 +25,6 @@ namespace UserControlClassLibrary.PathChooser
                 OnPropertyChanged("Path");
             }
         }
-
-        private UICommand mCommand;
-        private string mPath;
 
         public UICommand Command
         {
@@ -47,6 +37,16 @@ namespace UserControlClassLibrary.PathChooser
                 }
                 mCommand = value;
                 OnPropertyChanged("Command");
+            }
+        }
+
+        private void Open()
+        {
+            var dialog = new OpenFileDialog {Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                Path = dialog.FileName;
             }
         }
     }

@@ -22,17 +22,21 @@ namespace ImageToolApp.Controllers
     {
         private readonly List<Expander> mExpanders;
 
-        public EncryptController(MainController mainController, string viewName, bool textBoxReadOnly) : base(mainController, viewName, textBoxReadOnly)
+        private bool mHandling;
+
+        public EncryptController(MainController mainController, string viewName, bool textBoxReadOnly)
+            : base(mainController, viewName, textBoxReadOnly)
         {
-            mExpanders = View.FindChildren<Expander>().Where(x => x.Content != null && x.Content.GetType() != typeof(Image)).ToList();
+            mExpanders =
+                View.FindChildren<Expander>()
+                    .Where(x => x.Content != null && x.Content.GetType() != typeof (Image))
+                    .ToList();
             foreach (var expander in mExpanders)
             {
                 expander.Expanded += ExpanderOnExpanded;
                 expander.Collapsed += ExpanderOnCollapsed;
             }
         }
-
-        private bool mHandling;
 
         public override void UnregisterEvents()
         {
@@ -111,8 +115,11 @@ namespace ImageToolApp.Controllers
 
         public void OpenTxt()
         {
-            var dialog = new OpenFileDialog {Filter = "Text File|*.txt",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) };
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Text File|*.txt",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
@@ -122,14 +129,13 @@ namespace ImageToolApp.Controllers
 
         private void Encrypt()
         {
-            HandleJobController.Progress((Action)(() =>
+            HandleJobController.Progress(() =>
             {
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
-                    var currentExpanderContent = Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        return mExpanders.FirstOrDefault(x => x.IsExpanded).Content;
-                    });
+                    var currentExpanderContent =
+                        Application.Current.Dispatcher.Invoke(
+                            () => { return mExpanders.FirstOrDefault(x => x.IsExpanded).Content; });
 
                     if (currentExpanderContent is PathChooser)
                     {
@@ -156,7 +162,8 @@ namespace ImageToolApp.Controllers
                         }
 
 
-                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
+                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
+                            bitmap,
                             text, ViewModel.NumericUpDownValue);
                         if (result != null)
                         {
@@ -166,7 +173,7 @@ namespace ImageToolApp.Controllers
                         }
                     }
                 }
-            }));
+            });
         }
 
         public void ChangedPixels()

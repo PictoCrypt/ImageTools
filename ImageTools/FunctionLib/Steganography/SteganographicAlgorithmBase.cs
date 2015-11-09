@@ -8,7 +8,8 @@ namespace FunctionLib.Steganography
     {
         private static SteganographicAlgorithm mLastAccessedAlgorithm;
 
-        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, object value, int additionalParam)
+        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, object value,
+            int additionalParam)
         {
             var encryptionType = MethodNameToType(method);
             var baseType = typeof (SteganographicAlgorithmBase);
@@ -25,7 +26,7 @@ namespace FunctionLib.Steganography
         {
             var encryptionType = MethodNameToType(method);
             var baseType = typeof (SteganographicAlgorithmBase);
-            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name ==  "Decrypt");
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(encryptionType)

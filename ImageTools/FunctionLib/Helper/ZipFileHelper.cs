@@ -1,11 +1,8 @@
-﻿using System.IO;
-using Ionic.Zip;
-
-namespace FunctionLib.Helper
+﻿namespace FunctionLib.Helper
 {
     public static class ZipFileHelper
     {
-        public static ZipFile OpenZip(string path)
+        //public static ZipFile OpenZip(string path)
         //{
         //    using (var file = ZipFile.Read(path))
         //    {
@@ -15,6 +12,6 @@ namespace FunctionLib.Helper
         //            entry.Extract();
         //        }
         //    }
-        } 
+        //}
     }
 }

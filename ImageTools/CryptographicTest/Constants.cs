@@ -12,11 +12,11 @@ namespace CryptographicTest
                                          "!äü?ß][&_.\"§\"!§";
 
         public const string Password = "IchBinDasTestPasswort!";
+        public const int NormalAdditionalParam = 3;
         private static readonly string LoremIpsum = Path.Combine(MethodHelper.ExecutiongPath, "LoremIpsum.txt");
         public static readonly string LongText = File.ReadAllText(LoremIpsum);
         public static readonly string NormalImage = Path.Combine(MethodHelper.ExecutiongPath, "NormalTest.png");
         public static readonly string EncryptedImage = Path.Combine(MethodHelper.ExecutiongPath, "EncryptedTest.png");
         public static readonly Bitmap NormalBitmap = new Bitmap(NormalImage);
-        public const int NormalAdditionalParam = 3;
     }
 }

@@ -41,13 +41,13 @@ namespace FunctionLib.Cryptography.Blowfish
         private static readonly uint[] TEST_VECTOR_PLAIN = {0x30553228, 0x6d6f295a};
         private static readonly uint[] TEST_VECTOR_CIPHER = {0x55cb3774, 0xd13ef201};
 
-        private int m_nIsWeakKey;
-
         private readonly uint[] m_pbox;
         private readonly uint[] m_sbox1;
         private readonly uint[] m_sbox2;
         private readonly uint[] m_sbox3;
         private readonly uint[] m_sbox4;
+
+        private int m_nIsWeakKey;
 
         /// <summary>
         ///     standard constructor
@@ -176,7 +176,7 @@ namespace FunctionLib.Cryptography.Blowfish
                     }
                 }
 
-                return (1 == m_nIsWeakKey);
+                return 1 == m_nIsWeakKey;
             }
         }
 
@@ -356,14 +356,14 @@ namespace FunctionLib.Cryptography.Blowfish
             {
                 // load the bytes into two 32bit words, which together represent the block
 
-                var unHi = (((uint) dataIn[nPosIn]) << 24) |
-                           (((uint) dataIn[nPosIn + 1]) << 16) |
-                           (((uint) dataIn[nPosIn + 2]) << 8) |
+                var unHi = ((uint) dataIn[nPosIn] << 24) |
+                           ((uint) dataIn[nPosIn + 1] << 16) |
+                           ((uint) dataIn[nPosIn + 2] << 8) |
                            dataIn[nPosIn + 3];
 
-                var unLo = (((uint) dataIn[nPosIn + 4]) << 24) |
-                           (((uint) dataIn[nPosIn + 5]) << 16) |
-                           (((uint) dataIn[nPosIn + 6]) << 8) |
+                var unLo = ((uint) dataIn[nPosIn + 4] << 24) |
+                           ((uint) dataIn[nPosIn + 5] << 16) |
+                           ((uint) dataIn[nPosIn + 6] << 8) |
                            dataIn[nPosIn + 7];
 
                 // encrypt that construct
@@ -490,14 +490,14 @@ namespace FunctionLib.Cryptography.Blowfish
             {
                 // load the bytes into two 32bit words, which together represent the block
 
-                var unHi = (((uint) dataIn[nPosIn]) << 24) |
-                           (((uint) dataIn[nPosIn + 1]) << 16) |
-                           (((uint) dataIn[nPosIn + 2]) << 8) |
+                var unHi = ((uint) dataIn[nPosIn] << 24) |
+                           ((uint) dataIn[nPosIn + 1] << 16) |
+                           ((uint) dataIn[nPosIn + 2] << 8) |
                            dataIn[nPosIn + 3];
 
-                var unLo = (((uint) dataIn[nPosIn + 4]) << 24) |
-                           (((uint) dataIn[nPosIn + 5]) << 16) |
-                           (((uint) dataIn[nPosIn + 6]) << 8) |
+                var unLo = ((uint) dataIn[nPosIn + 4] << 24) |
+                           ((uint) dataIn[nPosIn + 5] << 16) |
+                           ((uint) dataIn[nPosIn + 6] << 8) |
                            dataIn[nPosIn + 7];
 
                 // encrypt that construct
