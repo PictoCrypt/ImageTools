@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using FunctionLib.Helper;
 
@@ -211,19 +212,26 @@ namespace FunctionLib.Steganography
             if (collection.Count < indexLast + sequence.Count - 1)
                 return -1;
 
-            for (var i = 1; i < sequence.Count; i++)
-            {
-                var s = sequence[i];
-                var c = collection[indexLast + i];
-                if (!s.Equals(c))
-                {
-                    return -1;
-                }
-            }
-            return indexLast;
+            CALL INDEXOF
         }
 
-    public override string ChangeColor(string srcPath, Color color)
+        public static int IndexOf<T>(IEnumerable<T> collection,
+                                IEnumerable<T> sequence)
+        {
+            var ccount = collection.Count();
+            var scount = sequence.Count();
+
+            if (scount > ccount) return -1;
+
+            if (collection.Take(scount).SequenceEqual(sequence)) return 0;
+
+            int index = Enumerable.Range(1, ccount - scount + 1)
+                                  .FirstOrDefault(i => collection.Skip(i).Take(scount).SequenceEqual(sequence));
+            if (index == 0) return -1;
+            return index;
+        }
+
+        public override string ChangeColor(string srcPath, Color color)
         {
             var tmp = Path.GetTempFileName();
             var dest = Path.GetTempFileName();
