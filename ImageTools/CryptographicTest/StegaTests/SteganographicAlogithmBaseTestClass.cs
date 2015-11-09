@@ -36,7 +36,7 @@ namespace CryptographicTest.StegaTests
         [TestMethod]
         public void EncryptImageTest()
         {
-            var encrypted = Encrypt(Constants.NormalBitmap, Constants.NormalBitmap);
+            var encrypted = Encrypt(Constants.NormalBitmap, Constants.LittleBitmap);
 
             var decrypted = Decrypt(encrypted, ResultingType.Image, Constants.NormalAdditionalParam);
 

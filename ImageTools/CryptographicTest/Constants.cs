@@ -16,9 +16,12 @@ namespace CryptographicTest
         private static readonly string LoremIpsum = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "LoremIpsum.txt");
         public static readonly string LongText = File.ReadAllText(LoremIpsum);
         public static readonly string NormalImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "NormalTest.png");
+        public static readonly string LittleImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "LittleTest.png");
         public static readonly string EncryptedImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "EncryptedTest.png");
         public static readonly Bitmap NormalBitmap = new Bitmap(NormalImage);
+        public static readonly object LittleBitmap = new Bitmap(LittleImage);
         public static readonly string Testzip = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles",
             "TestZip.zip");
+
     }
 }
