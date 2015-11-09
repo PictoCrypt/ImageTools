@@ -44,7 +44,7 @@ namespace FunctionLib.Steganography
         }
 
 
-        public static string Decrypt<T>(Bitmap src, Type type, int additionalParam)
+        public static string Decrypt<T>(Bitmap src, ResultingType type, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();

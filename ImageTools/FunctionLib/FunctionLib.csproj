@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip">
-      <HintPath>..\Resources\DotNetZipLib\Ionic.Zip.dll</HintPath>
+      <HintPath>..\Resources\DotNetZip\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,6 +60,7 @@
     <Compile Include="Helper\ZipFileHelper.cs" />
     <Compile Include="ImageFunctionLib.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultingType.cs" />
     <Compile Include="SteganographicMethod.cs" />
     <Compile Include="Steganography\ComplexLeastSignificantBit.cs" />
     <Compile Include="Steganography\LeastSignificantBit.cs" />

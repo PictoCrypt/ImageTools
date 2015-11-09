@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using FunctionLib.Helper;
 
@@ -29,14 +30,16 @@ namespace FunctionLib.Steganography
                 var result = new Bitmap(src);
                 var lockBitmap = new LockBitmap(result);
                 lockBitmap.LockBits();
-                var bytes = MethodHelper.ToByteArray(value);
+                var bytes = MethodHelper.ToByteArray(value).Concat(NullByte).ToArray();
                 lockBitmap = Encrypt(lockBitmap, bytes, significantIndicator);
                 lockBitmap.UnlockBits();
                 return result;
             }
         }
 
-        public object Decrypt(Bitmap src, Type type, int significantIndifcator = 3)
+        protected readonly byte[] NullByte = MethodHelper.StringToByteArray("<EOF>").ToArray();
+
+        public object Decrypt(Bitmap src, ResultingType type, int significantIndifcator = 3)
         {
             //using (var bmp = new Bitmap(src))
             {
@@ -45,14 +48,18 @@ namespace FunctionLib.Steganography
                 lockBitmap.LockBits();
                 var bytes = Decrypt(lockBitmap, significantIndifcator);
                 lockBitmap.UnlockBits();
-                if (type == typeof (string))
+                if (type == ResultingType.Text)
                 {
                     return Encoding.GetEncoding("ISO-8859-1").GetString(bytes);
                     //return Encoding.UTF8.GetString(bytes);
                 }
-                if (type == typeof (Bitmap))
+                if (type == ResultingType.Image)
                 {
                     //TODO: Wie erkenne ich, wo das ende einer Zeile/Spalte ist?
+                }
+                if (type == ResultingType.Document)
+                {
+                    
                 }
                 return null;
             }

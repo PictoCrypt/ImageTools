@@ -15,10 +15,7 @@ namespace FunctionLib.Steganography
         {
             var byteIndex = 0;
             var bitIndex = 0;
-
             var bytes = value.ToList();
-            // 8 Nullen um das Ende zu erkennen
-            bytes.Add(255);
             if (value == null)
             {
                 throw new ArgumentException("'value' is null.");
@@ -146,16 +143,18 @@ namespace FunctionLib.Steganography
 
                     byteList = DecryptHelper(byteList, bitHolder);
 
-                    // Check for End (1 Byte of 0)
+
+                    // Check for NullByte (END)
                     //TODO: Wie erkennen wir ob es ein Bild oder ein Text oder Dokument ist?
-                    var index = byteList.IndexOf(255);
+                    var index = IndexOf(byteList, NullByte);
                     if (index > -1)
                     {
-                        if (byteList.Count - 1 > index)
+                        if (byteList.Count - 1 > index + NullByte.Length)
                         {
-                            for (var i = index; i < byteList.Count + 1; i++)
+                            // Remove all other elements after the nullbyte
+                            for (var i = index + NullByte.Length; i < byteList.Count - 1; i++)
                             {
-                                byteList.RemoveAt(index);
+                                byteList.RemoveAt(i);
                             }
                         }
                         return byteList.ToArray();
@@ -189,7 +188,30 @@ namespace FunctionLib.Steganography
             return bytes;
         }
 
-        public override string ChangeColor(string srcPath, Color color)
+        /// <summary>
+        /// Returns the Index of the first element of this sequence.
+        /// If this sequence isnt in the collection, -1 is returned.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection to search in.</param>
+        /// <param name="sequence">The sequence which is searched for.</param>
+        /// <returns></returns>
+        public static int IndexOf<T>(IEnumerable<T> collection, IEnumerable<T> sequence)
+        {
+            var ccount = collection.Count();
+            var scount = sequence.Count();
+
+            if (scount > ccount) return -1;
+
+            if (collection.Take(scount).SequenceEqual(sequence)) return 0;
+
+            var index = Enumerable.Range(1, ccount - scount + 1)
+                                  .FirstOrDefault(i => collection.Skip(i).Take(scount).SequenceEqual(sequence));
+            if (index == 0) return -1;
+            return index;
+        }
+
+    public override string ChangeColor(string srcPath, Color color)
         {
             var tmp = Path.GetTempFileName();
             var dest = Path.GetTempFileName();

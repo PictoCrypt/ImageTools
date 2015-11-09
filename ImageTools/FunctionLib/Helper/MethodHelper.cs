@@ -51,6 +51,7 @@ namespace FunctionLib.Helper
                     byteList.Add(pixel.G);
                     byteList.Add(pixel.B);
                 }
+                byteList.Add(Convert.ToByte(0));
             }
             lockBitmap.UnlockBits();
             return byteList.ToArray();
