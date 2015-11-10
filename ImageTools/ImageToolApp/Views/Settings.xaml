@@ -6,7 +6,7 @@
         xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" Icon="../Resources/Images/Settings.png"
-        Title="Einstellungen" Height="220" Width="400" ResizeMode="NoResize">
+        Title="Settings" Height="220" Width="400" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -20,25 +20,25 @@
             <RowDefinition Height="28" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Content="Standard Passwort:" Margin="5" HorizontalAlignment="Right"
+        <Label Grid.Column="0" Grid.Row="0" Content="Default password:" Margin="5" HorizontalAlignment="Right"
                VerticalAlignment="Top" />
         <PasswordBox Grid.Column="1" Grid.Row="0" wpfHelpers:PasswordHelper.Attach="True"
                      wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" HorizontalAlignment="Stretch"
                      Margin="5" controls:TextBoxHelper.Watermark="Password..."
-                     ToolTip="Wird das Feld leer gelassen, ist die Verschlüsselung Standardmäßig deaktiviert." />
+                     ToolTip="Leaving this area empty means, the encryption is dissabled by default." />
 
-        <Label Grid.Column="0" Grid.Row="1" Content="Text-Verschlüsselungsalg.:" Margin="5" HorizontalAlignment="Right"
+        <Label Grid.Column="0" Grid.Row="1" Content="Text-Encryption-Alg.:" Margin="5" HorizontalAlignment="Right"
                VerticalAlignment="Top" />
         <ComboBox Grid.Column="1" Grid.Row="1" Margin="5" ItemsSource="{Binding EncryptionMethods}"
                   SelectedItem="{Binding SelectedEncryptionMethod}" />
 
-        <Label Grid.Column="0" Grid.Row="2" Content="Steganographie-Alg.:" Margin="5" HorizontalAlignment="Right"
+        <Label Grid.Column="0" Grid.Row="2" Content="Steganography-Alg.:" Margin="5" HorizontalAlignment="Right"
                VerticalAlignment="Top" />
         <ComboBox Grid.Column="1" Grid.Row="2" Margin="5"
                   ItemsSource="{Binding SteganographicMethods}"
                   SelectedItem="{Binding SelectedSteganographicMethod}" />
 
-        <Label Grid.Column="0" Grid.Row="3" Content="Standard-Pfad:" Margin="5" HorizontalAlignment="Right"
+        <Label Grid.Column="0" Grid.Row="3" Content="Default path:" Margin="5" HorizontalAlignment="Right"
                VerticalAlignment="Top" />
         <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Width="200" HorizontalAlignment="Left"
                  Text="{Binding StandardPath}" />
@@ -48,8 +48,8 @@
 
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Orientation="Horizontal"
                     HorizontalAlignment="Right">
-            <Button Content="Speichern" Command="{Binding SaveCommand}" Margin="0 0 3 0" />
-            <Button Content="Abbrechen" Command="{Binding CancelCommand}" Margin="0 0 3 0" IsCancel="True" />
+            <Button Content="Save" Command="{Binding SaveCommand}" Margin="0 0 3 0" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="0 0 3 0" IsCancel="True" />
         </StackPanel>
     </Grid>
 </Window>

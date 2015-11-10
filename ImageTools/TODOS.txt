@@ -13,3 +13,5 @@ Enum
 
 Output-Fehler
 	-Output-Errors beheben!
+
+Texte in Resource auslagern

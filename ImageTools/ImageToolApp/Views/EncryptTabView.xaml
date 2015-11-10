@@ -32,12 +32,12 @@
         </Expander>
 
         <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch" Header="Bild">
+                  HorizontalAlignment="Stretch" Header="Image">
             <pathChooser:PathChooser />
         </Expander>
 
         <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch" Header="Dokument">
+                  HorizontalAlignment="Stretch" Header="Document">
             <documentChooser:DocumentChooser />
         </Expander>
 
@@ -49,7 +49,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encrypted" HorizontalAlignment="Left"
+                <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
                           Margin="3" IsChecked="{Binding EncryptedCheck}" />
                 <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                              helpers:PasswordHelper.Attach="True"
