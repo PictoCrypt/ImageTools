@@ -48,10 +48,10 @@ namespace CryptographicTest.StegaTests
             const int lsbIndicator = 4;
             var encrypted = Encrypt(Constants.NormalBitmap, Constants.SmallFlowersImage, lsbIndicator);
 
-            var decrypted = Decrypt(encrypted, ResultingType.Image, lsbIndicator);
+            var decrypted = new Bitmap(Decrypt(encrypted, ResultingType.Image, lsbIndicator).ToString());
 
             Assert.IsNotNull(decrypted);
-            Assert.IsTrue(Constants.SmallFlowersImage.Size == (decrypted as Bitmap).Size);
+            Assert.IsTrue(Constants.SmallFlowersImage.Size == decrypted.Size);
 
             WriteToOutput();
         }
