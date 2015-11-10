@@ -17,7 +17,7 @@ namespace FunctionLib.Steganography
             ChangedPixels = new List<Pixel>();
         }
 
-        protected List<Pixel> ChangedPixels { get; }
+        protected internal List<Pixel> ChangedPixels { get; }
 
         public void Dispose()
         {

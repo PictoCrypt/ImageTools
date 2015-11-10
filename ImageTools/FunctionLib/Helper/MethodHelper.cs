@@ -87,34 +87,42 @@ namespace FunctionLib.Helper
             throw new NotImplementedException("Cant cast object to anything which contains byte[] for me, tho.");
         }
         
-        public static Bitmap ByteToBitmap(byte[] bytes)
+        public static string ByteToBitmap(byte[] bytes)
         {
             var width = ListHelper.IndexOf(bytes.ToList(), new List<byte> { byte.MinValue, byte.MinValue }) / 3;
             var height = (bytes.Length / 3) / width;
-            var tmp = GetTempImageStream(width, height);
-            var result = new Bitmap(tmp);
-            var lockBitmap = new LockBitmap(result);
-            lockBitmap.LockBits();
 
-            var index = 0;
-            for (var y = 0; y < height; y++)
+            var path = TempImagePath();
+            using (var result = new Bitmap(width, height))
             {
-                for (var x = 0; x < width; x++)
+                var lockBitmap = new LockBitmap(result);
+                lockBitmap.LockBits();
+
+                var index = 0;
+                for (var y = 0; y < height; y++)
                 {
-                    var color = Color.FromArgb(bytes[index++], bytes[index++], bytes[index++]);
+                    for (var x = 0; x < width; x++)
+                    {
+                        var color = Color.FromArgb(bytes[index++], bytes[index++], bytes[index++]);
 
-                    lockBitmap.SetPixel(x, y, color);
+                        lockBitmap.SetPixel(x, y, color);
+                    }
+                    index = index + 2;
                 }
-                index = index + 2;
-            }
 
-            lockBitmap.UnlockBits();
-            return result;
+                lockBitmap.UnlockBits();
+                result.Save(path);
+            }
+            return path;
         }
 
-        private static string GetTempImageStream(int width, int height)
+        private static string TempImagePath()
         {
-            var path = Path.GetTempPath() + Guid.NewGuid() + ".png";
+            return Path.GetTempPath() + Guid.NewGuid() + ".png";
+        }
+
+        private static string GetTempImageStream(string path, int width, int height)
+        {
             using (var bitmap = new Bitmap(width, height))
             {
                 bitmap.Save(path);

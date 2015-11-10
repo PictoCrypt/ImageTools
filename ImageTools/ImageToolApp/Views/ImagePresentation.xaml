@@ -10,10 +10,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="28" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="28" />
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Speichern"
                 Command="{Binding SaveCommand}" />
         <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding Image}" />
+        <TextBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Text="{Binding Text}" 
+                 IsReadOnly="True" Background="DarkGray" Margin="3"/>
     </Grid>
 </Window>

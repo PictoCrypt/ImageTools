@@ -8,6 +8,11 @@ namespace FunctionLib.Steganography
     {
         private static SteganographicAlgorithm mLastAccessedAlgorithm;
 
+        public static int ChangedPixels
+        {
+            get { return mLastAccessedAlgorithm.ChangedPixels.Count; }
+        }
+
         public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, object value,
             int additionalParam)
         {

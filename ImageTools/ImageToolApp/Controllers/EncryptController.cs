@@ -90,25 +90,35 @@ namespace ImageToolApp.Controllers
             if (dialogResult.HasValue && dialogResult.Value)
             {
                 var tmp = ViewModel.ResultImagePath;
-                using (var bmp = new Bitmap(tmp))
+                if (File.Exists(dialog.FileName))
                 {
-                    if (File.Exists(dialog.FileName))
-                    {
-                        File.Delete(dialog.FileName);
-                    }
-                    ViewModel.ResultImagePath = dialog.FileName;
+                    File.Delete(dialog.FileName);
+                }
+                ViewModel.ResultImagePath = dialog.FileName;
+
 
                     switch (dialog.FilterIndex)
                     {
                         case 0:
-                            bmp.Save(dialog.FileName, ImageFormat.Png);
+                            HandleJobController.Progress(() =>
+                            {
+                                using (var bmp = new Bitmap(tmp))
+                                {
+                                    bmp.Save(dialog.FileName, ImageFormat.Png);
+                                }
+                            });
                             break;
                         case 1:
-                            bmp.Save(dialog.FileName, ImageFormat.Bmp);
-                            break;
+                            HandleJobController.Progress(() =>
+                            {
+                                using (var bmp = new Bitmap(tmp))
+                                {
+                                    bmp.Save(dialog.FileName, ImageFormat.Png);
+                                }
+                            });
+                        break;
                     }
                 }
-            }
         }
 
         public void OpenTxt()
@@ -177,7 +187,8 @@ namespace ImageToolApp.Controllers
         {
             var path = SteganographicAlgorithmBase.ChangeColor(ViewModel.ResultImagePath, Color.Red);
             var view = new ImagePresentation();
-            var viewModel = new ImagePresentationViewModel(path)
+            var count = SteganographicAlgorithmBase.ChangedPixels;
+            var viewModel = new ImagePresentationViewModel(path, string.Format("{0} Pixel", count))
             {
                 SaveCommand = UICommand.Regular(() =>
                 {

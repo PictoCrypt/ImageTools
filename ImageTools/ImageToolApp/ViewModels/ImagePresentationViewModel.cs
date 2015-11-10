@@ -6,10 +6,12 @@ namespace ImageToolApp.ViewModels
     {
         private string mImage;
         private UICommand mSaveCommand;
+        private string mText;
 
-        public ImagePresentationViewModel(string image)
+        public ImagePresentationViewModel(string image, string text = "")
         {
             Image = image;
+            Text = text;
         }
 
         public string Image
@@ -23,6 +25,20 @@ namespace ImageToolApp.ViewModels
                 }
                 mImage = value;
                 OnPropertyChanged("Image");
+            }
+        }
+
+        public string Text
+        {
+            get { return mText; }
+            set
+            {
+                if (value.Equals(mText))
+                {
+                    return;
+                }
+                mText = value;
+                OnPropertyChanged("Text");
             }
         }
 
