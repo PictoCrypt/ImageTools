@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -81,10 +82,13 @@ namespace FunctionLib.Helper
             }
             throw new NotImplementedException("Cant cast object to anything which contains byte[] for me, tho.");
         }
-
+        
         public static Bitmap ByteToBitmap(byte[] bytes)
         {
-            var result = new Bitmap(Path.GetTempFileName());
+            var height = bytes.Count(x => x.Equals(byte.MinValue)) + 1;
+            var width = Array.FindIndex(bytes, x => x.Equals(byte.MinValue));
+            var tmp = GetTempImageStream(width, height);
+            var result = new Bitmap(tmp);
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
             var row = 0;
@@ -109,6 +113,16 @@ namespace FunctionLib.Helper
 
             lockBitmap.UnlockBits();
             return result;
+        }
+
+        private static string GetTempImageStream(int width, int height)
+        {
+            var path = Path.GetTempPath() + Guid.NewGuid() + ".png";
+            using (var bitmap = new Bitmap(width, height))
+            {
+                bitmap.Save(path);
+            }
+            return path;
         }
     }
 }

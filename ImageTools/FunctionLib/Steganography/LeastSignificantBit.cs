@@ -136,9 +136,7 @@ namespace FunctionLib.Steganography
                         var bit = GetBit(pixel.B, 8 - significantIndicator + i);
                         bitHolder.Add(bit);
                     }
-
                     byteList = DecryptHelper(byteList, bitHolder);
-
 
                     // Check for NullByte (END)
                     //TODO: Wie erkennen wir ob es ein Bild oder ein Text oder Dokument ist?

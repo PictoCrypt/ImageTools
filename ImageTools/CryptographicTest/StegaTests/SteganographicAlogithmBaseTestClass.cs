@@ -36,11 +36,11 @@ namespace CryptographicTest.StegaTests
         [TestMethod]
         public void EncryptImageTest()
         {
-            var encrypted = Encrypt(Constants.NormalBitmap, Constants.LittleBitmap);
+            var encrypted = Encrypt(Constants.SmallKoalaImage, Constants.SmallFlowersImage);
 
             var decrypted = Decrypt(encrypted, ResultingType.Image, Constants.NormalAdditionalParam);
 
-            Assert.Equals(encrypted, decrypted);
+            Assert.Equals(Constants.SmallFlowersImage, decrypted);
 
             WriteToOutput();
         }

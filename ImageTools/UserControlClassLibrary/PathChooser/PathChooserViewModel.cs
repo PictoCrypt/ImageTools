@@ -42,7 +42,8 @@ namespace UserControlClassLibrary.PathChooser
 
         private void Open()
         {
-            var dialog = new OpenFileDialog {Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
+            var dialog = new OpenFileDialog();
+            //{ Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
