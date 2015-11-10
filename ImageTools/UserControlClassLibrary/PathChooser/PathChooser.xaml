@@ -21,7 +21,7 @@
 
         <TextBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="3" Text="{Binding Path}" />
         <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="3"
-                Command="{Binding Command}" Content="Öffnen" />
+                Command="{Binding Command}" Content="Open" />
         <Image x:Name="Image" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                Source="{Binding Path, Converter={StaticResource NullImageConverter}}" Margin="3" />
     </Grid>

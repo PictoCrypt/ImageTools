@@ -14,6 +14,6 @@
 
         <TextBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="3" Text="{Binding Path}" />
         <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="3"
-                Command="{Binding Command}" Content="Öffnen" />
+                Command="{Binding Command}" Content="Open" />
     </Grid>
 </UserControl>
