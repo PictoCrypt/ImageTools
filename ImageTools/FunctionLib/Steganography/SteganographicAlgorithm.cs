@@ -32,9 +32,26 @@ namespace FunctionLib.Steganography
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
             var bytes = MethodHelper.ToByteArray(value).Concat(NullByte).ToArray();
+            var size = CheckIfEncryptionIsPossible(lockBitmap, bytes, significantIndicator);
+            if (size > 0)
+            {
+                throw new ArgumentOutOfRangeException(string.Format("Not enough source size. You need a minimum of {0} pixel to encrypt this picture.", size));
+            }
             lockBitmap = Encrypt(lockBitmap, bytes, significantIndicator);
             lockBitmap.UnlockBits();
             return result;
+        }
+
+        private int CheckIfEncryptionIsPossible(LockBitmap lockBitmap, byte[] bytes, int significantIndicator)
+        {
+            var pixelsAvailable = lockBitmap.Width*lockBitmap.Height;
+            var bitsAvailable = pixelsAvailable * significantIndicator;
+            var bitsNeeded = bytes.Length * 8;
+            if (bitsAvailable >= bitsNeeded)
+            {
+                return 0;
+            }
+            return bitsNeeded / 8;
         }
 
         public object Decrypt(Bitmap src, ResultingType type, int significantIndifcator = 3)

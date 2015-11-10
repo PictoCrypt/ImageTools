@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using FunctionLib.Helper;
 using FunctionLib.Model;
@@ -102,22 +101,38 @@ namespace FunctionLib.Steganography
 
                     // Check for NullByte (END)
                     //TODO: Wie erkennen wir ob es ein Bild oder ein Text oder Dokument ist?
-                    var index = IndexOf(byteList, NullByte);
+                    //var index = ListHelper.IndexOf(byteList, NullByte);
+                    var index = IndexOfWithinLastTwo(byteList);
                     if (index > -1)
                     {
-                        if (byteList.Count - 1 > index + NullByte.Length)
-                        {
-                            // Remove all other elements after the nullbyte
-                            for (var i = index + NullByte.Length; i < byteList.Count - 1; i++)
-                            {
-                                byteList.RemoveAt(i);
-                            }
-                        }
+                        // Remove NullByte from byteList
+                        byteList.RemoveRange(index, byteList.Count - index);
                         return byteList.ToArray();
                     }
                 }
             }
             throw new SystemException("Error, anything happened (or maybe not).");
+        }
+
+        private int IndexOfWithinLastTwo(List<byte> byteList)
+        {
+            if (byteList.Count <= NullByte.Length)
+            {
+                return -1;
+            }
+
+            var seq1 = byteList.GetRange(byteList.Count - NullByte.Length, NullByte.Length);
+            var seq2 = byteList.GetRange(byteList.Count - NullByte.Length - 1, NullByte.Length);
+
+            if (seq1.SequenceEqual(NullByte))
+            {
+                return byteList.Count - NullByte.Length;
+            }
+            if (seq2.SequenceEqual(NullByte))
+            {
+                return byteList.Count - NullByte.Length - 1;
+            }
+            return -1;
         }
 
         /// <summary>
@@ -142,23 +157,6 @@ namespace FunctionLib.Steganography
                 }
             }
             return bytes;
-        }
-
-        public static int IndexOf<T>(IEnumerable<T> collection,
-                                IEnumerable<T> sequence)
-        {
-            //TODO: Vielleicht mit currentIndex
-            var ccount = collection.Count();
-            var scount = sequence.Count();
-
-            if (scount > ccount) return -1;
-
-            if (collection.Take(scount).SequenceEqual(sequence)) return 0;
-
-            var index = Enumerable.Range(1, ccount - scount + 1)
-                                  .FirstOrDefault(i => collection.Skip(i).Take(scount).SequenceEqual(sequence));
-            if (index == 0) return -1;
-            return index;
         }
 
         public override string ChangeColor(string srcPath, Color color)

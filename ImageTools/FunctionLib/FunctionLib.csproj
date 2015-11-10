@@ -55,6 +55,7 @@
     <Compile Include="Cryptography\Twofish\TwofishEncryption.cs" />
     <Compile Include="EncryptionMethod.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
+    <Compile Include="Helper\ListHelper.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
     <Compile Include="Helper\MethodHelper.cs" />
     <Compile Include="Helper\ZipFileHelper.cs" />

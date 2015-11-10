@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using FunctionLib.Model;
 
 namespace FunctionLib.Helper
 {
@@ -32,14 +34,13 @@ namespace FunctionLib.Helper
 
             var encoder = Encoding.GetEncoding("ISO-8859-1");
             var result = encoder.GetBytes(str.ToCharArray());
-            //var result = Encoding.UTF8.GetBytes(str.ToCharArray());
             return result;
         }
 
-        public static string ByteArrayToString(byte[] arr)
+        public static string ByteArrayToString(byte[] bytes)
         {
             var result = new UTF8Encoding();
-            return result.GetString(arr);
+            return result.GetString(bytes);
         }
 
         public static byte[] BitmaptoByteArray(Bitmap src)
@@ -52,12 +53,15 @@ namespace FunctionLib.Helper
                 for (var j = 0; j < lockBitmap.Width; j++)
                 {
                     var pixel = lockBitmap.GetPixel(j, i);
-                    //var color = pixel.ToArgb();
                     byteList.Add(pixel.R);
                     byteList.Add(pixel.G);
                     byteList.Add(pixel.B);
                 }
-                byteList.Add(Convert.ToByte(0));
+                if (lockBitmap.Height - 1 != i)
+                {
+                    byteList.Add(Convert.ToByte(0));
+                    byteList.Add(Convert.ToByte(0));
+                }
             }
             lockBitmap.UnlockBits();
             return byteList.ToArray();
@@ -85,30 +89,23 @@ namespace FunctionLib.Helper
         
         public static Bitmap ByteToBitmap(byte[] bytes)
         {
-            var height = bytes.Count(x => x.Equals(byte.MinValue)) + 1;
-            var width = Array.FindIndex(bytes, x => x.Equals(byte.MinValue));
+            var width = ListHelper.IndexOf(bytes.ToList(), new List<byte> { byte.MinValue, byte.MinValue }) / 3;
+            var height = (bytes.Length / 3) / width;
             var tmp = GetTempImageStream(width, height);
             var result = new Bitmap(tmp);
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
-            var row = 0;
-            var column = 0;
 
-            for (var i = 0; i < bytes.Length; i++)
+            var index = 0;
+            for (var y = 0; y < height; y++)
             {
-                if (bytes[i] == byte.MinValue)
+                for (var x = 0; x < width; x++)
                 {
-                    row++;
-                    column = 0;
+                    var color = Color.FromArgb(bytes[index++], bytes[index++], bytes[index++]);
+
+                    lockBitmap.SetPixel(x, y, color);
                 }
-
-                var r = bytes[i++];
-                var g = bytes[i++];
-                var b = bytes[i++];
-
-                var color = Color.FromArgb(r, g, b);
-                lockBitmap.SetPixel(column, row, color);
-                column++;
+                index = index + 2;
             }
 
             lockBitmap.UnlockBits();

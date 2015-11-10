@@ -11,5 +11,9 @@ BaseTabController.cs
 Enum
 - Enums umstellen, da sonst überall darüber enumeriert werden muss.
 
+ImagePresentation Text, wie viele Pixele geändert wurden. Reihen, Zeilen..?
+
+Save -> Thread -> UI bleibt hängen
+
 Output-Fehler
 	-Output-Errors beheben!

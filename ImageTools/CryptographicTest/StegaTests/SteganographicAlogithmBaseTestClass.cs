@@ -28,19 +28,30 @@ namespace CryptographicTest.StegaTests
 
             var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(decrypted.StartsWith(Constants.NormalText));
+            Assert.IsTrue(decrypted.ToString().StartsWith(Constants.NormalText));
 
             WriteToOutput();
         }
 
         [TestMethod]
+        //[ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [ExpectedException(typeof (TargetInvocationException))]
+        public void EncryptImageWithNotEnoughSpace()
+        {
+            const int lsbIndicator = 4;
+            var encrypted = Encrypt(Constants.SmallKoalaImage, Constants.SmallFlowersImage, lsbIndicator);
+        }
+
+        [TestMethod]
         public void EncryptImageTest()
         {
-            var encrypted = Encrypt(Constants.SmallKoalaImage, Constants.SmallFlowersImage);
+            const int lsbIndicator = 4;
+            var encrypted = Encrypt(Constants.NormalBitmap, Constants.SmallFlowersImage, lsbIndicator);
 
-            var decrypted = Decrypt(encrypted, ResultingType.Image, Constants.NormalAdditionalParam);
+            var decrypted = Decrypt(encrypted, ResultingType.Image, lsbIndicator);
 
-            Assert.Equals(Constants.SmallFlowersImage, decrypted);
+            Assert.IsNotNull(decrypted);
+            Assert.IsTrue(Constants.SmallFlowersImage.Size == (decrypted as Bitmap).Size);
 
             WriteToOutput();
         }
@@ -52,13 +63,13 @@ namespace CryptographicTest.StegaTests
             var encrypted = Encrypt(Constants.NormalBitmap, string.Empty);
         }
 
-        private string Decrypt(Bitmap encrypted, ResultingType type = ResultingType.Text)
+        private object Decrypt(Bitmap encrypted, ResultingType type = ResultingType.Text)
         {
             mStopwatch.Start();
             var decrypted = Decrypt(encrypted, type, Constants.NormalAdditionalParam);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
-            Assert.IsFalse(string.IsNullOrEmpty(decrypted));
+            Assert.IsFalse(decrypted == null);
             return decrypted;
         }
 
@@ -83,6 +94,6 @@ namespace CryptographicTest.StegaTests
         }
 
         public abstract Bitmap Encrypt(Bitmap src, object value, int additionalParam);
-        public abstract string Decrypt(Bitmap src, ResultingType type, int additionalParam);
+        public abstract object Decrypt(Bitmap src, ResultingType type, int additionalParam);
     }
 }

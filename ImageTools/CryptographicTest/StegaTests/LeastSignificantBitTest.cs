@@ -13,10 +13,11 @@ namespace CryptographicTest.StegaTests
             return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.LSB, src, value, additionalParam);
         }
 
-        public override string Decrypt(Bitmap src, ResultingType type, int additionalParam)
+        public override object Decrypt(Bitmap src, ResultingType type, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.LSB, src, type,
-                additionalParam).ToString();
+            var result =  SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.LSB, src, type,
+                additionalParam);
+            return result;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace FunctionLib.Steganography
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new object[] {src, type, additionalParam}).ToString();
+                    .Invoke(obj, new object[] {src, type, additionalParam});
             }
             throw new ArgumentException(baseType.ToString());
         }
