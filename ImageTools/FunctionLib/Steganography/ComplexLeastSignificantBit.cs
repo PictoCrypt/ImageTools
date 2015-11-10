@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using FunctionLib.Helper;
+using FunctionLib.Model;
 
 namespace FunctionLib.Steganography
 {

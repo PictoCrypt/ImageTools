@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using FunctionLib.Helper;
+using FunctionLib.Model;
 
 namespace FunctionLib.Steganography
 {
@@ -59,7 +60,6 @@ namespace FunctionLib.Steganography
 
         protected abstract byte[] Decrypt(LockBitmap src, int significantIndicator = 3);
         public abstract string ChangeColor(string srcPath, Color color);
-
         public abstract int MaxEncryptionCount(int squarePixels);
     }
 }

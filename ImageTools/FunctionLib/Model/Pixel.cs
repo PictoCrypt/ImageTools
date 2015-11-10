@@ -1,4 +1,4 @@
-﻿namespace FunctionLib.Helper
+﻿namespace FunctionLib.Model
 {
     public class Pixel
     {

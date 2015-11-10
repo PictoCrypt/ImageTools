@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using FunctionLib.Helper;
+using FunctionLib.Model;
 
 namespace FunctionLib
 {
