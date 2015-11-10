@@ -6,6 +6,7 @@
              xmlns:helpers="clr-namespace:ImageToolApp.WpfHelpers"
              xmlns:pathChooser="clr-namespace:UserControlClassLibrary.PathChooser;assembly=UserControlClassLibrary"
              xmlns:documentChooser="clr-namespace:UserControlClassLibrary.DocumentChooser;assembly=UserControlClassLibrary"
+             xmlns:imagePresenter="clr-namespace:UserControlClassLibrary.ImagePresenter;assembly=UserControlClassLibrary"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400">

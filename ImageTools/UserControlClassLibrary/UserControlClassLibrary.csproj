@@ -50,6 +50,9 @@
       <DependentUpon>DocumentChooser.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentChooser\DocumentChooserViewModel.cs" />
+    <Compile Include="ImagePresenter\ImagePresenter.xaml.cs">
+      <DependentUpon>ImagePresenter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PathChooser\PathChooser.xaml.cs">
       <DependentUpon>PathChooser.xaml</DependentUpon>
     </Compile>
@@ -61,6 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="DocumentChooser\DocumentChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImagePresenter\ImagePresenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
