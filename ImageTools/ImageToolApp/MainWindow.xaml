@@ -6,7 +6,7 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       mc:Ignorable="d" ShowIconOnTitleBar="True"
                       IconTemplate="{StaticResource WindowIconTemplate}"
-                      Title="Image-Tool" Height="500" Width="600" ShowTitleBar="True"
+                      Title="{StaticResource ApplicationName}" Height="500" Width="600" ShowTitleBar="True"
                       IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}">
     <Grid>
         <Grid.ColumnDefinitions>
