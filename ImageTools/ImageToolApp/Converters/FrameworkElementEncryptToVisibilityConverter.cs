@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using ImageToolApp.Views;
+using UserControlClassLibrary.Converters;
 
 namespace ImageToolApp.Converters
 {

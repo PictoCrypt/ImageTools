@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ImageToolApp.Converters
+namespace UserControlClassLibrary.Converters
 {
     public class EqualsLsbConverter : OneWayConveter, IValueConverter
     {

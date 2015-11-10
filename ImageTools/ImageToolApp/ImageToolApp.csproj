@@ -72,12 +72,8 @@
   <ItemGroup>
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Converters\EqualsLsbConverter.cs" />
     <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
-    <Compile Include="Converters\InvertBooleanConverter.cs" />
-    <Compile Include="Converters\OneWayConveter.cs" />
-    <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="HandleJobController.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
@@ -108,8 +104,6 @@
     <Compile Include="Controllers\DecryptController.cs" />
     <Compile Include="Controllers\EncryptController.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\IsStringNullConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -119,7 +113,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\ImageToBoolConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -193,6 +186,7 @@
     <Resource Include="Resources\Images\Lock.png" />
     <Resource Include="Resources\Images\Unlock.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

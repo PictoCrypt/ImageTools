@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace ImageToolApp.Converters
+namespace UserControlClassLibrary.Converters
 {
     public class BoolToVisibilityConverter : OneWayConveter, IValueConverter
     {

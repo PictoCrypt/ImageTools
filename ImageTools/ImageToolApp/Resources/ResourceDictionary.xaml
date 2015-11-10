@@ -1,8 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:converters="clr-namespace:ImageToolApp.Converters"
-                    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
+                    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:converters1="clr-namespace:UserControlClassLibrary.Converters;assembly=UserControlClassLibrary"
+                    xmlns:converters="clr-namespace:ImageToolApp.Converters">
 
     <!-- Localizable Strings -->
     <!--<system:String x:Key="ImageFallbackValue">No Image loaded.</system:String>-->
@@ -21,14 +22,8 @@
     <ImageSource x:Key="ApplicationIcon">Images/Ico/PictoCrypt.ico</ImageSource>
 
     <!-- Converters -->
-    <converters:ImageToBoolConverter x:Key="ImageToBoolConverter" />
-    <converters:IsStringNullConverter x:Key="IsStringNullConverter" />
-    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converters:FrameworkElementEncryptToVisibilityConverter x:Key="FrameworkElementEncryptToVisibilityConverter" />
     <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
-    <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-    <converters:InvertBooleanConverter x:Key="InvertBooleanConverter" />
-    <converters:EqualsLsbConverter x:Key="EqualsLsbConverter" />
 
     <!-- Styles -->
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button"
@@ -163,5 +158,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.GroupBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TabControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/UserControlClassLibrary;component/Resources/ResourceDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

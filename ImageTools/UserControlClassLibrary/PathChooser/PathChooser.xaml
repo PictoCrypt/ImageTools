@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" xmlns:this="clr-namespace:UserControlClassLibrary.PathChooser"
              d:DesignHeight="75" d:DesignWidth="200">
-    <!--<UserControl.Resources>
-        <DataTemplate DataType="{x:Type this:PathChooserViewModel}">
-            <this:PathChooser />
-        </DataTemplate>
-    </UserControl.Resources>-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/ResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid x:Name="Grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -21,6 +23,6 @@
         <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="3"
                 Command="{Binding Command}" Content="Öffnen" />
         <Image x:Name="Image" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-               Source="{Binding Path}" Margin="3" />
+               Source="{Binding Path, Converter={StaticResource NullImageConverter}}" Margin="3" />
     </Grid>
 </UserControl>

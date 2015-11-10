@@ -1,16 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
-
-    <!-- Localizable Strings -->
-    <!--<system:String x:Key="ImageFallbackValue">No Image loaded.</system:String>-->
-
-    <!-- Images -->
-
-    <!-- Converters -->
-
-    <!-- Resources -->
-    <!--<ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="GlassButton.xaml" />
-    </ResourceDictionary.MergedDictionaries>-->
+                    xmlns:converters="clr-namespace:UserControlClassLibrary.Converters">
+    <!-- Converter -->
+    <converters:NullImageConverter x:Key="NullImageConverter" />
+    <converters:ImageToBoolConverter x:Key="ImageToBoolConverter" />
+    <converters:IsStringNullConverter x:Key="IsStringNullConverter" />
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    <converters:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+    <converters:EqualsLsbConverter x:Key="EqualsLsbConverter" />
 </ResourceDictionary>

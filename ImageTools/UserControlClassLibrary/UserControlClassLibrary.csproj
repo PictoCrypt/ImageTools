@@ -46,6 +46,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\EqualsLsbConverter.cs" />
+    <Compile Include="Converters\ImageToBoolConverter.cs" />
+    <Compile Include="Converters\InvertBooleanConverter.cs" />
+    <Compile Include="Converters\IsStringNullConverter.cs" />
+    <Compile Include="Converters\NullImageConverter.cs" />
+    <Compile Include="Converters\OneWayConveter.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="DocumentChooser\DocumentChooser.xaml.cs">
       <DependentUpon>DocumentChooser.xaml</DependentUpon>
     </Compile>

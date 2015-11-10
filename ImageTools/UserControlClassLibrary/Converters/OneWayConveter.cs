@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace ImageToolApp.Converters
+namespace UserControlClassLibrary.Converters
 {
     public class OneWayConveter
     {

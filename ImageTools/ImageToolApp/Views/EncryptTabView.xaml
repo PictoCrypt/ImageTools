@@ -84,7 +84,7 @@
                   IsExpanded="False" VerticalAlignment="Stretch"
                   Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
                   HorizontalAlignment="Right">
-            <Image Source="{Binding ImagePath}" Margin="5" Height="Auto" VerticalAlignment="Center" />
+            <Image Source="{Binding ImagePath, Converter={StaticResource NullImageConverter}}" Margin="5" Height="Auto" VerticalAlignment="Center" />
         </Expander>
     </Grid>
 </UserControl>
