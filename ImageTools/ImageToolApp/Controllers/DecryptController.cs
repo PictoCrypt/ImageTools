@@ -4,18 +4,14 @@ using FunctionLib;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
+using ImageToolApp.Views;
 using Microsoft.Win32;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {
-    public class DecryptController : BaseTabController<BaseTabViewModel>
+    public class DecryptController : BaseTabController<DecryptTabViewModel, DecryptTabView>
     {
-        public DecryptController(MainController mainController)
-            : base(mainController, "Decrypt", true, true)
-        {
-        }
-
         protected override void RegisterCommands()
         {
             ViewModel.TabActionCommand = UICommand.Regular(Decrypt);
@@ -29,7 +25,7 @@ namespace ImageToolApp.Controllers
             {
                 using (var stream = File.CreateText(dialog.FileName))
                 {
-                    stream.Write(ViewModel.Text);
+                    stream.Write(ViewModel.Result);
                 }
             }
         }
@@ -43,16 +39,14 @@ namespace ImageToolApp.Controllers
                 {
                     result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
                         ViewModel.SelectedResultingType, ViewModel.NumericUpDownValue);
-
-                    // TODO: Result
                 }
 
                 if (ViewModel.EncryptedCheck && ViewModel.SelectedResultingType == ResultingType.Text)
                 {
                     result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result.ToString(),
                         ViewModel.Password);
-                    ViewModel.Text = result.ToString();
                 }
+                ViewModel.Result = result;
             });
         }
     }

@@ -12,13 +12,9 @@ namespace ImageToolApp.ViewModels
         private string mImagePath = string.Empty;
         private int mNumericUpDownValue = 3;
         private string mPassword;
-        private string mResultImagePath = string.Empty;
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
-
         private UICommand mTabActionCommand;
-
-        private string mText;
         private ResultingType mSelectedResultingType;
 
         public BaseTabViewModel()
@@ -94,20 +90,6 @@ namespace ImageToolApp.ViewModels
             get { return SettingsModel.SteganographicMethods; }
         }
 
-        public string Text
-        {
-            get { return mText; }
-            set
-            {
-                if (value.Equals(mText))
-                {
-                    return;
-                }
-                mText = value;
-                OnPropertyChanged("Text");
-            }
-        }
-
         public string Password
         {
             get { return mPassword; }
@@ -151,20 +133,6 @@ namespace ImageToolApp.ViewModels
                 }
                 mImagePath = value;
                 OnPropertyChanged("ImagePath");
-            }
-        }
-
-        public string ResultImagePath
-        {
-            get { return mResultImagePath; }
-            set
-            {
-                if (value.Equals(mResultImagePath))
-                {
-                    return;
-                }
-                mResultImagePath = value;
-                OnPropertyChanged("ResultImagePath");
             }
         }
 

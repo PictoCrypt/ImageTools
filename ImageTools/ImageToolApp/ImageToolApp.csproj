@@ -39,7 +39,7 @@
     <StartupObject>ImageToolApp.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>PictoCrypt.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Images\Ico\PictoCrypt.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
@@ -82,11 +82,16 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\DecryptTabViewModel.cs" />
+    <Compile Include="ViewModels\EncryptTabViewModel.cs" />
     <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Views\BaseTabView.xaml.cs">
-      <DependentUpon>BaseTabView.xaml</DependentUpon>
+    <Compile Include="Views\EncryptTabView.xaml.cs">
+      <DependentUpon>EncryptTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DecryptTabView.xaml.cs">
+      <DependentUpon>DecryptTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImagePresentation.xaml.cs">
       <DependentUpon>ImagePresentation.xaml</DependentUpon>
@@ -123,7 +128,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\BaseTabView.xaml">
+    <Page Include="Views\EncryptTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DecryptTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -165,9 +174,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Ico\PictoCrypt.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="PictoCrypt.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Changed.png" />

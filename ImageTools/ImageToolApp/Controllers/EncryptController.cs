@@ -15,23 +15,70 @@ using Microsoft.Win32;
 using UserControlClassLibrary;
 using UserControlClassLibrary.DocumentChooser;
 using UserControlClassLibrary.PathChooser;
-using Image = System.Windows.Controls.Image;
+using Image = System.Drawing.Image;
 
 namespace ImageToolApp.Controllers
 {
-    public class EncryptController : BaseTabController<BaseTabViewModel>
+    public class EncryptController : BaseTabController<EncryptTabViewModel, EncryptTabView>
     {
-        public EncryptController(MainController mainController)
-            : base(mainController, "Encrypt", false, false)
+        private readonly List<Expander> mExpanders;
+
+        public EncryptController()
         {
+            mExpanders =
+                View.FindChildren<Expander>()
+                    .Where(x => x.Content != null && x.Content.GetType() != typeof(Image))
+                    .ToList();
+            foreach (var expander in mExpanders)
+            {
+                expander.Expanded += ExpanderOnExpanded;
+                expander.Collapsed += ExpanderOnCollapsed;
+            }
         }
 
         public override void UnregisterEvents()
         {
             base.UnregisterEvents();
+            foreach (var expander in mExpanders)
+            {
+                expander.Expanded -= ExpanderOnExpanded;
+                expander.Collapsed -= ExpanderOnCollapsed;
+            }
         }
 
-       protected override void RegisterCommands()
+        private bool mExpanderAlreadyHandled;
+        private void ExpanderOnExpanded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (!mExpanderAlreadyHandled)
+            {
+                var expander = sender as Expander;
+                mExpanderAlreadyHandled = true;
+                foreach (var exp in mExpanders)
+                {
+                    exp.IsExpanded = false;
+                    var row = View.Grid.RowDefinitions[Grid.GetRow(exp)];
+                    row.Height = GridLength.Auto;
+                }
+
+                expander.IsExpanded = true;
+                View.Grid.RowDefinitions[Grid.GetRow(expander)].Height = new GridLength(1, GridUnitType.Star);
+                routedEventArgs.Handled = true;
+                mExpanderAlreadyHandled = false;
+            }
+        }
+
+        private void ExpanderOnCollapsed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            foreach (var exp in mExpanders)
+            {
+                exp.IsExpanded = false;
+                var row = View.Grid.RowDefinitions[Grid.GetRow(exp)];
+                row.Height = GridLength.Auto;
+            }
+            routedEventArgs.Handled = true;
+        }
+
+        protected override void RegisterCommands()
         {
             ViewModel.TabActionCommand = UICommand.Regular(Encrypt);
         }
@@ -87,7 +134,7 @@ namespace ImageToolApp.Controllers
                     object value = null;
                     var currentExpanderContent =
                         Application.Current.Dispatcher.Invoke(
-                            () => { return Expanders.FirstOrDefault(x => x.IsExpanded).Content; });
+                            () => { return mExpanders.FirstOrDefault(x => x.IsExpanded).Content; });
 
                     if (currentExpanderContent is PathChooser)
                     {

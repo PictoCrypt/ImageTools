@@ -19,8 +19,8 @@ namespace ImageToolApp.Controllers
         {
             mView = mainWindow;
             mView.Closing += ViewOnClosing;
-            mEncryptController = new EncryptController(this);
-            mDecryptController = new DecryptController(this);
+            mEncryptController = new EncryptController();
+            mDecryptController = new DecryptController();
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
@@ -31,8 +31,8 @@ namespace ImageToolApp.Controllers
         {
             get
             {
-                var view = mViewModel.CurrentElement as BaseTabView;
-                if (view != null && view.ViewName == "Encrypt")
+                var view = mViewModel.CurrentElement as EncryptTabView;
+                if (view != null)
                 {
                     return mEncryptController;
                 }
