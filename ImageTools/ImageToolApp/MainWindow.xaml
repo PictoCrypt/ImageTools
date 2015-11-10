@@ -6,7 +6,7 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       mc:Ignorable="d" ShowIconOnTitleBar="True"
                       IconTemplate="{StaticResource WindowIconTemplate}"
-                      Title="ImageTool" Height="500" Width="600" ShowTitleBar="True"
+                      Title="Image-Tool" Height="500" Width="600" ShowTitleBar="True"
                       IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -18,25 +18,25 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
-            <Button Style="{StaticResource ButtonWithoutBorderStyle}" VerticalAlignment="Top"
+            <Button Style="{StaticResource MenuButtonWithoutBorderStyle}" VerticalAlignment="Top"
                     Click="ButtonBase_OnClick" Margin="5">
                 <Image Source="{StaticResource MenuImage}" />
             </Button>
 
-            <StackPanel x:Name="StackPanel" Orientation="Vertical" Visibility="Hidden"
+            <StackPanel x:Name="StackPanel" Orientation="Vertical"
                         Style="{StaticResource StackPanelSlideInStyle}">
                 <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Einstellungen">
+                                ToolTip="Settings">
                             <Image Source="{StaticResource SettingsImage}" />
                         </Button>
                         <Button Command="{Binding CloseAppCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Applikation schließen">
+                                ToolTip="Close">
                             <Image Source="{StaticResource CloseAppImage}" />
                         </Button>
                         <Button Command="{Binding OpenHelpCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Hilfe">
+                                ToolTip="Help">
                             <Image Source="{StaticResource HelpImage}" Width="25" />
                         </Button>
                     </StackPanel>
@@ -44,13 +44,13 @@
                 <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding OpenImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Bild öffnen">
+                                ToolTip="Open Image">
                             <Image Source="{StaticResource Image}" />
                         </Button>
                         <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
-                                ToolTip="Bild speichern">
+                                ToolTip="Save Image">
                             <Image Source="{StaticResource SaveImage}"
                                    Style="{StaticResource AutoDisableAndOutGrayImage}" />
                         </Button>
@@ -58,7 +58,7 @@
                                 Style="{StaticResource ButtonWithoutBorderStyle}"
                                 IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
-                                ToolTip="Veränderte Pixel anzeigen">
+                                ToolTip="Show changed Pixel">
                             <Image Source="{StaticResource Changed}"
                                    Style="{StaticResource AutoDisableAndOutGrayImage}" />
                         </Button>
@@ -68,13 +68,13 @@
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
-                                ToolTip="Text importieren">
+                                ToolTip="Import Textfile">
                             <Image Source="{StaticResource TextImage}" />
                         </Button>
                         <Button Command="{Binding SaveTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
                                 IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
                                 Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementDecryptToVisibilityConverter}}"
-                                ToolTip="Text speichern">
+                                ToolTip="Save Text">
                             <Image Source="{StaticResource SaveImage}"
                                    Style="{StaticResource AutoDisableAndOutGrayImage}" />
                         </Button>

@@ -26,6 +26,23 @@
     <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
 
     <!-- Styles -->
+    <Style x:Key="MenuButtonWithoutBorderStyle" TargetType="Button" 
+           BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.4" />
+            </Trigger>
+            <DataTrigger Binding="{Binding Path=Visibility, ElementName=StackPanel}" Value="Visible">
+                <Setter Property="ToolTip" Value="Close Menu" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Path=Visibility, ElementName=StackPanel}" Value="Hidden">
+                <Setter Property="ToolTip" Value="Open Menu" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button"
            BasedOn="{StaticResource  {x:Static  ToolBar.ButtonStyleKey}}">
         <Setter Property="BorderThickness" Value="0" />

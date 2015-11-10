@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ImageToolApp.Views"
         mc:Ignorable="d"
-        Title="ImagePresentation" Height="300" Width="300">
+        Title="Image Presentation" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28" />
@@ -13,9 +12,9 @@
             <RowDefinition Height="28" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Speichern"
-                Command="{Binding SaveCommand}" />
-        <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding Image}" />
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Save"
+                Command="{Binding SaveCommand}" Margin="3" />
+        <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding Image}" Margin="3" />
         <TextBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Text="{Binding Text}" 
                  IsReadOnly="True" Background="DarkGray" Margin="3"/>
     </Grid>
