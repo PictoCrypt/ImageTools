@@ -22,7 +22,7 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static string Decrypt(object obj, SteganographicMethod method, Bitmap src, ResultingType type, int additionalParam)
+        public static object Decrypt(object obj, SteganographicMethod method, Bitmap src, ResultingType type, int additionalParam)
         {
             var encryptionType = MethodNameToType(method);
             var baseType = typeof (SteganographicAlgorithmBase);
@@ -44,12 +44,12 @@ namespace FunctionLib.Steganography
         }
 
 
-        public static string Decrypt<T>(Bitmap src, ResultingType type, int additionalParam)
+        public static object Decrypt<T>(Bitmap src, ResultingType type, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
             var result = mLastAccessedAlgorithm.Decrypt(src, type, additionalParam);
-            return result.ToString();
+            return result;
         }
 
         public static string ChangeColor(string srcPath, Color color)

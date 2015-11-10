@@ -14,16 +14,23 @@ namespace ImageToolApp.Views
             typeof (BaseTabView),
             new PropertyMetadata(false));
 
+        public static readonly DependencyProperty TypeVisible = DependencyProperty.Register(
+            "ResultingTypeVisibile",
+            typeof(bool),
+            typeof(BaseTabView),
+            new PropertyMetadata(false));
+
         public static readonly DependencyProperty ViewNameProperty = DependencyProperty.Register(
             "ViewName",
             typeof (string),
             typeof (BaseTabView),
             new PropertyMetadata(string.Empty));
 
-        public BaseTabView(string viewName, bool textBoxReadOnly)
+        public BaseTabView(string viewName, bool textBoxReadOnly, bool resultingTypeVisible)
         {
             ViewName = viewName;
             TextBoxReadOnly = textBoxReadOnly;
+            ResultingTypeVisibile = resultingTypeVisible;
             InitializeComponent();
         }
 
@@ -31,6 +38,12 @@ namespace ImageToolApp.Views
         {
             get { return (bool) GetValue(ReadonlyProperty); }
             set { SetValue(ReadonlyProperty, value); }
+        }
+
+        public bool ResultingTypeVisibile
+        {
+            get { return (bool)GetValue(TypeVisible); }
+            set { SetValue(TypeVisible, value); }
         }
 
         public string ViewName

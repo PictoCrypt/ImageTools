@@ -13,6 +13,7 @@ using ImageToolApp.Views;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using UserControlClassLibrary;
+using UserControlClassLibrary.DocumentChooser;
 using UserControlClassLibrary.PathChooser;
 using Image = System.Windows.Controls.Image;
 
@@ -20,67 +21,17 @@ namespace ImageToolApp.Controllers
 {
     public class EncryptController : BaseTabController<BaseTabViewModel>
     {
-        private readonly List<Expander> mExpanders;
-
-        private bool mHandling;
-
-        public EncryptController(MainController mainController, string viewName, bool textBoxReadOnly)
-            : base(mainController, viewName, textBoxReadOnly)
+        public EncryptController(MainController mainController)
+            : base(mainController, "Encrypt", false, false)
         {
-            mExpanders =
-                View.FindChildren<Expander>()
-                    .Where(x => x.Content != null && x.Content.GetType() != typeof (Image))
-                    .ToList();
-            foreach (var expander in mExpanders)
-            {
-                expander.Expanded += ExpanderOnExpanded;
-                expander.Collapsed += ExpanderOnCollapsed;
-            }
         }
 
         public override void UnregisterEvents()
         {
             base.UnregisterEvents();
-            foreach (var expander in mExpanders)
-            {
-                expander.Expanded -= ExpanderOnExpanded;
-                expander.Collapsed -= ExpanderOnCollapsed;
-            }
         }
 
-        private void ExpanderOnExpanded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (!mHandling)
-            {
-                var expander = sender as Expander;
-                mHandling = true;
-                foreach (var exp in mExpanders)
-                {
-                    exp.IsExpanded = false;
-                    var row = View.Grid.RowDefinitions[Grid.GetRow(exp)];
-                    row.Height = GridLength.Auto;
-                }
-
-                expander.IsExpanded = true;
-                View.Grid.RowDefinitions[Grid.GetRow(expander)].Height = new GridLength(1, GridUnitType.Star);
-                routedEventArgs.Handled = true;
-                mHandling = false;
-            }
-        }
-
-        private void ExpanderOnCollapsed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            foreach (var exp in mExpanders)
-            {
-                exp.IsExpanded = false;
-                var row = View.Grid.RowDefinitions[Grid.GetRow(exp)];
-                row.Height = GridLength.Auto;
-            }
-            routedEventArgs.Handled = true;
-        }
-
-
-        protected override void RegisterCommands()
+       protected override void RegisterCommands()
         {
             ViewModel.TabActionCommand = UICommand.Regular(Encrypt);
         }
@@ -133,17 +84,37 @@ namespace ImageToolApp.Controllers
             {
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
+                    object value = null;
                     var currentExpanderContent =
                         Application.Current.Dispatcher.Invoke(
-                            () => { return mExpanders.FirstOrDefault(x => x.IsExpanded).Content; });
+                            () => { return Expanders.FirstOrDefault(x => x.IsExpanded).Content; });
 
                     if (currentExpanderContent is PathChooser)
                     {
                         var secretPath =
                             Application.Current.Dispatcher.Invoke(
                                 () => ((currentExpanderContent as PathChooser).DataContext as PathChooserViewModel).Path);
-                        var value = new Bitmap(secretPath);
-                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
+                        value = new Bitmap(secretPath);
+                    }
+                    else if (currentExpanderContent is DocumentChooser)
+                    {
+                        var secretPath =
+                            Application.Current.Dispatcher.Invoke(
+                                () =>
+                                    ((currentExpanderContent as DocumentChooser).DataContext as DocumentChooserViewModel)
+                                        .Path);
+                        value = secretPath;
+                    }
+                    else
+                    {
+                        value = ViewModel.Text;
+                        if (ViewModel.EncryptedCheck)
+                        {
+                            value = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, value.ToString(),
+                                ViewModel.Password);
+                        }
+                    }
+                    var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
                             bitmap, value, ViewModel.NumericUpDownValue);
                         if (result != null)
                         {
@@ -152,27 +123,6 @@ namespace ImageToolApp.Controllers
                             ViewModel.ResultImagePath = path;
                         }
                     }
-                    else
-                    {
-                        var text = ViewModel.Text;
-                        if (ViewModel.EncryptedCheck)
-                        {
-                            text = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, text,
-                                ViewModel.Password);
-                        }
-
-
-                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
-                            bitmap,
-                            text, ViewModel.NumericUpDownValue);
-                        if (result != null)
-                        {
-                            var path = Path.GetTempFileName().Replace("tmp", "png");
-                            result.Save(path);
-                            ViewModel.ResultImagePath = path;
-                        }
-                    }
-                }
             });
         }
 

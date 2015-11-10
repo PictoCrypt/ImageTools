@@ -19,8 +19,8 @@ namespace ImageToolApp.Controllers
         {
             mView = mainWindow;
             mView.Closing += ViewOnClosing;
-            mEncryptController = new EncryptController(this, "Encrypt", false);
-            mDecryptController = new DecryptController(this, "Decrypt", true);
+            mEncryptController = new EncryptController(this);
+            mDecryptController = new DecryptController(this);
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;

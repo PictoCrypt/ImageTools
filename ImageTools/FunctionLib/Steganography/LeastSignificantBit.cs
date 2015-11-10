@@ -184,40 +184,10 @@ namespace FunctionLib.Steganography
             return bytes;
         }
 
-        /// <summary>
-        /// Returns the Index of the first element of this sequence.
-        /// If this sequence isnt in the collection, -1 is returned.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collection">The collection to search in.</param>
-        /// <param name="sequence">The sequence which is searched for.</param>
-        /// <returns></returns>
-        public static int IndexOf(IList<byte> collection, IList<byte> sequence)
-        {
-            //TODO: Wie können wir das besser lösen?
-            var ccount = collection.Count();
-            var scount = sequence.Count();
-
-            if (scount > ccount) return -1;
-
-            var seqFirst = sequence.First();
-
-            var last = collection.LastOrDefault(x => x.Equals(seqFirst));
-            if (last == 0)
-            {
-                return -1;
-            }
-            var indexLast = collection.IndexOf(last);
-
-            if (collection.Count < indexLast + sequence.Count - 1)
-                return -1;
-
-            CALL INDEXOF
-        }
-
         public static int IndexOf<T>(IEnumerable<T> collection,
                                 IEnumerable<T> sequence)
         {
+            //TODO: Vielleicht mit currentIndex
             var ccount = collection.Count();
             var scount = sequence.Count();
 
@@ -225,7 +195,7 @@ namespace FunctionLib.Steganography
 
             if (collection.Take(scount).SequenceEqual(sequence)) return 0;
 
-            int index = Enumerable.Range(1, ccount - scount + 1)
+            var index = Enumerable.Range(1, ccount - scount + 1)
                                   .FirstOrDefault(i => collection.Skip(i).Take(scount).SequenceEqual(sequence));
             if (index == 0) return -1;
             return index;

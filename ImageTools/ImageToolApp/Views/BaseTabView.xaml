@@ -63,6 +63,8 @@
 
         <StackPanel Grid.Column="0" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">
+            <ComboBox ItemsSource="{Binding ResultingTypes}" SelectedItem="{Binding SelectedResultingType}" Margin="3" 
+                      Visibility="{Binding ResultingTypeVisibile, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource BoolToVisibilityConverter}}" />
             <ComboBox ItemsSource="{Binding SteganographicMethods}"
                       SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
             <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"

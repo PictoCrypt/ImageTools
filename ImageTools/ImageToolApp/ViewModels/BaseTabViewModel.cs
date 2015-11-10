@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using FunctionLib;
 using UserControlClassLibrary;
 
@@ -6,7 +8,6 @@ namespace ImageToolApp.ViewModels
 {
     public class BaseTabViewModel : BaseViewModel
     {
-        private int mCurrentMaxCharacterLength;
         private bool mEncryptedCheck;
         private string mImagePath = string.Empty;
         private int mNumericUpDownValue = 3;
@@ -18,6 +19,7 @@ namespace ImageToolApp.ViewModels
         private UICommand mTabActionCommand;
 
         private string mText;
+        private ResultingType mSelectedResultingType;
 
         public BaseTabViewModel()
         {
@@ -163,6 +165,29 @@ namespace ImageToolApp.ViewModels
                 }
                 mResultImagePath = value;
                 OnPropertyChanged("ResultImagePath");
+            }
+        }
+
+        public ResultingType SelectedResultingType
+        {
+            get { return mSelectedResultingType; }
+            set
+            {
+                if (value.Equals(mSelectedResultingType))
+                {
+                    return;
+                }
+                mSelectedResultingType = value;
+                OnPropertyChanged("SelectedResultingType");
+            }
+        }
+
+        public ObservableCollection<ResultingType> ResultingTypes
+        {
+            get
+            {
+                var result = Enum.GetValues(typeof (ResultingType)).Cast<ResultingType>();
+                return new ObservableCollection<ResultingType>(result);
             }
         }
     }

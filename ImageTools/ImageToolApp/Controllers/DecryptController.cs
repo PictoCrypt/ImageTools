@@ -11,8 +11,8 @@ namespace ImageToolApp.Controllers
 {
     public class DecryptController : BaseTabController<BaseTabViewModel>
     {
-        public DecryptController(MainController mainController, string viewName, bool textBoxReadOnly)
-            : base(mainController, viewName, textBoxReadOnly)
+        public DecryptController(MainController mainController)
+            : base(mainController, "Decrypt", true, true)
         {
         }
 
@@ -38,20 +38,21 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                string result;
+                object result;
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
                     result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
-                        ResultingType.Text, ViewModel.NumericUpDownValue);
+                        ViewModel.SelectedResultingType, ViewModel.NumericUpDownValue);
+
+                    // TODO: Result
                 }
 
-                if (ViewModel.EncryptedCheck)
+                if (ViewModel.EncryptedCheck && ViewModel.SelectedResultingType == ResultingType.Text)
                 {
-                    result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result,
+                    result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result.ToString(),
                         ViewModel.Password);
+                    ViewModel.Text = result.ToString();
                 }
-
-                ViewModel.Text = result;
             });
         }
     }

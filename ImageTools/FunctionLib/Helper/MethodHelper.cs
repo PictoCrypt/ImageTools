@@ -81,5 +81,34 @@ namespace FunctionLib.Helper
             }
             throw new NotImplementedException("Cant cast object to anything which contains byte[] for me, tho.");
         }
+
+        public static Bitmap ByteToBitmap(byte[] bytes)
+        {
+            var result = new Bitmap(Path.GetTempFileName());
+            var lockBitmap = new LockBitmap(result);
+            lockBitmap.LockBits();
+            var row = 0;
+            var column = 0;
+
+            for (var i = 0; i < bytes.Length; i++)
+            {
+                if (bytes[i] == byte.MinValue)
+                {
+                    row++;
+                    column = 0;
+                }
+
+                var r = bytes[i++];
+                var g = bytes[i++];
+                var b = bytes[i++];
+
+                var color = Color.FromArgb(r, g, b);
+                lockBitmap.SetPixel(column, row, color);
+                column++;
+            }
+
+            lockBitmap.UnlockBits();
+            return result;
+        }
     }
 }

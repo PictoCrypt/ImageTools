@@ -16,7 +16,7 @@ namespace CryptographicTest.StegaTests
         public override string Decrypt(Bitmap src, ResultingType type, int additionalParam)
         {
             return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.LSB, src, type,
-                additionalParam);
+                additionalParam).ToString();
         }
     }
 }
