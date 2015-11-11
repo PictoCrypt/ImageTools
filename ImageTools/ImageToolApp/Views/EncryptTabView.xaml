@@ -46,7 +46,8 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
@@ -56,6 +57,8 @@
                              helpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
                              IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
                              controls:TextBoxHelper.Watermark="Password..." />
+                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}"
+                      Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
             </Grid>
         </GroupBox>
 
@@ -68,8 +71,6 @@
                                     Value="{Binding NumericUpDownValue}"
                                     ToolTip="Number of Bits which should be used from 1 color."
                                     Style="{StaticResource NumericUpDownStyle}" />
-            <ComboBox ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}"
-                      Margin="3" />
             <Button HorizontalAlignment="Right"
                     Content="Encrypt"
                     Command="{Binding TabActionCommand}" Margin="3"

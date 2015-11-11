@@ -50,7 +50,6 @@ namespace FunctionLib.Helper
             {
                 src.Save(stream, src.RawFormat);
                 stream.Close();
-
                 bytes = stream.ToArray();
             }
             return bytes;

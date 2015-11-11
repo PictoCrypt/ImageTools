@@ -11,9 +11,6 @@ BaseTabController.cs
 Enum
 - Enums umstellen, da sonst überall darüber enumeriert werden muss.
 
-Output-Fehler
-	-Output-Errors beheben!
-
-Wenn Encrypted nicht gesetzt ist, darf auch die ComboBox nicht angezeigt werden!
+Doc to MemStream 
 
 Texte in Resource auslagern
