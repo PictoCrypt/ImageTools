@@ -96,13 +96,11 @@ namespace FunctionLib.Steganography
                     byteList = DecryptHelper(byteList, bitHolder);
 
                     // Check for EndOfFileBytes (END)
-                    //TODO: Wie erkennen wir ob es ein Bild oder ein Text oder Dokument ist?
-                    //var index = ListHelper.IndexOf(byteList, EndOfFileBytes);
                     var index = IndexOfWithinLastTwo(byteList);
                     if (index > -1)
                     {
-                        // Remove EndOfFileBytes from byteList
-                        byteList.RemoveRange(index, byteList.Count - index);
+                        // Remove overhang bytes
+                        byteList.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - index);
                         return byteList.ToArray();
                     }
                 }

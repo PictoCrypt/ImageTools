@@ -58,18 +58,7 @@ namespace FunctionLib.Steganography
             lockBitmap.LockBits();
             var bytes = Decrypt(lockBitmap, significantIndifcator);
             lockBitmap.UnlockBits();
-            if (type == ResultingType.Text)
-            {
-                return ConvertHelper.ToString(bytes);
-            }
-            if (type == ResultingType.Image)
-            {
-                return ConvertHelper.ToImage(bytes);
-            }
-            if (type == ResultingType.Document)
-            {
-            }
-            return null;
+            return ConvertHelper.ToObject(bytes);
         }
 
         protected abstract byte[] Decrypt(LockBitmap src, int significantIndicator = 3);

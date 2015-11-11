@@ -3,36 +3,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FunctionLib.Enums;
-using FunctionLib.Model;
 
 namespace FunctionLib.Helper
 {
     public static class ConvertHelper
     {
-        public static byte[] ToByteArray(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                throw new ArgumentException("str is null or empty.");
-            }
-            if (File.Exists(str))
-            {
-                //return ZipFileHelper.ZipToBytes(str);
-            }
-
-            var encoder = Encoding.GetEncoding("ISO-8859-1");
-            var result = encoder.GetBytes(str.ToCharArray());
-            return result;
-        }
-
-        public static string ToString(byte[] bytes)
-        {
-            var encoder = Encoding.GetEncoding("ISO-8859-1");
-            var result = encoder.GetString(bytes);
-            return result;
-        }
-
         public static byte[] ToByteArray(object value)
         {
             var str = value.ToString();
@@ -81,16 +56,6 @@ namespace FunctionLib.Helper
                 return bytes;
             }
 
-
-            using (var stream = new MemoryStream())
-            {
-                using (var fileStream = File.Open(str, FileMode.Open))
-                {
-                    fileStream.CopyTo(stream);
-                    bytes = stream.ToArray();
-                }
-            }
-
             if (bytes.Length <= 0)
             {
             throw new ArgumentException("Cant cast object to anything which contains byte[] for me, tho.");
@@ -99,16 +64,75 @@ namespace FunctionLib.Helper
             return bytes;
         }
 
-        public static string ToImage(byte[] bytes)
+        public static object ToObject(byte[] bytes)
         {
-            var path = Constants.TempImagePath;
-
-            using (var stream = new MemoryStream(bytes))
+            string result;
+            if (bytes == null || bytes.Length <= 0)
             {
-                var returnImage = Image.FromStream(stream);
-                returnImage.Save(path);
+                throw new ArgumentException("bytes is null or empty.");
             }
-            return path;
+            var byteList = bytes.ToList();
+
+            // Remove EndOfFile
+            byteList.RemoveRange(byteList.Count - Constants.EndOfFileBytes.Length, Constants.EndOfFileBytes.Length);
+
+            var index = byteList.IndexOf(Convert.ToByte(">"));
+            if (index == -1)
+            {
+                throw new ArgumentException("Start-Tag not found.");
+            }
+
+            var range = byteList.GetRange(0, index);
+            range.RemoveAt(0);
+            range.RemoveAt(range.Count - 1);
+            byteList.RemoveRange(0, index);
+
+            var type = Convert.ToString(byteList.ToArray()).ToUpperInvariant();
+            switch (type)
+            {
+                case "TEXT":
+                    result = "";
+                    break;
+                case "IMAGE":
+                    result = Constants.TempImagePath;
+
+                    using (var stream = new MemoryStream(bytes))
+                    {
+                        var returnImage = Image.FromStream(stream);
+                        returnImage.Save(result);
+                    }
+                    break;
+                default:
+                    if (!type.StartsWith("."))
+                    {
+                        throw new NotSupportedException("Invalid Start-Tag.");
+                    }
+
+                    using (var stream = new MemoryStream(byteList.ToArray()))
+                    {
+                        //TODO: TmpFilePath + extension
+                        //result Change Extenstion
+                        using (var fs = File.Create(result))
+                        {
+                            stream.CopyTo(fs);
+                            fs.Flush();
+                        }
+                    }
+                    break;
+            }
+            return result;
         }
+
+        //public static string ToImage(byte[] bytes)
+        //{
+        //    var path = Constants.TempImagePath;
+
+        //    using (var stream = new MemoryStream(bytes))
+        //    {
+        //        var returnImage = Image.FromStream(stream);
+        //        returnImage.Save(path);
+        //    }
+        //    return path;
+        //}
     }
 }
