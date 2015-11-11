@@ -100,7 +100,11 @@ namespace FunctionLib.Steganography
                     if (index > -1)
                     {
                         // Remove overhang bytes
-                        byteList.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - index);
+                        if(byteList.Count > index + Constants.EndOfFileBytes.Length)
+                        {
+                            byteList.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - index);
+                            
+                        }
                         return byteList.ToArray();
                     }
                 }

@@ -9,10 +9,23 @@ namespace FunctionLib.Helper
 {
     public static class ConvertHelper
     {
+        private static Encoding Encoder
+        {
+            get
+            {
+                return Encoding.GetEncoding(Constants.Encoding);
+            }
+        }
+
         public static byte[] ToByteArray(string value)
         {
-            var encoder = Encoding.GetEncoding(Constants.Encoding);
-            var result = encoder.GetBytes(value);
+            var result = Encoder.GetBytes(value);
+            return result;
+        }
+
+        private static string ToString(byte[] value)
+        {
+            var result = Encoder.GetString(value);
             return result;
         }
 
@@ -32,7 +45,7 @@ namespace FunctionLib.Helper
             }
             else
             {
-                var extension = Path.GetExtension(str);
+                var extension = Path.GetExtension(str).ToUpperInvariant();
                 if (Constants.ImageExtensions.Contains(extension))
                 {
                     using (var src = new Bitmap(str))
@@ -58,15 +71,14 @@ namespace FunctionLib.Helper
                         }
                     }
                 }
-
-                bytes = bytes.Concat(Constants.EndOfFileBytes);
-                return bytes.ToArray();
             }
+
 
             if (!bytes.Any())
             {
                 throw new ArgumentException("Cant cast object to anything which contains byte[] for me, tho.");
             }
+            bytes = bytes.Concat(Constants.EndOfFileBytes);
             return bytes.ToArray();
         }
 
@@ -82,18 +94,18 @@ namespace FunctionLib.Helper
             // Remove EndOfFile
             byteList.RemoveRange(byteList.Count - Constants.EndOfFileBytes.Length, Constants.EndOfFileBytes.Length);
 
-            var index = byteList.IndexOf(Convert.ToByte(">"));
+            var index = byteList.IndexOf(ToByteArray(">").First());
             if (index == -1)
             {
                 throw new ArgumentException("Start-Tag not found.");
             }
 
-            var range = byteList.GetRange(0, index);
+            var range = byteList.GetRange(0, index + 1);
             range.RemoveAt(0);
             range.RemoveAt(range.Count - 1);
-            byteList.RemoveRange(0, index);
+            byteList.RemoveRange(0, index + 1);
 
-            var type = Convert.ToString(byteList).ToUpperInvariant();
+            var type = ToString(range.ToArray()).ToUpperInvariant();
             switch (type)
             {
                 case "TEXT":
