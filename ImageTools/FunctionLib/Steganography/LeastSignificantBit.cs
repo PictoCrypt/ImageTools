@@ -57,11 +57,7 @@ namespace FunctionLib.Steganography
                     byteIndex++;
                     bitIndex = 0;
                 }
-                if (byteIndex >= b.Count)
-                {
-                    return 0;
-                }
-                var bit = ByteHelper.GetBit(b[byteIndex], bitIndex++);
+                var bit = byteIndex >= b.Count ? 0 : ByteHelper.GetBit(b[byteIndex], bitIndex++);
                 builder.Append(bit);
             }
 
