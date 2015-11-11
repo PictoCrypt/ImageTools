@@ -2,7 +2,7 @@
 using System.IO;
 using FunctionLib.Helper;
 
-namespace CryptographicTest
+namespace UnitTests
 {
     public static class TestingConstants
     {

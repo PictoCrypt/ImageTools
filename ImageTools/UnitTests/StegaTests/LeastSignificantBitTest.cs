@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
-using FunctionLib;
+using FunctionLib.Enums;
 using FunctionLib.Steganography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest.StegaTests
+namespace UnitTests.StegaTests
 {
     [TestClass]
     public class LeastSignificantBitTest : SteganographicAlogithmBaseTestClass

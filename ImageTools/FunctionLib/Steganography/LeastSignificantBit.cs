@@ -95,13 +95,13 @@ namespace FunctionLib.Steganography
                     }
                     byteList = DecryptHelper(byteList, bitHolder);
 
-                    // Check for NullByte (END)
+                    // Check for EndOfFileBytes (END)
                     //TODO: Wie erkennen wir ob es ein Bild oder ein Text oder Dokument ist?
-                    //var index = ListHelper.IndexOf(byteList, NullByte);
+                    //var index = ListHelper.IndexOf(byteList, EndOfFileBytes);
                     var index = IndexOfWithinLastTwo(byteList);
                     if (index > -1)
                     {
-                        // Remove NullByte from byteList
+                        // Remove EndOfFileBytes from byteList
                         byteList.RemoveRange(index, byteList.Count - index);
                         return byteList.ToArray();
                     }
@@ -112,21 +112,21 @@ namespace FunctionLib.Steganography
 
         private int IndexOfWithinLastTwo(List<byte> byteList)
         {
-            if (byteList.Count <= NullByte.Length)
+            if (byteList.Count <= Constants.EndOfFileBytes.Length)
             {
                 return -1;
             }
 
-            var seq1 = byteList.GetRange(byteList.Count - NullByte.Length, NullByte.Length);
-            var seq2 = byteList.GetRange(byteList.Count - NullByte.Length - 1, NullByte.Length);
+            var seq1 = byteList.GetRange(byteList.Count - Constants.EndOfFileBytes.Length, Constants.EndOfFileBytes.Length);
+            var seq2 = byteList.GetRange(byteList.Count - Constants.EndOfFileBytes.Length - 1, Constants.EndOfFileBytes.Length);
 
-            if (seq1.SequenceEqual(NullByte))
+            if (seq1.SequenceEqual(Constants.EndOfFileBytes))
             {
-                return byteList.Count - NullByte.Length;
+                return byteList.Count - Constants.EndOfFileBytes.Length;
             }
-            if (seq2.SequenceEqual(NullByte))
+            if (seq2.SequenceEqual(Constants.EndOfFileBytes))
             {
-                return byteList.Count - NullByte.Length - 1;
+                return byteList.Count - Constants.EndOfFileBytes.Length - 1;
             }
             return -1;
         }

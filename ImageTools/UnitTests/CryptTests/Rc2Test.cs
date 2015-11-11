@@ -1,8 +1,8 @@
-﻿using FunctionLib;
-using FunctionLib.Cryptography;
+﻿using FunctionLib.Cryptography;
+using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest.CryptTests
+namespace UnitTests.CryptTests
 {
     [TestClass]
     public class Rc2Test : SymmetricAlgorithmBaseTestClass

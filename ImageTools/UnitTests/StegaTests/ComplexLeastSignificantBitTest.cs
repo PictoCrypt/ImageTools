@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
-using FunctionLib;
+using FunctionLib.Enums;
 using FunctionLib.Steganography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest.StegaTests
+namespace UnitTests.StegaTests
 {
     [TestClass]
     public class ComplexLeastSignificantBitTest : SteganographicAlogithmBaseTestClass
@@ -13,7 +13,7 @@ namespace CryptographicTest.StegaTests
             return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.ComplexLSB, src, value,
                 additionalParam);
         }
-
+        
         public override object Decrypt(Bitmap src, ResultingType type, int additionalParam)
         {
             return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.ComplexLSB, src, ResultingType.Text,

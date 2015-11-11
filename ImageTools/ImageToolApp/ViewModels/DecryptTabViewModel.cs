@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FunctionLib;
+using FunctionLib.Enums;
 using MahApps.Metro.Controls;
 
 namespace ImageToolApp.ViewModels

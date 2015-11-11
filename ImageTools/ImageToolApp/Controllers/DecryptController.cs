@@ -2,6 +2,7 @@
 using System.IO;
 using FunctionLib;
 using FunctionLib.Cryptography;
+using FunctionLib.Enums;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;

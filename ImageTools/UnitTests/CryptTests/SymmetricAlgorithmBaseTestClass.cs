@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest.CryptTests
+namespace UnitTests.CryptTests
 {
     public abstract class SymmetricAlgorithmBaseTestClass : ISymmetricAlgorithmBaseTestClass
     {

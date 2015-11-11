@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
-using FunctionLib;
+using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest.StegaTests
+namespace UnitTests.StegaTests
 {
     public abstract class SteganographicAlogithmBaseTestClass
     {

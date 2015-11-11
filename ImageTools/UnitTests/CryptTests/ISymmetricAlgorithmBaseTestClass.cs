@@ -1,4 +1,4 @@
-﻿namespace CryptographicTest.CryptTests
+﻿namespace UnitTests.CryptTests
 {
     public interface ISymmetricAlgorithmBaseTestClass
     {

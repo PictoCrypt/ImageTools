@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace FunctionLib.Helper
 {
-    public class Constants
+    public static class Constants
     {
         public static string ExecutiongPath
         {
@@ -21,6 +23,16 @@ namespace FunctionLib.Helper
             {
                 return Path.GetTempPath() + Guid.NewGuid() + ".png";
             }
+        }
+
+        public static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
+        public static readonly byte[] EndOfFileBytes = ConvertHelper.ToByteArray("<EOF>");
+
+        public static byte[] StartOfFileBytes(string type)
+        {
+            var value = string.Format("<{0}>", type.ToUpperInvariant());
+            var result = ConvertHelper.ToByteArray(value);
+            return result;
         }
     }
 }

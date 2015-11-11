@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using FunctionLib;
+using FunctionLib.Enums;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
