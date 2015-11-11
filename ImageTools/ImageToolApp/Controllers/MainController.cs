@@ -66,7 +66,7 @@ namespace ImageToolApp.Controllers
 
         private static void OpenHelp()
         {
-            var executionPath = MethodHelper.ExecutiongPath;
+            var executionPath = Constants.ExecutiongPath;
             Process.Start(Path.Combine(executionPath, "Help.pdf"));
         }
 

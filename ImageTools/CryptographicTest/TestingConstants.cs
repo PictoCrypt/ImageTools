@@ -4,7 +4,7 @@ using FunctionLib.Helper;
 
 namespace CryptographicTest
 {
-    public static class Constants
+    public static class TestingConstants
     {
         public const string NormalText = "Ich bin der Testtext. " +
                                          "Dieser kann natürlich verändert werden. " +
@@ -13,18 +13,18 @@ namespace CryptographicTest
 
         public const string Password = "IchBinDasTestPasswort!";
         public const int NormalAdditionalParam = 3;
-        private static readonly string LoremIpsum = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "LoremIpsum.txt");
+        private static readonly string LoremIpsum = Path.Combine(Constants.ExecutiongPath, "Testfiles", "LoremIpsum.txt");
         public static readonly string LongText = File.ReadAllText(LoremIpsum);
-        private static readonly string NormalImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "NormalTest.png");
-        private static readonly string LittleImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "LittleTest.png");
-        private static readonly string SmallKoala = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "SmallKoala.jpg");
-        private static readonly string SmallFlowers = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "SmallFlowers.jpg");
-        public static readonly string EncryptedImage = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles", "EncryptedTest.png");
+        private static readonly string NormalImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "NormalTest.png");
+        private static readonly string LittleImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "LittleTest.png");
+        private static readonly string SmallKoala = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallKoala.jpg");
+        private static readonly string SmallFlowers = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallFlowers.jpg");
+        public static readonly string EncryptedImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "EncryptedTest.png");
         public static readonly Bitmap NormalBitmap = new Bitmap(NormalImage);
         public static readonly Bitmap SmallKoalaImage = new Bitmap(SmallKoala);
         public static readonly Bitmap SmallFlowersImage = new Bitmap(SmallFlowers);
         public static readonly object LittleBitmap = new Bitmap(LittleImage);
-        public static readonly string Testzip = Path.Combine(MethodHelper.ExecutiongPath, "Testfiles",
+        public static readonly string Testzip = Path.Combine(Constants.ExecutiongPath, "Testfiles",
             "TestZip.zip");
 
     }

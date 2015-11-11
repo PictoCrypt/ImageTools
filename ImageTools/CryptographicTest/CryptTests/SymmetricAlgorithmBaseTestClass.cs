@@ -15,11 +15,11 @@ namespace CryptographicTest.CryptTests
         [TestMethod]
         public void NormalEncryptionTest()
         {
-            var encrypted = Encrypt(Constants.NormalText);
+            var encrypted = Encrypt(TestingConstants.NormalText);
 
             var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(Constants.NormalText.Equals(decrypted));
+            Assert.IsTrue(TestingConstants.NormalText.Equals(decrypted));
 
             WriteToOutput();
         }
@@ -27,11 +27,11 @@ namespace CryptographicTest.CryptTests
         [TestMethod]
         public void LongTextEncryptionTest()
         {
-            var encrypted = Encrypt(Constants.LongText);
+            var encrypted = Encrypt(TestingConstants.LongText);
 
             var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(Constants.LongText.Equals(decrypted));
+            Assert.IsTrue(TestingConstants.LongText.Equals(decrypted));
 
             WriteToOutput();
         }
@@ -58,7 +58,7 @@ namespace CryptographicTest.CryptTests
         private string Decrypt(string encrypted)
         {
             mStopwatch.Start();
-            var decrypted = Decrypt(encrypted, Constants.Password);
+            var decrypted = Decrypt(encrypted, TestingConstants.Password);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
             Assert.IsFalse(string.IsNullOrEmpty(decrypted));
@@ -68,7 +68,7 @@ namespace CryptographicTest.CryptTests
         private string Encrypt(string value)
         {
             mStopwatch.Start();
-            var encrypted = Encrypt(value, Constants.Password);
+            var encrypted = Encrypt(value, TestingConstants.Password);
             mStopwatch.Stop();
             mEncryptionTime = mStopwatch.Elapsed;
             mStopwatch.Reset();

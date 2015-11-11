@@ -54,7 +54,7 @@ namespace ImageToolApp.Models
         {
             var configFileMap = new ExeConfigurationFileMap
             {
-                ExeConfigFilename = Path.Combine(MethodHelper.ExecutiongPath, "App.config")
+                ExeConfigFilename = Path.Combine(Constants.ExecutiongPath, "App.config")
             };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
 

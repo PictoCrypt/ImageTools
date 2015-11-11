@@ -190,7 +190,7 @@ namespace FunctionLib.Steganography
                             // can only be 0 if it is the stop character (the 8 zeros)
                             if (charValue == 0)
                             {
-                                return MethodHelper.StringToByteArray(result.ToString());
+                                return MethodHelper.ToByteArray(result.ToString());
                             }
 
                             // convert the character value from int to char
@@ -203,7 +203,7 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
-            return MethodHelper.StringToByteArray(result.ToString());
+            return MethodHelper.ToByteArray(result.ToString());
         }
 
         public override string ChangeColor(string srcPath, Color color)

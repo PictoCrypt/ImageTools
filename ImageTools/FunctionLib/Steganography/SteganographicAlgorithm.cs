@@ -10,7 +10,7 @@ namespace FunctionLib.Steganography
 {
     public abstract class SteganographicAlgorithm : IDisposable
     {
-        protected readonly byte[] NullByte = MethodHelper.StringToByteArray("<EOF>").ToArray();
+        protected readonly byte[] NullByte = MethodHelper.ToByteArray("<EOF>").ToArray();
 
         public SteganographicAlgorithm()
         {
@@ -67,7 +67,7 @@ namespace FunctionLib.Steganography
             }
             if (type == ResultingType.Image)
             {
-                return MethodHelper.ByteToBitmap(bytes);
+                return MethodHelper.ToImage(bytes);
             }
             if (type == ResultingType.Document)
             {
