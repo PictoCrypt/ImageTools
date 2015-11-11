@@ -113,7 +113,7 @@ namespace FunctionLib.Helper
                     break;
                 case "IMAGE":
                     result = Constants.TempImagePath;
-                    using (var stream = new MemoryStream(bytes))
+                    using (var stream = new MemoryStream(byteList.ToArray()))
                     {
                         var returnImage = Image.FromStream(stream);
                         returnImage.Save(result);

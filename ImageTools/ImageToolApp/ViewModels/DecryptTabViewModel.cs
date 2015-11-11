@@ -52,7 +52,7 @@ namespace ImageToolApp.ViewModels
                 }
                 else
                 {
-                    if (Constants.ImageExtensions.Contains(Path.GetExtension(str)))
+                    if (Constants.ImageExtensions.Contains(Path.GetExtension(str).ToUpperInvariant()))
                     {
                         result = new Image
                         {
