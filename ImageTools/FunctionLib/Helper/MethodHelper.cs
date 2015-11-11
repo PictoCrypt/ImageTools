@@ -43,28 +43,17 @@ namespace FunctionLib.Helper
             return result.GetString(bytes);
         }
 
-        public static byte[] BitmaptoByteArray(Bitmap src)
+        private static byte[] BitmaptoByteArray(Bitmap src)
         {
-            var byteList = new List<byte>();
-            var lockBitmap = new LockBitmap(src);
-            lockBitmap.LockBits();
-            for (var i = 0; i < lockBitmap.Height; i++)
+            byte[] bytes;
+            using (var stream = new MemoryStream())
             {
-                for (var j = 0; j < lockBitmap.Width; j++)
-                {
-                    var pixel = lockBitmap.GetPixel(j, i);
-                    byteList.Add(pixel.R);
-                    byteList.Add(pixel.G);
-                    byteList.Add(pixel.B);
-                }
-                if (lockBitmap.Height - 1 != i)
-                {
-                    byteList.Add(Convert.ToByte(0));
-                    byteList.Add(Convert.ToByte(0));
-                }
+                src.Save(stream, src.RawFormat);
+                stream.Close();
+
+                bytes = stream.ToArray();
             }
-            lockBitmap.UnlockBits();
-            return byteList.ToArray();
+            return bytes;
         }
 
         public static byte[] ToByteArray(object value)
@@ -89,32 +78,22 @@ namespace FunctionLib.Helper
         
         public static string ByteToBitmap(byte[] bytes)
         {
-            var width = ListHelper.IndexOf(bytes.ToList(), new List<byte> { byte.MinValue, byte.MinValue }) / 3;
-            var height = (bytes.Length / 3) / width;
-
             var path = TempImagePath();
-            using (var result = new Bitmap(width, height))
+
+            using (var stream = new MemoryStream(bytes))
             {
-                var lockBitmap = new LockBitmap(result);
-                lockBitmap.LockBits();
-
-                var index = 0;
-                for (var y = 0; y < height; y++)
-                {
-                    for (var x = 0; x < width; x++)
-                    {
-                        var color = Color.FromArgb(bytes[index++], bytes[index++], bytes[index++]);
-
-                        lockBitmap.SetPixel(x, y, color);
-                    }
-                    index = index + 2;
-                }
-
-                lockBitmap.UnlockBits();
-                result.Save(path);
+                var returnImage = Image.FromStream(stream);
+                returnImage.Save(path);
             }
             return path;
         }
+
+        //private static bool CheckIfPossibleImage(int length)
+        //{
+        //    var result = length/3.0;
+        //    var diff = Math.Abs(Math.Truncate(result) - result);
+        //    return (diff < 0.0000001) || (diff > 0.9999999);
+        //}
 
         private static string TempImagePath()
         {
