@@ -54,7 +54,6 @@
     <Compile Include="Cryptography\Twofish\TwofishBase.cs" />
     <Compile Include="Cryptography\Twofish\TwofishEncryption.cs" />
     <Compile Include="Enums\EncryptionMethod.cs" />
-    <Compile Include="Enums\ResultingType.cs" />
     <Compile Include="Enums\SteganographicMethod.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\Constants.cs" />

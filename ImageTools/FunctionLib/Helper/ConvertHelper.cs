@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,13 @@ namespace FunctionLib.Helper
 {
     public static class ConvertHelper
     {
+        public static byte[] ToByteArray(string value)
+        {
+            var encoder = Encoding.GetEncoding(Constants.Encoding);
+            var result = encoder.GetBytes(value);
+            return result;
+        }
+
         public static byte[] ToByteArray(object value)
         {
             var str = value.ToString();
@@ -16,12 +24,11 @@ namespace FunctionLib.Helper
                 throw new ArgumentException("value is null or empty.");
             }
 
-            byte[] bytes;
+            IEnumerable<byte> bytes;
             if (!File.Exists(str))
             {
                 bytes = Constants.StartOfFileBytes("Text");
-                var encoder = Encoding.GetEncoding("ISO-8859-1");
-                bytes = bytes.Concat(encoder.GetBytes(str.ToCharArray())).ToArray();
+                bytes = bytes.Concat(ToByteArray(str));
             }
             else
             {
@@ -35,7 +42,7 @@ namespace FunctionLib.Helper
                             bytes = Constants.StartOfFileBytes("Image");
                             src.Save(stream, src.RawFormat);
                             stream.Close();
-                            bytes = bytes.Concat(stream.ToArray()).ToArray();
+                            bytes = bytes.Concat(stream.ToArray());
                         }
                     }
                 }
@@ -47,21 +54,20 @@ namespace FunctionLib.Helper
                         {
                             bytes = Constants.StartOfFileBytes(extension);
                             fileStream.CopyTo(stream);
-                            bytes = bytes.Concat(stream.ToArray()).ToArray();
+                            bytes = bytes.Concat(stream.ToArray());
                         }
                     }
                 }
 
-                bytes = bytes.Concat(Constants.EndOfFileBytes).ToArray();
-                return bytes;
+                bytes = bytes.Concat(Constants.EndOfFileBytes);
+                return bytes.ToArray();
             }
 
-            if (bytes.Length <= 0)
+            if (!bytes.Any())
             {
-            throw new ArgumentException("Cant cast object to anything which contains byte[] for me, tho.");
-
+                throw new ArgumentException("Cant cast object to anything which contains byte[] for me, tho.");
             }
-            return bytes;
+            return bytes.ToArray();
         }
 
         public static object ToObject(byte[] bytes)
@@ -87,15 +93,14 @@ namespace FunctionLib.Helper
             range.RemoveAt(range.Count - 1);
             byteList.RemoveRange(0, index);
 
-            var type = Convert.ToString(byteList.ToArray()).ToUpperInvariant();
+            var type = Convert.ToString(byteList).ToUpperInvariant();
             switch (type)
             {
                 case "TEXT":
-                    result = "";
+                    result = Convert.ToString(byteList);
                     break;
                 case "IMAGE":
                     result = Constants.TempImagePath;
-
                     using (var stream = new MemoryStream(bytes))
                     {
                         var returnImage = Image.FromStream(stream);
@@ -110,8 +115,7 @@ namespace FunctionLib.Helper
 
                     using (var stream = new MemoryStream(byteList.ToArray()))
                     {
-                        //TODO: TmpFilePath + extension
-                        //result Change Extenstion
+                        result = Constants.TempFilePath(type);
                         using (var fs = File.Create(result))
                         {
                             stream.CopyTo(fs);
@@ -122,17 +126,5 @@ namespace FunctionLib.Helper
             }
             return result;
         }
-
-        //public static string ToImage(byte[] bytes)
-        //{
-        //    var path = Constants.TempImagePath;
-
-        //    using (var stream = new MemoryStream(bytes))
-        //    {
-        //        var returnImage = Image.FromStream(stream);
-        //        returnImage.Save(path);
-        //    }
-        //    return path;
-        //}
     }
 }

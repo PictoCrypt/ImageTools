@@ -11,8 +11,6 @@ namespace UnitTests.StegaTests
     {
         private TimeSpan mDecryptionTime;
         private TimeSpan mEncryptionTime;
-        //TODO: Falschtests
-
         private Stopwatch mStopwatch;
 
         [TestInitialize]
@@ -48,7 +46,7 @@ namespace UnitTests.StegaTests
             const int lsbIndicator = 4;
             var encrypted = Encrypt(TestingConstants.NormalBitmap, TestingConstants.SmallFlowersImage, lsbIndicator);
 
-            var decrypted = new Bitmap(Decrypt(encrypted, ResultingType.Image, lsbIndicator).ToString());
+            var decrypted = new Bitmap(Decrypt(encrypted, lsbIndicator).ToString());
 
             Assert.IsNotNull(decrypted);
             Assert.IsTrue(TestingConstants.SmallFlowersImage.Size == decrypted.Size);
@@ -63,10 +61,10 @@ namespace UnitTests.StegaTests
             var encrypted = Encrypt(TestingConstants.NormalBitmap, string.Empty);
         }
 
-        private object Decrypt(Bitmap encrypted, ResultingType type = ResultingType.Text)
+        private object Decrypt(Bitmap encrypted)
         {
             mStopwatch.Start();
-            var decrypted = Decrypt(encrypted, type, TestingConstants.NormalAdditionalParam);
+            var decrypted = Decrypt(encrypted, TestingConstants.NormalAdditionalParam);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
             Assert.IsFalse(decrypted == null);
@@ -94,6 +92,6 @@ namespace UnitTests.StegaTests
         }
 
         public abstract Bitmap Encrypt(Bitmap src, object value, int additionalParam);
-        public abstract object Decrypt(Bitmap src, ResultingType type, int additionalParam);
+        public abstract object Decrypt(Bitmap src, int additionalParam);
     }
 }

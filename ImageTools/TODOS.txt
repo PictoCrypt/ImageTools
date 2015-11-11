@@ -11,6 +11,4 @@ BaseTabController.cs
 Enum
 - Enums umstellen, da sonst überall darüber enumeriert werden muss.
 
-Doc to MemStream 
-
 Texte in Resource auslagern

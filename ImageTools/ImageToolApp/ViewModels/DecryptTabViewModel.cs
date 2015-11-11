@@ -1,10 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using FunctionLib;
-using FunctionLib.Enums;
+using FunctionLib.Helper;
 using MahApps.Metro.Controls;
 
 namespace ImageToolApp.ViewModels
@@ -13,7 +13,7 @@ namespace ImageToolApp.ViewModels
     {
         public DecryptTabViewModel()
         {
-            Result = "";
+            Result = string.Empty;
         }
 
         private object mResult;
@@ -36,27 +36,31 @@ namespace ImageToolApp.ViewModels
         {
             get
             {
-                FrameworkElement result = null;
-                switch (SelectedResultingType)
+                FrameworkElement result;
+                var str = Result.ToString();
+                if (string.IsNullOrEmpty(str) || !File.Exists(str))
                 {
-                    case ResultingType.Text:
-                        result = new TextBox
-                        {
-                            AcceptsReturn = true,
-                            IsReadOnly = true,
-                            Background = Brushes.DarkGray,
-                            Text = Result.ToString(),
-                            TextWrapping = TextWrapping.Wrap,
-                        };
-                        TextBoxHelper.SetWatermark(result, "Resulting content...");
-                        break;
-                    case ResultingType.Image:
+                    result = new TextBox
+                    {
+                        AcceptsReturn = true,
+                        IsReadOnly = true,
+                        Background = Brushes.DarkGray,
+                        Text = Result.ToString(),
+                        TextWrapping = TextWrapping.Wrap,
+                    };
+                    TextBoxHelper.SetWatermark(result, "Resulting content...");
+                }
+                else
+                {
+                    if (Constants.ImageExtensions.Contains(Path.GetExtension(str)))
+                    {
                         result = new Image
                         {
                             Source = new BitmapImage(new Uri(Result.ToString()))
                         };
-                        break;
-                    case ResultingType.Document:
+                    }
+                    else
+                    {
                         result = new TextBox
                         {
                             AcceptsReturn = false,
@@ -64,7 +68,7 @@ namespace ImageToolApp.ViewModels
                             Background = Brushes.DarkGray,
                             Text = Result.ToString()
                         };
-                        break;
+                    }
                 }
                 return result;
             }

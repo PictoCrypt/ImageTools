@@ -21,8 +21,18 @@ namespace FunctionLib.Helper
         {
             get
             {
-                return Path.GetTempPath() + Guid.NewGuid() + ".png";
+                return TempFilePathWithoutExtension + ".png";
             }
+        }
+
+        public static string TempFilePathWithoutExtension
+        {
+            get { return Path.GetTempPath() + Guid.NewGuid(); }
+        }
+
+        public static string Encoding
+        {
+            get { return "ISO-8859-1"; }
         }
 
         public static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
@@ -32,6 +42,12 @@ namespace FunctionLib.Helper
         {
             var value = string.Format("<{0}>", type.ToUpperInvariant());
             var result = ConvertHelper.ToByteArray(value);
+            return result;
+        }
+
+        public static string TempFilePath(string extension)
+        {
+            var result = TempFilePathWithoutExtension + extension;
             return result;
         }
     }

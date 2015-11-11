@@ -17,7 +17,6 @@ namespace ImageToolApp.ViewModels
         private EncryptionMethod mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
-        private ResultingType mSelectedResultingType;
 
         public BaseTabViewModel()
         {
@@ -135,29 +134,6 @@ namespace ImageToolApp.ViewModels
                 }
                 mImagePath = value;
                 OnPropertyChanged("ImagePath");
-            }
-        }
-
-        public ResultingType SelectedResultingType
-        {
-            get { return mSelectedResultingType; }
-            set
-            {
-                if (value.Equals(mSelectedResultingType))
-                {
-                    return;
-                }
-                mSelectedResultingType = value;
-                OnPropertyChanged("SelectedResultingType");
-            }
-        }
-
-        public ObservableCollection<ResultingType> ResultingTypes
-        {
-            get
-            {
-                var result = Enum.GetValues(typeof (ResultingType)).Cast<ResultingType>();
-                return new ObservableCollection<ResultingType>(result);
             }
         }
     }

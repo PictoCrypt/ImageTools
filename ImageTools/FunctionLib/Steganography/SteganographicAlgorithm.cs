@@ -51,7 +51,7 @@ namespace FunctionLib.Steganography
             return bitsNeeded / 8;
         }
 
-        public object Decrypt(Bitmap src, ResultingType type, int significantIndifcator = 3)
+        public object Decrypt(Bitmap src, int significantIndifcator = 3)
         {
             var bmp = new Bitmap(src);
             var lockBitmap = new LockBitmap(bmp);
