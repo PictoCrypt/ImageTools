@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using FunctionLib;
+using FunctionLib.Enums;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels

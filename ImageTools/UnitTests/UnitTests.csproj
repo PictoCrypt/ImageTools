@@ -6,8 +6,8 @@
     <ProjectGuid>{0785A441-D43A-4A91-9C4D-7089746A8EB0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CryptographicTest</RootNamespace>
-    <AssemblyName>CryptographicTest</AssemblyName>
+    <RootNamespace>UnitTests</RootNamespace>
+    <AssemblyName>UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -62,11 +62,10 @@
     <Compile Include="CryptTests\TripleDesTest.cs" />
     <Compile Include="CryptTests\TwofishTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="TestingConstants.cs" />
     <Compile Include="StegaTests\ComplexLeastSignificantBitTest.cs" />
     <Compile Include="StegaTests\LeastSignificantBitTest.cs" />
     <Compile Include="StegaTests\SteganographicAlogithmBaseTestClass.cs" />
-    <Compile Include="ZipFileHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FunctionLib\FunctionLib.csproj">

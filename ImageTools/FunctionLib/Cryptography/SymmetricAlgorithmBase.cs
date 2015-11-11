@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using FunctionLib.Cryptography.Blowfish;
+using FunctionLib.Enums;
 
 namespace FunctionLib.Cryptography
 {

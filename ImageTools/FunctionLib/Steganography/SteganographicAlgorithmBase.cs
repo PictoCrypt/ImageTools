@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using FunctionLib.Enums;
 
 namespace FunctionLib.Steganography
 {
@@ -27,7 +28,7 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static object Decrypt(object obj, SteganographicMethod method, Bitmap src, ResultingType type, int additionalParam)
+        public static object Decrypt(object obj, SteganographicMethod method, Bitmap src, int additionalParam)
         {
             var encryptionType = MethodNameToType(method);
             var baseType = typeof (SteganographicAlgorithmBase);
@@ -35,7 +36,7 @@ namespace FunctionLib.Steganography
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new object[] {src, type, additionalParam});
+                    .Invoke(obj, new object[] {src, additionalParam});
             }
             throw new ArgumentException(baseType.ToString());
         }
@@ -49,11 +50,11 @@ namespace FunctionLib.Steganography
         }
 
 
-        public static object Decrypt<T>(Bitmap src, ResultingType type, int additionalParam)
+        public static object Decrypt<T>(Bitmap src, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Decrypt(src, type, additionalParam);
+            var result = mLastAccessedAlgorithm.Decrypt(src, additionalParam);
             return result;
         }
 

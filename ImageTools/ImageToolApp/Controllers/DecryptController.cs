@@ -2,6 +2,7 @@
 using System.IO;
 using FunctionLib;
 using FunctionLib.Cryptography;
+using FunctionLib.Enums;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -38,10 +39,10 @@ namespace ImageToolApp.Controllers
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
                     result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap,
-                        ViewModel.SelectedResultingType, ViewModel.NumericUpDownValue);
+                        ViewModel.NumericUpDownValue);
                 }
 
-                if (ViewModel.EncryptedCheck && ViewModel.SelectedResultingType == ResultingType.Text)
+                if (ViewModel.EncryptedCheck)
                 {
                     result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result.ToString(),
                         ViewModel.Password);

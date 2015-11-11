@@ -2,17 +2,15 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
-using FunctionLib;
+using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptographicTest.StegaTests
+namespace UnitTests.StegaTests
 {
     public abstract class SteganographicAlogithmBaseTestClass
     {
         private TimeSpan mDecryptionTime;
         private TimeSpan mEncryptionTime;
-        //TODO: Falschtests
-
         private Stopwatch mStopwatch;
 
         [TestInitialize]
@@ -24,11 +22,11 @@ namespace CryptographicTest.StegaTests
         [TestMethod]
         public void NormalEncryptionTest()
         {
-            var encrypted = Encrypt(Constants.NormalBitmap, Constants.NormalText);
+            var encrypted = Encrypt(TestingConstants.NormalBitmap, TestingConstants.NormalText);
 
             var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(decrypted.ToString().StartsWith(Constants.NormalText));
+            Assert.IsTrue(decrypted.ToString().StartsWith(TestingConstants.NormalText));
 
             WriteToOutput();
         }
@@ -39,19 +37,19 @@ namespace CryptographicTest.StegaTests
         public void EncryptImageWithNotEnoughSpace()
         {
             const int lsbIndicator = 4;
-            var encrypted = Encrypt(Constants.SmallKoalaImage, Constants.SmallFlowersImage, lsbIndicator);
+            var encrypted = Encrypt(TestingConstants.SmallKoalaImage, TestingConstants.SmallFlowersImage, lsbIndicator);
         }
 
         [TestMethod]
         public void EncryptImageTest()
         {
             const int lsbIndicator = 4;
-            var encrypted = Encrypt(Constants.NormalBitmap, Constants.SmallFlowersImage, lsbIndicator);
+            var encrypted = Encrypt(TestingConstants.NormalBitmap, TestingConstants.SmallFlowersImage, lsbIndicator);
 
-            var decrypted = new Bitmap(Decrypt(encrypted, ResultingType.Image, lsbIndicator).ToString());
+            var decrypted = new Bitmap(Decrypt(encrypted, lsbIndicator).ToString());
 
             Assert.IsNotNull(decrypted);
-            Assert.IsTrue(Constants.SmallFlowersImage.Size == decrypted.Size);
+            Assert.IsTrue(TestingConstants.SmallFlowersImage.Size == decrypted.Size);
 
             WriteToOutput();
         }
@@ -60,13 +58,13 @@ namespace CryptographicTest.StegaTests
         [ExpectedException(typeof (TargetInvocationException))]
         public void EncryptionWithoutTextTest()
         {
-            var encrypted = Encrypt(Constants.NormalBitmap, string.Empty);
+            var encrypted = Encrypt(TestingConstants.NormalBitmap, string.Empty);
         }
 
-        private object Decrypt(Bitmap encrypted, ResultingType type = ResultingType.Text)
+        private object Decrypt(Bitmap encrypted)
         {
             mStopwatch.Start();
-            var decrypted = Decrypt(encrypted, type, Constants.NormalAdditionalParam);
+            var decrypted = Decrypt(encrypted, TestingConstants.NormalAdditionalParam);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
             Assert.IsFalse(decrypted == null);
@@ -76,7 +74,7 @@ namespace CryptographicTest.StegaTests
         private Bitmap Encrypt(Bitmap src, object value)
         {
             mStopwatch.Start();
-            var encrypted = Encrypt(src, value, Constants.NormalAdditionalParam);
+            var encrypted = Encrypt(src, value, TestingConstants.NormalAdditionalParam);
             mStopwatch.Stop();
             mEncryptionTime = mStopwatch.Elapsed;
             mStopwatch.Reset();
@@ -94,6 +92,6 @@ namespace CryptographicTest.StegaTests
         }
 
         public abstract Bitmap Encrypt(Bitmap src, object value, int additionalParam);
-        public abstract object Decrypt(Bitmap src, ResultingType type, int additionalParam);
+        public abstract object Decrypt(Bitmap src, int additionalParam);
     }
 }

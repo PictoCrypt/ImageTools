@@ -1,4 +1,4 @@
-﻿namespace FunctionLib
+﻿namespace FunctionLib.Enums
 {
     public enum SteganographicMethod
     {

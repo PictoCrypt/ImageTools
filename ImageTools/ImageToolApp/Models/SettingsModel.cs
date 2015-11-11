@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using FunctionLib;
+using FunctionLib.Enums;
 using FunctionLib.Helper;
 
 namespace ImageToolApp.Models
@@ -54,7 +55,7 @@ namespace ImageToolApp.Models
         {
             var configFileMap = new ExeConfigurationFileMap
             {
-                ExeConfigFilename = Path.Combine(MethodHelper.ExecutiongPath, "App.config")
+                ExeConfigFilename = Path.Combine(Constants.ExecutiongPath, "App.config")
             };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
 

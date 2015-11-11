@@ -151,7 +151,7 @@ namespace ImageToolApp.Controllers
                         var secretPath =
                             Application.Current.Dispatcher.Invoke(
                                 () => ((currentExpanderContent as PathChooser).DataContext as PathChooserViewModel).Path);
-                        value = new Bitmap(secretPath);
+                        value = secretPath;
                     }
                     else if (currentExpanderContent is DocumentChooser)
                     {

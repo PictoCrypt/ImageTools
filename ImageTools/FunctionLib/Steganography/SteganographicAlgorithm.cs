@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+using FunctionLib.Enums;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 
@@ -10,8 +9,6 @@ namespace FunctionLib.Steganography
 {
     public abstract class SteganographicAlgorithm : IDisposable
     {
-        protected readonly byte[] NullByte = MethodHelper.StringToByteArray("<EOF>").ToArray();
-
         public SteganographicAlgorithm()
         {
             ChangedPixels = new List<Pixel>();
@@ -31,11 +28,11 @@ namespace FunctionLib.Steganography
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
-            var bytes = MethodHelper.ToByteArray(value).Concat(NullByte).ToArray();
+            var bytes = ConvertHelper.ToByteArray(value);
             var size = CheckIfEncryptionIsPossible(lockBitmap, bytes, significantIndicator);
             if (size > 0)
             {
-                throw new ArgumentOutOfRangeException(string.Format("Not enough source size. You need a minimum of {0} pixel to encrypt this picture.", size));
+                throw new ArgumentOutOfRangeException(string.Format("Not enough source size. A minimum of {0} pixel is needed.", size));
             }
             lockBitmap = Encrypt(lockBitmap, bytes, significantIndicator);
             lockBitmap.UnlockBits();
@@ -54,25 +51,14 @@ namespace FunctionLib.Steganography
             return bitsNeeded / 8;
         }
 
-        public object Decrypt(Bitmap src, ResultingType type, int significantIndifcator = 3)
+        public object Decrypt(Bitmap src, int significantIndifcator = 3)
         {
             var bmp = new Bitmap(src);
             var lockBitmap = new LockBitmap(bmp);
             lockBitmap.LockBits();
             var bytes = Decrypt(lockBitmap, significantIndifcator);
             lockBitmap.UnlockBits();
-            if (type == ResultingType.Text)
-            {
-                return Encoding.GetEncoding("ISO-8859-1").GetString(bytes);
-            }
-            if (type == ResultingType.Image)
-            {
-                return MethodHelper.ByteToBitmap(bytes);
-            }
-            if (type == ResultingType.Document)
-            {
-            }
-            return null;
+            return ConvertHelper.ToObject(bytes);
         }
 
         protected abstract byte[] Decrypt(LockBitmap src, int significantIndicator = 3);
