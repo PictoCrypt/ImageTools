@@ -7,9 +7,9 @@
         Title="Image Presentation" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="28" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="28" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Save"
