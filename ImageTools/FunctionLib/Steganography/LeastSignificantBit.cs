@@ -96,13 +96,13 @@ namespace FunctionLib.Steganography
                     byteList = DecryptHelper(byteList, bitHolder);
 
                     // Check for EndOfFileBytes (END)
-                    var index = IndexOfWithinLastTwo(byteList);
+                    var index = MethodHelper.IndexOfWithinLastTwo(byteList);
                     if (index > -1)
                     {
                         // Remove overhang bytes
                         if(byteList.Count > index + Constants.EndOfFileBytes.Length)
                         {
-                            byteList.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - index);
+                            byteList.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - (index + Constants.EndOfFileBytes.Length));
                             
                         }
                         return byteList.ToArray();
@@ -110,27 +110,6 @@ namespace FunctionLib.Steganography
                 }
             }
             throw new SystemException("Error, anything happened (or maybe not).");
-        }
-
-        private int IndexOfWithinLastTwo(List<byte> byteList)
-        {
-            if (byteList.Count <= Constants.EndOfFileBytes.Length)
-            {
-                return -1;
-            }
-
-            var seq1 = byteList.GetRange(byteList.Count - Constants.EndOfFileBytes.Length, Constants.EndOfFileBytes.Length);
-            var seq2 = byteList.GetRange(byteList.Count - Constants.EndOfFileBytes.Length - 1, Constants.EndOfFileBytes.Length);
-
-            if (seq1.SequenceEqual(Constants.EndOfFileBytes))
-            {
-                return byteList.Count - Constants.EndOfFileBytes.Length;
-            }
-            if (seq2.SequenceEqual(Constants.EndOfFileBytes))
-            {
-                return byteList.Count - Constants.EndOfFileBytes.Length - 1;
-            }
-            return -1;
         }
 
         /// <summary>

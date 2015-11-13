@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
@@ -82,7 +83,7 @@ namespace FunctionLib.Steganography
                             {
                                 if (state == State.Hiding)
                                 {
-                                    //TODO: Hier müsste der Punkt sein!
+                                    //TODO: Hier müsste der Punkt sein, um die Anzahl der verwendeten Bits zu ändern.
                                     // the rightmost bit in the character will be (charValue % 2)
                                     // to put this value instead of the LSB of the pixel element
                                     // just add it to it
@@ -188,17 +189,27 @@ namespace FunctionLib.Steganography
                             charValue = ReverseBits(charValue);
 
                             // can only be 0 if it is the stop character (the 8 zeros)
-                            if (charValue == 0)
+                            var index = MethodHelper.IndexOfWithinLastTwo(new List<byte>(ConvertHelper.ToByteArray(result.ToString())));
+                            if (index > -1)
                             {
+                                // Remove overhang bytes
+                                if (result.Length > index + Constants.EndOfFileBytes.Length)
+                                {
+                                    //result.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - (index + Constants.EndOfFileBytes.Length));
+
+                                }
                                 return ConvertHelper.ToByteArray(result.ToString());
                             }
+                            //if (charValue == 0)
+                            //{
+                            //    return ConvertHelper.ToByteArray(result.ToString());
+                            //}
 
                             // convert the character value from int to char
                             var c = (char) charValue;
 
                             // add the current character to the result value
                             result.Append(c);
-                            ;
                         }
                     }
                 }

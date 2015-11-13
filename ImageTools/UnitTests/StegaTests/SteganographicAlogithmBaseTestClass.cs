@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
 using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,13 +23,16 @@ namespace UnitTests.StegaTests
         [TestMethod]
         public void NormalEncryptionTest()
         {
-            var encrypted = Encrypt(TestingConstants.NormalBitmap, TestingConstants.NormalText);
+            using (var bitmap = new Bitmap(TestingConstants.NormalImage))
+            {
+                var encrypted = Encrypt(bitmap, TestingConstants.NormalText);
 
-            var decrypted = Decrypt(encrypted);
+                var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(decrypted.ToString().StartsWith(TestingConstants.NormalText));
+                Assert.IsTrue(decrypted.ToString().StartsWith(TestingConstants.NormalText));
 
-            WriteToOutput();
+                WriteToOutput();
+            }
         }
 
         [TestMethod]
@@ -37,34 +41,59 @@ namespace UnitTests.StegaTests
         public void EncryptImageWithNotEnoughSpace()
         {
             const int lsbIndicator = 4;
-            var encrypted = Encrypt(TestingConstants.SmallKoalaImage, TestingConstants.SmallFlowersImage, lsbIndicator);
+            using (var bitmap = new Bitmap(TestingConstants.SmallKoala))
+            {
+                var encrypted = Encrypt(bitmap, TestingConstants.SmallFlowers, lsbIndicator);
+            }
         }
 
         [TestMethod]
         public void EncryptImageTest()
         {
             const int lsbIndicator = 4;
-            var encrypted = Encrypt(TestingConstants.NormalBitmap, TestingConstants.SmallFlowersImage, lsbIndicator);
 
-            var decrypted = new Bitmap(Decrypt(encrypted, lsbIndicator).ToString());
+            using (var bitmap = new Bitmap(TestingConstants.NormalImage))
+            {
+                var encrypted = Encrypt(bitmap, TestingConstants.SmallFlowers, lsbIndicator);
+                var decrypted = Decrypt(encrypted, lsbIndicator).ToString();
 
-            Assert.IsNotNull(decrypted);
-            Assert.IsTrue(TestingConstants.SmallFlowersImage.Size == decrypted.Size);
+                Assert.IsNotNull(decrypted);
+                Assert.IsTrue(File.Exists(decrypted));
 
-            WriteToOutput();
+                WriteToOutput();
+            }
+        }
+
+        [TestMethod]
+        public void EncryptDocTest()
+        {
+            using (var bitmap = new Bitmap(TestingConstants.NormalImage))
+            {
+                var encrypted = Encrypt(bitmap, TestingConstants.Testdoc,
+                    TestingConstants.LsbIndicator);
+                var decrypted = Decrypt(encrypted, TestingConstants.LsbIndicator) as string;
+
+                Assert.IsFalse(string.IsNullOrEmpty(decrypted));
+                Assert.IsTrue(File.Exists(decrypted));
+
+                WriteToOutput();
+            }
         }
 
         [TestMethod]
         [ExpectedException(typeof (TargetInvocationException))]
         public void EncryptionWithoutTextTest()
         {
-            var encrypted = Encrypt(TestingConstants.NormalBitmap, string.Empty);
+            using (var bitmap = new Bitmap(TestingConstants.NormalImage))
+            {
+                var encrypted = Encrypt(bitmap, string.Empty);
+            }
         }
 
         private object Decrypt(Bitmap encrypted)
         {
             mStopwatch.Start();
-            var decrypted = Decrypt(encrypted, TestingConstants.NormalAdditionalParam);
+            var decrypted = Decrypt(encrypted, TestingConstants.LsbIndicator);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
             Assert.IsFalse(decrypted == null);
@@ -74,7 +103,7 @@ namespace UnitTests.StegaTests
         private Bitmap Encrypt(Bitmap src, object value)
         {
             mStopwatch.Start();
-            var encrypted = Encrypt(src, value, TestingConstants.NormalAdditionalParam);
+            var encrypted = Encrypt(src, value, TestingConstants.LsbIndicator);
             mStopwatch.Stop();
             mEncryptionTime = mStopwatch.Elapsed;
             mStopwatch.Reset();

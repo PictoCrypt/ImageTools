@@ -12,20 +12,16 @@ namespace UnitTests
                                          "!äü?ß][&_.\"§\"!§";
 
         public const string Password = "IchBinDasTestPasswort!";
-        public const int NormalAdditionalParam = 3;
+        public const int LsbIndicator = 3;
         private static readonly string LoremIpsum = Path.Combine(Constants.ExecutiongPath, "Testfiles", "LoremIpsum.txt");
         public static readonly string LongText = File.ReadAllText(LoremIpsum);
-        private static readonly string NormalImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "NormalTest.png");
+        public static readonly string NormalImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "NormalTest.png");
         private static readonly string LittleImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "LittleTest.png");
-        private static readonly string SmallKoala = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallKoala.jpg");
-        private static readonly string SmallFlowers = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallFlowers.jpg");
+        public static readonly string SmallKoala = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallKoala.jpg");
+        public static readonly string SmallFlowers = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallFlowers.jpg");
         public static readonly string EncryptedImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "EncryptedTest.png");
-        public static readonly Bitmap NormalBitmap = new Bitmap(NormalImage);
-        public static readonly Bitmap SmallKoalaImage = new Bitmap(SmallKoala);
-        public static readonly Bitmap SmallFlowersImage = new Bitmap(SmallFlowers);
-        public static readonly object LittleBitmap = new Bitmap(LittleImage);
-        public static readonly string Testzip = Path.Combine(Constants.ExecutiongPath, "Testfiles",
-            "TestZip.zip");
+        public static readonly string Testdoc = Path.Combine(Constants.ExecutiongPath, "Testfiles",
+            "Testdoc.docx");
 
     }
 }

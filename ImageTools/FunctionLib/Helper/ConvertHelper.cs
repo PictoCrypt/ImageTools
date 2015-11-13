@@ -109,7 +109,7 @@ namespace FunctionLib.Helper
             switch (type)
             {
                 case "TEXT":
-                    result = Convert.ToString(byteList);
+                    result = ToString(byteList.ToArray());
                     break;
                 case "IMAGE":
                     result = Constants.TempImagePath;
