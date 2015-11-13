@@ -42,7 +42,7 @@ namespace UserControlClassLibrary.DocumentChooser
 
         private void Open()
         {
-            var dialog = new OpenFileDialog {Filter = "Word Doc|*.doc|Word Doc|*.docx"};
+            var dialog = new OpenFileDialog();
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
