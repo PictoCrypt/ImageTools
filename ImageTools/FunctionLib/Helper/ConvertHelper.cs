@@ -47,25 +47,11 @@ namespace FunctionLib.Helper
             else
             {
                 var extension = Path.GetExtension(str).ToUpperInvariant();
-                if (Constants.ImageExtensions.Contains(extension))
+                bytes = Constants.StartOfFileBytes(Constants.ImageExtensions.Contains(extension) ? "Image" : extension);
+                using (var fileStream = File.Open(str, FileMode.Open))
                 {
-                    using (var src = new Bitmap(str))
-                    {
-                        var stream = new MemoryStream();
-                        bytes = Constants.StartOfFileBytes("Image");
-                        src.Save(stream, src.RawFormat);
-                        var compressedStream = MethodHelper.CompressStream(stream);
-                        bytes = bytes.Concat(compressedStream);
-                    }
-                }
-                else
-                {
-                    using (var fileStream = File.Open(str, FileMode.Open))
-                    {
-                        bytes = Constants.StartOfFileBytes(extension);
-                        var compressedStream = MethodHelper.CompressStream(fileStream);
-                        bytes = bytes.Concat(compressedStream);
-                    }
+                    var compressedStream = MethodHelper.CompressStream(fileStream);
+                    bytes = bytes.Concat(compressedStream);
                 }
             }
 
