@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
@@ -50,25 +51,20 @@ namespace FunctionLib.Helper
                 {
                     using (var src = new Bitmap(str))
                     {
-                        using (var stream = new MemoryStream())
-                        {
-                            bytes = Constants.StartOfFileBytes("Image");
-                            src.Save(stream, src.RawFormat);
-                            stream.Close();
-                            bytes = bytes.Concat(stream.ToArray());
-                        }
+                        var stream = new MemoryStream();
+                        bytes = Constants.StartOfFileBytes("Image");
+                        src.Save(stream, src.RawFormat);
+                        var compressedStream = MethodHelper.CompressStream(stream);
+                        bytes = bytes.Concat(compressedStream);
                     }
                 }
                 else
                 {
                     using (var fileStream = File.Open(str, FileMode.Open))
                     {
-                        using (var stream = new MemoryStream())
-                        {
-                            bytes = Constants.StartOfFileBytes(extension);
-                            fileStream.CopyTo(stream);
-                            bytes = bytes.Concat(stream.ToArray());
-                        }
+                        bytes = Constants.StartOfFileBytes(extension);
+                        var compressedStream = MethodHelper.CompressStream(fileStream);
+                        bytes = bytes.Concat(compressedStream);
                     }
                 }
             }
@@ -113,10 +109,10 @@ namespace FunctionLib.Helper
                     break;
                 case "IMAGE":
                     result = Constants.TempImagePath;
-                    using (var stream = new MemoryStream(byteList.ToArray()))
+                    using (var uncompressedStream = MethodHelper.DecompressByteStream(byteList.ToArray()))
                     {
-                        var returnImage = Image.FromStream(stream);
-                        returnImage.Save(result);
+                        var returnImage = Image.FromStream(uncompressedStream);
+                        returnImage.Save(result);                        
                     }
                     break;
                 default:
@@ -125,7 +121,7 @@ namespace FunctionLib.Helper
                         throw new NotSupportedException("Invalid Start-Tag.");
                     }
 
-                    using (var stream = new MemoryStream(byteList.ToArray()))
+                    using (var stream = MethodHelper.DecompressByteStream(byteList.ToArray()))
                     {
                         result = Constants.TempFilePath(type);
                         using (var fs = File.Create(result))

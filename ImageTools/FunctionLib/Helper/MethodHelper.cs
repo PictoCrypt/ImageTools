@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 namespace FunctionLib.Helper
@@ -31,6 +33,36 @@ namespace FunctionLib.Helper
                 return byteList.Count - Constants.EndOfFileBytes.Length - 1;
             }
             return -1;
+        }
+
+        public static byte[] CompressStream(Stream src)
+        {
+            byte[] result;
+            using (src)
+            {
+                using (var compressed = new MemoryStream())
+                {
+                    using (var gzip = new GZipStream(compressed, CompressionMode.Compress))
+                    {
+                        src.CopyTo(gzip);
+                    }
+                    result = compressed.ToArray();
+                }
+            }
+            return result;
+        }
+
+        public static MemoryStream DecompressByteStream(byte[] bytes)
+        {
+            var result = new MemoryStream();
+            using (var ms = new MemoryStream(bytes))
+            {
+                using (var gzip = new GZipStream(ms, CompressionMode.Decompress, true))
+                {
+                    gzip.CopyTo(result);
+                }
+            }
+            return result;
         }
     }
 }
