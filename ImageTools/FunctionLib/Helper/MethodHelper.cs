@@ -38,16 +38,16 @@ namespace FunctionLib.Helper
         public static byte[] CompressStream(Stream src)
         {
             byte[] result;
-            using (src)
+            using (var compressed = new MemoryStream())
             {
-                using (var compressed = new MemoryStream())
+                using (var gzip = new GZipStream(compressed, CompressionMode.Compress))
                 {
-                    using (var gzip = new GZipStream(compressed, CompressionMode.Compress))
+                    using (src)
                     {
                         src.CopyTo(gzip);
                     }
-                    result = compressed.ToArray();
                 }
+                result = compressed.ToArray();
             }
             return result;
         }
