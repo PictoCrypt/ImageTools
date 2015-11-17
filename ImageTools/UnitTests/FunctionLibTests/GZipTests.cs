@@ -10,6 +10,31 @@ namespace UnitTests.FunctionLibTests
     public class GZipTests
     {
         [TestMethod]
+        // Dieser Test soll fehlschlagen, wenn GZip GRÖSSER als ein normaler Stream ist.
+        public void GZipVersusNormalStreamTest()
+        {
+            byte[] msArrayBytes;
+            using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    msArrayBytes = ms.ToArray();
+                }                
+            }
+
+            byte[] result;
+            using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
+            {
+                result = MethodHelper.CompressStream(stream); 
+            }
+
+            Assert.IsNotNull(msArrayBytes);
+            Assert.IsTrue(msArrayBytes.Length > 0);
+            Assert.IsTrue(result.Length < msArrayBytes.Length);
+        }
+
+        [TestMethod]
         public void GZipCompressTest()
         {
             var testBytes = ConvertHelper.ToByteArray(TestingConstants.NormalText);
