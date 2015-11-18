@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
@@ -18,13 +17,13 @@ namespace FunctionLib.Helper
             }
         }
 
-        public static byte[] ToByteArray(string value)
+        public static byte[] StringToBytes(string value)
         {
             var result = Encoder.GetBytes(value);
             return result;
         }
 
-        private static string ToString(byte[] value)
+        private static string BytesToString(byte[] value)
         {
             var result = Encoder.GetString(value);
             return result;
@@ -35,7 +34,7 @@ namespace FunctionLib.Helper
         /// </summary>
         /// <param name="value">The object can be a string or an path to an file.</param>
         /// <returns>byte[]</returns>
-        public static byte[] ToByteArray(object value)
+        public static byte[] AnythingToBytes(object value)
         {
             var str = value.ToString();
             if (value == null || string.IsNullOrEmpty(str))
@@ -46,8 +45,13 @@ namespace FunctionLib.Helper
             IEnumerable<byte> bytes;
             if (!File.Exists(str))
             {
+                var stream = StringToStream(str);
                 bytes = Constants.StartOfFileBytes("Text");
-                bytes = bytes.Concat(ToByteArray(str));
+                using (stream)
+                {
+                    var compressedStream = MethodHelper.CompressStream(stream);
+                    bytes = bytes.Concat(compressedStream);
+                }
             }
             else
             {
@@ -69,7 +73,24 @@ namespace FunctionLib.Helper
             return bytes.ToArray();
         }
 
-        public static object ToObject(byte[] bytes)
+        private static Stream StringToStream(string value)
+        {
+            var bytes = StringToBytes(value);
+            return new MemoryStream(bytes);
+        }
+
+        private static string StreamToString(Stream stream)
+        {
+            string result;
+            using (var reader = new StreamReader(stream, Encoder))
+            {
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                result = reader.ReadToEnd();
+            }
+            return result;
+        }
+
+        public static object BytesToObject(byte[] bytes)
         {
             string result;
             if (bytes == null || bytes.Length <= 0)
@@ -81,7 +102,7 @@ namespace FunctionLib.Helper
             // Remove EndOfFile
             byteList.RemoveRange(byteList.Count - Constants.EndOfFileBytes.Length, Constants.EndOfFileBytes.Length);
 
-            var index = byteList.IndexOf(ToByteArray(">").First());
+            var index = byteList.IndexOf(StringToBytes(">").First());
             if (index == -1)
             {
                 throw new ArgumentException("Start-Tag not found.");
@@ -92,18 +113,21 @@ namespace FunctionLib.Helper
             range.RemoveAt(range.Count - 1);
             byteList.RemoveRange(0, index + 1);
 
-            var type = ToString(range.ToArray()).ToUpperInvariant();
+            var type = BytesToString(range.ToArray()).ToUpperInvariant();
             switch (type)
             {
                 case "TEXT":
-                    result = ToString(byteList.ToArray());
+                    using (var uncompressed = MethodHelper.DecompressByteStream(byteList.ToArray()))
+                    {
+                        result = StreamToString(uncompressed);
+                    }
                     break;
                 case "IMAGE":
                     result = Constants.TempImagePath;
                     using (var uncompressedStream = MethodHelper.DecompressByteStream(byteList.ToArray()))
                     {
                         var returnImage = Image.FromStream(uncompressedStream);
-                        returnImage.Save(result);                        
+                        returnImage.Save(result);
                     }
                     break;
                 default:

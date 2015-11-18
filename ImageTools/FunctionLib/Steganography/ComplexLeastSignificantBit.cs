@@ -189,7 +189,7 @@ namespace FunctionLib.Steganography
                             charValue = ReverseBits(charValue);
 
                             // can only be 0 if it is the stop character (the 8 zeros)
-                            var index = MethodHelper.IndexOfWithinLastTwo(new List<byte>(ConvertHelper.ToByteArray(result.ToString())));
+                            var index = MethodHelper.IndexOfWithinLastTwo(new List<byte>(ConvertHelper.StringToBytes(result.ToString())));
                             if (index > -1)
                             {
                                 // Remove overhang bytes
@@ -198,11 +198,11 @@ namespace FunctionLib.Steganography
                                     //result.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - (index + Constants.EndOfFileBytes.Length));
 
                                 }
-                                return ConvertHelper.ToByteArray(result.ToString());
+                                return ConvertHelper.StringToBytes(result.ToString());
                             }
                             //if (charValue == 0)
                             //{
-                            //    return ConvertHelper.ToByteArray(result.ToString());
+                            //    return ConvertHelper.StringToBytes(result.ToString());
                             //}
 
                             // convert the character value from int to char
@@ -214,7 +214,7 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
-            return ConvertHelper.ToByteArray(result.ToString());
+            return ConvertHelper.StringToBytes(result.ToString());
         }
 
         public override string ChangeColor(string srcPath, Color color)

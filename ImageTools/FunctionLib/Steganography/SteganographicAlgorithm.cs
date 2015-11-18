@@ -28,7 +28,7 @@ namespace FunctionLib.Steganography
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
             lockBitmap.LockBits();
-            var bytes = ConvertHelper.ToByteArray(value);
+            var bytes = ConvertHelper.AnythingToBytes(value);
             var size = CheckIfEncryptionIsPossible(lockBitmap, bytes, significantIndicator);
             if (size > 0)
             {
@@ -58,7 +58,7 @@ namespace FunctionLib.Steganography
             lockBitmap.LockBits();
             var bytes = Decrypt(lockBitmap, significantIndifcator);
             lockBitmap.UnlockBits();
-            return ConvertHelper.ToObject(bytes);
+            return ConvertHelper.BytesToObject(bytes);
         }
 
         protected abstract byte[] Decrypt(LockBitmap src, int significantIndicator = 3);

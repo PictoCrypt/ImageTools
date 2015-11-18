@@ -36,12 +36,12 @@ namespace FunctionLib.Helper
         }
 
         public static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
-        public static readonly byte[] EndOfFileBytes = ConvertHelper.ToByteArray("<EOF>");
+        public static readonly byte[] EndOfFileBytes = ConvertHelper.StringToBytes("<EOF>");
 
         public static byte[] StartOfFileBytes(string type)
         {
             var value = string.Format("<{0}>", type.ToUpperInvariant());
-            var result = ConvertHelper.ToByteArray(value);
+            var result = ConvertHelper.StringToBytes(value);
             return result;
         }
 
