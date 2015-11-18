@@ -7,19 +7,30 @@ namespace FunctionLib.Helper
 {
     public class LockBitmap
     {
-        private readonly Bitmap mSource;
         private BitmapData mBitmapData;
         private IntPtr mIptr = IntPtr.Zero;
+        private readonly PixelFormat mFormat;
 
-        public LockBitmap(Bitmap source)
+        public LockBitmap(Bitmap source, PixelFormat format = PixelFormat.Undefined)
         {
-            mSource = source;
+            if (format == PixelFormat.Undefined)
+            {
+                mFormat = source.PixelFormat;
+            }
+            else
+            {
+                mFormat = format;
+            }
+
+            Source = source;
         }
 
         private byte[] Pixels { get; set; }
         private int Depth { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+
+        public Bitmap Source { get; }
 
         /// <summary>
         ///     Lock bitmap data
@@ -29,8 +40,8 @@ namespace FunctionLib.Helper
             try
             {
                 // Get width and height of bitmap
-                Width = mSource.Width;
-                Height = mSource.Height;
+                Width = Source.Width;
+                Height = Source.Height;
 
                 // get total locked pixels count
                 var pixelCount = Width*Height;
@@ -39,7 +50,7 @@ namespace FunctionLib.Helper
                 var rect = new Rectangle(0, 0, Width, Height);
 
                 // get source bitmap pixel format size
-                Depth = Image.GetPixelFormatSize(mSource.PixelFormat);
+                Depth = Image.GetPixelFormatSize(mFormat);
 
                 // Check if bpp (Bits Per Pixel) is 8, 24, or 32
                 if (Depth != 8 && Depth != 24 && Depth != 32)
@@ -48,8 +59,8 @@ namespace FunctionLib.Helper
                 }
 
                 // Lock bitmap and return bitmap data
-                mBitmapData = mSource.LockBits(rect, ImageLockMode.ReadWrite,
-                    mSource.PixelFormat);
+                mBitmapData = Source.LockBits(rect, ImageLockMode.ReadWrite,
+                    mFormat);
 
                 // create byte array to copy pixel values
                 var step = Depth/8;
@@ -76,7 +87,7 @@ namespace FunctionLib.Helper
                 Marshal.Copy(Pixels, 0, mIptr, Pixels.Length);
 
                 // Unlock bitmap data
-                mSource.UnlockBits(mBitmapData);
+                Source.UnlockBits(mBitmapData);
             }
             catch (Exception ex)
             {
