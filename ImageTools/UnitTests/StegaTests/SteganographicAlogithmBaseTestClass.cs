@@ -100,7 +100,7 @@ namespace UnitTests.StegaTests
             return decrypted;
         }
 
-        private Bitmap Encrypt(Bitmap src, object value)
+        private Bitmap Encrypt(Bitmap src, string value)
         {
             mStopwatch.Start();
             var encrypted = Encrypt(src, value, TestingConstants.LsbIndicator);
@@ -120,7 +120,7 @@ namespace UnitTests.StegaTests
             Trace.WriteLine("");
         }
 
-        public abstract Bitmap Encrypt(Bitmap src, object value, int additionalParam);
+        public abstract Bitmap Encrypt(Bitmap src, string value, int additionalParam);
         public abstract object Decrypt(Bitmap src, int additionalParam);
     }
 }

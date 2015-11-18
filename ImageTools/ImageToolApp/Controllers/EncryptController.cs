@@ -141,7 +141,7 @@ namespace ImageToolApp.Controllers
             {
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
-                    object value = null;
+                    string value;
                     var currentExpanderContent =
                         Application.Current.Dispatcher.Invoke(
                             () => { return mExpanders.FirstOrDefault(x => x.IsExpanded).Content; });
@@ -167,7 +167,7 @@ namespace ImageToolApp.Controllers
                         value = ViewModel.Text;
                         if (ViewModel.EncryptedCheck)
                         {
-                            value = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, value.ToString(),
+                            value = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, value,
                                 ViewModel.Password);
                         }
                     }

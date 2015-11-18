@@ -14,7 +14,7 @@ namespace FunctionLib.Steganography
             get { return mLastAccessedAlgorithm.ChangedPixels.Count; }
         }
 
-        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, object value,
+        public static Bitmap Encrypt(object obj, SteganographicMethod method, Bitmap src, string value,
             int additionalParam)
         {
             var encryptionType = MethodNameToType(method);
@@ -23,7 +23,7 @@ namespace FunctionLib.Steganography
             if (extractedMethod != null)
             {
                 return (Bitmap) extractedMethod.MakeGenericMethod(encryptionType)
-                    .Invoke(obj, new[] {src, value, additionalParam});
+                    .Invoke(obj, new object[] {src, value, additionalParam});
             }
             throw new ArgumentException(baseType.ToString());
         }
@@ -41,7 +41,7 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt<T>(Bitmap src, object value, int additionalParam)
+        public static Bitmap Encrypt<T>(Bitmap src, string value, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();

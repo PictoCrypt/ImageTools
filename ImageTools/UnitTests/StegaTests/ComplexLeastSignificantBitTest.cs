@@ -8,7 +8,7 @@ namespace UnitTests.StegaTests
     [TestClass]
     public class ComplexLeastSignificantBitTest : SteganographicAlogithmBaseTestClass
     {
-        public override Bitmap Encrypt(Bitmap src, object value, int additionalParam)
+        public override Bitmap Encrypt(Bitmap src, string value, int additionalParam)
         {
             return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.ComplexLSB, src, value,
                 additionalParam);

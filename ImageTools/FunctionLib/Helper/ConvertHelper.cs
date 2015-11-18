@@ -34,9 +34,9 @@ namespace FunctionLib.Helper
         /// </summary>
         /// <param name="value">The object can be a string or an path to an file.</param>
         /// <returns>byte[]</returns>
-        public static byte[] AnythingToBytes(object value)
+        public static byte[] AnythingToBytes(string value)
         {
-            var str = value.ToString();
+            var str = value;
             if (value == null || string.IsNullOrEmpty(str))
             {
                 throw new ArgumentException("value is null or empty.");
@@ -90,7 +90,7 @@ namespace FunctionLib.Helper
             return result;
         }
 
-        public static object BytesToObject(byte[] bytes)
+        public static string ConvertBack(byte[] bytes)
         {
             string result;
             if (bytes == null || bytes.Length <= 0)

@@ -23,7 +23,7 @@ namespace FunctionLib.Steganography
 
         protected abstract LockBitmap Encrypt(LockBitmap src, byte[] value, int significantIndicator = 3);
 
-        public Bitmap Encrypt(Bitmap src, object value, int significantIndicator = 3)
+        public Bitmap Encrypt(Bitmap src, string value, int significantIndicator = 3)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
@@ -58,7 +58,7 @@ namespace FunctionLib.Steganography
             lockBitmap.LockBits();
             var bytes = Decrypt(lockBitmap, significantIndifcator);
             lockBitmap.UnlockBits();
-            return ConvertHelper.BytesToObject(bytes);
+            return ConvertHelper.ConvertBack(bytes);
         }
 
         protected abstract byte[] Decrypt(LockBitmap src, int significantIndicator = 3);
