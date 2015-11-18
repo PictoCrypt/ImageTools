@@ -1,4 +1,6 @@
-﻿using FunctionLib.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
+using FunctionLib.Cryptography;
 using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,12 +11,12 @@ namespace UnitTests.CryptTests
     {
         public override string Encrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Encrypt(this, EncryptionMethod.AES, value, password);
+            return SymmetricAlgorithmBase.Encrypt(this, typeof (AesCryptoServiceProvider), value, password);
         }
 
         public override string Decrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Decrypt(this, EncryptionMethod.AES, value, password);
+            return SymmetricAlgorithmBase.Decrypt(this, typeof (AesCryptoServiceProvider), value, password);
         }
     }
 }

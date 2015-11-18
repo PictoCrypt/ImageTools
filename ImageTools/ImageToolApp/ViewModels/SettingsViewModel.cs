@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using FunctionLib.Enums;
 using UserControlClassLibrary;
 
@@ -10,7 +11,7 @@ namespace ImageToolApp.ViewModels
         private UICommand mChoosePathCommand;
         private string mPassword;
         private UICommand mSaveCommand;
-        private EncryptionMethod mSelectedEncryptionMethod;
+        private Type mSelectedEncryptionMethod;
         private SteganographicMethod mSelectedSteganographicMethod;
         private string mStandardPath;
 
@@ -47,7 +48,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public EncryptionMethod SelectedEncryptionMethod
+        public Type SelectedEncryptionMethod
         {
             get { return mSelectedEncryptionMethod; }
             set
@@ -73,7 +74,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public ObservableCollection<EncryptionMethod> EncryptionMethods
+        public ObservableCollection<Type> EncryptionMethods
         {
             get { return SettingsModel.EncryptionMethods; }
         }
