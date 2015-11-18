@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace FunctionLib.Enums
+namespace FunctionLib.Helper
 {
     public class EncryptionMethodHelper
     {
@@ -13,12 +13,11 @@ namespace FunctionLib.Enums
         {
             get
             {
-                var allClasses = new HashSet<Type>(
+                var implementations = new HashSet<Type>(
                     AppDomain.CurrentDomain.GetAssemblies()
                         .SelectMany(s => s.GetTypes())
-                        .Where(p => typeof (SymmetricAlgorithm).IsAssignableFrom(p)));
-                var firstImplementations = allClasses.Where(t => t.BaseType == typeof(SymmetricAlgorithm));
-                return firstImplementations.ToList();
+                        .Where(p => typeof (SymmetricAlgorithm).IsAssignableFrom(p) & p.BaseType == typeof(SymmetricAlgorithm)));
+                return implementations.ToList();
             }
         }
 

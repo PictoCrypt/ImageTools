@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using FunctionLib.Enums;
 using FunctionLib.Helper;
 
 namespace ImageToolApp.Models
@@ -14,18 +13,16 @@ namespace ImageToolApp.Models
         private static SettingsModel mInstance;
 
         public SettingsModel(ObservableCollection<Type> encryptionMethods = null,
-            ObservableCollection<SteganographicMethod> steganographicMethods = null)
+            ObservableCollection<Type> steganographicMethods = null)
         {
             LoadConfig();
             EncryptionMethods = encryptionMethods ??
                                 new ObservableCollection<Type>(EncryptionMethodHelper.Instance.ImplementationList);
             SteganographicMethods = steganographicMethods ??
-                                    new ObservableCollection<SteganographicMethod>(
-                                        Enum.GetValues(typeof (SteganographicMethod))
-                                            .Cast<SteganographicMethod>());
+                                    new ObservableCollection<Type>(SteganographicMethodHelper.Instance.ImplementationList);
         }
 
-        public ObservableCollection<SteganographicMethod> SteganographicMethods { get; }
+        public ObservableCollection<Type> SteganographicMethods { get; }
 
         public ObservableCollection<Type> EncryptionMethods { get; }
 
@@ -45,7 +42,7 @@ namespace ImageToolApp.Models
 
         public Type SelectedEncryptionMethod { get; private set; }
 
-        public SteganographicMethod SelectedSteganographicMethod { get; private set; }
+        public Type SelectedSteganographicMethod { get; private set; }
 
         public string StandardPath { get; private set; }
 
@@ -76,8 +73,8 @@ namespace ImageToolApp.Models
                         SelectedEncryptionMethod = encryptMethod;
                         break;
                     case "SelectedSteganographicMethod":
-                        SteganographicMethod steganoMethod;
-                        Enum.TryParse(value, out steganoMethod);
+                        var steganoMethod = SteganographicMethodHelper.Instance.ImplementationList.Find(
+                            x => x.ToString().Equals(value, StringComparison.OrdinalIgnoreCase));
                         SelectedSteganographicMethod = steganoMethod;
                         break;
                 }

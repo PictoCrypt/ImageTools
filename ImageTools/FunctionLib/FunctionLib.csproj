@@ -50,14 +50,14 @@
     <Compile Include="Cryptography\Twofish\Twofish.cs" />
     <Compile Include="Cryptography\Twofish\TwofishBase.cs" />
     <Compile Include="Cryptography\Twofish\TwofishEncryption.cs" />
-    <Compile Include="Enums\EncryptionMethodHelper.cs" />
-    <Compile Include="Enums\SteganographicMethod.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\Constants.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
+    <Compile Include="Helper\EncryptionMethodHelper.cs" />
     <Compile Include="Helper\ListHelper.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
     <Compile Include="Helper\MethodHelper.cs" />
+    <Compile Include="Helper\SteganographicMethodHelper.cs" />
     <Compile Include="ImageFunctionLib.cs" />
     <Compile Include="Model\Pixel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

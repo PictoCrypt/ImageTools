@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using FunctionLib.Enums;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
@@ -12,7 +11,7 @@ namespace ImageToolApp.ViewModels
         private int mNumericUpDownValue = 3;
         private string mPassword;
         private Type mSelectedEncryptionMethod;
-        private SteganographicMethod mSelectedSteganographicMethod;
+        private Type mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
 
         public BaseTabViewModel()
@@ -69,12 +68,12 @@ namespace ImageToolApp.ViewModels
             get { return SettingsModel.EncryptionMethods; }
         }
 
-        public SteganographicMethod SelectedSteganographicMethod
+        public Type SelectedSteganographicMethod
         {
             get { return mSelectedSteganographicMethod; }
             set
             {
-                if (value.Equals(mSelectedSteganographicMethod))
+                if (value == mSelectedSteganographicMethod)
                 {
                     return;
                 }
@@ -83,7 +82,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public ObservableCollection<SteganographicMethod> SteganographicMethods
+        public ObservableCollection<Type> SteganographicMethods
         {
             get { return SettingsModel.SteganographicMethods; }
         }

@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using FunctionLib.Enums;
 using FunctionLib.Steganography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,12 +9,12 @@ namespace UnitTests.StegaTests
     {
         public override Bitmap Encrypt(Bitmap src, string value, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.LSB, src, value, additionalParam);
+            return SteganographicAlgorithmBase.Encrypt(this, typeof(LeastSignificantBit), src, value, additionalParam);
         }
 
         public override object Decrypt(Bitmap src, int additionalParam)
         {
-            var result = SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.LSB, src, additionalParam);
+            var result = SteganographicAlgorithmBase.Decrypt(this, typeof(LeastSignificantBit), src, additionalParam);
             return result;
         }
     }

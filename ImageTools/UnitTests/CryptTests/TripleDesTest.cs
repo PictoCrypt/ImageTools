@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using FunctionLib.Cryptography;
-using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.CryptTests

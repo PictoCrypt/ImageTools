@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using FunctionLib.Cryptography.Blowfish;
-using FunctionLib.Enums;
 
 namespace FunctionLib.Cryptography
 {
@@ -119,27 +118,5 @@ namespace FunctionLib.Cryptography
             }
             return result;
         }
-
-        //private static Type MethodNameToType(Type method)
-        //{
-        //    switch (method)
-        //    {
-        //        case EncryptionMethod.AES:
-        //            return typeof (AesCryptoServiceProvider);
-        //        case EncryptionMethod.DES:
-        //            return typeof (DESCryptoServiceProvider);
-        //        case EncryptionMethod.RC2:
-        //            return typeof (RC2CryptoServiceProvider);
-        //        case EncryptionMethod.Rijndael:
-        //            return typeof (RijndaelManaged);
-        //        case EncryptionMethod.TripleDES:
-        //            return typeof (TripleDESCryptoServiceProvider);
-        //        case EncryptionMethod.Twofish:
-        //            return typeof (Twofish.Twofish);
-        //        case EncryptionMethod.Blowfish:
-        //            return typeof (BlowfishAlgorithm);
-        //    }
-        //    throw new ArgumentOutOfRangeException(nameof(method), method, null);
-        //}
     }
 }

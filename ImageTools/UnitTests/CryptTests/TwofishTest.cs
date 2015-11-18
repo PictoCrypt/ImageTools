@@ -1,6 +1,5 @@
 ﻿using FunctionLib.Cryptography;
 using FunctionLib.Cryptography.Twofish;
-using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.CryptTests

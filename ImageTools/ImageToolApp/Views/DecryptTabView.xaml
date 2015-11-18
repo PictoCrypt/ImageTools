@@ -42,7 +42,7 @@
                              wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
                              IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
                              controls:TextBoxHelper.Watermark="Password..." />
-                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
+                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}" DisplayMemberPath="Name"
                           SelectedItem="{Binding SelectedEncryptionMethod}"
                           Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
             </Grid>
@@ -51,7 +51,7 @@
 
         <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">
-            <ComboBox ItemsSource="{Binding SteganographicMethods}"
+            <ComboBox ItemsSource="{Binding SteganographicMethods}" DisplayMemberPath="Name"
                       SelectedItem="{Binding SelectedSteganographicMethod}"
                       Margin="3" />
             <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"
