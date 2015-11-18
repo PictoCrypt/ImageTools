@@ -95,15 +95,15 @@ namespace FunctionLib.Steganography
                     }
                     byteList = DecryptHelper(byteList, bitHolder);
 
-                    // Check for EndOfFileBytes (END)
+                    // Check for EndTag (END)
                     var index = MethodHelper.IndexOfWithinLastTwo(byteList);
                     if (index > -1)
                     {
                         // Remove overhang bytes
-                        if(byteList.Count > index + Constants.EndOfFileBytes.Length)
+                        if (byteList.Count > index + Constants.EndTag.Length)
                         {
-                            byteList.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - (index + Constants.EndOfFileBytes.Length));
-                            
+                            byteList.RemoveRange(index + Constants.EndTag.Length,
+                                byteList.Count - (index + Constants.EndTag.Length));
                         }
                         return byteList.ToArray();
                     }

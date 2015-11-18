@@ -29,7 +29,7 @@ namespace FunctionLib.Helper
         }
 
         /// <summary>
-        /// Clears the last significant bit according to the lsbIndicator.
+        ///     Clears the last significant bit according to the lsbIndicator.
         /// </summary>
         /// <param name="value">Byte</param>
         /// <param name="lsbIndicator">Least-Significant-Bits</param>

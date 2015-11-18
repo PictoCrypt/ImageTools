@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-using FunctionLib.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.StegaTests

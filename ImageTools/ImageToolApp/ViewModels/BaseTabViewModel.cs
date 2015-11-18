@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using FunctionLib;
+﻿using System.Collections.ObjectModel;
 using FunctionLib.Enums;
 using UserControlClassLibrary;
 

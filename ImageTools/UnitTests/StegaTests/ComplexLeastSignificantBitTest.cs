@@ -13,7 +13,7 @@ namespace UnitTests.StegaTests
             return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethod.ComplexLSB, src, value,
                 additionalParam);
         }
-        
+
         public override object Decrypt(Bitmap src, int additionalParam)
         {
             return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.ComplexLSB, src, additionalParam);

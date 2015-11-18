@@ -1,11 +1,11 @@
 ﻿<UserControl x:Class="ImageToolApp.Views.DecryptTabView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400">
     <Grid x:Name="Grid">
         <Grid.RowDefinitions>
@@ -19,13 +19,13 @@
             <ColumnDefinition Width="Auto" MaxWidth="200" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <GroupBox Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Style="{StaticResource GroupBoxDisabledStyle}" Header="Result">
-            <ContentControl Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            <ContentControl Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                             Content="{Binding ResultContent}" />
         </GroupBox>
-        
-       
+
+
         <GroupBox Grid.Column="0" Grid.Row="1" Header="Encryption" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" Style="{StaticResource GroupBoxDisabledStyle}">
             <Grid>
@@ -42,15 +42,17 @@
                              wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
                              IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
                              controls:TextBoxHelper.Watermark="Password..." />
-                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}"
-                      Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
+                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
+                          SelectedItem="{Binding SelectedEncryptionMethod}"
+                          Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
             </Grid>
         </GroupBox>
 
 
         <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">
-            <ComboBox ItemsSource="{Binding SteganographicMethods}" SelectedItem="{Binding SelectedSteganographicMethod}" 
+            <ComboBox ItemsSource="{Binding SteganographicMethods}"
+                      SelectedItem="{Binding SelectedSteganographicMethod}"
                       Margin="3" />
             <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"
                                     Value="{Binding NumericUpDownValue}"
@@ -70,7 +72,8 @@
                   IsExpanded="False" VerticalAlignment="Stretch"
                   Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
                   HorizontalAlignment="Right">
-            <Image Source="{Binding ImagePath, Converter={StaticResource NullImageConverter}}" Margin="5" Height="Auto" VerticalAlignment="Center" />
+            <Image Source="{Binding ImagePath, Converter={StaticResource NullImageConverter}}" Margin="5" Height="Auto"
+                   VerticalAlignment="Center" />
         </Expander>
     </Grid>
 </UserControl>

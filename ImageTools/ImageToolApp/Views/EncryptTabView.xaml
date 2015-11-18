@@ -57,8 +57,9 @@
                              helpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
                              IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
                              controls:TextBoxHelper.Watermark="Password..." />
-                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}" SelectedItem="{Binding SelectedEncryptionMethod}"
-                      Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
+                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
+                          SelectedItem="{Binding SelectedEncryptionMethod}"
+                          Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
             </Grid>
         </GroupBox>
 
@@ -85,7 +86,8 @@
                   IsExpanded="False" VerticalAlignment="Stretch"
                   Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
                   HorizontalAlignment="Right">
-            <Image Source="{Binding ImagePath, Converter={StaticResource NullImageConverter}}" Margin="5" Height="Auto" VerticalAlignment="Center" />
+            <Image Source="{Binding ImagePath, Converter={StaticResource NullImageConverter}}" Margin="5" Height="Auto"
+                   VerticalAlignment="Center" />
         </Expander>
     </Grid>
 </UserControl>

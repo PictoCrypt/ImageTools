@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using FunctionLib.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,13 +19,13 @@ namespace UnitTests.FunctionLibTests
                 {
                     stream.CopyTo(ms);
                     msArrayBytes = ms.ToArray();
-                }                
+                }
             }
 
             byte[] result;
             using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
             {
-                result = MethodHelper.CompressStream(stream); 
+                result = MethodHelper.CompressStream(stream);
             }
 
             Assert.IsNotNull(msArrayBytes);

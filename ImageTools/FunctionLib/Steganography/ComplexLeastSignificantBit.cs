@@ -189,14 +189,15 @@ namespace FunctionLib.Steganography
                             charValue = ReverseBits(charValue);
 
                             // can only be 0 if it is the stop character (the 8 zeros)
-                            var index = MethodHelper.IndexOfWithinLastTwo(new List<byte>(ConvertHelper.StringToBytes(result.ToString())));
+                            var index =
+                                MethodHelper.IndexOfWithinLastTwo(
+                                    new List<byte>(ConvertHelper.StringToBytes(result.ToString())));
                             if (index > -1)
                             {
                                 // Remove overhang bytes
-                                if (result.Length > index + Constants.EndOfFileBytes.Length)
+                                if (result.Length > index + Constants.EndTag.Length)
                                 {
-                                    //result.RemoveRange(index + Constants.EndOfFileBytes.Length, byteList.Count - (index + Constants.EndOfFileBytes.Length));
-
+                                    //result.RemoveRange(index + Constants.EndTag.Length, byteList.Count - (index + Constants.EndTag.Length));
                                 }
                                 return ConvertHelper.StringToBytes(result.ToString());
                             }

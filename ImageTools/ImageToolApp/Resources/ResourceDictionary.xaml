@@ -26,7 +26,7 @@
     <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
 
     <!-- Styles -->
-    <Style x:Key="MenuButtonWithoutBorderStyle" TargetType="Button" 
+    <Style x:Key="MenuButtonWithoutBorderStyle" TargetType="Button"
            BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
         <Setter Property="BorderThickness" Value="0" />
         <Style.Triggers>
@@ -42,7 +42,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style x:Key="ButtonWithoutBorderStyle" TargetType="Button"
            BasedOn="{StaticResource  {x:Static  ToolBar.ButtonStyleKey}}">
         <Setter Property="BorderThickness" Value="0" />
@@ -175,7 +175,8 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.GroupBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TabControl.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/UserControlClassLibrary;component/Resources/ResourceDictionary.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/UserControlClassLibrary;component/Resources/ResourceDictionary.xaml" />
         <ResourceDictionary Source="Localizables.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

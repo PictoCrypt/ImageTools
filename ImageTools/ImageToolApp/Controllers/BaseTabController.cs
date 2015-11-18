@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ImageToolApp.ViewModels;
-using ImageToolApp.Views;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 
 namespace ImageToolApp.Controllers
 {
-    public abstract class BaseTabController<TViewModel, TView> : IBaseTabController 
+    public abstract class BaseTabController<TViewModel, TView> : IBaseTabController
         where TViewModel : BaseTabViewModel, new()
         where TView : UserControl, new()
     {
+        private readonly Expander mImageExpander;
         // TODO: Tmp-Files löschen nach gebrauch?
 
         protected readonly TViewModel ViewModel;
@@ -29,8 +28,6 @@ namespace ImageToolApp.Controllers
             mImageExpander.Expanded += ImageExpanderEvent;
             mImageExpander.Collapsed += ImageExpanderEvent;
         }
-
-        private readonly Expander mImageExpander;
 
         public TView View { get; }
 

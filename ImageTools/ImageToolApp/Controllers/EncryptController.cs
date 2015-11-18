@@ -23,11 +23,13 @@ namespace ImageToolApp.Controllers
     {
         private readonly List<Expander> mExpanders;
 
+        private bool mExpanderAlreadyHandled;
+
         public EncryptController()
         {
             mExpanders =
                 View.FindChildren<Expander>()
-                    .Where(x => x.Content != null && x.Content.GetType() != typeof(Image))
+                    .Where(x => x.Content != null && x.Content.GetType() != typeof (Image))
                     .ToList();
             foreach (var expander in mExpanders)
             {
@@ -46,7 +48,6 @@ namespace ImageToolApp.Controllers
             }
         }
 
-        private bool mExpanderAlreadyHandled;
         private void ExpanderOnExpanded(object sender, RoutedEventArgs routedEventArgs)
         {
             if (!mExpanderAlreadyHandled)
@@ -97,28 +98,28 @@ namespace ImageToolApp.Controllers
                 ViewModel.ResultImagePath = dialog.FileName;
 
 
-                    switch (dialog.FilterIndex)
-                    {
-                        case 0:
-                            HandleJobController.Progress(() =>
+                switch (dialog.FilterIndex)
+                {
+                    case 0:
+                        HandleJobController.Progress(() =>
+                        {
+                            using (var bmp = new Bitmap(tmp))
                             {
-                                using (var bmp = new Bitmap(tmp))
-                                {
-                                    bmp.Save(dialog.FileName, ImageFormat.Png);
-                                }
-                            });
-                            break;
-                        case 1:
-                            HandleJobController.Progress(() =>
-                            {
-                                using (var bmp = new Bitmap(tmp))
-                                {
-                                    bmp.Save(dialog.FileName, ImageFormat.Png);
-                                }
-                            });
+                                bmp.Save(dialog.FileName, ImageFormat.Png);
+                            }
+                        });
                         break;
-                    }
+                    case 1:
+                        HandleJobController.Progress(() =>
+                        {
+                            using (var bmp = new Bitmap(tmp))
+                            {
+                                bmp.Save(dialog.FileName, ImageFormat.Png);
+                            }
+                        });
+                        break;
                 }
+            }
         }
 
         public void OpenTxt()
@@ -172,14 +173,14 @@ namespace ImageToolApp.Controllers
                         }
                     }
                     var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
-                            bitmap, value, ViewModel.NumericUpDownValue);
-                        if (result != null)
-                        {
-                            var path = Path.GetTempFileName().Replace("tmp", "png");
-                            result.Save(path);
-                            ViewModel.ResultImagePath = path;
-                        }
+                        bitmap, value, ViewModel.NumericUpDownValue);
+                    if (result != null)
+                    {
+                        var path = Path.GetTempFileName().Replace("tmp", "png");
+                        result.Save(path);
+                        ViewModel.ResultImagePath = path;
                     }
+                }
             });
         }
 

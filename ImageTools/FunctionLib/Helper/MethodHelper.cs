@@ -16,21 +16,21 @@ namespace FunctionLib.Helper
 
         public static int IndexOfWithinLastTwo(List<byte> byteList)
         {
-            if (byteList.Count <= Constants.EndOfFileBytes.Length)
+            if (byteList.Count <= Constants.EndTag.Length)
             {
                 return -1;
             }
 
-            var seq1 = byteList.GetRange(byteList.Count - Constants.EndOfFileBytes.Length, Constants.EndOfFileBytes.Length);
-            var seq2 = byteList.GetRange(byteList.Count - Constants.EndOfFileBytes.Length - 1, Constants.EndOfFileBytes.Length);
+            var seq1 = byteList.GetRange(byteList.Count - Constants.EndTag.Length, Constants.EndTag.Length);
+            var seq2 = byteList.GetRange(byteList.Count - Constants.EndTag.Length - 1, Constants.EndTag.Length);
 
-            if (seq1.SequenceEqual(Constants.EndOfFileBytes))
+            if (seq1.SequenceEqual(Constants.EndTag))
             {
-                return byteList.Count - Constants.EndOfFileBytes.Length;
+                return byteList.Count - Constants.EndTag.Length;
             }
-            if (seq2.SequenceEqual(Constants.EndOfFileBytes))
+            if (seq2.SequenceEqual(Constants.EndTag))
             {
-                return byteList.Count - Constants.EndOfFileBytes.Length - 1;
+                return byteList.Count - Constants.EndTag.Length - 1;
             }
             return -1;
         }

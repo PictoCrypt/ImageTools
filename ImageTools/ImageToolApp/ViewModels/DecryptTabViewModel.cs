@@ -11,12 +11,12 @@ namespace ImageToolApp.ViewModels
 {
     public class DecryptTabViewModel : BaseTabViewModel
     {
+        private object mResult;
+
         public DecryptTabViewModel()
         {
             Result = string.Empty;
         }
-
-        private object mResult;
 
         public object Result
         {
@@ -46,7 +46,7 @@ namespace ImageToolApp.ViewModels
                         IsReadOnly = true,
                         Background = Brushes.DarkGray,
                         Text = Result.ToString(),
-                        TextWrapping = TextWrapping.Wrap,
+                        TextWrapping = TextWrapping.Wrap
                     };
                     TextBoxHelper.SetWatermark(result, "Resulting content...");
                 }

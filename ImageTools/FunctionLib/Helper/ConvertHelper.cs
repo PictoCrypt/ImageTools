@@ -11,10 +11,7 @@ namespace FunctionLib.Helper
     {
         private static Encoding Encoder
         {
-            get
-            {
-                return Encoding.GetEncoding(Constants.Encoding);
-            }
+            get { return Encoding.GetEncoding(Constants.Encoding); }
         }
 
         public static byte[] StringToBytes(string value)
@@ -30,11 +27,11 @@ namespace FunctionLib.Helper
         }
 
         /// <summary>
-        /// Converts a object into a byte-Array. Adds an Start and End-Tag to the object.
+        ///     Converts a object into a byte-Array. Adds an Start and End-Tag to the object.
         /// </summary>
         /// <param name="value">The object can be a string or an path to an file.</param>
         /// <returns>byte[]</returns>
-        public static byte[] AnythingToBytes(string value)
+        public static byte[] Convert(string value)
         {
             var str = value;
             if (value == null || string.IsNullOrEmpty(str))
@@ -42,35 +39,47 @@ namespace FunctionLib.Helper
                 throw new ArgumentException("value is null or empty.");
             }
 
-            IEnumerable<byte> bytes;
-            if (!File.Exists(str))
-            {
-                var stream = StringToStream(str);
-                bytes = Constants.StartOfFileBytes("Text");
-                using (stream)
-                {
-                    var compressedStream = MethodHelper.CompressStream(stream);
-                    bytes = bytes.Concat(compressedStream);
-                }
-            }
-            else
-            {
-                var extension = Path.GetExtension(str).ToUpperInvariant();
-                bytes = Constants.StartOfFileBytes(Constants.ImageExtensions.Contains(extension) ? "Image" : extension);
-                using (var fileStream = File.Open(str, FileMode.Open))
-                {
-                    var compressedStream = MethodHelper.CompressStream(fileStream);
-                    bytes = bytes.Concat(compressedStream);
-                }
-            }
+            var bytes = AddStartTag(str);
 
+            bytes = bytes.Concat(AddContent(str));
 
             if (!bytes.Any())
             {
                 throw new ArgumentException("Cant cast object to anything which contains byte[] for me, tho.");
             }
-            bytes = bytes.Concat(Constants.EndOfFileBytes);
+
+            bytes = bytes.Concat(Constants.EndTag);
             return bytes.ToArray();
+        }
+
+        private static IEnumerable<byte> AddContent(string value)
+        {
+            byte[] result;
+            if (!File.Exists(value))
+            {
+                using (var stream = StringToStream(value))
+                {
+                    result = MethodHelper.CompressStream(stream);
+                }
+            }
+            else
+            {
+                using (var fileStream = File.Open(value, FileMode.Open))
+                {
+                    result = MethodHelper.CompressStream(fileStream);
+                }
+            }
+            return result;
+        }
+
+        private static IEnumerable<byte> AddStartTag(string value)
+        {
+            if (!File.Exists(value))
+            {
+                return Constants.StartTag("Text");
+            }
+            var extension = Path.GetExtension(value).ToUpperInvariant();
+            return Constants.StartTag(Constants.ImageExtensions.Contains(extension) ? "Image" : extension);
         }
 
         private static Stream StringToStream(string value)
@@ -99,9 +108,41 @@ namespace FunctionLib.Helper
             }
             var byteList = bytes.ToList();
 
-            // Remove EndOfFile
-            byteList.RemoveRange(byteList.Count - Constants.EndOfFileBytes.Length, Constants.EndOfFileBytes.Length);
+            RemoveEndTag(byteList);
 
+            var type = GetStartTag(byteList);
+            using (var uncompressed = MethodHelper.DecompressByteStream(byteList.ToArray()))
+            {
+                switch (type)
+                {
+                    case "TEXT":
+                        result = StreamToString(uncompressed);
+                        break;
+                    case "IMAGE":
+                        result = Constants.TempImagePath;
+                        var returnImage = Image.FromStream(uncompressed);
+                        returnImage.Save(result);
+                        break;
+                    default:
+                        if (!type.StartsWith("."))
+                        {
+                            throw new NotSupportedException("Invalid Start-Tag.");
+                        }
+
+                        result = Constants.TempFilePath(type);
+                        using (var fs = File.Create(result))
+                        {
+                            uncompressed.CopyTo(fs);
+                            fs.Flush();
+                        }
+                        break;
+                }
+            }
+            return result;
+        }
+
+        private static string GetStartTag(List<byte> byteList)
+        {
             var index = byteList.IndexOf(StringToBytes(">").First());
             if (index == -1)
             {
@@ -114,40 +155,13 @@ namespace FunctionLib.Helper
             byteList.RemoveRange(0, index + 1);
 
             var type = BytesToString(range.ToArray()).ToUpperInvariant();
-            switch (type)
-            {
-                case "TEXT":
-                    using (var uncompressed = MethodHelper.DecompressByteStream(byteList.ToArray()))
-                    {
-                        result = StreamToString(uncompressed);
-                    }
-                    break;
-                case "IMAGE":
-                    result = Constants.TempImagePath;
-                    using (var uncompressedStream = MethodHelper.DecompressByteStream(byteList.ToArray()))
-                    {
-                        var returnImage = Image.FromStream(uncompressedStream);
-                        returnImage.Save(result);
-                    }
-                    break;
-                default:
-                    if (!type.StartsWith("."))
-                    {
-                        throw new NotSupportedException("Invalid Start-Tag.");
-                    }
+            return type;
+        }
 
-                    using (var stream = MethodHelper.DecompressByteStream(byteList.ToArray()))
-                    {
-                        result = Constants.TempFilePath(type);
-                        using (var fs = File.Create(result))
-                        {
-                            stream.CopyTo(fs);
-                            fs.Flush();
-                        }
-                    }
-                    break;
-            }
-            return result;
+        private static void RemoveEndTag(List<byte> byteList)
+        {
+            // Remove EndTag
+            byteList.RemoveRange(byteList.Count - Constants.EndTag.Length, Constants.EndTag.Length);
         }
     }
 }

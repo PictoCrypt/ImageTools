@@ -15,7 +15,7 @@ namespace UnitTests.StegaTests
 
         public override object Decrypt(Bitmap src, int additionalParam)
         {
-            var result =  SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.LSB, src, additionalParam);
+            var result = SteganographicAlgorithmBase.Decrypt(this, SteganographicMethod.LSB, src, additionalParam);
             return result;
         }
     }

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace FunctionLib.Helper
 {
     public static class Constants
     {
+        public static readonly List<string> ImageExtensions = new List<string> {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"};
+        public static readonly byte[] EndTag = ConvertHelper.StringToBytes("<EOF>");
+
         public static string ExecutiongPath
         {
             get
@@ -19,10 +21,7 @@ namespace FunctionLib.Helper
 
         public static string TempImagePath
         {
-            get
-            {
-                return TempFilePathWithoutExtension + ".png";
-            }
+            get { return TempFilePathWithoutExtension + ".png"; }
         }
 
         public static string TempFilePathWithoutExtension
@@ -35,10 +34,7 @@ namespace FunctionLib.Helper
             get { return "ISO-8859-1"; }
         }
 
-        public static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
-        public static readonly byte[] EndOfFileBytes = ConvertHelper.StringToBytes("<EOF>");
-
-        public static byte[] StartOfFileBytes(string type)
+        public static byte[] StartTag(string type)
         {
             var value = string.Format("<{0}>", type.ToUpperInvariant());
             var result = ConvertHelper.StringToBytes(value);
