@@ -8,7 +8,4 @@ Testing
 BaseTabController.cs
 	- Tmp-Files löschen nach gebrauch?
 
-Enum
-- Enums umstellen, da sonst überall darüber enumeriert werden muss.
-
 Texte in Resource auslagern

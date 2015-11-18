@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using FunctionLib.Cryptography.Blowfish;
-using FunctionLib.Enums;
 
 namespace FunctionLib.Cryptography
 {
@@ -15,27 +14,25 @@ namespace FunctionLib.Cryptography
         private const string Vector = "8947az34awl34kjq"; // Random
         private static int mKeySize = 256;
 
-        public static string Encrypt(object obj, EncryptionMethod method, string value, string password)
+        public static string Encrypt(object obj, Type method, string value, string password)
         {
-            var encryptionType = MethodNameToType(method);
             var baseType = typeof (SymmetricAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
             if (extractedMethod != null)
             {
-                return extractedMethod.MakeGenericMethod(encryptionType)
+                return extractedMethod.MakeGenericMethod(method)
                     .Invoke(obj, new object[] {value, password}).ToString();
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static string Decrypt(object obj, EncryptionMethod method, string value, string password)
+        public static string Decrypt(object obj, Type method, string value, string password)
         {
-            var encryptionType = MethodNameToType(method);
             var baseType = typeof (SymmetricAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
             if (extractedMethod != null)
             {
-                return extractedMethod.MakeGenericMethod(encryptionType)
+                return extractedMethod.MakeGenericMethod(method)
                     .Invoke(obj, new object[] {value, password}).ToString();
             }
             throw new ArgumentException(baseType.ToString());
@@ -120,28 +117,6 @@ namespace FunctionLib.Cryptography
                 return result.Remove(index, result.Length - index);
             }
             return result;
-        }
-
-        private static Type MethodNameToType(EncryptionMethod method)
-        {
-            switch (method)
-            {
-                case EncryptionMethod.AES:
-                    return typeof (AesCryptoServiceProvider);
-                case EncryptionMethod.DES:
-                    return typeof (DESCryptoServiceProvider);
-                case EncryptionMethod.RC2:
-                    return typeof (RC2CryptoServiceProvider);
-                case EncryptionMethod.Rijndael:
-                    return typeof (RijndaelManaged);
-                case EncryptionMethod.TripleDES:
-                    return typeof (TripleDESCryptoServiceProvider);
-                case EncryptionMethod.Twofish:
-                    return typeof (Twofish.Twofish);
-                case EncryptionMethod.Blowfish:
-                    return typeof (BlowfishAlgorithm);
-            }
-            throw new ArgumentOutOfRangeException(nameof(method), method, null);
         }
     }
 }

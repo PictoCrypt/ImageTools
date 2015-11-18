@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using FunctionLib.Enums;
+﻿using System;
+using System.Collections.ObjectModel;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
@@ -10,8 +10,8 @@ namespace ImageToolApp.ViewModels
         private string mImagePath = string.Empty;
         private int mNumericUpDownValue = 3;
         private string mPassword;
-        private EncryptionMethod mSelectedEncryptionMethod;
-        private SteganographicMethod mSelectedSteganographicMethod;
+        private Type mSelectedEncryptionMethod;
+        private Type mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
 
         public BaseTabViewModel()
@@ -49,12 +49,12 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public EncryptionMethod SelectedEncryptionMethod
+        public Type SelectedEncryptionMethod
         {
             get { return mSelectedEncryptionMethod; }
             set
             {
-                if (value.Equals(mSelectedEncryptionMethod))
+                if (value == mSelectedEncryptionMethod)
                 {
                     return;
                 }
@@ -63,17 +63,17 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public ObservableCollection<EncryptionMethod> EncryptionMethods
+        public ObservableCollection<Type> EncryptionMethods
         {
             get { return SettingsModel.EncryptionMethods; }
         }
 
-        public SteganographicMethod SelectedSteganographicMethod
+        public Type SelectedSteganographicMethod
         {
             get { return mSelectedSteganographicMethod; }
             set
             {
-                if (value.Equals(mSelectedSteganographicMethod))
+                if (value == mSelectedSteganographicMethod)
                 {
                     return;
                 }
@@ -82,7 +82,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public ObservableCollection<SteganographicMethod> SteganographicMethods
+        public ObservableCollection<Type> SteganographicMethods
         {
             get { return SettingsModel.SteganographicMethods; }
         }

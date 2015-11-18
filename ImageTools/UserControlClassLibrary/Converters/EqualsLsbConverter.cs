@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using FunctionLib.Steganography;
 
 namespace UserControlClassLibrary.Converters
 {
@@ -8,7 +9,7 @@ namespace UserControlClassLibrary.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.ToString().Equals("LSB"))
+            if ((Type) value == typeof(LeastSignificantBit))
             {
                 return true;
             }

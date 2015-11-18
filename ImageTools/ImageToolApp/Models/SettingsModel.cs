@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using FunctionLib.Enums;
 using FunctionLib.Helper;
 
 namespace ImageToolApp.Models
@@ -13,22 +12,19 @@ namespace ImageToolApp.Models
     {
         private static SettingsModel mInstance;
 
-        public SettingsModel(ObservableCollection<EncryptionMethod> encryptionMethods = null,
-            ObservableCollection<SteganographicMethod> steganographicMethods = null)
+        public SettingsModel(ObservableCollection<Type> encryptionMethods = null,
+            ObservableCollection<Type> steganographicMethods = null)
         {
             LoadConfig();
             EncryptionMethods = encryptionMethods ??
-                                new ObservableCollection<EncryptionMethod>(Enum.GetValues(typeof (EncryptionMethod))
-                                    .Cast<EncryptionMethod>());
+                                new ObservableCollection<Type>(EncryptionMethodHelper.Instance.ImplementationList);
             SteganographicMethods = steganographicMethods ??
-                                    new ObservableCollection<SteganographicMethod>(
-                                        Enum.GetValues(typeof (SteganographicMethod))
-                                            .Cast<SteganographicMethod>());
+                                    new ObservableCollection<Type>(SteganographicMethodHelper.Instance.ImplementationList);
         }
 
-        public ObservableCollection<SteganographicMethod> SteganographicMethods { get; }
+        public ObservableCollection<Type> SteganographicMethods { get; }
 
-        public ObservableCollection<EncryptionMethod> EncryptionMethods { get; }
+        public ObservableCollection<Type> EncryptionMethods { get; }
 
         public static SettingsModel Instance
         {
@@ -44,9 +40,9 @@ namespace ImageToolApp.Models
 
         public string Password { get; private set; } = string.Empty;
 
-        public EncryptionMethod SelectedEncryptionMethod { get; private set; }
+        public Type SelectedEncryptionMethod { get; private set; }
 
-        public SteganographicMethod SelectedSteganographicMethod { get; private set; }
+        public Type SelectedSteganographicMethod { get; private set; }
 
         public string StandardPath { get; private set; }
 
@@ -72,13 +68,13 @@ namespace ImageToolApp.Models
                             : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                         break;
                     case "SelectedEncryptionMethod":
-                        EncryptionMethod encryptMethod;
-                        Enum.TryParse(value, out encryptMethod);
+                        var encryptMethod = EncryptionMethodHelper.Instance.ImplementationList.Find(
+                            x => x.ToString().Equals(value, StringComparison.OrdinalIgnoreCase));
                         SelectedEncryptionMethod = encryptMethod;
                         break;
                     case "SelectedSteganographicMethod":
-                        SteganographicMethod steganoMethod;
-                        Enum.TryParse(value, out steganoMethod);
+                        var steganoMethod = SteganographicMethodHelper.Instance.ImplementationList.Find(
+                            x => x.ToString().Equals(value, StringComparison.OrdinalIgnoreCase));
                         SelectedSteganographicMethod = steganoMethod;
                         break;
                 }
