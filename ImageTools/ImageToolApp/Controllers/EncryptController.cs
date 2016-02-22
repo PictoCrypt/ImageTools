@@ -173,13 +173,23 @@ namespace ImageToolApp.Controllers
                                 ViewModel.Password);
                         }
                     }
-                    var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
-                        bitmap, value, ViewModel.NumericUpDownValue);
-                    if (result != null)
+                    try
                     {
-                        var path = Path.GetTempFileName().Replace("tmp", "png");
-                        result.Save(path);
-                        ViewModel.ResultImagePath = path;
+                       var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
+                       bitmap, value, ViewModel.NumericUpDownValue);
+                        if (result != null)
+                        {
+                            var path = Path.GetTempFileName().Replace("tmp", "png");
+                            result.Save(path);
+                            ViewModel.ResultImagePath = path;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.InnerException.Message, 
+                            "Fehler", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Error);
                     }
                 }
             });

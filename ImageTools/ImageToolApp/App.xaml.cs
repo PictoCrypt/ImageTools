@@ -17,29 +17,40 @@ namespace ImageToolApp
             application.InitializeComponent();
 
             // Global Exception Handler
-            Current.DispatcherUnhandledException += UnhandeledExceptionTrapper;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             application.MainWindow = new MainWindow();
             var controller = new MainController((MainWindow) application.MainWindow);
 
             application.Run();
         }
 
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = (e.ExceptionObject as Exception);
+            if (exception == null)
+            {
+                MessageBox.Show(Current.MainWindow,
+                    "Ein unbehandelter Fehler ist aufgetreten.",
+                    "Unbekannter Fehler",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show(Current.MainWindow,
+                    exception.InnerException.ToString(),
+                    "Fehler",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                //e.handled = true;
+            }
+         }
+
         protected override void OnExit(ExitEventArgs e)
         {
-            Current.DispatcherUnhandledException -= UnhandeledExceptionTrapper;
-
+            AppDomain.CurrentDomain.UnhandledException -= CurrentDomainOnUnhandledException;
             base.OnExit(e);
             Environment.Exit(0);
-        }
-
-        private static void UnhandeledExceptionTrapper(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
-            MessageBox.Show(Current.MainWindow,
-                e.Exception.Message,
-                "Fehler",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-            e.Handled = true;
         }
     }
 }
