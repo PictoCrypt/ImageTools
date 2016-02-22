@@ -10,6 +10,6 @@ BaseTabController.cs
 
 Texte in Resource auslagern
 
-FIX Encrypt with PW GENERIC
-
 PNG und Transparente nur dort editieren, wo nicht transparent
+
+Zufallsgenerator

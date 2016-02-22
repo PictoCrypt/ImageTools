@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Security.Cryptography;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
@@ -63,7 +66,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public ObservableCollection<Type> EncryptionMethods
+        public IDictionary<string, Type> EncryptionMethods
         {
             get { return SettingsModel.EncryptionMethods; }
         }
@@ -82,7 +85,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public ObservableCollection<Type> SteganographicMethods
+        public IList<Type> SteganographicMethods
         {
             get { return SettingsModel.SteganographicMethods; }
         }

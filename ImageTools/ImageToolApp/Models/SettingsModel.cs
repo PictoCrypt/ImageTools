@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
@@ -12,19 +13,19 @@ namespace ImageToolApp.Models
     {
         private static SettingsModel mInstance;
 
-        public SettingsModel(ObservableCollection<Type> encryptionMethods = null,
-            ObservableCollection<Type> steganographicMethods = null)
+        public SettingsModel(IDictionary<string, Type> encryptionMethods = null,
+            IList<Type> steganographicMethods = null)
         {
             LoadConfig();
             EncryptionMethods = encryptionMethods ??
-                                new ObservableCollection<Type>(EncryptionMethodHelper.Instance.ImplementationList);
+                                new Dictionary<string, Type>(EncryptionMethodHelper.ImplementationList);
             SteganographicMethods = steganographicMethods ??
-                                    new ObservableCollection<Type>(SteganographicMethodHelper.Instance.ImplementationList);
+                                    new ObservableCollection<Type>(SteganographicMethodHelper.ImplementationList);
         }
 
-        public ObservableCollection<Type> SteganographicMethods { get; }
+        public IList<Type> SteganographicMethods { get; }
 
-        public ObservableCollection<Type> EncryptionMethods { get; }
+        public IDictionary<string, Type> EncryptionMethods { get; }
 
         public static SettingsModel Instance
         {
@@ -68,12 +69,12 @@ namespace ImageToolApp.Models
                             : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                         break;
                     case "SelectedEncryptionMethod":
-                        var encryptMethod = EncryptionMethodHelper.Instance.ImplementationList.Find(
-                            x => x.ToString().Equals(value, StringComparison.OrdinalIgnoreCase));
+                        Type encryptMethod;
+                        EncryptionMethodHelper.ImplementationList.TryGetValue(value, out encryptMethod);
                         SelectedEncryptionMethod = encryptMethod;
                         break;
                     case "SelectedSteganographicMethod":
-                        var steganoMethod = SteganographicMethodHelper.Instance.ImplementationList.Find(
+                        var steganoMethod = SteganographicMethodHelper.ImplementationList.Find(
                             x => x.ToString().Equals(value, StringComparison.OrdinalIgnoreCase));
                         SelectedSteganographicMethod = steganoMethod;
                         break;

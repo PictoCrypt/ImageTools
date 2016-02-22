@@ -5,32 +5,24 @@ using System.Security.Cryptography;
 
 namespace FunctionLib.Helper
 {
-    public class EncryptionMethodHelper
+    public static class EncryptionMethodHelper
     {
-        private static EncryptionMethodHelper mInstance;
-
-        public List<Type> ImplementationList
+        public static IDictionary<string, Type> ImplementationList
         {
             get
             {
-                var implementations = new HashSet<Type>(
-                    AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(s => s.GetTypes())
-                        .Where(p => typeof (SymmetricAlgorithm).IsAssignableFrom(p) & p.BaseType == typeof(SymmetricAlgorithm)));
-                return implementations.ToList();
+                var currentLoadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes());
+                var implementations = currentLoadedAssemblies.Where(p => typeof (SymmetricAlgorithm).IsAssignableFrom(p) && p.BaseType == typeof(SymmetricAlgorithm));
+                var dict = implementations.ToDictionary(implementation => implementation.Name, GetFirstImplementation);
+                return dict;
             }
         }
 
-        public static EncryptionMethodHelper Instance
+        private static Type GetFirstImplementation(Type implementation)
         {
-            get
-            {
-                if (mInstance == null)
-                {
-                    mInstance = new EncryptionMethodHelper();
-                }
-                return mInstance;
-            }
+            var currentLoadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes());
+            var result = currentLoadedAssemblies.FirstOrDefault(x => x.BaseType == implementation);
+            return result ?? implementation;
         }
     }
 }

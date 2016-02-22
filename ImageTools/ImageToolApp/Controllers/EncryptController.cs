@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Cryptography;
+using FunctionLib.Helper;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
