@@ -9,3 +9,7 @@ BaseTabController.cs
 	- Tmp-Files löschen nach gebrauch?
 
 Texte in Resource auslagern
+
+FIX Encrypt with PW GENERIC
+
+PNG und Transparente nur dort editieren, wo nicht transparent
