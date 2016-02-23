@@ -14,7 +14,7 @@ namespace UnitTests.CryptTests
 
         public override string Decrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Decrypt(this, typeof(DESCryptoServiceProvider), value, password);
+            return SymmetricAlgorithmBase.Decrypt(this, typeof (DESCryptoServiceProvider), value, password);
         }
     }
 }

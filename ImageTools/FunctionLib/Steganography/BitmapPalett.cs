@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -35,17 +36,17 @@ namespace FunctionLib.Steganography
 
         protected override byte[] Decrypt(LockBitmap src, int significantIndicator = 3)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override string ChangeColor(string srcPath, Color color)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override int MaxEncryptionCount(int squarePixels)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

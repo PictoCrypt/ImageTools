@@ -7,7 +7,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Cryptography;
-using FunctionLib.Helper;
 using FunctionLib.Steganography;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -175,8 +174,8 @@ namespace ImageToolApp.Controllers
                     }
                     try
                     {
-                       var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
-                       bitmap, value, ViewModel.NumericUpDownValue);
+                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
+                            bitmap, value, ViewModel.NumericUpDownValue);
                         if (result != null)
                         {
                             var path = Path.GetTempFileName().Replace("tmp", "png");
@@ -186,9 +185,9 @@ namespace ImageToolApp.Controllers
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.InnerException.Message, 
-                            "Fehler", 
-                            MessageBoxButton.OK, 
+                        MessageBox.Show(e.InnerException.Message,
+                            "Fehler",
+                            MessageBoxButton.OK,
                             MessageBoxImage.Error);
                     }
                 }

@@ -12,9 +12,12 @@ namespace FunctionLib.Helper
             get
             {
                 var implementations = new HashSet<Type>(
-                                AppDomain.CurrentDomain.GetAssemblies()
-                                    .SelectMany(s => s.GetTypes())
-                                    .Where(p => typeof(SteganographicAlgorithm).IsAssignableFrom(p) && p.BaseType == typeof(SteganographicAlgorithm)));
+                    AppDomain.CurrentDomain.GetAssemblies()
+                        .SelectMany(s => s.GetTypes())
+                        .Where(
+                            p =>
+                                typeof (SteganographicAlgorithm).IsAssignableFrom(p) &&
+                                p.BaseType == typeof (SteganographicAlgorithm)));
                 return implementations.ToList();
             }
         }

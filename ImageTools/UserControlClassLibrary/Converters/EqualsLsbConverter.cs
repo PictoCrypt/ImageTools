@@ -9,7 +9,7 @@ namespace UserControlClassLibrary.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((Type) value == typeof(LeastSignificantBit))
+            if ((Type) value == typeof (LeastSignificantBit))
             {
                 return true;
             }

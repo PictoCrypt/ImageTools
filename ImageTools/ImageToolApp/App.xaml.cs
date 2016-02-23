@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Threading;
 using ImageToolApp.Controllers;
 
 namespace ImageToolApp
@@ -26,7 +25,7 @@ namespace ImageToolApp
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            var exception = (e.ExceptionObject as Exception);
+            var exception = e.ExceptionObject as Exception;
             if (exception == null)
             {
                 MessageBox.Show(Current.MainWindow,
@@ -44,7 +43,7 @@ namespace ImageToolApp
                     MessageBoxImage.Error);
                 //e.handled = true;
             }
-         }
+        }
 
         protected override void OnExit(ExitEventArgs e)
         {

@@ -9,12 +9,12 @@ namespace UnitTests.CryptTests
     {
         public override string Encrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Encrypt(this, typeof(Twofish), value, password);
+            return SymmetricAlgorithmBase.Encrypt(this, typeof (Twofish), value, password);
         }
 
         public override string Decrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Decrypt(this, typeof(Twofish), value, password);
+            return SymmetricAlgorithmBase.Decrypt(this, typeof (Twofish), value, password);
         }
     }
 }

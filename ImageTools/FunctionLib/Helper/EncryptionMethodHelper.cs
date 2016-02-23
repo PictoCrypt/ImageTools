@@ -12,7 +12,10 @@ namespace FunctionLib.Helper
             get
             {
                 var currentLoadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes());
-                var implementations = currentLoadedAssemblies.Where(p => typeof (SymmetricAlgorithm).IsAssignableFrom(p) && p.BaseType == typeof(SymmetricAlgorithm));
+                var implementations =
+                    currentLoadedAssemblies.Where(
+                        p =>
+                            typeof (SymmetricAlgorithm).IsAssignableFrom(p) && p.BaseType == typeof (SymmetricAlgorithm));
                 var dict = implementations.ToDictionary(implementation => implementation.Name, GetFirstImplementation);
                 return dict;
             }

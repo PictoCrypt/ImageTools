@@ -7,9 +7,9 @@ namespace FunctionLib.Helper
 {
     public class LockBitmap
     {
+        private readonly PixelFormat mFormat;
         private BitmapData mBitmapData;
         private IntPtr mIptr = IntPtr.Zero;
-        private readonly PixelFormat mFormat;
 
         public LockBitmap(Bitmap source, PixelFormat format = PixelFormat.Undefined)
         {
