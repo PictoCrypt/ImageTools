@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using FunctionLib.Helper;
 
@@ -69,9 +70,7 @@ namespace ImageToolApp.Models
                             : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                         break;
                     case "SelectedEncryptionMethod":
-                        Type encryptMethod;
-                        EncryptionMethodHelper.ImplementationList.TryGetValue(value, out encryptMethod);
-                        SelectedEncryptionMethod = encryptMethod;
+                        SelectedEncryptionMethod = EncryptionMethodHelper.ImplementationList.Values.FirstOrDefault(x => x.ToString().Equals(value));
                         break;
                     case "SelectedSteganographicMethod":
                         var steganoMethod = SteganographicMethodHelper.ImplementationList.Find(
