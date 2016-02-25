@@ -60,6 +60,15 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge">
+      <HintPath>..\Resources\AFORGE\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Imaging">
+      <HintPath>..\Resources\AFORGE\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Math">
+      <HintPath>..\Resources\AFORGE\AForge.Math.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\MashApps.Metro\MahApps.Metro.dll</HintPath>
@@ -94,7 +103,7 @@
     <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
     <Compile Include="HandleJobController.cs" />
-    <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\DecryptTabViewModel.cs" />
@@ -111,8 +120,8 @@
     <Compile Include="Views\ImagePresentation.xaml.cs">
       <DependentUpon>ImagePresentation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfHelpers\PasswordHelper.cs" />
     <Page Include="App.xaml">
@@ -156,7 +165,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings.xaml">
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,6 @@
-﻿using UserControlClassLibrary;
+﻿using System.Drawing;
+using AForge.Imaging;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
 {
@@ -39,6 +41,23 @@ namespace ImageToolApp.ViewModels
                 }
                 mText = value;
                 OnPropertyChanged("Text");
+            }
+        }
+
+        public int[] LuminanceHistogramPoints
+        {
+            get
+            {
+                var bmp = new Bitmap(Image);
+                // Luminance
+                var hslStatistics = new ImageStatisticsHSL(bmp);
+                var luminanceValues = hslStatistics.Luminance.Values;
+                //// RGB
+                //ImageStatistics rgbStatistics = new ImageStatistics(bmp);
+                //int[] redValues = rgbStatistics.Red.Values;
+                //int[] greenValues = rgbStatistics.Green.Values;
+                //int[] blueValues = rgbStatistics.Blue.Values;
+                return luminanceValues;
             }
         }
 

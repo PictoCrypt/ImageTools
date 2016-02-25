@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ImageToolApp.Models;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
@@ -8,18 +9,20 @@ namespace ImageToolApp.ViewModels
     {
         private UICommand mCancelCommand;
         private UICommand mChoosePathCommand;
-        private string mPassword;
         private UICommand mSaveCommand;
+        private string mPassword;
         private Type mSelectedEncryptionMethod;
         private Type mSelectedSteganographicMethod;
         private string mStandardPath;
+        private readonly Settings mSettings;
 
-        public SettingsViewModel()
+        public SettingsViewModel(Settings settings)
         {
-            Password = SettingsModel.Password;
-            StandardPath = SettingsModel.StandardPath;
-            SelectedEncryptionMethod = SettingsModel.SelectedEncryptionMethod;
-            SelectedSteganographicMethod = SettingsModel.SelectedSteganographicMethod;
+            mSettings = settings;
+            Password = mSettings.Password;
+            StandardPath = mSettings.StandardPath;
+            SelectedEncryptionMethod = mSettings.SelectedEncryptionMethod;
+            SelectedSteganographicMethod = mSettings.SelectedSteganographicMethod;
         }
 
         public string Password
@@ -75,12 +78,12 @@ namespace ImageToolApp.ViewModels
 
         public IDictionary<string, Type> EncryptionMethods
         {
-            get { return SettingsModel.EncryptionMethods; }
+            get { return mSettings.EncryptionMethods; }
         }
 
         public IList<Type> SteganographicMethods
         {
-            get { return SettingsModel.SteganographicMethods; }
+            get { return mSettings.SteganographicMethods; }
         }
 
         public UICommand SaveCommand

@@ -1,21 +1,23 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
-using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using UserControlClassLibrary;
+using Settings = ImageToolApp.Models.Settings;
 
 namespace ImageToolApp.Controllers
 {
     public class SettingsController
     {
-        private readonly Settings mView;
+        private readonly SettingsView mView;
         private readonly SettingsViewModel mViewModel;
+        private readonly Settings mSettings;
 
-        public SettingsController(Window owner)
+        public SettingsController(Window owner, Settings settings)
         {
-            mView = new Settings();
-            mViewModel = new SettingsViewModel();
+            mSettings = settings;
+            mView = new SettingsView();
+            mViewModel = new SettingsViewModel(mSettings);
             RegisterCommands();
             mView.Owner = owner;
             mView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -34,7 +36,7 @@ namespace ImageToolApp.Controllers
             var dialog = new FolderBrowserDialog
             {
                 ShowNewFolderButton = true,
-                SelectedPath = SettingsModel.Instance.StandardPath
+                SelectedPath = mSettings.StandardPath
             };
             var dialogResult = dialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
@@ -60,8 +62,7 @@ namespace ImageToolApp.Controllers
             var result = mView.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                SettingsModel.Instance.SaveToConfig(mViewModel.Password, mViewModel.SelectedEncryptionMethod.ToString(),
-                    mViewModel.SelectedSteganographicMethod.ToString(), mViewModel.StandardPath);
+                mSettings.Save(mViewModel.Password, mViewModel.SelectedEncryptionMethod, mViewModel.SelectedSteganographicMethod, mViewModel.StandardPath);
                 return true;
             }
             return false;

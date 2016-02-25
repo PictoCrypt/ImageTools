@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ImageToolApp.Models;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
@@ -14,11 +15,13 @@ namespace ImageToolApp.ViewModels
         private Type mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
 
+        public Settings Settings { get { return Settings.Instance; } }
+
         public BaseTabViewModel()
         {
-            Password = SettingsModel.Password;
-            SelectedSteganographicMethod = SettingsModel.SelectedSteganographicMethod;
-            SelectedEncryptionMethod = SettingsModel.SelectedEncryptionMethod;
+            Password = Settings.Password;
+            SelectedSteganographicMethod = Settings.SelectedSteganographicMethod;
+            SelectedEncryptionMethod = Settings.SelectedEncryptionMethod;
         }
 
         public int NumericUpDownValue
@@ -65,7 +68,7 @@ namespace ImageToolApp.ViewModels
 
         public IDictionary<string, Type> EncryptionMethods
         {
-            get { return SettingsModel.EncryptionMethods; }
+            get { return Settings.EncryptionMethods; }
         }
 
         public Type SelectedSteganographicMethod
@@ -84,7 +87,7 @@ namespace ImageToolApp.ViewModels
 
         public IList<Type> SteganographicMethods
         {
-            get { return SettingsModel.SteganographicMethods; }
+            get { return Settings.SteganographicMethods; }
         }
 
         public string Password

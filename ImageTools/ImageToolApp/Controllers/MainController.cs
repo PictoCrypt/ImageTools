@@ -5,6 +5,7 @@ using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using UserControlClassLibrary;
+using Settings = ImageToolApp.Models.Settings;
 
 namespace ImageToolApp.Controllers
 {
@@ -14,17 +15,24 @@ namespace ImageToolApp.Controllers
         private readonly EncryptController mEncryptController;
         private readonly MainWindow mView;
         private readonly MainViewModel mViewModel;
+        private Settings mSettings;
 
         public MainController(MainWindow mainWindow)
         {
             mView = mainWindow;
             mView.Closing += ViewOnClosing;
+            LoadConfig();
             mEncryptController = new EncryptController();
             mDecryptController = new DecryptController();
             mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
             mView.Show();
+        }
+
+        private void LoadConfig()
+        {
+            mSettings = Settings.Instance;
         }
 
         private IBaseTabController CurrentController
@@ -108,12 +116,7 @@ namespace ImageToolApp.Controllers
 
         private void OpenSettingsWindow()
         {
-            // TODO
-            /*  Open new Window where you can choose which Encryption-Algorithm you want to use.
-            *   Define a standard path
-            *   Define a standard Password
-            */
-            var settingsController = new SettingsController(mView);
+            var settingsController = new SettingsController(mView, mSettings);
             if (settingsController.OpenDialog())
             {
                 mDecryptController.SettingsSaved();

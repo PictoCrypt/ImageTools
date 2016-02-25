@@ -11,13 +11,29 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Save"
+        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Save"
                 Command="{Binding SaveCommand}" Margin="3" />
-        <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding Image}"
+        <Image Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding Image}"
                Margin="3" />
-        <TextBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto"
+        <TextBox Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto"
                  Text="{Binding Text}"
                  IsReadOnly="True" Background="DarkGray" Margin="3" />
+
+        <Expander x:Name="ImageExpander" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left"
+                  IsExpanded="False" VerticalAlignment="Stretch"
+                  Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
+                  HorizontalAlignment="Right">
+
+            <Polygon Points="{Binding LuminanceHistogramPoints}" Stretch="Fill" Fill="Black" Opacity="0.8">
+                <Polygon.RenderTransform>
+                    <ScaleTransform ScaleY="-1" />
+                </Polygon.RenderTransform>
+            </Polygon>
+        </Expander>
     </Grid>
 </Window>

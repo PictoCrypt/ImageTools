@@ -8,11 +8,24 @@ using FunctionLib.Helper;
 
 namespace ImageToolApp.Models
 {
-    public class SettingsModel
+    public class Settings
     {
-        private static SettingsModel mInstance;
+        private static Settings mInstance;
 
-        public SettingsModel(IDictionary<string, Type> encryptionMethods = null,
+        public static Settings Instance
+        {
+            get
+            {
+                if (mInstance == null)
+                {
+                    mInstance = new Settings();
+                }
+                return mInstance;
+            }
+        }
+
+
+        private Settings(IDictionary<string, Type> encryptionMethods = null,
             IList<Type> steganographicMethods = null)
         {
             LoadConfig();
@@ -25,18 +38,6 @@ namespace ImageToolApp.Models
         public IList<Type> SteganographicMethods { get; }
 
         public IDictionary<string, Type> EncryptionMethods { get; }
-
-        public static SettingsModel Instance
-        {
-            get
-            {
-                if (mInstance == null)
-                {
-                    mInstance = new SettingsModel();
-                }
-                return mInstance;
-            }
-        }
 
         public string Password { get; private set; } = string.Empty;
 
@@ -79,22 +80,39 @@ namespace ImageToolApp.Models
                         break;
                 }
             }
+
+            //if (Changed != null)
+            //{
+            //    Changed(this);
+            //}
         }
 
-        public void SaveToConfig(string password, string encryptionMethod, string steganographicMethod,
-            string standardPath)
+        internal void Save(string password, Type selectedEncryptionMethod, Type selectedSteganographicMethod, string standardPath)
         {
+            Password = password;
+            SelectedEncryptionMethod = selectedEncryptionMethod;
+            SelectedSteganographicMethod = selectedSteganographicMethod;
+            StandardPath = standardPath;
+
             var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var configFile = Path.Combine(appPath, "App.config");
-            var configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
+            var configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFile };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
 
             config.AppSettings.Settings["Password"].Value = password;
-            config.AppSettings.Settings["SelectedEncryptionMethod"].Value = encryptionMethod;
-            config.AppSettings.Settings["SelectedSteganographicMethod"].Value = steganographicMethod;
+            config.AppSettings.Settings["SelectedEncryptionMethod"].Value = selectedEncryptionMethod.ToString();
+            config.AppSettings.Settings["SelectedSteganographicMethod"].Value = selectedSteganographicMethod.ToString();
             config.AppSettings.Settings["StandardPath"].Value = standardPath;
             config.Save();
-            mInstance = new SettingsModel(EncryptionMethods, SteganographicMethods);
+
+            //if (Changed != null)
+            //{
+            //    Changed(this);
+            //}
         }
+        
+        //public event SettingsChangedEventHandler Changed;
     }
+
+    //public delegate void SettingsChangedEventHandler(object sender);
 }

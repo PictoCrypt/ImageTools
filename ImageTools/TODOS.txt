@@ -13,3 +13,5 @@ Texte in Resource auslagern
 PNG und Transparente nur dort editieren, wo nicht transparent
 
 Zufallsgenerator
+
+Fehlerkorrekturen einbauen

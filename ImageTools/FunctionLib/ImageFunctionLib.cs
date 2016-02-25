@@ -110,7 +110,6 @@ namespace FunctionLib
             http://stackoverflow.com/questions/2265910/convert-an-image-to-grayscale
             http://www.switchonthecode.com/tutorials/csharp-tutorial-convert-a-color-image-to-grayscale
         */
-
         public static Bitmap MakeGrayscale(Bitmap original)
         {
             //create a blank bitmap the same size as original
