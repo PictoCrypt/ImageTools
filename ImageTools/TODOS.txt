@@ -15,3 +15,5 @@ PNG und Transparente nur dort editieren, wo nicht transparent
 Zufallsgenerator
 
 Fehlerkorrekturen einbauen
+
+Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)

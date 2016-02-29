@@ -24,16 +24,38 @@
                  Text="{Binding Text}"
                  IsReadOnly="True" Background="DarkGray" Margin="3" />
 
+        <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Visibility="{Binding ElementName=ImageExpander, Path=IsExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
         <Expander x:Name="ImageExpander" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" ExpandDirection="Left"
                   IsExpanded="False" VerticalAlignment="Stretch"
                   Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
                   HorizontalAlignment="Right">
-
-            <Polygon Points="{Binding LuminanceHistogramPoints}" Stretch="Fill" Fill="Black" Opacity="0.8">
-                <Polygon.RenderTransform>
-                    <ScaleTransform ScaleY="-1" />
-                </Polygon.RenderTransform>
-            </Polygon>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Margin="3">Helligkeit</Label>
+                <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" Margin="3">
+                    <Polygon Points="{Binding LuminanceHistogramPoints}" Stretch="Fill" Fill="Black" Opacity="0.8"/>
+                </Border>
+                <Label Grid.Row="1" Margin="3">Rot</Label>
+                <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black" Margin="3">
+                    <Polygon Points="{Binding RedHistogramPoints}" Stretch="Fill" Fill="Red" Opacity="0.8"/>
+                </Border>
+                <Label Grid.Row="2" Margin="3">Grün</Label>
+                <Border Grid.Row="2" BorderThickness="1" BorderBrush="Black" Margin="3">
+                    <Polygon Points="{Binding GreenHistogramPoints}" Stretch="Fill" Fill="Green" Opacity="0.8"/>
+                </Border>
+                <Label Grid.Row="3" Margin="3">Blau</Label>
+                <Border Grid.Row="3" BorderThickness="1" BorderBrush="Black" Margin="3">
+                    <Polygon Points="{Binding BlueHistogramPoints}" Stretch="Fill" Fill="Blue" Opacity="0.8"/>
+                </Border>
+            </Grid>
         </Expander>
     </Grid>
 </Window>

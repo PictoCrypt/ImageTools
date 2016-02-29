@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Media;
 using AForge.Imaging;
 using UserControlClassLibrary;
 
@@ -44,20 +47,63 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public int[] LuminanceHistogramPoints
+        private PointCollection GetPointCollection(IReadOnlyList<int> values)
+        {
+            var max = values.Max();
+
+            // first point (lower-left corner)
+            var points = new PointCollection { new System.Windows.Point(0, max) };
+            // middle points
+            for (var i = 0; i < values.Count; i++)
+            {
+                points.Add(new System.Windows.Point(i, max - values[i]));
+            }
+            // last point (lower-right corner)
+            points.Add(new System.Windows.Point(values.Count - 1, max));
+            return points;
+        }
+
+        public PointCollection LuminanceHistogramPoints
         {
             get
             {
                 var bmp = new Bitmap(Image);
-                // Luminance
                 var hslStatistics = new ImageStatisticsHSL(bmp);
-                var luminanceValues = hslStatistics.Luminance.Values;
-                //// RGB
-                //ImageStatistics rgbStatistics = new ImageStatistics(bmp);
-                //int[] redValues = rgbStatistics.Red.Values;
-                //int[] greenValues = rgbStatistics.Green.Values;
-                //int[] blueValues = rgbStatistics.Blue.Values;
-                return luminanceValues;
+                var values = hslStatistics.Luminance.Values;
+                return GetPointCollection(values);
+            }
+        }
+
+        public PointCollection RedHistogramPoints
+        {
+            get
+            {
+                var bmp = new Bitmap(Image);
+                var rgbStatistics = new ImageStatistics(bmp);
+                var values = rgbStatistics.Red.Values;
+                return GetPointCollection(values);
+            }
+        }
+
+        public PointCollection GreenHistogramPoints
+        {
+            get
+            {
+                var bmp = new Bitmap(Image);
+                var rgbStatistics = new ImageStatistics(bmp);
+                var values = rgbStatistics.Green.Values;
+                return GetPointCollection(values);
+            }
+        }
+
+        public PointCollection BlueHistogramPoints
+        {
+            get
+            {
+                var bmp = new Bitmap(Image);
+                var rgbStatistics = new ImageStatistics(bmp);
+                var values = rgbStatistics.Blue.Values;
+                return GetPointCollection(values);
             }
         }
 

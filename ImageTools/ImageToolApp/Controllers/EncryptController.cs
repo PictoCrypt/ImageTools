@@ -197,43 +197,9 @@ namespace ImageToolApp.Controllers
         public void ChangedPixels()
         {
             var path = SteganographicAlgorithmBase.ChangeColor(ViewModel.ResultImagePath, Color.Red);
-            var view = new ImagePresentation();
+            //var view = new ImagePresentation();
             var count = SteganographicAlgorithmBase.ChangedPixels;
-            var viewModel = new ImagePresentationViewModel(path, string.Format("{0} Pixel", count))
-            {
-                SaveCommand = UICommand.Regular(() =>
-                {
-                    var dialog = new SaveFileDialog
-                    {
-                        Filter = "Png Image|*.png|Bitmap Image|*.bmp",
-                        InitialDirectory = ViewModel.Settings.StandardPath
-                    };
-                    var dialogResult = dialog.ShowDialog();
-                    if (dialogResult.HasValue && dialogResult.Value)
-                    {
-                        var tmp = path;
-                        using (var bmp = new Bitmap(tmp))
-                        {
-                            if (File.Exists(dialog.FileName))
-                            {
-                                File.Delete(dialog.FileName);
-                            }
-
-                            switch (dialog.FilterIndex)
-                            {
-                                case 0:
-                                    bmp.Save(dialog.FileName, ImageFormat.Png);
-                                    break;
-                                case 1:
-                                    bmp.Save(dialog.FileName, ImageFormat.Bmp);
-                                    break;
-                            }
-                        }
-                    }
-                })
-            };
-            view.DataContext = viewModel;
-            view.Show();
+            new ImagePresentationController(path, string.Format("{0} Pixel", count));
         }
     }
 }
