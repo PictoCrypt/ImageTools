@@ -175,7 +175,7 @@ namespace ImageToolApp.Controllers
                     try
                     {
                         var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
-                            bitmap, value, ViewModel.NumericUpDownValue);
+                            bitmap, value, ViewModel.Password, ViewModel.NumericUpDownValue);
                         if (result != null)
                         {
                             var path = Path.GetTempFileName().Replace("tmp", "png");

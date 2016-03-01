@@ -12,17 +12,16 @@ namespace FunctionLib.Steganography
 {
     public class RandomLsb : SteganographicAlgorithm
     {
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int significantIndicator = 3)
-        {
-            return Encrypt(src, value, "Test");
-        }
-
         private readonly HashSet<int> mXNumbers = new HashSet<int>();
         private readonly HashSet<int> mYNumbers = new HashSet<int>();
 
-        protected LockBitmap Encrypt(LockBitmap src, byte[] value, string seed, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, string password = null, int significantIndicator = 3)
         {
-            var random = MethodHelper.GetRandom(seed);
+            if (password == null)
+            {
+                throw new ArgumentException("Password can not be null.");
+            }
+            var random = MethodHelper.GetRandom(password);
             var byteIndex = 0;
             var bitIndex = 0;
             var bytes = value.ToList();
@@ -79,14 +78,13 @@ namespace FunctionLib.Steganography
             throw new Exception("Error generating unique random number.");
         }
 
-        protected override byte[] Decrypt(LockBitmap src, int significantIndicator = 3)
+        protected override byte[] Decrypt(LockBitmap src, string password = null, int significantIndicator = 3)
         {
-            return Decrypt(src, "Test");
-        }
-
-        protected byte[] Decrypt(LockBitmap src, string seed, int significantIndicator = 3)
-        {
-            var random = MethodHelper.GetRandom(seed);
+            if (password == null)
+            {
+                throw new ArgumentException("Password can not be null.");
+            }
+            var random = MethodHelper.GetRandom(password);
             var byteList = new List<byte>();
             var bitHolder = new List<int>();
             while (true)

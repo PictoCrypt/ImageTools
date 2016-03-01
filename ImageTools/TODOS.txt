@@ -17,3 +17,5 @@ Zu Zufallsgenerator, Bild mit nutzlosen Daten auffüllen?
 Fehlerkorrekturen einbauen
 
 Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)
+
+Model übergeben zu Controller (EncryptionMethod, Text, Passwort, Steganomethod, lsb ....)

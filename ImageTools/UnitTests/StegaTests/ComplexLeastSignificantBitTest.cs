@@ -7,15 +7,15 @@ namespace UnitTests.StegaTests
     [TestClass]
     public class ComplexLeastSignificantBitTest : SteganographicAlogithmBaseTestClass
     {
-        public override Bitmap Encrypt(Bitmap src, string value, int additionalParam)
+        public override Bitmap Encrypt(Bitmap src, string value, string password, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Encrypt(this, typeof (ComplexLeastSignificantBit), src, value,
+            return SteganographicAlgorithmBase.Encrypt(this, typeof (ComplexLeastSignificantBit), src, value, password,
                 additionalParam);
         }
 
-        public override object Decrypt(Bitmap src, int additionalParam)
+        public override object Decrypt(Bitmap src, string password, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Decrypt(this, typeof (ComplexLeastSignificantBit), src, additionalParam);
+            return SteganographicAlgorithmBase.Decrypt(this, typeof (ComplexLeastSignificantBit), src, password, additionalParam);
         }
     }
 }

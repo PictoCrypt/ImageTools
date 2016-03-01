@@ -13,45 +13,44 @@ namespace FunctionLib.Steganography
             get { return mLastAccessedAlgorithm.ChangedPixels.Count; }
         }
 
-        public static Bitmap Encrypt(object obj, Type method, Bitmap src, string value,
-            int additionalParam)
+        public static Bitmap Encrypt(object obj, Type method, Bitmap src, string value, string password, int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
             if (extractedMethod != null)
             {
                 return (Bitmap) extractedMethod.MakeGenericMethod(method)
-                    .Invoke(obj, new object[] {src, value, additionalParam});
+                    .Invoke(obj, new object[] {src, value, password, additionalParam});
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static object Decrypt(object obj, Type method, Bitmap src, int additionalParam)
+        public static object Decrypt(object obj, Type method, Bitmap src, string password, int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(method)
-                    .Invoke(obj, new object[] {src, additionalParam});
+                    .Invoke(obj, new object[] {src, password, additionalParam});
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt<T>(Bitmap src, string value, int additionalParam)
+        public static Bitmap Encrypt<T>(Bitmap src, string value, string password, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Encrypt(src, value, additionalParam);
+            var result = mLastAccessedAlgorithm.Encrypt(src, value, password, additionalParam);
             return result;
         }
 
 
-        public static object Decrypt<T>(Bitmap src, int additionalParam)
+        public static object Decrypt<T>(Bitmap src, string password, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Decrypt(src, additionalParam);
+            var result = mLastAccessedAlgorithm.Decrypt(src, password, additionalParam);
             return result;
         }
 
