@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ImageToolApp.Models;
 using UserControlClassLibrary;
 
@@ -20,8 +21,8 @@ namespace ImageToolApp.ViewModels
         public BaseTabViewModel()
         {
             Password = Settings.Password;
-            SelectedSteganographicMethod = Settings.SelectedSteganographicMethod;
-            SelectedEncryptionMethod = Settings.SelectedEncryptionMethod;
+            SelectedSteganographicMethod = Settings.SelectedSteganographicMethod ?? Settings.SteganographicMethods.FirstOrDefault();
+            SelectedEncryptionMethod = Settings.SelectedEncryptionMethod ?? Settings.EncryptionMethods.FirstOrDefault().Value;
         }
 
         public int NumericUpDownValue

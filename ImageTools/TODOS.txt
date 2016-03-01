@@ -12,7 +12,7 @@ Texte in Resource auslagern
 
 PNG und Transparente nur dort editieren, wo nicht transparent
 
-Zufallsgenerator
+Zu Zufallsgenerator, Bild mit nutzlosen Daten auffüllen?
 
 Fehlerkorrekturen einbauen
 

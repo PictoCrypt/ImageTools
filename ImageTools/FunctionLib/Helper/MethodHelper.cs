@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -13,6 +14,13 @@ namespace FunctionLib.Helper
         //    var diff = Math.Abs(Math.Truncate(result) - result);
         //    return (diff < 0.0000001) || (diff > 0.9999999);
         //}
+        public static Random GetRandom(string seedText)
+        {
+            var seed = 0;
+            seedText.Select(x => seed += x);
+            var result = new Random(seed);
+            return result;
+        }
 
         public static int IndexOfWithinLastTwo(List<byte> byteList)
         {

@@ -64,6 +64,7 @@
     <Compile Include="Steganography\BitmapPalett.cs" />
     <Compile Include="Steganography\ComplexLeastSignificantBit.cs" />
     <Compile Include="Steganography\LeastSignificantBit.cs" />
+    <Compile Include="Steganography\RandomLsb.cs" />
     <Compile Include="Steganography\SteganographicAlgorithm.cs" />
     <Compile Include="Steganography\SteganographicAlgorithmBase.cs" />
   </ItemGroup>

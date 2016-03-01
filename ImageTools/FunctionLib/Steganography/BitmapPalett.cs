@@ -12,6 +12,7 @@ namespace FunctionLib.Steganography
         // Bitmap erzeugen, Palette ändern
         protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int significantIndicator = 3)
         {
+            throw new NotImplementedException();
             var lockBitmap = new LockBitmap(src.Source, PixelFormat.Format8bppIndexed);
             lockBitmap.LockBits();
 
