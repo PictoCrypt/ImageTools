@@ -91,7 +91,7 @@ namespace ImageToolApp.Models
         public string Message { get; }
         private string Password { get; }
         public int PasswordHash { get; }
-        //public TStego SteganographicMethod { get; private set; }
         //public TCrypt EncryptionMethod { get; private set; }
+        //public TStego SteganographicMethod { get; private set; }
     }
 }

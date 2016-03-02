@@ -88,7 +88,7 @@ namespace ImageToolApp.Controllers
 
         public void SaveImage()
         {
-            var dialog = new SaveFileDialog {Filter = "Png Image|*.png|Bitmap Image|*.bmp"};
+            var dialog = new SaveFileDialog {Filter = "PNG Image|*.png|Bitmap Image|*.bmp"};
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
@@ -116,7 +116,7 @@ namespace ImageToolApp.Controllers
                         {
                             using (var bmp = new Bitmap(tmp))
                             {
-                                bmp.Save(dialog.FileName, ImageFormat.Png);
+                                bmp.Save(dialog.FileName, ImageFormat.Bmp);
                             }
                         });
                         break;

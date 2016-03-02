@@ -10,8 +10,6 @@ namespace FunctionLib.Helper
     public class FileManager
     {
         private static FileManager mFileManager;
-
-
         private readonly ObservableCollection<string> mTmpFileList = new ObservableCollection<string>();
 
         public static FileManager GetInstance()

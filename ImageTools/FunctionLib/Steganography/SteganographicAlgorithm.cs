@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 
@@ -88,24 +87,6 @@ namespace FunctionLib.Steganography
                 return result;
             }
             throw new Exception("Error generating unique random number.");
-        }
-
-        protected byte CurrentByte(List<byte> b, ref int byteIndex, ref int bitIndex, int significantIndicator)
-        {
-            var builder = new StringBuilder();
-            for (var i = 0; i < significantIndicator; i++)
-            {
-                if (bitIndex == 8)
-                {
-                    byteIndex++;
-                    bitIndex = 0;
-                }
-                var bit = byteIndex >= b.Count ? 0 : ByteHelper.GetBit(b[byteIndex], bitIndex++);
-                builder.Append(bit);
-            }
-
-            var result = Convert.ToByte(builder.ToString(), 2);
-            return result;
         }
 
         protected abstract byte[] Decrypt(LockBitmap src, int password = 0, int significantIndicator = 3);
