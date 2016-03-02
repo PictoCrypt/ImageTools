@@ -37,7 +37,7 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        private static Bitmap Encrypt<T>(Bitmap src, string value, int password, int additionalParam)
+        public static Bitmap Encrypt<T>(Bitmap src, string value, int password, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
@@ -46,7 +46,7 @@ namespace FunctionLib.Steganography
         }
 
 
-        private static object Decrypt<T>(Bitmap src, int password, int additionalParam)
+        public static object Decrypt<T>(Bitmap src, int password, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();

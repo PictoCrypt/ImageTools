@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
+using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using MahApps.Metro.Controls;
@@ -173,17 +174,19 @@ namespace ImageToolApp.Controllers
                         }
                     }
 
-
                     try
                     {
-                        var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
-                            bitmap, value, ViewModel.Password.GetHashCode(), ViewModel.NumericUpDownValue);
+                        var cryptModel = new CryptModel(ViewModel.ImagePath, value, ViewModel.Password,
+                            ViewModel.SelectedEncryptionMethod, ViewModel.SelectedSteganographicMethod,
+                            ViewModel.NumericUpDownValue);
+                        var result = cryptModel.EncryptedImage;
                         if (result != null)
                         {
                             var path = Path.GetTempFileName().Replace("tmp", "png");
                             result.Save(path);
                             ViewModel.ResultImagePath = path;
                         }
+
                     }
                     catch (Exception e)
                     {

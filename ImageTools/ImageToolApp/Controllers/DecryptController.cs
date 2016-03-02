@@ -1,7 +1,5 @@
-﻿using System.Drawing;
-using System.IO;
-using FunctionLib.Cryptography;
-using FunctionLib.Steganography;
+﻿using System.IO;
+using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -33,19 +31,8 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                object result;
-                using (var bitmap = new Bitmap(ViewModel.ImagePath))
-                {
-                    result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, ViewModel.Password.GetHashCode(),
-                        ViewModel.NumericUpDownValue);
-                }
-
-                if (ViewModel.EncryptedCheck)
-                {
-                    result = SymmetricAlgorithmBase.Decrypt(this, ViewModel.SelectedEncryptionMethod, result.ToString(),
-                        ViewModel.Password);
-                }
-                ViewModel.Result = result;
+                var cryptModel = new CryptModel(ViewModel.ImagePath, null, ViewModel.Password, ViewModel.SelectedEncryptionMethod, ViewModel.SelectedSteganographicMethod, ViewModel.NumericUpDownValue);
+                ViewModel.Result = cryptModel.DecryptMessage;
             });
         }
     }
