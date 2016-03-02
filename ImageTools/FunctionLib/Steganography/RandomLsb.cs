@@ -12,9 +12,6 @@ namespace FunctionLib.Steganography
 {
     public class RandomLsb : SteganographicAlgorithm
     {
-        private readonly HashSet<int> mXNumbers = new HashSet<int>();
-        private readonly HashSet<int> mYNumbers = new HashSet<int>();
-
         protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3)
         {
             var random = new Random(password);
@@ -50,36 +47,8 @@ namespace FunctionLib.Steganography
             }
         }
 
-        private int GetNextRandom(string s, int value, Random random)
-        {
-            var result = 0;
-            if (s == "x")
-            {
-                result = random.Next(value);
-                while (mXNumbers.Contains(result))
-                {
-                    result = random.Next(value);
-                }
-                return result;
-            }
-            else if (s == "y")
-            {
-                result = random.Next(value);
-                while (mYNumbers.Contains(result))
-                {
-                    result = random.Next(value);
-                }
-                return result;
-            }
-            throw new Exception("Error generating unique random number.");
-        }
-
         protected override byte[] Decrypt(LockBitmap src, int password = 0, int significantIndicator = 3)
         {
-            if (password == null)
-            {
-                throw new ArgumentException("Password can not be null.");
-            }
             var random = new Random(password);
             var byteList = new List<byte>();
             var bitHolder = new List<int>();
@@ -121,8 +90,6 @@ namespace FunctionLib.Steganography
                     return byteList.ToArray();
                 }
             }
-
-            throw new SystemException("Error, anything happened (or maybe not).");
         }
 
         /// <summary>
@@ -147,24 +114,6 @@ namespace FunctionLib.Steganography
                 }
             }
             return bytes;
-        }
-
-        private byte CurrentByte(List<byte> b, ref int byteIndex, ref int bitIndex, int significantIndicator)
-        {
-            var builder = new StringBuilder();
-            for (var i = 0; i < significantIndicator; i++)
-            {
-                if (bitIndex == 8)
-                {
-                    byteIndex++;
-                    bitIndex = 0;
-                }
-                var bit = byteIndex >= b.Count ? 0 : ByteHelper.GetBit(b[byteIndex], bitIndex++);
-                builder.Append(bit);
-            }
-
-            var result = Convert.ToByte(builder.ToString(), 2);
-            return result;
         }
 
         public override string ChangeColor(string srcPath, Color color)
