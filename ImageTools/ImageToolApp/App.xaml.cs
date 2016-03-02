@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using FunctionLib.Helper;
 using ImageToolApp.Controllers;
 
 namespace ImageToolApp
@@ -20,6 +21,7 @@ namespace ImageToolApp
             application.MainWindow = new MainWindow();
             var controller = new MainController((MainWindow) application.MainWindow);
 
+            FileManager.GetInstance();
             application.Run();
         }
 
@@ -48,6 +50,7 @@ namespace ImageToolApp
         protected override void OnExit(ExitEventArgs e)
         {
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomainOnUnhandledException;
+            FileManager.GetInstance().Exit();
             base.OnExit(e);
             Environment.Exit(0);
         }

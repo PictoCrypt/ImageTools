@@ -220,8 +220,8 @@ namespace FunctionLib.Steganography
 
         public override string ChangeColor(string srcPath, Color color)
         {
-            var tmp = Path.GetTempFileName();
-            var dest = Path.GetTempFileName();
+            var tmp = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
+            var dest = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
             File.Copy(srcPath, tmp, true);
             using (var bitmap = new Bitmap(tmp))
             {

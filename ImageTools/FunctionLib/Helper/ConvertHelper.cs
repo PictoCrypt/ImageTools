@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -119,7 +120,7 @@ namespace FunctionLib.Helper
                         result = StreamToString(uncompressed);
                         break;
                     case "IMAGE":
-                        result = Constants.TempImagePath;
+                        result = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
                         var returnImage = Image.FromStream(uncompressed);
                         returnImage.Save(result);
                         break;
@@ -129,7 +130,7 @@ namespace FunctionLib.Helper
                             throw new NotSupportedException("Invalid Start-Tag.");
                         }
 
-                        result = Constants.TempFilePath(type);
+                        result = FileManager.GetInstance().GenerateTmp(type);
                         using (var fs = File.Create(result))
                         {
                             uncompressed.CopyTo(fs);

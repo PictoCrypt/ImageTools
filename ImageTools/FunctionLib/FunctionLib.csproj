@@ -58,6 +58,7 @@
     <Compile Include="Helper\LockBitmap.cs" />
     <Compile Include="Helper\MethodHelper.cs" />
     <Compile Include="Helper\SteganographicMethodHelper.cs" />
+    <Compile Include="Helper\FileManager.cs" />
     <Compile Include="ImageFunctionLib.cs" />
     <Compile Include="Model\Pixel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

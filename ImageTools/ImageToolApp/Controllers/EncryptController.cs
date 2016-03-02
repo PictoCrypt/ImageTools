@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Cryptography;
+using FunctionLib.Helper;
 using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
@@ -182,7 +183,7 @@ namespace ImageToolApp.Controllers
                         var result = cryptModel.EncryptedImage;
                         if (result != null)
                         {
-                            var path = Path.GetTempFileName().Replace("tmp", "png");
+                            var path = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
                             result.Save(path);
                             ViewModel.ResultImagePath = path;
                         }

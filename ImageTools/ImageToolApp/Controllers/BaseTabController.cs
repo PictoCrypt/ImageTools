@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
@@ -45,7 +46,7 @@ namespace ImageToolApp.Controllers
                 return;
             }
 
-            var tmp = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(dialog.FileName));
+            var tmp = FileManager.GetInstance().GenerateTmp(Path.GetExtension(dialog.FileName));
             File.Copy(dialog.FileName, tmp);
             ViewModel.ImagePath = tmp;
         }
