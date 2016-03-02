@@ -5,9 +5,6 @@ MainWindow.xaml
 Testing
 	- Falschtests
 
-BaseTabController.cs
-	- Tmp-Files löschen nach gebrauch?
-
 Texte in Resource auslagern
 
 PNG und Transparente nur dort editieren, wo nicht transparent
@@ -18,13 +15,9 @@ Fehlerkorrekturen einbauen (CRC32)
 
 Passwort wiederholen?
 
-Zufallsgenerator mit Hash?
-
 Eventuell Bild aus internet holen? Oder Zufallsbild selbst generieren (kleinste Größe, Größe selbst festlegen)
 
 Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)
-
-Model übergeben zu Controller (EncryptionMethod, Text, Passwort, Steganomethod, lsb ....)
 
 Möglichkeit für cmd?
 

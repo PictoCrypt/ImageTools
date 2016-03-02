@@ -61,6 +61,7 @@
     <Compile Include="CryptTests\SymmetricAlgorithmBaseTestClass.cs" />
     <Compile Include="CryptTests\TripleDesTest.cs" />
     <Compile Include="CryptTests\TwofishTest.cs" />
+    <Compile Include="Filter\LaplaceTest.cs" />
     <Compile Include="FunctionLibTests\GZipTests.cs" />
     <Compile Include="FunctionLibTests\HistogramTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

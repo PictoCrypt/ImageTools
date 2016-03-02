@@ -50,6 +50,7 @@
     <Compile Include="Cryptography\Twofish\Twofish.cs" />
     <Compile Include="Cryptography\Twofish\TwofishBase.cs" />
     <Compile Include="Cryptography\Twofish\TwofishEncryption.cs" />
+    <Compile Include="Filter\Laplace.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\Constants.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Steganography\BitmapPalett.cs" />
     <Compile Include="Steganography\ComplexLeastSignificantBit.cs" />
+    <Compile Include="Steganography\FilterFirst.cs" />
     <Compile Include="Steganography\LeastSignificantBit.cs" />
     <Compile Include="Steganography\RandomLsb.cs" />
     <Compile Include="Steganography\SteganographicAlgorithm.cs" />
