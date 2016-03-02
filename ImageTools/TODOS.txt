@@ -14,8 +14,20 @@ PNG und Transparente nur dort editieren, wo nicht transparent
 
 Zu Zufallsgenerator, Bild mit nutzlosen Daten auffüllen?
 
-Fehlerkorrekturen einbauen
+Fehlerkorrekturen einbauen (CRC32)
+
+Passwort wiederholen?
+
+Zufallsgenerator mit Hash?
+
+Eventuell Bild aus internet holen? Oder Zufallsbild selbst generieren (kleinste Größe, Größe selbst festlegen)
 
 Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)
 
 Model übergeben zu Controller (EncryptionMethod, Text, Passwort, Steganomethod, lsb ....)
+
+Möglichkeit für cmd?
+
+Einbettungsrate anzeigen (10% ist sehr gut.)
+
+Neue Verfahren (Kathryn Hempstalk)
