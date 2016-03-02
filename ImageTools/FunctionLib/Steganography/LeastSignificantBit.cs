@@ -12,7 +12,7 @@ namespace FunctionLib.Steganography
 {
     public class LeastSignificantBit : SteganographicAlgorithm
     {
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, string password = null, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3)
         {
             var byteIndex = 0;
             var bitIndex = 0;
@@ -65,7 +65,7 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        protected override byte[] Decrypt(LockBitmap src, string password = null, int significantIndicator = 3)
+        protected override byte[] Decrypt(LockBitmap src, int password = 0, int significantIndicator = 3)
         {
             var byteList = new List<byte>();
             var bitHolder = new List<int>();

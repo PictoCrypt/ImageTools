@@ -104,6 +104,7 @@
     <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
     <Compile Include="HandleJobController.cs" />
+    <Compile Include="Models\CryptModel.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

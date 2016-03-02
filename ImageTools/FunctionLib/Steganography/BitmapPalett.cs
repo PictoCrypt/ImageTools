@@ -10,7 +10,7 @@ namespace FunctionLib.Steganography
     public class BitmapPalett : SteganographicAlgorithm
     {
         // Bitmap erzeugen, Palette ändern
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, string password = null, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3)
         {
             throw new NotImplementedException();
             var lockBitmap = new LockBitmap(src.Source, PixelFormat.Format8bppIndexed);
@@ -35,7 +35,7 @@ namespace FunctionLib.Steganography
             return i >= value.Count ? 0 : value[i];
         }
 
-        protected override byte[] Decrypt(LockBitmap src, string password, int significantIndicator = 3)
+        protected override byte[] Decrypt(LockBitmap src, int password, int significantIndicator = 3)
         {
             throw new NotImplementedException();
         }

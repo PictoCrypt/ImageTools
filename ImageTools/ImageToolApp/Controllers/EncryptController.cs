@@ -172,10 +172,12 @@ namespace ImageToolApp.Controllers
                                 ViewModel.Password);
                         }
                     }
+
+
                     try
                     {
                         var result = SteganographicAlgorithmBase.Encrypt(this, ViewModel.SelectedSteganographicMethod,
-                            bitmap, value, ViewModel.Password, ViewModel.NumericUpDownValue);
+                            bitmap, value, ViewModel.Password.GetHashCode(), ViewModel.NumericUpDownValue);
                         if (result != null)
                         {
                             var path = Path.GetTempFileName().Replace("tmp", "png");

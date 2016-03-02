@@ -20,9 +20,9 @@ namespace FunctionLib.Steganography
             // GNDN
         }
 
-        protected abstract LockBitmap Encrypt(LockBitmap src, byte[] value, string password = null, int significantIndicator = 3);
+        protected abstract LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3);
 
-        public Bitmap Encrypt(Bitmap src, string value, string password = null, int significantIndicator = 3)
+        public Bitmap Encrypt(Bitmap src, string value, int password = 0, int significantIndicator = 3)
         {
             var result = new Bitmap(src);
             var lockBitmap = new LockBitmap(result);
@@ -51,7 +51,7 @@ namespace FunctionLib.Steganography
             return bitsNeeded/8;
         }
 
-        public object Decrypt(Bitmap src, string password = null, int significantIndifcator = 3)
+        public object Decrypt(Bitmap src, int password = 0, int significantIndifcator = 3)
         {
             var bmp = new Bitmap(src);
             var lockBitmap = new LockBitmap(bmp);
@@ -61,7 +61,7 @@ namespace FunctionLib.Steganography
             return ConvertHelper.ConvertBack(bytes);
         }
 
-        protected abstract byte[] Decrypt(LockBitmap src, string password = null, int significantIndicator = 3);
+        protected abstract byte[] Decrypt(LockBitmap src, int password = 0, int significantIndicator = 3);
         public abstract string ChangeColor(string srcPath, Color color);
         public abstract int MaxEncryptionCount(int squarePixels);
     }

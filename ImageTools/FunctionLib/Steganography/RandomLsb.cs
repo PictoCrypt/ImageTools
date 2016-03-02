@@ -15,13 +15,13 @@ namespace FunctionLib.Steganography
         private readonly HashSet<int> mXNumbers = new HashSet<int>();
         private readonly HashSet<int> mYNumbers = new HashSet<int>();
 
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, string password = null, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3)
         {
             if (password == null)
             {
                 throw new ArgumentException("Password can not be null.");
             }
-            var random = MethodHelper.GetRandom(password);
+            var random = new Random(password);
             var byteIndex = 0;
             var bitIndex = 0;
             var bytes = value.ToList();
@@ -78,13 +78,13 @@ namespace FunctionLib.Steganography
             throw new Exception("Error generating unique random number.");
         }
 
-        protected override byte[] Decrypt(LockBitmap src, string password = null, int significantIndicator = 3)
+        protected override byte[] Decrypt(LockBitmap src, int password = 0, int significantIndicator = 3)
         {
             if (password == null)
             {
                 throw new ArgumentException("Password can not be null.");
             }
-            var random = MethodHelper.GetRandom(password);
+            var random = new Random(password);
             var byteList = new List<byte>();
             var bitHolder = new List<int>();
             while (true)

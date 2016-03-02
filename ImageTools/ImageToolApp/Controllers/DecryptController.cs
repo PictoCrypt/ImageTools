@@ -36,7 +36,7 @@ namespace ImageToolApp.Controllers
                 object result;
                 using (var bitmap = new Bitmap(ViewModel.ImagePath))
                 {
-                    result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, ViewModel.Password,
+                    result = SteganographicAlgorithmBase.Decrypt(this, ViewModel.SelectedSteganographicMethod, bitmap, ViewModel.Password.GetHashCode(),
                         ViewModel.NumericUpDownValue);
                 }
 

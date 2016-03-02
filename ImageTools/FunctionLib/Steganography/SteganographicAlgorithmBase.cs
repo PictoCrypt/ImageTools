@@ -13,7 +13,7 @@ namespace FunctionLib.Steganography
             get { return mLastAccessedAlgorithm.ChangedPixels.Count; }
         }
 
-        public static Bitmap Encrypt(object obj, Type method, Bitmap src, string value, string password, int additionalParam)
+        public static Bitmap Encrypt(object obj, Type method, Bitmap src, string value, int password, int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
@@ -25,7 +25,7 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static object Decrypt(object obj, Type method, Bitmap src, string password, int additionalParam)
+        public static object Decrypt(object obj, Type method, Bitmap src, int password, int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
@@ -37,7 +37,7 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt<T>(Bitmap src, string value, string password, int additionalParam)
+        private static Bitmap Encrypt<T>(Bitmap src, string value, int password, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
@@ -46,7 +46,7 @@ namespace FunctionLib.Steganography
         }
 
 
-        public static object Decrypt<T>(Bitmap src, string password, int additionalParam)
+        private static object Decrypt<T>(Bitmap src, int password, int additionalParam)
             where T : SteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
