@@ -15,7 +15,8 @@ namespace UnitTests.StegaTests
 
         public override object Decrypt(Bitmap src, int password, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Decrypt(this, typeof (ComplexLeastSignificantBit), src, password, additionalParam);
+            return SteganographicAlgorithmBase.Decrypt(this, typeof (ComplexLeastSignificantBit), src, password,
+                additionalParam);
         }
     }
 }

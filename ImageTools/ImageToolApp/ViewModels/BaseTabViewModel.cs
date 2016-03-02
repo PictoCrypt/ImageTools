@@ -16,13 +16,18 @@ namespace ImageToolApp.ViewModels
         private Type mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
 
-        public Settings Settings { get { return Settings.Instance; } }
-
         public BaseTabViewModel()
         {
             Password = Settings.Password;
-            SelectedSteganographicMethod = Settings.SelectedSteganographicMethod ?? Settings.SteganographicMethods.FirstOrDefault();
-            SelectedEncryptionMethod = Settings.SelectedEncryptionMethod ?? Settings.EncryptionMethods.FirstOrDefault().Value;
+            SelectedSteganographicMethod = Settings.SelectedSteganographicMethod ??
+                                           Settings.SteganographicMethods.FirstOrDefault();
+            SelectedEncryptionMethod = Settings.SelectedEncryptionMethod ??
+                                       Settings.EncryptionMethods.FirstOrDefault().Value;
+        }
+
+        public Settings Settings
+        {
+            get { return Settings.Instance; }
         }
 
         public int NumericUpDownValue

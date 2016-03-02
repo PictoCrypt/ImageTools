@@ -13,7 +13,8 @@ namespace FunctionLib.Steganography
             get { return mLastAccessedAlgorithm.ChangedPixels.Count; }
         }
 
-        public static Bitmap Encrypt(object obj, Type method, Bitmap src, string value, int password, int additionalParam)
+        public static Bitmap Encrypt(object obj, Type method, Bitmap src, string value, int password,
+            int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");

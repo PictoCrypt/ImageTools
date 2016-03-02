@@ -187,7 +187,6 @@ namespace ImageToolApp.Controllers
                             result.Save(path);
                             ViewModel.ResultImagePath = path;
                         }
-
                     }
                     catch (Exception e)
                     {

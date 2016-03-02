@@ -9,6 +9,9 @@ namespace FunctionLib.Steganography
 {
     public abstract class SteganographicAlgorithm : IDisposable
     {
+        private readonly HashSet<int> mXNumbers = new HashSet<int>();
+        private readonly HashSet<int> mYNumbers = new HashSet<int>();
+
         public SteganographicAlgorithm()
         {
             ChangedPixels = new List<Pixel>();
@@ -21,7 +24,8 @@ namespace FunctionLib.Steganography
             // GNDN
         }
 
-        protected abstract LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3);
+        protected abstract LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0,
+            int significantIndicator = 3);
 
         public Bitmap Encrypt(Bitmap src, string value, int password = 0, int significantIndicator = 3)
         {
@@ -62,9 +66,6 @@ namespace FunctionLib.Steganography
             return ConvertHelper.ConvertBack(bytes);
         }
 
-        private readonly HashSet<int> mXNumbers = new HashSet<int>();
-        private readonly HashSet<int> mYNumbers = new HashSet<int>();
-
         protected int GetNextRandom(string coordinate, int value, Random random)
         {
             var result = 0;
@@ -77,7 +78,7 @@ namespace FunctionLib.Steganography
                 }
                 return result;
             }
-            else if (coordinate == "y")
+            if (coordinate == "y")
             {
                 result = random.Next(value);
                 while (mYNumbers.Contains(result))

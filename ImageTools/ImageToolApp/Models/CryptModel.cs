@@ -5,15 +5,16 @@ using FunctionLib.Steganography;
 
 namespace ImageToolApp.Models
 {
-    public class CryptModel//<TCrypt, TStego>
-    //    where TCrypt : SymmetricAlgorithm
-    //    where TStego : SteganographicAlgorithm
+    public class CryptModel //<TCrypt, TStego>
+        //    where TCrypt : SymmetricAlgorithm
+        //    where TStego : SteganographicAlgorithm
     {
         //public CryptModel(string src, string message, S stegano)
         //{
         //    CryptModel(src, message, null, null, stegano);
         //} 
-        public CryptModel(string src, string message, string password, Type encryptType, Type steganoType, int lsbIndicator)
+        public CryptModel(string src, string message, string password, Type encryptType, Type steganoType,
+            int lsbIndicator)
         {
             if (string.IsNullOrEmpty(src))
             {
@@ -37,8 +38,8 @@ namespace ImageToolApp.Models
             LsbIndicator = lsbIndicator;
         }
 
-        private Type SteganographicMethodType { get; set; }
-        private Type EncryptionMethodType { get; set; }
+        private Type SteganographicMethodType { get; }
+        private Type EncryptionMethodType { get; }
 
         public string DecryptMessage
         {
@@ -48,16 +49,18 @@ namespace ImageToolApp.Models
                 {
                     return SymmetricAlgorithmBase.Encrypt(this, EncryptionMethodType, DecryptImage, Password);
                 }
-                else
-                {
-                    return DecryptImage;
-                }
+                return DecryptImage;
             }
         }
-        
+
         public string DecryptImage
         {
-            get { return SteganographicAlgorithmBase.Decrypt(this, SteganographicMethodType, Src, PasswordHash, LsbIndicator).ToString(); }
+            get
+            {
+                return
+                    SteganographicAlgorithmBase.Decrypt(this, SteganographicMethodType, Src, PasswordHash, LsbIndicator)
+                        .ToString();
+            }
         }
 
         public string EncryptedMessage
@@ -68,10 +71,7 @@ namespace ImageToolApp.Models
                 {
                     return SymmetricAlgorithmBase.Encrypt(this, EncryptionMethodType, Message, Password);
                 }
-                else
-                {
-                    return Message;
-                }
+                return Message;
             }
         }
 
@@ -79,18 +79,19 @@ namespace ImageToolApp.Models
         {
             get
             {
-                return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethodType, Src, EncryptedMessage, PasswordHash,
+                return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethodType, Src, EncryptedMessage,
+                    PasswordHash,
                     LsbIndicator);
             }
         }
 
-        public int LsbIndicator { get; private set; }
+        public int LsbIndicator { get; }
         private string SrcPath { get; set; }
-        public Bitmap Src { get; private set; }
+        public Bitmap Src { get; }
         public string Message { get; }
         private string Password { get; }
-        public int PasswordHash { get; private set; }
-        //public TCrypt EncryptionMethod { get; private set; }
+        public int PasswordHash { get; }
         //public TStego SteganographicMethod { get; private set; }
+        //public TCrypt EncryptionMethod { get; private set; }
     }
 }

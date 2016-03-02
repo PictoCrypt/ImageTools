@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 using AForge.Imaging;
 using UserControlClassLibrary;
+using Point = System.Windows.Point;
 
 namespace ImageToolApp.ViewModels
 {
@@ -45,22 +46,6 @@ namespace ImageToolApp.ViewModels
                 mText = value;
                 OnPropertyChanged("Text");
             }
-        }
-
-        private PointCollection GetPointCollection(IReadOnlyList<int> values)
-        {
-            var max = values.Max();
-
-            // first point (lower-left corner)
-            var points = new PointCollection { new System.Windows.Point(0, max) };
-            // middle points
-            for (var i = 0; i < values.Count; i++)
-            {
-                points.Add(new System.Windows.Point(i, max - values[i]));
-            }
-            // last point (lower-right corner)
-            points.Add(new System.Windows.Point(values.Count - 1, max));
-            return points;
         }
 
         public PointCollection LuminanceHistogramPoints
@@ -119,6 +104,22 @@ namespace ImageToolApp.ViewModels
                 mSaveCommand = value;
                 OnPropertyChanged("SaveCommand");
             }
+        }
+
+        private PointCollection GetPointCollection(IReadOnlyList<int> values)
+        {
+            var max = values.Max();
+
+            // first point (lower-left corner)
+            var points = new PointCollection {new Point(0, max)};
+            // middle points
+            for (var i = 0; i < values.Count; i++)
+            {
+                points.Add(new Point(i, max - values[i]));
+            }
+            // last point (lower-right corner)
+            points.Add(new Point(values.Count - 1, max));
+            return points;
         }
     }
 }

@@ -42,7 +42,8 @@ namespace UnitTests.StegaTests
             const int lsbIndicator = 4;
             using (var bitmap = new Bitmap(TestingConstants.SmallKoala))
             {
-                var encrypted = Encrypt(bitmap, TestingConstants.SmallFlowers, TestingConstants.Password.GetHashCode(), lsbIndicator);
+                var encrypted = Encrypt(bitmap, TestingConstants.SmallFlowers, TestingConstants.Password.GetHashCode(),
+                    lsbIndicator);
             }
         }
 
@@ -53,7 +54,8 @@ namespace UnitTests.StegaTests
 
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encrypt(bitmap, TestingConstants.SmallFlowers, TestingConstants.Password.GetHashCode(), lsbIndicator);
+                var encrypted = Encrypt(bitmap, TestingConstants.SmallFlowers, TestingConstants.Password.GetHashCode(),
+                    lsbIndicator);
                 var decrypted = Decrypt(encrypted, TestingConstants.Password.GetHashCode(), lsbIndicator).ToString();
 
                 Assert.IsNotNull(decrypted);
@@ -70,7 +72,8 @@ namespace UnitTests.StegaTests
             {
                 var encrypted = Encrypt(bitmap, TestingConstants.Testdoc, TestingConstants.Password.GetHashCode(),
                     TestingConstants.LsbIndicator);
-                var decrypted = Decrypt(encrypted, TestingConstants.Password.GetHashCode(), TestingConstants.LsbIndicator) as string;
+                var decrypted =
+                    Decrypt(encrypted, TestingConstants.Password.GetHashCode(), TestingConstants.LsbIndicator) as string;
 
                 Assert.IsFalse(string.IsNullOrEmpty(decrypted));
                 Assert.IsTrue(File.Exists(decrypted));

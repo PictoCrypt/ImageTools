@@ -1,17 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
+using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using UserControlClassLibrary;
-using Settings = ImageToolApp.Models.Settings;
 
 namespace ImageToolApp.Controllers
 {
     public class SettingsController
     {
+        private readonly Settings mSettings;
         private readonly SettingsView mView;
         private readonly SettingsViewModel mViewModel;
-        private readonly Settings mSettings;
 
         public SettingsController(Window owner, Settings settings)
         {
@@ -62,7 +62,8 @@ namespace ImageToolApp.Controllers
             var result = mView.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                mSettings.Save(mViewModel.Password, mViewModel.SelectedEncryptionMethod, mViewModel.SelectedSteganographicMethod, mViewModel.StandardPath);
+                mSettings.Save(mViewModel.Password, mViewModel.SelectedEncryptionMethod,
+                    mViewModel.SelectedSteganographicMethod, mViewModel.StandardPath);
                 return true;
             }
             return false;

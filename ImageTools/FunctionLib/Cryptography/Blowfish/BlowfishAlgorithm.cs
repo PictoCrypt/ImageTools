@@ -14,12 +14,12 @@ namespace FunctionLib.Cryptography.Blowfish
 {
     public class BlowfishAlgorithm : SymmetricAlgorithm, ICryptoTransform
     {
+        private readonly bool m_blIsEncryptor;
         // in factory mode the Blowfish instances are always null,
         // they get only initialized in transformation mode
 
-        private readonly Blowfish m_bf;
-        private readonly BlowfishCBC m_bfc;
-        private readonly bool m_blIsEncryptor;
+        private readonly Blowfish mBlowfish;
+        private readonly BlowfishCBC mBlowfishCbc;
 
 
         // factory settings
@@ -31,8 +31,8 @@ namespace FunctionLib.Cryptography.Blowfish
         /// </summary>
         public BlowfishAlgorithm()
         {
-            m_bf = null;
-            m_bfc = null;
+            mBlowfish = null;
+            mBlowfishCbc = null;
 
             // FIXME: are we supposed to create a default key and IV?
             IVValue = null;
@@ -66,13 +66,13 @@ namespace FunctionLib.Cryptography.Blowfish
                 if (null == iv) GenerateIV();
                 else IV = iv;
 
-                m_bf = null;
-                m_bfc = new BlowfishCBC(KeyValue, IVValue);
+                mBlowfish = null;
+                mBlowfishCbc = new BlowfishCBC(KeyValue, IVValue);
             }
             else
             {
-                m_bf = new Blowfish(KeyValue);
-                m_bfc = null;
+                mBlowfish = new Blowfish(KeyValue);
+                mBlowfishCbc = null;
             }
 
             m_blIsEncryptor = blIsEncryptor;
@@ -222,26 +222,26 @@ namespace FunctionLib.Cryptography.Blowfish
 
             var nResult = 0;
 
-            if (null != m_bfc)
+            if (null != mBlowfishCbc)
             {
                 if (m_blIsEncryptor)
                 {
-                    nResult = m_bfc.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                    nResult = mBlowfishCbc.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
                 }
                 else
                 {
-                    nResult = m_bfc.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                    nResult = mBlowfishCbc.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
                 }
             }
-            else if (null != m_bf)
+            else if (null != mBlowfish)
             {
                 if (m_blIsEncryptor)
                 {
-                    nResult = m_bf.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                    nResult = mBlowfish.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
                 }
                 else
                 {
-                    nResult = m_bf.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                    nResult = mBlowfish.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
                 }
             }
             else
@@ -336,7 +336,7 @@ namespace FunctionLib.Cryptography.Blowfish
         {
             var bfAlg = new BlowfishAlgorithm(key, null, false, true);
 
-            return bfAlg.m_bf.IsWeakKey;
+            return bfAlg.mBlowfish.IsWeakKey;
         }
 
         // the factory methods are just simple mappings to the private constructors

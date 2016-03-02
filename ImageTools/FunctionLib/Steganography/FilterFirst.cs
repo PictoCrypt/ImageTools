@@ -5,19 +5,17 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FunctionLib.Helper;
 using FunctionLib.Filter;
+using FunctionLib.Helper;
 using FunctionLib.Model;
 
 namespace FunctionLib.Steganography
 {
     public class FilterFirst : SteganographicAlgorithm
     {
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0,
+            int significantIndicator = 3)
         {
-            var byteIndex = 0;
-            var bitIndex = 0;
-            var bytes = value.ToList();
             if (value == null)
             {
                 throw new ArgumentException("'value' is null.");
@@ -34,8 +32,11 @@ namespace FunctionLib.Steganography
             }
             src.LockBits();
             var orderedLaplace = laplace.OrderByDescending(key => key.Value);
-            var random = new Random(password);
+            //var random = new Random(password);
 
+            var byteIndex = 0;
+            var bitIndex = 0;
+            var bytes = value.ToList();
             foreach (var key in orderedLaplace)
             {
                 var x = key.Key.X;
@@ -64,9 +65,7 @@ namespace FunctionLib.Steganography
 
         protected override byte[] Decrypt(LockBitmap src, int password = 0, int significantIndicator = 3)
         {
-            var random = new Random(password);
-            var byteList = new List<byte>();
-            var bitHolder = new List<int>();
+            //var random = new Random(password);
 
             src.UnlockBits();
             var filter = new Laplace(src.Source, 1, 8);
@@ -82,6 +81,8 @@ namespace FunctionLib.Steganography
             var orderedLaplace = laplace.OrderByDescending(key => key.Value);
 
 
+            var byteList = new List<byte>();
+            var bitHolder = new List<int>();
             foreach (var key in orderedLaplace)
             {
                 var x = key.Key.X;
@@ -170,9 +171,9 @@ namespace FunctionLib.Steganography
         public int MaxEncryptionCount(int squarePixels, int leastSignificantBitIndicator)
         {
             // We are using the parameter leastSignificantBitIndicator each byte.
-            var lsbs = squarePixels * leastSignificantBitIndicator;
+            var lsbs = squarePixels*leastSignificantBitIndicator;
             // Each character uses 8 bits.
-            var result = lsbs / 8;
+            var result = lsbs/8;
             return result;
         }
     }

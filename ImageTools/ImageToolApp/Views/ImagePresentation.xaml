@@ -16,9 +16,11 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Content="Save"
+        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto"
+                Content="Save"
                 Command="{Binding SaveCommand}" Margin="3" />
-        <Image Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding Image}"
+        <Image Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+               Source="{Binding Image}"
                Margin="3" />
         <TextBox Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto"
                  Text="{Binding Text}"
@@ -34,26 +36,26 @@
                   HorizontalAlignment="Right">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Margin="3">Helligkeit</Label>
                 <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" Margin="3">
-                    <Polygon Points="{Binding LuminanceHistogramPoints}" Stretch="Fill" Fill="Black" Opacity="0.8"/>
+                    <Polygon Points="{Binding LuminanceHistogramPoints}" Stretch="Fill" Fill="Black" Opacity="0.8" />
                 </Border>
                 <Label Grid.Row="1" Margin="3">Rot</Label>
                 <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black" Margin="3">
-                    <Polygon Points="{Binding RedHistogramPoints}" Stretch="Fill" Fill="Red" Opacity="0.8"/>
+                    <Polygon Points="{Binding RedHistogramPoints}" Stretch="Fill" Fill="Red" Opacity="0.8" />
                 </Border>
                 <Label Grid.Row="2" Margin="3">Grün</Label>
                 <Border Grid.Row="2" BorderThickness="1" BorderBrush="Black" Margin="3">
-                    <Polygon Points="{Binding GreenHistogramPoints}" Stretch="Fill" Fill="Green" Opacity="0.8"/>
+                    <Polygon Points="{Binding GreenHistogramPoints}" Stretch="Fill" Fill="Green" Opacity="0.8" />
                 </Border>
                 <Label Grid.Row="3" Margin="3">Blau</Label>
                 <Border Grid.Row="3" BorderThickness="1" BorderBrush="Black" Margin="3">
-                    <Polygon Points="{Binding BlueHistogramPoints}" Stretch="Fill" Fill="Blue" Opacity="0.8"/>
+                    <Polygon Points="{Binding BlueHistogramPoints}" Stretch="Fill" Fill="Blue" Opacity="0.8" />
                 </Border>
             </Grid>
         </Expander>

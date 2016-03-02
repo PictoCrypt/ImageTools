@@ -10,7 +10,7 @@ namespace UnitTests.Filter
     public class LaplaceTest
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof (ArgumentNullException))]
         public void LaplaceTestWithoutImage()
         {
             var filter = new Laplace(null, 1, 8);
@@ -23,9 +23,9 @@ namespace UnitTests.Filter
             var image = new Bitmap(TestingConstants.SmallFlowers);
             var filter = new Laplace(image, 1, 8);
             var results = new List<int>();
-            for (int x = 0; x < image.Width; x++)
+            for (var x = 0; x < image.Width; x++)
             {
-                for (int y = 0; y < image.Height; y++)
+                for (var y = 0; y < image.Height; y++)
                 {
                     results.Add(filter.GetValue(x, y));
                 }
@@ -33,7 +33,7 @@ namespace UnitTests.Filter
 
             Assert.IsNotNull(results);
             Assert.IsTrue(results.Count > 0);
-            Assert.IsTrue(results.Count == image.Width * image.Height);
+            Assert.IsTrue(results.Count == image.Width*image.Height);
         }
     }
 }

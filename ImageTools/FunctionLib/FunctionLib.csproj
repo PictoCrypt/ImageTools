@@ -67,6 +67,7 @@
     <Compile Include="Steganography\ComplexLeastSignificantBit.cs" />
     <Compile Include="Steganography\FilterFirst.cs" />
     <Compile Include="Steganography\LeastSignificantBit.cs" />
+    <Compile Include="Steganography\LsbAlgorithmBase.cs" />
     <Compile Include="Steganography\RandomLsb.cs" />
     <Compile Include="Steganography\SteganographicAlgorithm.cs" />
     <Compile Include="Steganography\SteganographicAlgorithmBase.cs" />

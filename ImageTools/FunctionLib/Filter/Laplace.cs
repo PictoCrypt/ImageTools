@@ -14,6 +14,7 @@ namespace FunctionLib.Filter
         }
 
         public Bitmap Image { get; set; }
+
         public int GetValue(int x, int y)
         {
             if (Image == null)
@@ -67,24 +68,24 @@ namespace FunctionLib.Filter
             return diff.Sum(Math.Abs);
         }
 
+        public int StartRange { get; set; }
+        public int EndRange { get; set; }
+
         private int[] CalculateDifference(Color pixel, Color left, Color right, Color up, Color down, int pixelCount)
         {
             var result = new int[3];
-            result[0] = (pixel.R * pixelCount) - (left.R + right.R + up.R + down.R);
-            result[1] = (pixel.G * pixelCount) - (left.G + right.G + up.G + down.G);
-            result[1] = (pixel.B * pixelCount) - (left.B + right.B + up.B + down.B);
+            result[0] = pixel.R*pixelCount - (left.R + right.R + up.R + down.R);
+            result[1] = pixel.G*pixelCount - (left.G + right.G + up.G + down.G);
+            result[1] = pixel.B*pixelCount - (left.B + right.B + up.B + down.B);
             return result;
         }
-
-        public int StartRange { get; set; }
-        public int EndRange { get; set; }
     }
 
     public interface IFilter
     {
         Bitmap Image { get; set; }
-        int GetValue(int x, int y);
         int StartRange { get; set; }
         int EndRange { get; set; }
+        int GetValue(int x, int y);
     }
 }

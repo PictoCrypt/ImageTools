@@ -10,7 +10,8 @@ namespace FunctionLib.Steganography
 {
     public class ComplexLeastSignificantBit : SteganographicAlgorithm
     {
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0,
+            int significantIndicator = 3)
         {
             // initially, we'll be hiding characters in the image
             var state = State.Hiding;

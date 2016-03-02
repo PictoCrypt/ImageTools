@@ -9,12 +9,14 @@ namespace UnitTests.StegaTests
     {
         public override Bitmap Encrypt(Bitmap src, string value, int password, int additionalParam)
         {
-            return SteganographicAlgorithmBase.Encrypt(this, typeof (LeastSignificantBit), src, value, password, additionalParam);
+            return SteganographicAlgorithmBase.Encrypt(this, typeof (LeastSignificantBit), src, value, password,
+                additionalParam);
         }
 
         public override object Decrypt(Bitmap src, int password, int additionalParam)
         {
-            var result = SteganographicAlgorithmBase.Decrypt(this, typeof (LeastSignificantBit), src, password, additionalParam);
+            var result = SteganographicAlgorithmBase.Decrypt(this, typeof (LeastSignificantBit), src, password,
+                additionalParam);
             return result;
         }
     }

@@ -31,7 +31,9 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                var cryptModel = new CryptModel(ViewModel.ImagePath, null, ViewModel.Password, ViewModel.SelectedEncryptionMethod, ViewModel.SelectedSteganographicMethod, ViewModel.NumericUpDownValue);
+                var cryptModel = new CryptModel(ViewModel.ImagePath, null, ViewModel.Password,
+                    ViewModel.SelectedEncryptionMethod, ViewModel.SelectedSteganographicMethod,
+                    ViewModel.NumericUpDownValue);
                 ViewModel.Result = cryptModel.DecryptMessage;
             });
         }

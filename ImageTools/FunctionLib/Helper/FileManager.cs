@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -11,6 +10,10 @@ namespace FunctionLib.Helper
     public class FileManager
     {
         private static FileManager mFileManager;
+
+
+        private readonly ObservableCollection<string> mTmpFileList = new ObservableCollection<string>();
+
         public static FileManager GetInstance()
         {
             if (mFileManager == null)
@@ -21,7 +24,8 @@ namespace FunctionLib.Helper
             return mFileManager;
         }
 
-        private static void TmpFileListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private static void TmpFileListOnCollectionChanged(object sender,
+            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             var collection = sender as ObservableCollection<string>;
             foreach (var item in collection)
@@ -32,9 +36,6 @@ namespace FunctionLib.Helper
                 }
             }
         }
-
-
-        private readonly ObservableCollection<string> mTmpFileList = new ObservableCollection<string>();
 
         public string CopyImageToTmp(Bitmap bmp, ImageFormat format)
         {

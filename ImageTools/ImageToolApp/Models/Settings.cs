@@ -13,6 +13,17 @@ namespace ImageToolApp.Models
     {
         private static Settings mInstance;
 
+
+        private Settings(IDictionary<string, Type> encryptionMethods = null,
+            IList<Type> steganographicMethods = null)
+        {
+            LoadConfig();
+            EncryptionMethods = encryptionMethods ??
+                                new Dictionary<string, Type>(EncryptionMethodHelper.ImplementationList);
+            SteganographicMethods = steganographicMethods ??
+                                    new ObservableCollection<Type>(SteganographicMethodHelper.ImplementationList);
+        }
+
         public static Settings Instance
         {
             get
@@ -23,17 +34,6 @@ namespace ImageToolApp.Models
                 }
                 return mInstance;
             }
-        }
-
-
-        private Settings(IDictionary<string, Type> encryptionMethods = null,
-            IList<Type> steganographicMethods = null)
-        {
-            LoadConfig();
-            EncryptionMethods = encryptionMethods ??
-                                new Dictionary<string, Type>(EncryptionMethodHelper.ImplementationList);
-            SteganographicMethods = steganographicMethods ??
-                                    new ObservableCollection<Type>(SteganographicMethodHelper.ImplementationList);
         }
 
         public IList<Type> SteganographicMethods { get; }
@@ -70,7 +70,9 @@ namespace ImageToolApp.Models
                             : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
                         break;
                     case "SelectedEncryptionMethod":
-                        SelectedEncryptionMethod = EncryptionMethodHelper.ImplementationList.Values.FirstOrDefault(x => x.ToString().Equals(value));
+                        SelectedEncryptionMethod =
+                            EncryptionMethodHelper.ImplementationList.Values.FirstOrDefault(
+                                x => x.ToString().Equals(value));
                         break;
                     case "SelectedSteganographicMethod":
                         var steganoMethod = SteganographicMethodHelper.ImplementationList.Find(
@@ -86,7 +88,8 @@ namespace ImageToolApp.Models
             //}
         }
 
-        internal void Save(string password, Type selectedEncryptionMethod, Type selectedSteganographicMethod, string standardPath)
+        internal void Save(string password, Type selectedEncryptionMethod, Type selectedSteganographicMethod,
+            string standardPath)
         {
             Password = password;
             SelectedEncryptionMethod = selectedEncryptionMethod;
@@ -95,7 +98,7 @@ namespace ImageToolApp.Models
 
             var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var configFile = Path.Combine(appPath, "App.config");
-            var configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFile };
+            var configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
 
             config.AppSettings.Settings["Password"].Value = password;
@@ -109,7 +112,7 @@ namespace ImageToolApp.Models
             //    Changed(this);
             //}
         }
-        
+
         //public event SettingsChangedEventHandler Changed;
     }
 

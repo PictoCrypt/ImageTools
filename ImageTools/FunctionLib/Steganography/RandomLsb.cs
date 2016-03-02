@@ -12,17 +12,18 @@ namespace FunctionLib.Steganography
 {
     public class RandomLsb : SteganographicAlgorithm
     {
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0, int significantIndicator = 3)
+        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0,
+            int significantIndicator = 3)
         {
             var random = new Random(password);
-            var byteIndex = 0;
-            var bitIndex = 0;
-            var bytes = value.ToList();
             if (value == null)
             {
                 throw new ArgumentException("'value' is null.");
             }
 
+            var byteIndex = 0;
+            var bitIndex = 0;
+            var bytes = value.ToList();
             while (true)
             {
                 var x = GetNextRandom("x", src.Width, random);
@@ -138,9 +139,9 @@ namespace FunctionLib.Steganography
         public int MaxEncryptionCount(int squarePixels, int leastSignificantBitIndicator)
         {
             // We are using the parameter leastSignificantBitIndicator each byte.
-            var lsbs = squarePixels * leastSignificantBitIndicator;
+            var lsbs = squarePixels*leastSignificantBitIndicator;
             // Each character uses 8 bits.
-            var result = lsbs / 8;
+            var result = lsbs/8;
             return result;
         }
     }

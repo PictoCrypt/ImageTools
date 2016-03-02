@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using FunctionLib.Helper;
+using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using UserControlClassLibrary;
-using Settings = ImageToolApp.Models.Settings;
 
 namespace ImageToolApp.Controllers
 {
@@ -30,11 +30,6 @@ namespace ImageToolApp.Controllers
             mView.Show();
         }
 
-        private void LoadConfig()
-        {
-            mSettings = Settings.Instance;
-        }
-
         private IBaseTabController CurrentController
         {
             get
@@ -46,6 +41,11 @@ namespace ImageToolApp.Controllers
                 }
                 return mDecryptController;
             }
+        }
+
+        private void LoadConfig()
+        {
+            mSettings = Settings.Instance;
         }
 
         private void ViewOnClosing(object sender, CancelEventArgs cancelEventArgs)

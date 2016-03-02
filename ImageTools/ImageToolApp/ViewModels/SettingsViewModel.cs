@@ -7,14 +7,14 @@ namespace ImageToolApp.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
+        private readonly Settings mSettings;
         private UICommand mCancelCommand;
         private UICommand mChoosePathCommand;
-        private UICommand mSaveCommand;
         private string mPassword;
+        private UICommand mSaveCommand;
         private Type mSelectedEncryptionMethod;
         private Type mSelectedSteganographicMethod;
         private string mStandardPath;
-        private readonly Settings mSettings;
 
         public SettingsViewModel(Settings settings)
         {
