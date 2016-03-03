@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using FunctionLib.Steganography;
+using FunctionLib.Steganography.LSB;
 
 namespace UserControlClassLibrary.Converters
 {

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Drawing;
 using FunctionLib.Cryptography;
-using FunctionLib.Steganography;
+using FunctionLib.Steganography.Base;
 
 namespace ImageToolApp.Models
 {
-    public class CryptModel //<TCrypt, TStego>
-        //    where TCrypt : SymmetricAlgorithm
-        //    where TStego : SteganographicAlgorithm
+    public class CryptModel
     {
-        //public CryptModel(string src, string message, S stegano)
-        //{
-        //    CryptModel(src, message, null, null, stegano);
-        //} 
+        public CryptModel(string src, string message, Type steganoType, int lsbIndicator = 3)
+            : this(src, message, null, null, steganoType, lsbIndicator)
+        {
+        }
+
         public CryptModel(string src, string message, string password, Type encryptType, Type steganoType,
-            int lsbIndicator)
+            int lsbIndicator = 3)
         {
             if (string.IsNullOrEmpty(src))
             {
@@ -91,7 +90,5 @@ namespace ImageToolApp.Models
         public string Message { get; }
         private string Password { get; }
         public int PasswordHash { get; }
-        //public TCrypt EncryptionMethod { get; private set; }
-        //public TStego SteganographicMethod { get; private set; }
     }
 }

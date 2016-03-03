@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using FunctionLib.Model;
 
-namespace FunctionLib.Steganography
+namespace FunctionLib.Steganography.Base
 {
     public class SteganographicAlgorithmBase
     {
-        private static SteganographicAlgorithm mLastAccessedAlgorithm;
+        private static ISteganographicAlgorithm mLastAccessedAlgorithm;
 
         public static int ChangedPixels
         {
@@ -38,30 +39,26 @@ namespace FunctionLib.Steganography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt<T>(Bitmap src, string value, int password, int additionalParam)
-            where T : SteganographicAlgorithm, new()
+        public static Bitmap Encrypt<T>(Bitmap src, MessageImpl value, int password, int additionalParam)
+            where T : ISteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Encrypt(src, value, password, additionalParam);
-            return result;
+            var result = mLastAccessedAlgorithm.Encode(src, value, password, additionalParam);
+            result.UnlockBits();
+            return result.Source;
         }
 
 
         public static object Decrypt<T>(Bitmap src, int password, int additionalParam)
-            where T : SteganographicAlgorithm, new()
+            where T : ISteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Decrypt(src, password, additionalParam);
+            var result = mLastAccessedAlgorithm.Decode(src, password, additionalParam);
             return result;
         }
 
+        //TODO: Generic
         public static string ChangeColor(string srcPath, Color color)
-        {
-            return ChangeColor<ComplexLeastSignificantBit>(srcPath, color);
-        }
-
-        public static string ChangeColor<T>(string srcPath, Color color)
-            where T : SteganographicAlgorithm, new()
         {
             var result = "";
             if (mLastAccessedAlgorithm != null)

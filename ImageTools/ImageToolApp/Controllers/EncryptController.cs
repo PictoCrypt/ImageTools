@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
-using FunctionLib.Steganography;
+using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;

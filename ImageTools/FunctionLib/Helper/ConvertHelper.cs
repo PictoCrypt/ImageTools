@@ -100,7 +100,7 @@ namespace FunctionLib.Helper
             return result;
         }
 
-        public static string ConvertBack(byte[] bytes)
+        public static string Convert(byte[] bytes)
         {
             string result;
             if (bytes == null || bytes.Length <= 0)

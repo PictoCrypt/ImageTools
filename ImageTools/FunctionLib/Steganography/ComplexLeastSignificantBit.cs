@@ -1,18 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Text;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Steganography.Base;
 
 namespace FunctionLib.Steganography
 {
-    public class ComplexLeastSignificantBit : SteganographicAlgorithm
+    public class ComplexLeastSignificantBit : SteganographicAlgorithmImpl
     {
-        protected override LockBitmap Encrypt(LockBitmap src, byte[] value, int password = 0,
-            int significantIndicator = 3)
+        public override string Name
         {
+            get { return "Comlex LSB"; }
+        }
+
+        public override string Description
+        {
+            get { return "Complex LSB simply hides the message into the 3 least significant bit."; }
+        }
+
+        public override LockBitmap Encode(Bitmap src, MessageImpl message, int passHash, int lsbIndicator = 3)
+        {
+            var result = LockBitmap(src);
             // initially, we'll be hiding characters in the image
             var state = State.Hiding;
 
@@ -31,13 +40,13 @@ namespace FunctionLib.Steganography
             // hold pixel elements
 
             // pass through the rows
-            for (var i = 0; i < src.Height; i++)
+            for (var i = 0; i < result.Height; i++)
             {
                 // pass through each row
-                for (var j = 0; j < src.Width; j++)
+                for (var j = 0; j < result.Width; j++)
                 {
                     // holds the pixel that is currently being processed
-                    var pixel = src.GetPixel(j, i);
+                    var pixel = result.GetPixel(j, i);
 
                     // now, clear the least significant bit (LSB) from each pixel element
                     var r = pixel.R - pixel.R%2;
@@ -58,14 +67,14 @@ namespace FunctionLib.Steganography
                                 // even if only a part of its elements have been affected
                                 if ((pixelElementIndex - 1)%3 < 2)
                                 {
-                                    src.SetPixel(j, i, Color.FromArgb(r, g, b));
+                                    result.SetPixel(j, i, Color.FromArgb(r, g, b));
                                     ChangedPixels.Add(new Pixel(j, i));
                                 }
-                                return src;
+                                return result;
                             }
 
                             // check if all characters has been hidden
-                            if (charIndex >= value.Length)
+                            if (charIndex >= message.GetMessage().Length)
                             {
                                 // start adding zeros to mark the end of the value
                                 state = State.FillingWithZeros;
@@ -73,7 +82,7 @@ namespace FunctionLib.Steganography
                             else
                             {
                                 // move to the next character and process again
-                                charValue = value[charIndex++];
+                                charValue = message.GetMessage()[charIndex++];
                             }
                         }
 
@@ -117,7 +126,7 @@ namespace FunctionLib.Steganography
                                     charValue /= 2;
                                 }
 
-                                src.SetPixel(j, i, Color.FromArgb(r, g, b));
+                                result.SetPixel(j, i, Color.FromArgb(r, g, b));
                                 ChangedPixels.Add(new Pixel(j, i));
                             }
                                 break;
@@ -133,10 +142,10 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
-            return src;
+            return result;
         }
 
-        protected override byte[] Decrypt(LockBitmap src, int password = 0, int significantIndicator = 3)
+        public override MessageImpl Decode(Bitmap src, int passHash, int lsbIndicator = 3)
         {
             var colorUnitIndex = 0;
             var charValue = 0;
@@ -200,7 +209,7 @@ namespace FunctionLib.Steganography
                                 {
                                     //result.RemoveRange(index + Constants.EndTag.Length, byteList.Count - (index + Constants.EndTag.Length));
                                 }
-                                return ConvertHelper.StringToBytes(result.ToString());
+                                return new MessageImpl(result.ToString());
                             }
                             //if (charValue == 0)
                             //{
@@ -216,30 +225,7 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
-            return ConvertHelper.StringToBytes(result.ToString());
-        }
-
-        public override string ChangeColor(string srcPath, Color color)
-        {
-            var tmp = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
-            var dest = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
-            File.Copy(srcPath, tmp, true);
-            using (var bitmap = new Bitmap(tmp))
-            {
-                ImageFunctionLib.ChangeColor(bitmap, color, ChangedPixels);
-                bitmap.Save(dest, ImageFormat.Bmp);
-            }
-            File.Copy(dest, tmp, true);
-            return tmp;
-        }
-
-        public override int MaxEncryptionCount(int squarePixels)
-        {
-            // We are using 3 bits each byte.
-            var lsbs = squarePixels*3;
-            // Each character uses 8 bits.
-            var result = lsbs/8;
-            return result;
+            return new MessageImpl(result.ToString());
         }
 
         private static int ReverseBits(int n)

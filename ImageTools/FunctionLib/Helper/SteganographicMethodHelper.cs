@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FunctionLib.Steganography;
+using FunctionLib.Steganography.Base;
 
 namespace FunctionLib.Helper
 {
@@ -16,8 +16,8 @@ namespace FunctionLib.Helper
                         .SelectMany(s => s.GetTypes())
                         .Where(
                             p =>
-                                typeof (SteganographicAlgorithm).IsAssignableFrom(p) &&
-                                p.BaseType == typeof (SteganographicAlgorithm)));
+                                typeof (ISteganographicAlgorithm).IsAssignableFrom(p) &&
+                                p.BaseType == typeof (ISteganographicAlgorithm)));
                 return implementations.ToList();
             }
         }
