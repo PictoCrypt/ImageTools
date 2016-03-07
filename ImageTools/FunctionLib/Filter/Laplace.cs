@@ -4,23 +4,23 @@ using System.Linq;
 
 namespace FunctionLib.Filter
 {
-    public class Laplace : IFilter
+    public class Laplace : Filter
     {
         public Laplace(Bitmap image, int startbits, int endbits)
         {
+            if (image == null)
+            {
+                throw new ArgumentNullException(nameof(image));
+            }
             Image = image;
             StartRange = startbits;
             EndRange = endbits;
         }
 
-        public Bitmap Image { get; set; }
+        //public Bitmap Image { get; set; }
 
-        public int GetValue(int x, int y)
+        public override int GetValue(int x, int y)
         {
-            if (Image == null)
-            {
-                throw new ArgumentNullException("'Image' can not be null.");
-            }
             var pixel = Image.GetPixel(x, y);
             var left = default(Color);
             var up = default(Color);
@@ -68,9 +68,6 @@ namespace FunctionLib.Filter
             return diff.Sum(Math.Abs);
         }
 
-        public int StartRange { get; set; }
-        public int EndRange { get; set; }
-
         private int[] CalculateDifference(Color pixel, Color left, Color right, Color up, Color down, int pixelCount)
         {
             var result = new int[3];
@@ -81,11 +78,11 @@ namespace FunctionLib.Filter
         }
     }
 
-    public interface IFilter
+    public abstract class Filter
     {
-        Bitmap Image { get; set; }
-        int StartRange { get; set; }
-        int EndRange { get; set; }
-        int GetValue(int x, int y);
+        protected Bitmap Image { get; set; }
+        protected int StartRange { get; set; }
+        protected int EndRange { get; set; }
+        public abstract int GetValue(int x, int y);
     }
 }
