@@ -53,6 +53,7 @@
     <Compile Include="Cryptography\Twofish\TwofishEncryption.cs" />
     <Compile Include="Filter\Laplace.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
+    <Compile Include="Helper\CompressionHelper.cs" />
     <Compile Include="Helper\Constants.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
     <Compile Include="Helper\EncryptionMethodHelper.cs" />
@@ -62,7 +63,11 @@
     <Compile Include="Helper\SteganographicMethodHelper.cs" />
     <Compile Include="Helper\FileManager.cs" />
     <Compile Include="ImageFunctionLib.cs" />
-    <Compile Include="Model\MessageImpl.cs" />
+    <Compile Include="Model\Message\DocumentMessage.cs" />
+    <Compile Include="Model\Message\ISecretMessage.cs" />
+    <Compile Include="Model\Message\MessageType.cs" />
+    <Compile Include="Model\Message\SecretMessage.cs" />
+    <Compile Include="Model\Message\TextMessage.cs" />
     <Compile Include="Model\Pixel.cs" />
     <Compile Include="Model\Steganogramm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

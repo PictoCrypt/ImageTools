@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Text;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 using FunctionLib.Steganography.Base;
 
 namespace FunctionLib.Steganography
@@ -19,7 +20,7 @@ namespace FunctionLib.Steganography
             get { return "Complex LSB simply hides the message into the 3 least significant bit."; }
         }
 
-        public override LockBitmap Encode(Bitmap src, MessageImpl message, int passHash, int lsbIndicator = 3)
+        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             var result = LockBitmap(src);
             // initially, we'll be hiding characters in the image
@@ -74,7 +75,7 @@ namespace FunctionLib.Steganography
                             }
 
                             // check if all characters has been hidden
-                            if (charIndex >= message.GetMessage().Length)
+                            if (charIndex >= message.Message.ToString().Length)
                             {
                                 // start adding zeros to mark the end of the value
                                 state = State.FillingWithZeros;
@@ -82,7 +83,7 @@ namespace FunctionLib.Steganography
                             else
                             {
                                 // move to the next character and process again
-                                charValue = message.GetMessage()[charIndex++];
+                                charValue = message.Message.ToString()[charIndex++];
                             }
                         }
 
@@ -145,7 +146,7 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        public override MessageImpl Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
             var colorUnitIndex = 0;
             var charValue = 0;
@@ -209,7 +210,7 @@ namespace FunctionLib.Steganography
                                 {
                                     //result.RemoveRange(index + Constants.EndTag.Length, byteList.Count - (index + Constants.EndTag.Length));
                                 }
-                                return new MessageImpl(result.ToString());
+                                return new TextMessage(result.ToString());
                             }
                             //if (charValue == 0)
                             //{
@@ -225,7 +226,7 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
-            return new MessageImpl(result.ToString());
+            return new TextMessage(result.ToString());
         }
 
         private static int ReverseBits(int n)

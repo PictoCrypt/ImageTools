@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.Base
 {
@@ -14,7 +15,7 @@ namespace FunctionLib.Steganography.Base
             get { return mLastAccessedAlgorithm.ChangedPixels.Count; }
         }
 
-        public static Bitmap Encrypt(object obj, Type method, Bitmap src, string value, int password,
+        public static Bitmap Encrypt(object obj, Type method, Bitmap src, ISecretMessage value, int password,
             int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
@@ -27,19 +28,19 @@ namespace FunctionLib.Steganography.Base
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static object Decrypt(object obj, Type method, Bitmap src, int password, int additionalParam)
+        public static ISecretMessage Decrypt(object obj, Type method, Bitmap src, int password, MessageType type, int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(method)
-                    .Invoke(obj, new object[] {src, password, additionalParam});
+                    .Invoke(obj, new object[] {src, password, type, additionalParam}) as ISecretMessage;
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt<T>(Bitmap src, MessageImpl value, int password, int additionalParam)
+        public static Bitmap Encrypt<T>(Bitmap src, ISecretMessage value, int password, int additionalParam)
             where T : ISteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
@@ -49,11 +50,11 @@ namespace FunctionLib.Steganography.Base
         }
 
 
-        public static object Decrypt<T>(Bitmap src, int password, int additionalParam)
+        public static ISecretMessage Decrypt<T>(Bitmap src, int password, MessageType type, int additionalParam)
             where T : ISteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Decode(src, password, additionalParam);
+            var result = mLastAccessedAlgorithm.Decode(src, password, type);
             return result;
         }
 

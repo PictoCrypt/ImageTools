@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.Net.WebSockets;
 using FunctionLib.Cryptography;
+using FunctionLib.Model;
+using FunctionLib.Model.Message;
 using FunctionLib.Steganography.Base;
 
 namespace ImageToolApp.Models
@@ -56,8 +59,9 @@ namespace ImageToolApp.Models
         {
             get
             {
+                //TODO
                 return
-                    SteganographicAlgorithmBase.Decrypt(this, SteganographicMethodType, Src, PasswordHash, LsbIndicator)
+                    SteganographicAlgorithmBase.Decrypt(this, SteganographicMethodType, Src, PasswordHash, MessageType.Text, LsbIndicator)
                         .ToString();
             }
         }
@@ -78,7 +82,8 @@ namespace ImageToolApp.Models
         {
             get
             {
-                return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethodType, Src, EncryptedMessage,
+                //TODO
+                return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethodType, Src, new TextMessage(EncryptedMessage), 
                     PasswordHash,
                     LsbIndicator);
             }

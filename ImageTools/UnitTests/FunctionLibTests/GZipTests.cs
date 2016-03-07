@@ -25,7 +25,7 @@ namespace UnitTests.FunctionLibTests
             byte[] result;
             using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
             {
-                result = MethodHelper.CompressStream(stream);
+                result = CompressionHelper.Compress(stream);
             }
 
             Assert.IsNotNull(msArrayBytes);
@@ -38,7 +38,7 @@ namespace UnitTests.FunctionLibTests
         {
             var testBytes = ConvertHelper.StringToBytes(TestingConstants.NormalText);
             var src = new MemoryStream(testBytes);
-            var result = MethodHelper.CompressStream(src);
+            var result = CompressionHelper.Compress(src);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Length > 0);
         }
@@ -47,7 +47,7 @@ namespace UnitTests.FunctionLibTests
         public void GZipImageCompressTest()
         {
             var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open);
-            var result = MethodHelper.CompressStream(stream);
+            var result = CompressionHelper.Compress(stream);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Length > 0);
         }
@@ -57,8 +57,8 @@ namespace UnitTests.FunctionLibTests
         {
             var testBytes = ConvertHelper.StringToBytes(TestingConstants.NormalText);
             var src = new MemoryStream(testBytes);
-            var result = MethodHelper.CompressStream(src);
-            var decompressed = MethodHelper.DecompressByteStream(result);
+            var result = CompressionHelper.Compress(src);
+            var decompressed = CompressionHelper.Decompress(result);
             Assert.IsNotNull(decompressed);
             Assert.IsTrue(decompressed.Length > 0);
         }
@@ -67,8 +67,8 @@ namespace UnitTests.FunctionLibTests
         public void GZipImageDecompressTest()
         {
             var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open);
-            var result = MethodHelper.CompressStream(stream);
-            var decompressed = MethodHelper.DecompressByteStream(result);
+            var result = CompressionHelper.Compress(stream);
+            var decompressed = CompressionHelper.Decompress(result);
             var img = Image.FromStream(decompressed);
             Assert.IsNotNull(img);
             Assert.IsFalse(img.Size.IsEmpty);

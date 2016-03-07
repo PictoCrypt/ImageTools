@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.Base
 {
@@ -30,8 +31,9 @@ namespace FunctionLib.Steganography.Base
             return bitsNeeded/8;
         }
 
-        public abstract LockBitmap Encode(Bitmap src, MessageImpl message, int passHash, int lsbIndicator = 3);
-        public abstract MessageImpl Decode(Bitmap src, int passHash, int lsbIndicator = 3);
+        public abstract LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3);
+
+        public abstract ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3);
 
         public virtual string ChangeColor(string srcPath, Color color)
         {

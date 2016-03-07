@@ -47,7 +47,7 @@ namespace FunctionLib.Helper
             return GenerateTmp(format.ToString());
         }
 
-        public string GenerateTmp(string extension)
+        public string GenerateTmp(string extension = "")
         {
             var path = Path.GetTempFileName();
             var newPath = Path.ChangeExtension(path, extension);

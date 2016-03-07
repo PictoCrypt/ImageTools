@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.LSB
 {
@@ -19,13 +20,13 @@ namespace FunctionLib.Steganography.LSB
             get { return "Randomly distributes the message across the image in the least significant bit."; }
         }
 
-        public override LockBitmap Encode(Bitmap src, MessageImpl message, int passHash, int lsbIndicator = 3)
+        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             var result = LockBitmap(src);
             var random = new Random(passHash);
             var byteIndex = 0;
             var bitIndex = 0;
-            var bytes = message.GetMessageAsBytes().ToList();
+            var bytes = message.Convert();
             while (true)
             {
                 var x = GetNextRandom(Coordinate.X, src.Width, random);
@@ -43,14 +44,14 @@ namespace FunctionLib.Steganography.LSB
                 src.SetPixel(x, y, Color.FromArgb(r, g, b));
                 ChangedPixels.Add(new Pixel(x, y));
 
-                if (byteIndex > bytes.Count - 1 || byteIndex == bytes.Count - 1 && bitIndex == 7)
+                if (byteIndex > bytes.Length - 1 || byteIndex == bytes.Length - 1 && bitIndex == 7)
                 {
                     return result;
                 }
             }
         }
 
-        public override MessageImpl Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
             var random = new Random(passHash);
             var byteList = new List<byte>();
@@ -89,7 +90,7 @@ namespace FunctionLib.Steganography.LSB
                         byteList.RemoveRange(index + Constants.EndTag.Length,
                             byteList.Count - (index + Constants.EndTag.Length));
                     }
-                    return new MessageImpl(byteList.ToArray());
+                    return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
                 }
             }
         }

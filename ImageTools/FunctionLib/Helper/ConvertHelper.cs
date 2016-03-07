@@ -60,14 +60,14 @@ namespace FunctionLib.Helper
             {
                 using (var stream = StringToStream(value))
                 {
-                    result = MethodHelper.CompressStream(stream);
+                    result = CompressionHelper.Compress(stream);
                 }
             }
             else
             {
                 using (var fileStream = File.Open(value, FileMode.Open))
                 {
-                    result = MethodHelper.CompressStream(fileStream);
+                    result = CompressionHelper.Compress(fileStream);
                 }
             }
             return result;
@@ -112,7 +112,7 @@ namespace FunctionLib.Helper
             RemoveEndTag(byteList);
 
             var type = GetStartTag(byteList);
-            using (var uncompressed = MethodHelper.DecompressByteStream(byteList.ToArray()))
+            using (var uncompressed = CompressionHelper.Decompress(byteList.ToArray()))
             {
                 switch (type)
                 {

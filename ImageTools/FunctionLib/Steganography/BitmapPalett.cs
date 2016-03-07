@@ -2,6 +2,7 @@
 using System.Drawing;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 using FunctionLib.Steganography.Base;
 
 namespace FunctionLib.Steganography
@@ -59,12 +60,12 @@ namespace FunctionLib.Steganography
             get { return "Changing the color palett"; }
         }
 
-        public override LockBitmap Encode(Bitmap src, MessageImpl message, int passHash, int lsbIndicator = 3)
+        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             throw new NotImplementedException();
         }
 
-        public override MessageImpl Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
             throw new NotImplementedException();
         }

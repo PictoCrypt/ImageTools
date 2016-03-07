@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO.Compression;
 using System.Linq;
 using FunctionLib.Filter;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.LSB
 {
@@ -25,7 +27,7 @@ namespace FunctionLib.Steganography.LSB
             }
         }
 
-        public override LockBitmap Encode(Bitmap src, MessageImpl message, int passHash, int lsbIndicator = 3)
+        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             var filter = new Laplace(src, 1, 8);
             IDictionary<Pixel, int> laplace = new Dictionary<Pixel, int>();
@@ -43,7 +45,7 @@ namespace FunctionLib.Steganography.LSB
 
             var byteIndex = 0;
             var bitIndex = 0;
-            var bytes = message.GetMessageAsBytes().ToList();
+            var bytes = message.Convert();
             foreach (var key in orderedLaplace)
             {
                 var x = key.Key.X;
@@ -61,7 +63,7 @@ namespace FunctionLib.Steganography.LSB
 
                 src.SetPixel(x, y, Color.FromArgb(r, g, b));
                 ChangedPixels.Add(new Pixel(x, y));
-                if (byteIndex > bytes.Count - 1 || byteIndex == bytes.Count - 1 && bitIndex == 7)
+                if (byteIndex > bytes.Length - 1 || byteIndex == bytes.Length - 1 && bitIndex == 7)
                 {
                     return result;
                 }
@@ -69,7 +71,7 @@ namespace FunctionLib.Steganography.LSB
             throw new SystemException("Error, anything happened (or maybe not).");
         }
 
-        public override MessageImpl Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
             var filter = new Laplace(src, 1, 8);
             IDictionary<Pixel, int> laplace = new Dictionary<Pixel, int>();
@@ -121,7 +123,7 @@ namespace FunctionLib.Steganography.LSB
                         byteList.RemoveRange(index + Constants.EndTag.Length,
                             byteList.Count - (index + Constants.EndTag.Length));
                     }
-                    return new MessageImpl(byteList.ToArray());
+                    return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
                 }
             }
             throw new SystemException("Error, anything happened (or maybe not).");

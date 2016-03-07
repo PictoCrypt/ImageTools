@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using FunctionLib.Model;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Helper
 {
@@ -35,34 +38,17 @@ namespace FunctionLib.Helper
             return -1;
         }
 
-        public static byte[] CompressStream(Stream src)
+        public static ISecretMessage GetSpecificMessage(MessageType type, byte[] bytes)
         {
-            byte[] result;
-            using (var compressed = new MemoryStream())
+            switch (type)
             {
-                using (var gzip = new GZipStream(compressed, CompressionMode.Compress))
-                {
-                    using (src)
-                    {
-                        src.CopyTo(gzip);
-                    }
-                }
-                result = compressed.ToArray();
+                case MessageType.Text:
+                    return new TextMessage(bytes);
+                case MessageType.Document:
+                    return new DocumentMessage(bytes);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
-            return result;
-        }
-
-        public static MemoryStream DecompressByteStream(byte[] bytes)
-        {
-            var result = new MemoryStream();
-            using (var ms = new MemoryStream(bytes))
-            {
-                using (var gzip = new GZipStream(ms, CompressionMode.Decompress, true))
-                {
-                    gzip.CopyTo(result);
-                }
-            }
-            return result;
         }
     }
 }

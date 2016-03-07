@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO.Compression;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.LSB
 {
@@ -22,12 +24,12 @@ namespace FunctionLib.Steganography.LSB
             }
         }
 
-        public override LockBitmap Encode(Bitmap src, MessageImpl message, int passHas, int lsbIndicator = 3)
+        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHas, int lsbIndicator = 3)
         {
             var result = LockBitmap(src);
             var byteIndex = 0;
             var bitIndex = 0;
-            var bytes = message.GetMessageAsBytes();
+            var bytes = message.Convert();
 
             for (var y = 0; y < result.Height; y++)
             {
@@ -53,7 +55,7 @@ namespace FunctionLib.Steganography.LSB
             return result;
         }
 
-        public override MessageImpl Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
             var byteList = new List<byte>();
             for (var y = 0; y < src.Height; y++)
@@ -90,7 +92,7 @@ namespace FunctionLib.Steganography.LSB
                             byteList.RemoveRange(index + Constants.EndTag.Length,
                                 byteList.Count - (index + Constants.EndTag.Length));
                         }
-                        return new MessageImpl(byteList.ToArray());
+                        return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
                     }
                 }
             }
