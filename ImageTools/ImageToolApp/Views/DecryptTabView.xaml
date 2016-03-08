@@ -60,7 +60,7 @@
                                     ToolTip="Number of Bits which should be used from 1 color."
                                     Style="{StaticResource NumericUpDownStyle}" />
             <Button HorizontalAlignment="Right"
-                    Content="Decrypt"
+                    Content="Decode"
                     Command="{Binding TabActionCommand}" Margin="3"
                     IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />
         </StackPanel>

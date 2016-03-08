@@ -87,7 +87,7 @@
                                           Style="{StaticResource MetroAnimatedTabControlDisabledStyle}">
             <controls:MetroTabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
                 <controls:MetroTabItem.Header>
-                    <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encrypt"
+                    <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encode"
                            Style="{StaticResource TabItemImageStyle}" />
                 </controls:MetroTabItem.Header>
                 <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch"
@@ -95,7 +95,7 @@
             </controls:MetroTabItem>
             <controls:MetroTabItem>
                 <controls:MetroTabItem.Header>
-                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decrypt"
+                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decode"
                            Style="{StaticResource TabItemImageStyle}" />
                 </controls:MetroTabItem.Header>
                 <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"

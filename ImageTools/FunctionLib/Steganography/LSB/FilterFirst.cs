@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO.Compression;
 using System.Linq;
 using FunctionLib.Filter;
 using FunctionLib.Helper;

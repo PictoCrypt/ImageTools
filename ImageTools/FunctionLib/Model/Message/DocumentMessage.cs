@@ -13,12 +13,18 @@ namespace FunctionLib.Model.Message
                 throw new FileNotFoundException(Message);
             }
 
-            var ms = new MemoryStream();
-            using (var stream = new FileStream(Message, FileMode.Open))
+            var memStream = new MemoryStream();
+            using (var fs = new FileStream(Message, FileMode.Open))
             {
-                stream.CopyTo(ms);
+                fs.CopyTo(memStream);
             }
-            return CompressionHelper.Compress(ms, CompressionLevel);
+
+            byte[] result;
+            using (var ms = new MemoryStream(memStream.ToArray()))
+            {
+                result = CompressionHelper.Compress(ms, CompressionLevel);
+            }
+            return result;
         }
 
         public object ConvertBack()

@@ -16,7 +16,7 @@ namespace FunctionLib.Cryptography
         public static string Encrypt(object obj, Type method, string value, string password)
         {
             var baseType = typeof (SymmetricAlgorithmBase);
-            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encode");
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(method)
@@ -28,7 +28,7 @@ namespace FunctionLib.Cryptography
         public static string Decrypt(object obj, Type method, string value, string password)
         {
             var baseType = typeof (SymmetricAlgorithmBase);
-            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decode");
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(method)

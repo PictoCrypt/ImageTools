@@ -12,10 +12,7 @@ namespace FunctionLib.Helper
             {
                 using (var gzip = new GZipStream(compressed, compression))
                 {
-                    using (src)
-                    {
-                        src.CopyTo(gzip);
-                    }
+                    src.CopyTo(gzip);
                 }
                 result = compressed.ToArray();
             }

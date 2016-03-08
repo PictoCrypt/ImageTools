@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using System.Runtime.InteropServices;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Model.Message
@@ -16,12 +17,12 @@ namespace FunctionLib.Model.Message
 
         public byte[] Convert()
         {
-            var ms = new MemoryStream();
-            using (var stream = new StreamWriter(ms))
+            byte[] result;
+            using (var ms = new MemoryStream(ConvertHelper.StringToBytes(Message)))
             {
-                stream.Write(Message);
+                result = CompressionHelper.Compress(ms, CompressionLevel);
             }
-            return CompressionHelper.Compress(ms, CompressionLevel);
+            return result;
         }
 
         public object ConvertBack()

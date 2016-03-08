@@ -61,7 +61,7 @@ namespace ImageToolApp.Models
             {
                 //TODO
                 return
-                    SteganographicAlgorithmBase.Decrypt(this, SteganographicMethodType, Src, PasswordHash, MessageType.Text, LsbIndicator)
+                    SteganographicAlgorithmBase.Decode(this, SteganographicMethodType, Src, PasswordHash, MessageType.Text, LsbIndicator)
                         .ToString();
             }
         }
@@ -83,7 +83,7 @@ namespace ImageToolApp.Models
             get
             {
                 //TODO
-                return SteganographicAlgorithmBase.Encrypt(this, SteganographicMethodType, Src, new TextMessage(EncryptedMessage), 
+                return SteganographicAlgorithmBase.Encode(this, SteganographicMethodType, Src, new TextMessage(EncryptedMessage), 
                     PasswordHash,
                     LsbIndicator);
             }

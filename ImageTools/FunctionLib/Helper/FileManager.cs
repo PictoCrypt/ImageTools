@@ -100,7 +100,7 @@ namespace FunctionLib.Helper
             }
         }
 
-        public void Exit()
+        public void CleanUp()
         {
             mFileManager.mTmpFileList.CollectionChanged -= TmpFileListOnCollectionChanged;
             ClearTmpFiles();

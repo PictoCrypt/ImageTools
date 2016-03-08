@@ -41,7 +41,7 @@
             <documentChooser:DocumentChooser />
         </Expander>
 
-        <GroupBox Grid.Column="0" Grid.Row="3" Header="Encryption" HorizontalAlignment="Stretch"
+        <GroupBox Grid.Column="0" Grid.Row="3" Header="Encodeion" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" Style="{StaticResource GroupBoxDisabledStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -50,7 +50,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
+                <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encodeion" HorizontalAlignment="Left"
                           Margin="3" IsChecked="{Binding EncryptedCheck}" />
                 <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                              helpers:PasswordHelper.Attach="True"
@@ -74,7 +74,7 @@
                                     ToolTip="Number of Bits which should be used from 1 color."
                                     Style="{StaticResource NumericUpDownStyle}" />
             <Button HorizontalAlignment="Right"
-                    Content="Encrypt"
+                    Content="Encode"
                     Command="{Binding TabActionCommand}" Margin="3"
                     IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />
         </StackPanel>

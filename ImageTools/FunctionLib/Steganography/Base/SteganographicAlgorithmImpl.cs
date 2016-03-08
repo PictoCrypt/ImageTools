@@ -70,7 +70,7 @@ namespace FunctionLib.Steganography.Base
         //    //        throw new ArgumentOutOfRangeException(
         //    //            string.Format("Not enough source size. A minimum of {0} pixel is needed.", size));
         //    //    }
-        //    //    lockBitmap = Encrypt(lockBitmap, bytes, password, significantIndicator);
+        //    //    lockBitmap = Encode(lockBitmap, bytes, password, significantIndicator);
         //    //    lockBitmap.UnlockBits();
         //    //    return result;
         //    //GNDN

@@ -50,7 +50,7 @@ namespace ImageToolApp
         protected override void OnExit(ExitEventArgs e)
         {
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomainOnUnhandledException;
-            FileManager.GetInstance().Exit();
+            FileManager.GetInstance().CleanUp();
             base.OnExit(e);
             Environment.Exit(0);
         }

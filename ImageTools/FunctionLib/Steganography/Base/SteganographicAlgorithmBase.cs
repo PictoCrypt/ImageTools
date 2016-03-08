@@ -15,11 +15,11 @@ namespace FunctionLib.Steganography.Base
             get { return mLastAccessedAlgorithm.ChangedPixels.Count; }
         }
 
-        public static Bitmap Encrypt(object obj, Type method, Bitmap src, ISecretMessage value, int password,
+        public static Bitmap Encode(object obj, Type method, Bitmap src, ISecretMessage value, int password,
             int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
-            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encrypt");
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encode");
             if (extractedMethod != null)
             {
                 return (Bitmap) extractedMethod.MakeGenericMethod(method)
@@ -28,10 +28,10 @@ namespace FunctionLib.Steganography.Base
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static ISecretMessage Decrypt(object obj, Type method, Bitmap src, int password, MessageType type, int additionalParam)
+        public static ISecretMessage Decode(object obj, Type method, Bitmap src, int password, MessageType type, int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
-            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decrypt");
+            var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decode");
             if (extractedMethod != null)
             {
                 return extractedMethod.MakeGenericMethod(method)
@@ -40,7 +40,7 @@ namespace FunctionLib.Steganography.Base
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static Bitmap Encrypt<T>(Bitmap src, ISecretMessage value, int password, int additionalParam)
+        public static Bitmap Encode<T>(Bitmap src, ISecretMessage value, int password, int additionalParam)
             where T : ISteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
@@ -50,7 +50,7 @@ namespace FunctionLib.Steganography.Base
         }
 
 
-        public static ISecretMessage Decrypt<T>(Bitmap src, int password, MessageType type, int additionalParam)
+        public static ISecretMessage Decode<T>(Bitmap src, int password, MessageType type, int additionalParam)
             where T : ISteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();

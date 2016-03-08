@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using FunctionLib.Helper;
 using FunctionLib.Model.Message;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,14 +21,20 @@ namespace UnitTests.StegaTests
             mStopwatch = new Stopwatch();
         }
 
+        [ClassCleanup]
+        public void CleanUp()
+        {
+            FileManager.GetInstance().CleanUp();
+        }
+
         [TestMethod]
-        public void NormalEncryptionTest()
+        public void EncodeText()
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encrypt(bitmap, new TextMessage(TestingConstants.NormalText));
+                var encrypted = Encode(bitmap, new TextMessage(TestingConstants.NormalText));
 
-                var decrypted = Decrypt(encrypted);
+                var decrypted = Decode(encrypted);
 
                 Assert.IsTrue(decrypted.ToString().StartsWith(TestingConstants.NormalText));
 
@@ -36,28 +43,15 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
-        //[ExpectedException(typeof(ArgumentOutOfRangeException))]
-        [ExpectedException(typeof (TargetInvocationException))]
-        public void EncryptImageWithNotEnoughSpace()
-        {
-            const int lsbIndicator = 4;
-            using (var bitmap = new Bitmap(TestingConstants.SmallKoala))
-            {
-                var encrypted = Encrypt(bitmap, new DocumentMessage(TestingConstants.SmallFlowers), TestingConstants.Password.GetHashCode(),
-                    lsbIndicator);
-            }
-        }
-
-        [TestMethod]
-        public void EncryptImageTest()
+        public void EncodeImage()
         {
             const int lsbIndicator = 4;
 
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encrypt(bitmap, new DocumentMessage(TestingConstants.SmallFlowers), TestingConstants.Password.GetHashCode(),
+                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers), TestingConstants.Password.GetHashCode(),
                     lsbIndicator);
-                var decrypted = Decrypt(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, lsbIndicator).ToString();
+                var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, lsbIndicator).ToString();
 
                 Assert.IsNotNull(decrypted);
                 Assert.IsTrue(File.Exists(decrypted));
@@ -67,14 +61,14 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
-        public void EncryptDocTest()
+        public void EncodeDocument()
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encrypt(bitmap, new DocumentMessage(TestingConstants.Testdoc), TestingConstants.Password.GetHashCode(),
+                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.Testdoc), TestingConstants.Password.GetHashCode(),
                     TestingConstants.LsbIndicator);
                 var decrypted =
-                    Decrypt(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, TestingConstants.LsbIndicator);
+                    Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, TestingConstants.LsbIndicator);
 
                 Assert.IsFalse(decrypted.Bytes == null);
                 Assert.IsTrue(File.Exists(decrypted.ConvertBack().ToString()));
@@ -84,29 +78,48 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void EncryptionWithoutTextTest()
+        [ExpectedException(typeof (TargetInvocationException))]
+        public void EncodeWithoutSpace()
         {
-            using (var bitmap = new Bitmap(TestingConstants.NormalImage))
+            const int lsbIndicator = 4;
+            using (var bitmap = new Bitmap(TestingConstants.SmallKoala))
             {
-                var encrypted = Encrypt(bitmap, new TextMessage(string.Empty));
+                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers), TestingConstants.Password.GetHashCode(),
+                    lsbIndicator);
             }
         }
 
-        private object Decrypt(Bitmap encrypted)
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EncodeWithoutText()
+        {
+            using (var bitmap = new Bitmap(TestingConstants.NormalImage))
+            {
+                var encrypted = Encode(bitmap, new TextMessage(string.Empty));
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EncodeWithoutCover()
+        {
+            var encrypted = Encode(null, new TextMessage(TestingConstants.NormalText));
+        }
+
+        private object Decode(Bitmap encrypted)
         {
             mStopwatch.Start();
-            var decrypted = Decrypt(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, TestingConstants.LsbIndicator);
+            var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, TestingConstants.LsbIndicator);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
             Assert.IsFalse(decrypted == null);
             return decrypted;
         }
 
-        private Bitmap Encrypt(Bitmap src, ISecretMessage value)
+        private Bitmap Encode(Bitmap src, ISecretMessage value)
         {
             mStopwatch.Start();
-            var encrypted = Encrypt(src, value, TestingConstants.Password.GetHashCode(), TestingConstants.LsbIndicator);
+            var encrypted = Encode(src, value, TestingConstants.Password.GetHashCode(), TestingConstants.LsbIndicator);
             mStopwatch.Stop();
             mEncryptionTime = mStopwatch.Elapsed;
             mStopwatch.Reset();
@@ -123,7 +136,7 @@ namespace UnitTests.StegaTests
             Trace.WriteLine("");
         }
 
-        public abstract Bitmap Encrypt(Bitmap src, ISecretMessage value, int password, int additionalParam);
-        public abstract ISecretMessage Decrypt(Bitmap src, int password, MessageType type, int additionalParam);
+        protected abstract Bitmap Encode(Bitmap src, ISecretMessage value, int password, int additionalParam);
+        protected abstract ISecretMessage Decode(Bitmap src, int password, MessageType type, int additionalParam);
     }
 }
