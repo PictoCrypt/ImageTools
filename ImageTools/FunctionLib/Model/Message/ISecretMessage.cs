@@ -5,8 +5,8 @@ namespace FunctionLib.Model.Message
     public interface ISecretMessage
     {
         CompressionLevel CompressionLevel { get; }
-        string Message { get; set; }
-        byte[] Bytes { get; set; }
+        string Message { get; }
+        byte[] Bytes { get; }
         byte[] Convert();
         object ConvertBack();
     }

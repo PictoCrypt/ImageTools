@@ -6,11 +6,11 @@ namespace FunctionLib.Helper
     public static class ByteHelper
     {
         /// <summary>
-        ///     Gets the bit of this byte on a specific position.
+        /// Gets the bit on the specific position in byte.
         /// </summary>
         /// <param name="b">Byte</param>
-        /// <param name="index">Index. Index of 0 is the most significant bit.</param>
-        /// <returns></returns>
+        /// <param name="index">Position index. Position of 0 is the most significant bit.</param>
+        /// <returns>Bit on the specific position.</returns>
         public static int GetBit(byte b, int index)
         {
             var builder = new StringBuilder("00000000");
@@ -19,22 +19,15 @@ namespace FunctionLib.Helper
 
             var result = Convert.ToInt32(builder.ToString(), 2);
             return (b & result) > 0 ? 1 : 0;
-
-            //var x = Math.Pow(2, 7 - index);
-            //var bit = b & Convert.ToByte(x);
-            //return bit > 0 ? 1 : 0;
-
-            //var bit = (b & (1 >> index - 1));
-            //return bit;
         }
 
         /// <summary>
-        ///     Clears the last significant bit according to the lsbIndicator.
+        /// Clears the last significant bit according to the parameter of lsbIndicator.
         /// </summary>
-        /// <param name="value">Byte</param>
+        /// <param name="b">Byte</param>
         /// <param name="lsbIndicator">Least-Significant-Bits</param>
         /// <returns></returns>
-        public static int ClearLeastSignificantBit(byte value, int lsbIndicator)
+        public static int ClearLeastSignificantBit(byte b, int lsbIndicator)
         {
             var builder = new StringBuilder();
             for (var i = 0; i < 8 - lsbIndicator; i++)
@@ -47,7 +40,7 @@ namespace FunctionLib.Helper
             }
 
             var result = Convert.ToInt32(builder.ToString(), 2);
-            return value & result;
+            return b & result;
         }
     }
 }

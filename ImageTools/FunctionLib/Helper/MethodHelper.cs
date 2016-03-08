@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
 namespace FunctionLib.Helper
 {
     public static class MethodHelper
     {
-        //private static bool CheckIfPossibleImage(int length)
-        //{
-        //    var result = length/3.0;
-        //    var diff = Math.Abs(Math.Truncate(result) - result);
-        //    return (diff < 0.0000001) || (diff > 0.9999999);
-        //}
-
         public static int IndexOfWithinLastTwo(List<byte> byteList)
         {
             if (byteList.Count <= Constants.EndTag.Length)

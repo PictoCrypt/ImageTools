@@ -7,7 +7,9 @@ namespace FunctionLib.Helper
     public static class Constants
     {
         public static readonly List<string> ImageExtensions = new List<string> {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"};
-        public static readonly byte[] EndTag = ConvertHelper.StringToBytes("<EOF>");
+        public static readonly byte[] EndTag = ConvertHelper.Convert("<EOF>");
+        public const char Seperator = '\r';
+        public static readonly byte[] TagSeperator = ConvertHelper.Convert(Seperator.ToString());
 
         public static string ExecutiongPath
         {
@@ -26,7 +28,7 @@ namespace FunctionLib.Helper
         public static byte[] StartTag(string type)
         {
             var value = string.Format("<{0}>", type.ToUpperInvariant());
-            var result = ConvertHelper.StringToBytes(value);
+            var result = ConvertHelper.Convert(value);
             return result;
         }
     }

@@ -9,13 +9,13 @@ namespace UnitTests.StegaTests
     [TestClass]
     public class ComplexLeastSignificantBitTest : SteganographicAlogithmBaseTestClass
     {
-        protected override Bitmap Encode(Bitmap src, ISecretMessage value, int password, int additionalParam)
+        protected override Bitmap Encode(Bitmap src, ISecretMessage value, int password, int additionalParam = 3)
         {
             return SteganographicAlgorithmBase.Encode(this, typeof(ComplexLeastSignificantBit), src, value, password,
                 additionalParam);
         }
 
-        protected override ISecretMessage Decode(Bitmap src, int password, MessageType type, int additionalParam)
+        protected override ISecretMessage Decode(Bitmap src, int password, MessageType type, int additionalParam = 3)
         {
             return SteganographicAlgorithmBase.Decode(this, typeof (ComplexLeastSignificantBit), src, password, type,
                 additionalParam);

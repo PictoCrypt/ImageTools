@@ -5,7 +5,7 @@ namespace FunctionLib.Model.Message
 {
     public class SecretMessage
     {
-        public SecretMessage(string obj, CompressionLevel compression)
+        protected SecretMessage(string obj, CompressionLevel compression)
         {
             if (string.IsNullOrEmpty(obj))
             {
@@ -15,7 +15,7 @@ namespace FunctionLib.Model.Message
             CompressionLevel = compression;
         }
 
-        public SecretMessage(byte[] bytes, CompressionLevel compression)
+        protected SecretMessage(byte[] bytes, CompressionLevel compression)
         {
             if (bytes == null || bytes.Length <= 0)
             {
@@ -25,8 +25,8 @@ namespace FunctionLib.Model.Message
             CompressionLevel = compression;
         }
 
-        public string Message { get; set; }
-        public byte[] Bytes { get; set; }
+        public string Message { get; }
+        public byte[] Bytes { get; }
         public CompressionLevel CompressionLevel { get; }
     }
 }

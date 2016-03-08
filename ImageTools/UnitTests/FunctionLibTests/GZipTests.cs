@@ -36,7 +36,7 @@ namespace UnitTests.FunctionLibTests
         [TestMethod]
         public void GZipCompressTest()
         {
-            var testBytes = ConvertHelper.StringToBytes(TestingConstants.NormalText);
+            var testBytes = ConvertHelper.Convert(TestingConstants.NormalText);
             var src = new MemoryStream(testBytes);
             var result = CompressionHelper.Compress(src);
             Assert.IsNotNull(result);
@@ -55,7 +55,7 @@ namespace UnitTests.FunctionLibTests
         [TestMethod]
         public void GZipDecompressTest()
         {
-            var testBytes = ConvertHelper.StringToBytes(TestingConstants.NormalText);
+            var testBytes = ConvertHelper.Convert(TestingConstants.NormalText);
             var src = new MemoryStream(testBytes);
             var result = CompressionHelper.Compress(src);
             var decompressed = CompressionHelper.Decompress(result);

@@ -202,7 +202,7 @@ namespace FunctionLib.Steganography
                             // can only be 0 if it is the stop character (the 8 zeros)
                             var index =
                                 MethodHelper.IndexOfWithinLastTwo(
-                                    new List<byte>(ConvertHelper.StringToBytes(result.ToString())));
+                                    new List<byte>(ConvertHelper.Convert(result.ToString())));
                             if (index > -1)
                             {
                                 // Remove overhang bytes
@@ -214,7 +214,7 @@ namespace FunctionLib.Steganography
                             }
                             //if (charValue == 0)
                             //{
-                            //    return ConvertHelper.StringToBytes(result.ToString());
+                            //    return ConvertHelper.Convert(result.ToString());
                             //}
 
                             // convert the character value from int to char

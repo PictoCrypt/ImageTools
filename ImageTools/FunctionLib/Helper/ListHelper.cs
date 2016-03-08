@@ -5,6 +5,13 @@ namespace FunctionLib.Helper
 {
     public static class ListHelper
     {
+        /// <summary>
+        /// Gets the index based on the first element found in the list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">Collection in which to search.</param>
+        /// <param name="sequence">Sequence which should be searched.</param>
+        /// <returns>0-Based-Index from the first element.</returns>
         public static int IndexOf<T>(IEnumerable<T> collection,
             IEnumerable<T> sequence)
         {
