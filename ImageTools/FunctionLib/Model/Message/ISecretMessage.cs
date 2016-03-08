@@ -4,10 +4,10 @@ namespace FunctionLib.Model.Message
 {
     public interface ISecretMessage
     {
-        CompressionLevel CompressionLevel { get; }
+        bool Compression { get; }
         string Message { get; }
         byte[] Bytes { get; }
         byte[] Convert();
-        object ConvertBack();
+        string ConvertBack();
     }
 }

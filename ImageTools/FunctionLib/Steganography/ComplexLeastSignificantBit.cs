@@ -74,6 +74,7 @@ namespace FunctionLib.Steganography
                                 return result;
                             }
 
+                            //TODO FIX
                             // check if all characters has been hidden
                             if (charIndex >= message.Message.ToString().Length)
                             {
@@ -148,6 +149,7 @@ namespace FunctionLib.Steganography
 
         public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
+            var img = LockBitmap(src);
             var colorUnitIndex = 0;
             var charValue = 0;
 
@@ -155,12 +157,12 @@ namespace FunctionLib.Steganography
             var result = new StringBuilder();
 
             // pass through the rows
-            for (var i = 0; i < src.Height; i++)
+            for (var i = 0; i < img.Height; i++)
             {
                 // pass through each row
-                for (var j = 0; j < src.Width; j++)
+                for (var j = 0; j < img.Width; j++)
                 {
-                    var pixel = src.GetPixel(j, i);
+                    var pixel = img.GetPixel(j, i);
 
                     // for each pixel, pass through its elements (RGB) = 3
                     for (var n = 0; n < 3; n++)

@@ -9,23 +9,21 @@ namespace FunctionLib.Steganography.LSB
 {
     public abstract class LsbAlgorithmBase : SteganographicAlgorithmImpl
     {
-        protected List<byte> DecryptHelper(List<byte> bytes, ICollection<int> bitHolder)
+        protected List<byte> DecryptHelper(List<byte> bytes, ref ICollection<int> bitHolder)
         {
-            var builder = new StringBuilder();
-            while (bitHolder.Count >= 8 - builder.Length)
+            while (bitHolder.Count >= 8)
             {
-                var value = bitHolder.First();
-                bitHolder.Remove(value);
-                builder.Append(value);
-                if (builder.Length == 8)
+                var sequence = bitHolder.Take(8);
+                var builder = new StringBuilder();
+                foreach (var x in sequence)
                 {
-                    var result = Convert.ToByte(builder.ToString(), 2);
-                    builder = new StringBuilder();
-                    bytes.Add(result);
+                    builder.Append(x.ToString());
                 }
+                bytes.Add(Convert.ToByte(builder.ToString(), 2));
+                bitHolder = bitHolder.Skip(8).ToList();
             }
             return bytes;
-        }
+        } 
 
         protected byte CurrentByte(IReadOnlyList<byte> b, ref int byteIndex, ref int bitIndex, int significantIndicator)
         {

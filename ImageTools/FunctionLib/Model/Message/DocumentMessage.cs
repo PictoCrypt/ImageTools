@@ -9,7 +9,7 @@ namespace FunctionLib.Model.Message
 {
     public class DocumentMessage : SecretMessage, ISecretMessage
     {
-        public DocumentMessage(string obj, CompressionLevel compression = CompressionLevel.NoCompression) 
+        public DocumentMessage(string obj, bool compression = false) 
             : base(obj, compression)
         {
             if (!File.Exists(obj))
@@ -18,7 +18,7 @@ namespace FunctionLib.Model.Message
             }
         }
 
-        public DocumentMessage(byte[] bytes, CompressionLevel compression = CompressionLevel.NoCompression) 
+        public DocumentMessage(byte[] bytes, bool compression = false) 
             : base(bytes, compression)
         {
         }
@@ -37,10 +37,13 @@ namespace FunctionLib.Model.Message
                 fs.CopyTo(memStream);
             }
 
-            byte[] result;
-            using (var ms = new MemoryStream(memStream.ToArray()))
+            var result = memStream.ToArray();
+            if (Compression)
             {
-                result = CompressionHelper.Compress(ms, CompressionLevel);
+                using (var ms = new MemoryStream(memStream.ToArray()))
+                {
+                    result = CompressionHelper.Compress(ms);
+                }
             }
 
             var length = ConvertHelper.Convert(result.Length.ToString());
@@ -49,15 +52,15 @@ namespace FunctionLib.Model.Message
             return result;
         }
 
-        public object ConvertBack()
+        public string ConvertBack()
         {
             var index = ListHelper.IndexOf(Bytes, Constants.TagSeperator);
-            var sep1 = Bytes.Skip(index).ToArray();
-            var extension = ConvertHelper.Convert(sep1.Take(index).ToArray());
+            var sep1 = Bytes.Skip(index +  Constants.TagSeperator.Length).ToArray();
+            var extension = ConvertHelper.Convert(sep1.Take(ListHelper.IndexOf(sep1, Constants.TagSeperator)).ToArray());
             var resulting = sep1.Skip(ListHelper.IndexOf(Bytes, Constants.TagSeperator)).ToArray();
 
-            var path = FileManager.GetInstance().GenerateTmp();
-            var ms = CompressionHelper.Decompress(Bytes, CompressionLevel);
+            var path = FileManager.GetInstance().GenerateTmp(extension);
+            var ms = Compression ? CompressionHelper.Decompress(resulting) : new MemoryStream(resulting);
             using (var fs = File.Create(path))
             {
                 ms.CopyTo(fs);

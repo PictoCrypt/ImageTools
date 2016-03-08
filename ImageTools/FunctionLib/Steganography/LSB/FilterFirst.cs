@@ -86,7 +86,7 @@ namespace FunctionLib.Steganography.LSB
             var orderedLaplace = laplace.OrderByDescending(key => key.Value);
 
             var byteList = new List<byte>();
-            var bitHolder = new List<int>();
+            ICollection<int> bitHolder = new List<int>();
             foreach (var key in orderedLaplace)
             {
                 var x = key.Key.X;
@@ -110,7 +110,7 @@ namespace FunctionLib.Steganography.LSB
                     var bit = ByteHelper.GetBit(pixel.B, 8 - lsbIndicator + i);
                     bitHolder.Add(bit);
                 }
-                byteList = DecryptHelper(byteList, bitHolder);
+                byteList = DecryptHelper(byteList, ref bitHolder);
 
                 // Check for EndTag (END)
                 var index = MethodHelper.IndexOfWithinLastTwo(byteList);

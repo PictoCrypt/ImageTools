@@ -54,7 +54,7 @@ namespace FunctionLib.Steganography.Base
             where T : ISteganographicAlgorithm, new()
         {
             mLastAccessedAlgorithm = new T();
-            var result = mLastAccessedAlgorithm.Decode(src, password, type);
+            var result = mLastAccessedAlgorithm.Decode(src, password, type, additionalParam);
             return result;
         }
 

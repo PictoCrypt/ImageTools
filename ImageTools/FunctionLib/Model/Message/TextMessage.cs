@@ -7,12 +7,12 @@ namespace FunctionLib.Model.Message
 {
     public class TextMessage : SecretMessage, ISecretMessage
     {
-        public TextMessage(string obj, CompressionLevel compression = CompressionLevel.NoCompression) 
+        public TextMessage(string obj, bool compression = false) 
             : base(obj, compression)
         {
         }
 
-        public TextMessage(byte[] bytes, CompressionLevel compression = CompressionLevel.NoCompression) 
+        public TextMessage(byte[] bytes, bool compression = false) 
             : base(bytes, compression)
         {
         }
@@ -20,9 +20,16 @@ namespace FunctionLib.Model.Message
         public byte[] Convert()
         {
             byte[] result;
-            using (var ms = new MemoryStream(ConvertHelper.Convert(Message)))
+            if (Compression)
             {
-                result = CompressionHelper.Compress(ms, CompressionLevel);
+                using (var ms = new MemoryStream(ConvertHelper.Convert(Message)))
+                {
+                    result = CompressionHelper.Compress(ms);
+                }
+            }
+            else
+            {
+                result = ConvertHelper.Convert(Message);
             }
 
             var length = ConvertHelper.Convert(result.Length.ToString());
@@ -31,16 +38,16 @@ namespace FunctionLib.Model.Message
         }
 
 
-        public object ConvertBack()
+        public string ConvertBack()
         {
             var index = ListHelper.IndexOf(Bytes, Constants.TagSeperator);
-            var resulting = Bytes.Skip(index).ToArray();
-            var stream = CompressionHelper.Decompress(resulting, CompressionLevel);
-            string result;
-            using (stream)
+            var bytes = Bytes.Skip(index + Constants.TagSeperator.Length).ToArray();
+            if (Compression)
             {
-                result = ConvertHelper.Convert(stream.ToArray());
+                bytes = CompressionHelper.Decompress(bytes).ToArray();
             }
+
+            var result = ConvertHelper.Convert(bytes.ToArray());
             
             if (string.IsNullOrEmpty(result))
             {

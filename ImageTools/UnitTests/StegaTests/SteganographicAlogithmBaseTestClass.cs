@@ -39,10 +39,10 @@ namespace UnitTests.StegaTests
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
                 var encrypted = Encode(bitmap, new TextMessage(TestingConstants.NormalText));
-
+                //ImageFunctions.WriteBitwiseToOutput(new LockBitmap(encrypted));
                 var decrypted = Decode(encrypted);
-
-                Assert.IsTrue(decrypted.ToString().StartsWith(TestingConstants.NormalText));
+                var result = decrypted.ConvertBack().ToString();
+                Assert.IsTrue(result.StartsWith(TestingConstants.NormalText));
             }
         }
 
@@ -55,7 +55,8 @@ namespace UnitTests.StegaTests
 
                 var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, 4);
 
-                Assert.IsTrue(decrypted.ToString().StartsWith(TestingConstants.NormalText));
+                var result = decrypted.ConvertBack().ToString();
+                Assert.IsTrue(result.StartsWith(TestingConstants.NormalText));
             }
         }
 
@@ -65,10 +66,10 @@ namespace UnitTests.StegaTests
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
                 var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers), TestingConstants.Password.GetHashCode());
-                var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text).ToString();
-
-                Assert.IsNotNull(decrypted);
-                Assert.IsTrue(File.Exists(decrypted));
+                var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Document);
+                var result = decrypted.ConvertBack();
+                Assert.IsNotNull(result);
+                Assert.IsTrue(File.Exists(result));
             }
         }
 
@@ -78,11 +79,10 @@ namespace UnitTests.StegaTests
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
                 var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.Testdoc), TestingConstants.Password.GetHashCode());
-                var decrypted =
-                    Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text);
-
-                Assert.IsFalse(decrypted.Bytes == null);
-                Assert.IsTrue(File.Exists(decrypted.ConvertBack().ToString()));
+                var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Document);
+                var result = decrypted.ConvertBack();
+                Assert.IsNotNull(result);
+                Assert.IsTrue(File.Exists(result));
             }
         }
 
@@ -113,7 +113,7 @@ namespace UnitTests.StegaTests
             var encrypted = Encode(null, new TextMessage(TestingConstants.NormalText));
         }
 
-        private object Decode(Bitmap encrypted)
+        private ISecretMessage Decode(Bitmap encrypted)
         {
             mStopwatch.Start();
             var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text);

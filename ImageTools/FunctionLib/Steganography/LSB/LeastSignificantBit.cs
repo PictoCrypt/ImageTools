@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO.Compression;
+using System.Linq;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
@@ -57,45 +57,54 @@ namespace FunctionLib.Steganography.LSB
 
         public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
+            var img = LockBitmap(src);
             var byteList = new List<byte>();
-            for (var y = 0; y < src.Height; y++)
+            ICollection<int> bitHolder = new List<int>();
+            var end = int.MaxValue;
+            for (var y = 0; y < img.Height; y++)
             {
-                for (var x = 0; x < src.Width; x++)
+                for (var x = 0; x < img.Width; x++)
                 {
-                    var bitHolder = new List<int>();
-                    var pixel = src.GetPixel(x, y);
+                    var pixel = img.GetPixel(x, y);
+                    int bit;
                     for (var i = 0; i < lsbIndicator; i++)
                     {
-                        var bit = ByteHelper.GetBit(pixel.R, 8 - lsbIndicator + i);
+                        bit = ByteHelper.GetBit(pixel.R, 8 - lsbIndicator + i);
                         bitHolder.Add(bit);
                     }
 
                     for (var i = 0; i < lsbIndicator; i++)
                     {
-                        var bit = ByteHelper.GetBit(pixel.G, 8 - lsbIndicator + i);
+                        bit = ByteHelper.GetBit(pixel.G, 8 - lsbIndicator + i);
                         bitHolder.Add(bit);
                     }
 
                     for (var i = 0; i < lsbIndicator; i++)
                     {
-                        var bit = ByteHelper.GetBit(pixel.B, 8 - lsbIndicator + i);
+                        bit = ByteHelper.GetBit(pixel.B, 8 - lsbIndicator + i);
                         bitHolder.Add(bit);
                     }
-                    byteList = DecryptHelper(byteList, bitHolder);
+                    byteList = DecryptHelper(byteList, ref bitHolder);
+
                     // Check for EndTag (END)
-                    var index = MethodHelper.IndexOfWithinLastTwo(byteList);
-                    if (index > -1)
+                    if (end == int.MaxValue)
                     {
-                        // Remove overhang bytes
-                        if (byteList.Count > index + Constants.EndTag.Length)
+                        var index = ListHelper.IndexOf(byteList, Constants.TagSeperator);
+                        if (index > 0)
                         {
-                            byteList.RemoveRange(index + Constants.EndTag.Length,
-                                byteList.Count - (index + Constants.EndTag.Length));
+                            var seq = byteList.Take(index);
+                            end = Convert.ToInt32(ConvertHelper.Convert(seq.ToArray())) + seq.Count() +
+                                  Constants.TagSeperator.Length;
                         }
+                    }
+
+                    if (byteList.Count >= end)
+                    {
                         return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
                     }
                 }
             }
+            //return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
             throw new SystemException("Error, anything happened (or maybe not).");
         }
     }

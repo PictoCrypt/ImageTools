@@ -55,7 +55,7 @@ namespace FunctionLib.Steganography.LSB
         {
             var random = new Random(passHash);
             var byteList = new List<byte>();
-            var bitHolder = new List<int>();
+            ICollection<int> bitHolder = new List<int>();
             while (true)
             {
                 var x = GetNextRandom(Coordinate.X, src.Width, random);
@@ -79,7 +79,7 @@ namespace FunctionLib.Steganography.LSB
                     var bit = ByteHelper.GetBit(pixel.B, 8 - lsbIndicator + i);
                     bitHolder.Add(bit);
                 }
-                byteList = DecryptHelper(byteList, bitHolder);
+                byteList = DecryptHelper(byteList, ref bitHolder);
                 // Check for EndTag (END)
                 var index = MethodHelper.IndexOfWithinLastTwo(byteList);
                 if (index > -1)

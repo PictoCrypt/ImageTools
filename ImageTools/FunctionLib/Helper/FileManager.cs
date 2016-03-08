@@ -17,7 +17,7 @@ namespace FunctionLib.Helper
             if (mFileManager == null)
             {
                 mFileManager = new FileManager();
-                mFileManager.mTmpFileList.CollectionChanged += TmpFileListOnCollectionChanged;
+                //mFileManager.mTmpFileList.CollectionChanged += TmpFileListOnCollectionChanged;
             }
             return mFileManager;
         }
@@ -56,7 +56,7 @@ namespace FunctionLib.Helper
             return newPath;
         }
 
-        public static bool IsFileLocked(FileInfo file)
+        private static bool IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
 
@@ -66,10 +66,6 @@ namespace FunctionLib.Helper
             }
             catch (IOException)
             {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
                 return true;
             }
             finally
@@ -77,8 +73,6 @@ namespace FunctionLib.Helper
                 if (stream != null)
                     stream.Close();
             }
-
-            //file is not locked
             return false;
         }
 
@@ -102,7 +96,7 @@ namespace FunctionLib.Helper
 
         public void CleanUp()
         {
-            mFileManager.mTmpFileList.CollectionChanged -= TmpFileListOnCollectionChanged;
+            //mFileManager.mTmpFileList.CollectionChanged -= TmpFileListOnCollectionChanged;
             ClearTmpFiles();
         }
     }
