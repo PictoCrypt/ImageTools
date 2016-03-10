@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FunctionLib.Helper
@@ -6,7 +7,7 @@ namespace FunctionLib.Helper
     public static class ListHelper
     {
         /// <summary>
-        /// Gets the index based on the first element found in the list.
+        ///     Gets the index based on the first element found in the list.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection">Collection in which to search.</param>
@@ -15,7 +16,16 @@ namespace FunctionLib.Helper
         public static int IndexOf<T>(IEnumerable<T> collection,
             IEnumerable<T> sequence)
         {
-            //TODO: Vielleicht mit currentIndex
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (sequence == null)
+            {
+                throw new ArgumentNullException(nameof(sequence));
+            }
+
+
             var ccount = collection.Count();
             var scount = sequence.Count();
 

@@ -46,10 +46,12 @@ namespace UnitTests.FunctionLibTests
         [TestMethod]
         public void GZipImageCompressTest()
         {
-            var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open);
-            var result = CompressionHelper.Compress(stream);
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.Length > 0);
+            using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
+            {
+                var result = CompressionHelper.Compress(stream);
+                Assert.IsNotNull(result);
+                Assert.IsTrue(result.Length > 0);
+            }            
         }
 
         [TestMethod]
@@ -66,12 +68,14 @@ namespace UnitTests.FunctionLibTests
         [TestMethod]
         public void GZipImageDecompressTest()
         {
-            var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open);
-            var result = CompressionHelper.Compress(stream);
-            var decompressed = CompressionHelper.Decompress(result);
-            var img = Image.FromStream(decompressed);
-            Assert.IsNotNull(img);
-            Assert.IsFalse(img.Size.IsEmpty);
+            using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
+            {
+                var result = CompressionHelper.Compress(stream);
+                var decompressed = CompressionHelper.Decompress(result);
+                var img = Image.FromStream(decompressed);
+                Assert.IsNotNull(img);
+                Assert.IsFalse(img.Size.IsEmpty);
+            }
         }
     }
 }

@@ -25,6 +25,15 @@ namespace FunctionLib.Model.Message
             Compression = compression;
         }
 
+        public override string ToString()
+        {
+            if (Message != null)
+            {
+                return Message;
+            }
+            return base.ToString();
+        }
+
         public string Message { get; }
         public byte[] Bytes { get; }
         public bool Compression { get; }

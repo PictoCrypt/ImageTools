@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -19,8 +20,15 @@ namespace FunctionLib.Cryptography
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encode");
             if (extractedMethod != null)
             {
-                return extractedMethod.MakeGenericMethod(method)
-                    .Invoke(obj, new object[] {value, password}).ToString();
+                try
+                {
+                    return extractedMethod.MakeGenericMethod(method)
+                .Invoke(obj, new object[] { value, password }).ToString();
+                }
+                catch (TargetInvocationException ex)
+                {
+                    throw ex.InnerException;
+                }
             }
             throw new ArgumentException(baseType.ToString());
         }
@@ -31,13 +39,20 @@ namespace FunctionLib.Cryptography
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decode");
             if (extractedMethod != null)
             {
-                return extractedMethod.MakeGenericMethod(method)
-                    .Invoke(obj, new object[] {value, password}).ToString();
+                try
+                {
+                    return extractedMethod.MakeGenericMethod(method)
+                .Invoke(obj, new object[] { value, password }).ToString();
+                }
+                catch (TargetInvocationException ex)
+                {
+                    throw ex.InnerException;
+                }
             }
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static string Encrypt<T>(string value, string password)
+        public static string Encode<T>(string value, string password)
             where T : SymmetricAlgorithm, new()
         {
             var vectorBytes = Encoding.ASCII.GetBytes(Vector);
@@ -70,7 +85,7 @@ namespace FunctionLib.Cryptography
             return Convert.ToBase64String(encrypted);
         }
 
-        public static string Decrypt<T>(string value, string password)
+        public static string Decode<T>(string value, string password)
             where T : SymmetricAlgorithm, new()
         {
             var vectorBytes = Encoding.ASCII.GetBytes(Vector);
@@ -98,7 +113,7 @@ namespace FunctionLib.Cryptography
                             {
                                 decryptedByteCount = reader.Read(decrypted, 0, decrypted.Length);
                             }
-                            catch (Exception)
+                            catch (System.Exception)
                             {
                                 throw new SystemException("Das angegebene Passwort war falsch.");
                             }

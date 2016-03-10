@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FunctionLib.CustomException;
 
 namespace FunctionLib.Steganography.LSB
 {
@@ -28,7 +29,7 @@ namespace FunctionLib.Steganography.LSB
                     }
                     return result;
             }
-            throw new Exception("Error generating unique random number.");
+            throw new UniqueNumberException("Error generating unique random number.");
         }
     }
 

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using FunctionLib.CustomException;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,7 +42,7 @@ namespace UnitTests.StegaTests
                 var encrypted = Encode(bitmap, new TextMessage(TestingConstants.NormalText));
                 //ImageFunctions.WriteBitwiseToOutput(new LockBitmap(encrypted));
                 var decrypted = Decode(encrypted);
-                var result = decrypted.ConvertBack().ToString();
+                var result = decrypted.ConvertBack();
                 Assert.IsTrue(result.StartsWith(TestingConstants.NormalText));
             }
         }
@@ -87,7 +88,7 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (TargetInvocationException))]
+        [ExpectedException(typeof (ContentLengthException))]
         public void EncodeWithoutSpace()
         {
             using (var bitmap = new Bitmap(TestingConstants.SmallKoala))

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using FunctionLib.Helper;
-using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.LSB
@@ -24,35 +23,20 @@ namespace FunctionLib.Steganography.LSB
             }
         }
 
-        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHas, int lsbIndicator = 3)
+        protected override bool Iteration(int lsbIndicator)
         {
-            var result = LockBitmap(src);
-            var byteIndex = 0;
-            var bitIndex = 0;
-            var bytes = message.Convert();
-
-            for (var y = 0; y < result.Height; y++)
+            for (var y = 0; y < Bitmap.Height; y++)
             {
-                for (var x = 0; x < result.Width; x++)
+                for (var x = 0; x < Bitmap.Width; x++)
                 {
-                    var pixel = result.GetPixel(x, y);
-                    var r = ByteHelper.ClearLeastSignificantBit(pixel.R, lsbIndicator);
-                    var g = ByteHelper.ClearLeastSignificantBit(pixel.G, lsbIndicator);
-                    var b = ByteHelper.ClearLeastSignificantBit(pixel.B, lsbIndicator);
-
-                    r = r + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-                    g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-                    b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-
-                    result.SetPixel(x, y, Color.FromArgb(r, g, b));
-                    ChangedPixels.Add(new Pixel(x, y));
-                    if (byteIndex > bytes.Length - 1 || byteIndex == bytes.Length - 1 && bitIndex == 7)
+                    EncodeBytes(x, y, lsbIndicator);
+                    if (CheckForEnd())
                     {
-                        return result;
+                        return true;
                     }
                 }
             }
-            return result;
+            return false;
         }
 
         public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
@@ -93,8 +77,13 @@ namespace FunctionLib.Steganography.LSB
                         if (index > 0)
                         {
                             var seq = byteList.Take(index);
-                            end = Convert.ToInt32(ConvertHelper.Convert(seq.ToArray())) + seq.Count() +
-                                  Constants.TagSeperator.Length;
+                            int.TryParse(ConvertHelper.Convert(seq.ToArray()), out end);
+                            if (end == 0)
+                            {
+                                throw new ArithmeticException();
+                            }
+
+                            end = end + seq.Count() + Constants.TagSeperator.Length;
                         }
                     }
 
@@ -104,7 +93,6 @@ namespace FunctionLib.Steganography.LSB
                     }
                 }
             }
-            //return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
             throw new SystemException("Error, anything happened (or maybe not).");
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using FunctionLib.Filter;
+using FunctionLib.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.Filter
@@ -13,7 +14,7 @@ namespace UnitTests.Filter
         [ExpectedException(typeof (ArgumentNullException))]
         public void LaplaceTestWithoutImage()
         {
-            var filter = new Laplace(null, 1, 8);
+            var filter = new Laplace(null as LockBitmap, 1, 8);
             var result = filter.GetValue(0, 0);
         }
 

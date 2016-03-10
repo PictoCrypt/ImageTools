@@ -26,52 +26,37 @@ namespace FunctionLib.Steganography.LSB
             }
         }
 
-        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        protected override bool Iteration(int lsbIndicator)
         {
-            var filter = new Laplace(src, 1, 8);
+            var filter = new Laplace(Bitmap, 1, 8);
             IDictionary<Pixel, int> laplace = new Dictionary<Pixel, int>();
-            for (var x = 0; x < src.Width; x++)
+            for (var x = 0; x < Bitmap.Width; x++)
             {
-                for (var y = 0; y < src.Height; y++)
+                for (var y = 0; y < Bitmap.Height; y++)
                 {
                     laplace.Add(new Pixel(x, y), filter.GetValue(x, y));
                 }
             }
-
-            var result = LockBitmap(src);
             var orderedLaplace = laplace.OrderByDescending(key => key.Value);
             //var random = new Random(password);
 
-            var byteIndex = 0;
-            var bitIndex = 0;
-            var bytes = message.Convert();
             foreach (var key in orderedLaplace)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
                 //var x = GetNextRandom("x", orderedLaplace.Count(), random);
-
-                var pixel = src.GetPixel(x, y);
-                var r = ByteHelper.ClearLeastSignificantBit(pixel.R, lsbIndicator);
-                var g = ByteHelper.ClearLeastSignificantBit(pixel.G, lsbIndicator);
-                var b = ByteHelper.ClearLeastSignificantBit(pixel.B, lsbIndicator);
-
-                r = r + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-                g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-                b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-
-                src.SetPixel(x, y, Color.FromArgb(r, g, b));
-                ChangedPixels.Add(new Pixel(x, y));
-                if (byteIndex > bytes.Length - 1 || byteIndex == bytes.Length - 1 && bitIndex == 7)
+                EncodeBytes(x, y, lsbIndicator);
+                if (CheckForEnd())
                 {
-                    return result;
+                    return true;
                 }
             }
-            throw new SystemException("Error, anything happened (or maybe not).");
+            return false;
         }
 
         public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
+            //TODO geht das mit lock?
             var filter = new Laplace(src, 1, 8);
             IDictionary<Pixel, int> laplace = new Dictionary<Pixel, int>();
             for (var x = 0; x < src.Width; x++)
@@ -86,13 +71,14 @@ namespace FunctionLib.Steganography.LSB
             var orderedLaplace = laplace.OrderByDescending(key => key.Value);
 
             var byteList = new List<byte>();
+            var end = int.MaxValue;
             ICollection<int> bitHolder = new List<int>();
             foreach (var key in orderedLaplace)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
 
-                var pixel = src.GetPixel(x, y);
+                var pixel = result.GetPixel(x, y);
                 for (var i = 0; i < lsbIndicator; i++)
                 {
                     var bit = ByteHelper.GetBit(pixel.R, 8 - lsbIndicator + i);
@@ -111,17 +97,25 @@ namespace FunctionLib.Steganography.LSB
                     bitHolder.Add(bit);
                 }
                 byteList = DecryptHelper(byteList, ref bitHolder);
-
                 // Check for EndTag (END)
-                var index = MethodHelper.IndexOfWithinLastTwo(byteList);
-                if (index > -1)
+                if (end == int.MaxValue)
                 {
-                    // Remove overhang bytes
-                    if (byteList.Count > index + Constants.EndTag.Length)
+                    var index = ListHelper.IndexOf(byteList, Constants.TagSeperator);
+                    if (index > 0)
                     {
-                        byteList.RemoveRange(index + Constants.EndTag.Length,
-                            byteList.Count - (index + Constants.EndTag.Length));
+                        var seq = byteList.Take(index);
+                        int.TryParse(ConvertHelper.Convert(seq.ToArray()), out end);
+                        if (end == 0)
+                        {
+                            throw new ArithmeticException();
+                        }
+
+                        end = end + seq.Count() + Constants.TagSeperator.Length;
                     }
+                }
+
+                if (byteList.Count >= end)
+                {
                     return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
                 }
             }

@@ -12,13 +12,13 @@ namespace UnitTests.StegaTests
     {
         protected override Bitmap Encode(Bitmap src, ISecretMessage value, int password, int additionalParam = 3)
         {
-            return SteganographicAlgorithmBase.Encode(this, typeof(FilterFirst), src, value, password,
+            return SteganographicAlgorithmBase.Encode(this, typeof(RandomLsb), src, value, password,
                 additionalParam);
         }
 
         protected override ISecretMessage Decode(Bitmap src, int password, MessageType type, int additionalParam = 3)
         {
-            return SteganographicAlgorithmBase.Decode(this, typeof(FilterFirst), src, password, type, additionalParam);
+            return SteganographicAlgorithmBase.Decode(this, typeof(RandomLsb), src, password, type, additionalParam);
         }
     }
 }

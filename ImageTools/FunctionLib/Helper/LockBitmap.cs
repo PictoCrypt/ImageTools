@@ -70,7 +70,7 @@ namespace FunctionLib.Helper
                 // Copy data from pointer to array
                 Marshal.Copy(mIptr, Pixels, 0, Pixels.Length);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 throw ex;
             }
@@ -89,7 +89,7 @@ namespace FunctionLib.Helper
                 // Unlock bitmap data
                 Source.UnlockBits(mBitmapData);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 throw ex;
             }

@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using FunctionLib.Helper;
 
 namespace FunctionLib.Filter
 {
     public class Laplace : Filter
     {
-        public Laplace(Bitmap image, int startbits, int endbits)
+        public Laplace(Bitmap image, int startbits, int endbits) : this(new LockBitmap(image), startbits, endbits)
+        {
+        }
+
+        public Laplace(LockBitmap image, int startbits, int endbits)
         {
             if (image == null)
             {
@@ -15,9 +20,8 @@ namespace FunctionLib.Filter
             Image = image;
             StartRange = startbits;
             EndRange = endbits;
+            image.LockBits();
         }
-
-        //public Bitmap Image { get; set; }
 
         public override int GetValue(int x, int y)
         {
@@ -80,7 +84,7 @@ namespace FunctionLib.Filter
 
     public abstract class Filter
     {
-        protected Bitmap Image { get; set; }
+        protected LockBitmap Image { get; set; }
         protected int StartRange { get; set; }
         protected int EndRange { get; set; }
         public abstract int GetValue(int x, int y);

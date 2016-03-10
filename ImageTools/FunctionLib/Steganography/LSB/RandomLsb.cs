@@ -20,43 +20,29 @@ namespace FunctionLib.Steganography.LSB
             get { return "Randomly distributes the message across the image in the least significant bit."; }
         }
 
-        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        protected override bool Iteration(int lsbIndicator)
         {
-            var result = LockBitmap(src);
-            var random = new Random(passHash);
-            var byteIndex = 0;
-            var bitIndex = 0;
-            var bytes = message.Convert();
-            while (true)
+            var random = new Random(PassHash);
+            while (ByteIndex > Bytes.Length)
             {
-                var x = GetNextRandom(Coordinate.X, src.Width, random);
-                var y = GetNextRandom(Coordinate.Y, src.Height, random);
-
-                var pixel = src.GetPixel(x, y);
-                var r = ByteHelper.ClearLeastSignificantBit(pixel.R, lsbIndicator);
-                var g = ByteHelper.ClearLeastSignificantBit(pixel.G, lsbIndicator);
-                var b = ByteHelper.ClearLeastSignificantBit(pixel.B, lsbIndicator);
-
-                r = r + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-                g = g + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-                b = b + CurrentByte(bytes, ref byteIndex, ref bitIndex, lsbIndicator);
-
-                src.SetPixel(x, y, Color.FromArgb(r, g, b));
-                ChangedPixels.Add(new Pixel(x, y));
-
-                if (byteIndex > bytes.Length - 1 || byteIndex == bytes.Length - 1 && bitIndex == 7)
+                var x = GetNextRandom(Coordinate.X, Bitmap.Width, random);
+                var y = GetNextRandom(Coordinate.Y, Bitmap.Height, random);
+                EncodeBytes(x, y, lsbIndicator);
+                if (CheckForEnd())
                 {
-                    return result;
+                    return true;
                 }
             }
+            return false;
         }
 
         public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
         {
             var random = new Random(passHash);
             var byteList = new List<byte>();
+            var end = int.MaxValue;
             ICollection<int> bitHolder = new List<int>();
-            while (true)
+            while (byteList.Count >= end)
             {
                 var x = GetNextRandom(Coordinate.X, src.Width, random);
                 var y = GetNextRandom(Coordinate.Y, src.Height, random);
@@ -81,18 +67,23 @@ namespace FunctionLib.Steganography.LSB
                 }
                 byteList = DecryptHelper(byteList, ref bitHolder);
                 // Check for EndTag (END)
-                var index = MethodHelper.IndexOfWithinLastTwo(byteList);
-                if (index > -1)
+                if (end == int.MaxValue)
                 {
-                    // Remove overhang bytes
-                    if (byteList.Count > index + Constants.EndTag.Length)
+                    var index = ListHelper.IndexOf(byteList, Constants.TagSeperator);
+                    if (index > 0)
                     {
-                        byteList.RemoveRange(index + Constants.EndTag.Length,
-                            byteList.Count - (index + Constants.EndTag.Length));
+                        var seq = byteList.Take(index);
+                        int.TryParse(ConvertHelper.Convert(seq.ToArray()), out end);
+                        if (end == 0)
+                        {
+                            throw new ArithmeticException();
+                        }
+
+                        end = end + seq.Count() + Constants.TagSeperator.Length;
                     }
-                    return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
                 }
             }
+            return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
         }
     }
 }

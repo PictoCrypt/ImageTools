@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Text;
 using FunctionLib.Helper;
 using FunctionLib.Model;
@@ -10,6 +9,7 @@ namespace FunctionLib.Steganography
 {
     public class ComplexLeastSignificantBit : SteganographicAlgorithmImpl
     {
+        public int End = int.MaxValue;
         public override string Name
         {
             get { return "Comlex LSB"; }
@@ -38,27 +38,25 @@ namespace FunctionLib.Steganography
             // holds the number of trailing zeros that have been added when finishing the process
             var zeros = 0;
 
-            // hold pixel elements
-
             // pass through the rows
-            for (var i = 0; i < result.Height; i++)
+            for (var y = 0; y < result.Height; y++)
             {
                 // pass through each row
-                for (var j = 0; j < result.Width; j++)
+                for (var x = 0; x < result.Width; x++)
                 {
                     // holds the pixel that is currently being processed
-                    var pixel = result.GetPixel(j, i);
+                    var pixel = result.GetPixel(x, y);
 
                     // now, clear the least significant bit (LSB) from each pixel element
-                    var r = pixel.R - pixel.R%2;
-                    var g = pixel.G - pixel.G%2;
-                    var b = pixel.B - pixel.B%2;
+                    var r = pixel.R - pixel.R % 2;
+                    var g = pixel.G - pixel.G % 2;
+                    var b = pixel.B - pixel.B % 2;
 
                     // for each pixel, pass through its elements (RGB)
                     for (var n = 0; n < 3; n++)
                     {
                         // check if new 8 bits has been processed
-                        if (pixelElementIndex%8 == 0)
+                        if (pixelElementIndex % 8 == 0)
                         {
                             // check if the whole process has finished
                             // we can say that it's finished when 8 zeros are added
@@ -66,71 +64,71 @@ namespace FunctionLib.Steganography
                             {
                                 // apply the last pixel on the image
                                 // even if only a part of its elements have been affected
-                                if ((pixelElementIndex - 1)%3 < 2)
+                                if ((pixelElementIndex - 1) % 3 < 2)
                                 {
-                                    result.SetPixel(j, i, Color.FromArgb(r, g, b));
-                                    ChangedPixels.Add(new Pixel(j, i));
+                                    result.SetPixel(x, y, Color.FromArgb(r, g, b));
+                                    ChangedPixels.Add(new Pixel(x, y));
                                 }
+
+                                // return the bitmap with the text hidden in
                                 return result;
                             }
 
-                            //TODO FIX
                             // check if all characters has been hidden
-                            if (charIndex >= message.Message.ToString().Length)
+                            if (charIndex >= message.Message.Length)
                             {
-                                // start adding zeros to mark the end of the value
+                                // start adding zeros to mark the end of the text
                                 state = State.FillingWithZeros;
                             }
                             else
                             {
                                 // move to the next character and process again
-                                charValue = message.Message.ToString()[charIndex++];
+                                charValue = message.Message[charIndex++];
                             }
                         }
 
                         // check which pixel element has the turn to hide a bit in its LSB
-                        switch (pixelElementIndex%3)
+                        switch (pixelElementIndex % 3)
                         {
                             case 0:
-                            {
-                                if (state == State.Hiding)
                                 {
-                                    //TODO: Hier müsste der Punkt sein, um die Anzahl der verwendeten Bits zu ändern.
-                                    // the rightmost bit in the character will be (charValue % 2)
-                                    // to put this value instead of the LSB of the pixel element
-                                    // just add it to it
-                                    // recall that the LSB of the pixel element had been cleared
-                                    // before this operation
-                                    r += charValue%2;
+                                    if (state == State.Hiding)
+                                    {
+                                        // the rightmost bit in the character will be (charValue % 2)
+                                        // to put this value instead of the LSB of the pixel element
+                                        // just add it to it
+                                        // recall that the LSB of the pixel element had been cleared
+                                        // before this operation
+                                        r += charValue % 2;
 
-                                    // removes the added rightmost bit of the character
-                                    // such that next time we can reach the next one
-                                    charValue /= 2;
+                                        // removes the added rightmost bit of the character
+                                        // such that next time we can reach the next one
+                                        charValue /= 2;
+                                    }
                                 }
-                            }
                                 break;
                             case 1:
-                            {
-                                if (state == State.Hiding)
                                 {
-                                    g += charValue%2;
+                                    if (state == State.Hiding)
+                                    {
+                                        g += charValue % 2;
 
-                                    charValue /= 2;
+                                        charValue /= 2;
+                                    }
                                 }
-                            }
                                 break;
                             case 2:
-                            {
-                                if (state == State.Hiding)
                                 {
-                                    b += charValue%2;
+                                    if (state == State.Hiding)
+                                    {
+                                        b += charValue % 2;
 
-                                    charValue /= 2;
+                                        charValue /= 2;
+                                    }
+
+                                    result.SetPixel(x, y, Color.FromArgb(r, g, b));
+                                    ChangedPixels.Add(new Pixel(x, y));
                                 }
-
-                                result.SetPixel(j, i, Color.FromArgb(r, g, b));
-                                ChangedPixels.Add(new Pixel(j, i));
-                            }
                                 break;
                         }
 
@@ -144,6 +142,7 @@ namespace FunctionLib.Steganography
                     }
                 }
             }
+
             return result;
         }
 
@@ -202,33 +201,21 @@ namespace FunctionLib.Steganography
                             charValue = ReverseBits(charValue);
 
                             // can only be 0 if it is the stop character (the 8 zeros)
-                            var index =
-                                MethodHelper.IndexOfWithinLastTwo(
-                                    new List<byte>(ConvertHelper.Convert(result.ToString())));
-                            if (index > -1)
+                            if (charValue == 0)
                             {
-                                // Remove overhang bytes
-                                if (result.Length > index + Constants.EndTag.Length)
-                                {
-                                    //result.RemoveRange(index + Constants.EndTag.Length, byteList.Count - (index + Constants.EndTag.Length));
-                                }
-                                return new TextMessage(result.ToString());
+                                return MethodHelper.GetSpecificMessage(type, ConvertHelper.Convert(result.ToString()));
                             }
-                            //if (charValue == 0)
-                            //{
-                            //    return ConvertHelper.Convert(result.ToString());
-                            //}
 
                             // convert the character value from int to char
-                            var c = (char) charValue;
+                            var c = (char)charValue;
 
-                            // add the current character to the result value
-                            result.Append(c);
+                            // add the current character to the result text
+                            result.Append(c.ToString());
                         }
                     }
                 }
             }
-            return new TextMessage(result.ToString());
+            return MethodHelper.GetSpecificMessage(type, ConvertHelper.Convert(result.ToString()));
         }
 
         private static int ReverseBits(int n)

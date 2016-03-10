@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
@@ -22,8 +23,15 @@ namespace FunctionLib.Steganography.Base
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encode");
             if (extractedMethod != null)
             {
-                return (Bitmap) extractedMethod.MakeGenericMethod(method)
-                    .Invoke(obj, new object[] {src, value, password, additionalParam});
+                try
+                {
+                    return (Bitmap)extractedMethod.MakeGenericMethod(method)
+                        .Invoke(obj, new object[] { src, value, password, additionalParam });
+                }
+                catch (TargetInvocationException ex)
+                {
+                    throw ex.InnerException;
+                }
             }
             throw new ArgumentException(baseType.ToString());
         }
@@ -34,8 +42,15 @@ namespace FunctionLib.Steganography.Base
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decode");
             if (extractedMethod != null)
             {
-                return extractedMethod.MakeGenericMethod(method)
-                    .Invoke(obj, new object[] {src, password, type, additionalParam}) as ISecretMessage;
+                try
+                {
+                    return extractedMethod.MakeGenericMethod(method)
+                .Invoke(obj, new object[] { src, password, type, additionalParam }) as ISecretMessage;
+                }
+                catch (TargetInvocationException ex)
+                {
+                    throw ex.InnerException;
+                }
             }
             throw new ArgumentException(baseType.ToString());
         }
@@ -45,7 +60,6 @@ namespace FunctionLib.Steganography.Base
         {
             mLastAccessedAlgorithm = new T();
             var result = mLastAccessedAlgorithm.Encode(src, value, password, additionalParam);
-            result.UnlockBits();
             return result.Source;
         }
 
@@ -58,7 +72,6 @@ namespace FunctionLib.Steganography.Base
             return result;
         }
 
-        //TODO: Generic
         public static string ChangeColor(string srcPath, Color color)
         {
             var result = "";
