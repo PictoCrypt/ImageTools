@@ -11,7 +11,7 @@ namespace UnitTests.StegaTests
     {
         protected override Bitmap Encode(Bitmap src, ISecretMessage value, int password, int additionalParam = 3)
         {
-            return SteganographicAlgorithmBase.Encode(this, typeof(FilterFirst), src, value, password,
+            return SteganographicAlgorithmBase.Encode(this, typeof (FilterFirst), src, value, password,
                 additionalParam);
         }
 

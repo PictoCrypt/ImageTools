@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using FunctionLib.Helper;
 
@@ -7,12 +6,12 @@ namespace FunctionLib.Model.Message
 {
     public class TextMessage : SecretMessage, ISecretMessage
     {
-        public TextMessage(string obj, bool compression = false) 
+        public TextMessage(string obj, bool compression = false)
             : base(obj, compression)
         {
         }
 
-        public TextMessage(byte[] bytes, bool compression = false) 
+        public TextMessage(byte[] bytes, bool compression = false)
             : base(bytes, compression)
         {
         }
@@ -48,7 +47,7 @@ namespace FunctionLib.Model.Message
             }
 
             var result = ConvertHelper.Convert(bytes.ToArray());
-            
+
             if (string.IsNullOrEmpty(result))
             {
                 throw new IOException("Error reading from stream. Stream was empty.");

@@ -1,6 +1,8 @@
+using System;
+
 namespace FunctionLib.CustomException
 {
-    public class ContentLengthException : System.Exception
+    public class ContentLengthException : Exception
     {
     }
 }

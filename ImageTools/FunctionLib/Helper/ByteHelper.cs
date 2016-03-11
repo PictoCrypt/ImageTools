@@ -6,7 +6,7 @@ namespace FunctionLib.Helper
     public static class ByteHelper
     {
         /// <summary>
-        /// Gets the bit on the specific position in byte.
+        ///     Gets the bit on the specific position in byte.
         /// </summary>
         /// <param name="b">Byte</param>
         /// <param name="index">Position index. Position of 0 is the most significant bit.</param>
@@ -22,7 +22,7 @@ namespace FunctionLib.Helper
         }
 
         /// <summary>
-        /// Clears the last significant bit according to the parameter of lsbIndicator.
+        ///     Clears the last significant bit according to the parameter of lsbIndicator.
         /// </summary>
         /// <param name="b">Byte</param>
         /// <param name="lsbIndicator">Least-Significant-Bits</param>

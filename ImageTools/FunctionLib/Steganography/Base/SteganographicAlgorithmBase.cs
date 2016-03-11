@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.Base
@@ -25,8 +24,8 @@ namespace FunctionLib.Steganography.Base
             {
                 try
                 {
-                    return (Bitmap)extractedMethod.MakeGenericMethod(method)
-                        .Invoke(obj, new object[] { src, value, password, additionalParam });
+                    return (Bitmap) extractedMethod.MakeGenericMethod(method)
+                        .Invoke(obj, new object[] {src, value, password, additionalParam});
                 }
                 catch (TargetInvocationException ex)
                 {
@@ -36,7 +35,8 @@ namespace FunctionLib.Steganography.Base
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static ISecretMessage Decode(object obj, Type method, Bitmap src, int password, MessageType type, int additionalParam)
+        public static ISecretMessage Decode(object obj, Type method, Bitmap src, int password, MessageType type,
+            int additionalParam)
         {
             var baseType = typeof (SteganographicAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decode");
@@ -45,7 +45,7 @@ namespace FunctionLib.Steganography.Base
                 try
                 {
                     return extractedMethod.MakeGenericMethod(method)
-                .Invoke(obj, new object[] { src, password, type, additionalParam }) as ISecretMessage;
+                        .Invoke(obj, new object[] {src, password, type, additionalParam}) as ISecretMessage;
                 }
                 catch (TargetInvocationException ex)
                 {

@@ -1,6 +1,8 @@
-﻿namespace FunctionLib.CustomException
+﻿using System;
+
+namespace FunctionLib.CustomException
 {
-    public class UniqueNumberException : System.Exception
+    public class UniqueNumberException : Exception
     {
         public UniqueNumberException(string message) : base(message)
         {

@@ -21,9 +21,10 @@ namespace FunctionLib.Helper
             return result;
         }
 
-        /// <summary>
-        ///     Converts a object into a byte-Array. Adds an Start and End-Tag to the object.
         /// </summary>
+        ///     Converts a object into a byte-Array. Adds an Start and End-Tag to the object.
+
+        /// <summary>
         /// <param name="value">The object can be a string or an path to an file.</param>
         /// <returns>byte[]</returns>
         //public static byte[] Convert(string value)

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using FunctionLib.CustomException;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
@@ -25,7 +24,7 @@ namespace UnitTests.StegaTests
         [TestCleanup]
         public void TestCleanUp()
         {
-                WriteToOutput();
+            WriteToOutput();
         }
 
         [ClassCleanup]
@@ -52,11 +51,12 @@ namespace UnitTests.StegaTests
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encode(bitmap, new TextMessage(TestingConstants.NormalText), TestingConstants.Password.GetHashCode(), 4);
+                var encrypted = Encode(bitmap, new TextMessage(TestingConstants.NormalText),
+                    TestingConstants.Password.GetHashCode(), 4);
 
                 var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Text, 4);
 
-                var result = decrypted.ConvertBack().ToString();
+                var result = decrypted.ConvertBack();
                 Assert.IsTrue(result.StartsWith(TestingConstants.NormalText));
             }
         }
@@ -66,7 +66,8 @@ namespace UnitTests.StegaTests
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers), TestingConstants.Password.GetHashCode());
+                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers),
+                    TestingConstants.Password.GetHashCode());
                 var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Document);
                 var result = decrypted.ConvertBack();
                 Assert.IsNotNull(result);
@@ -79,7 +80,8 @@ namespace UnitTests.StegaTests
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.Testdoc), TestingConstants.Password.GetHashCode());
+                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.Testdoc),
+                    TestingConstants.Password.GetHashCode());
                 var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), MessageType.Document);
                 var result = decrypted.ConvertBack();
                 Assert.IsNotNull(result);
@@ -93,12 +95,13 @@ namespace UnitTests.StegaTests
         {
             using (var bitmap = new Bitmap(TestingConstants.SmallKoala))
             {
-                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers), TestingConstants.Password.GetHashCode());
+                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers),
+                    TestingConstants.Password.GetHashCode());
             }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof (ArgumentNullException))]
         public void EncodeWithoutText()
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
@@ -108,7 +111,7 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof (ArgumentNullException))]
         public void EncodeWithoutCover()
         {
             var encrypted = Encode(null, new TextMessage(TestingConstants.NormalText));

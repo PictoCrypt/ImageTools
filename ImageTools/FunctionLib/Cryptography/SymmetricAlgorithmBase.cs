@@ -23,7 +23,7 @@ namespace FunctionLib.Cryptography
                 try
                 {
                     return extractedMethod.MakeGenericMethod(method)
-                .Invoke(obj, new object[] { value, password }).ToString();
+                        .Invoke(obj, new object[] {value, password}).ToString();
                 }
                 catch (TargetInvocationException ex)
                 {
@@ -42,7 +42,7 @@ namespace FunctionLib.Cryptography
                 try
                 {
                     return extractedMethod.MakeGenericMethod(method)
-                .Invoke(obj, new object[] { value, password }).ToString();
+                        .Invoke(obj, new object[] {value, password}).ToString();
                 }
                 catch (TargetInvocationException ex)
                 {
@@ -113,7 +113,7 @@ namespace FunctionLib.Cryptography
                             {
                                 decryptedByteCount = reader.Read(decrypted, 0, decrypted.Length);
                             }
-                            catch (System.Exception)
+                            catch (Exception)
                             {
                                 throw new SystemException("Das angegebene Passwort war falsch.");
                             }

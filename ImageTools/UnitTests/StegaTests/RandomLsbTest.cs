@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using FunctionLib.Model.Message;
 using FunctionLib.Steganography.Base;
 using FunctionLib.Steganography.LSB;
@@ -12,13 +11,13 @@ namespace UnitTests.StegaTests
     {
         protected override Bitmap Encode(Bitmap src, ISecretMessage value, int password, int additionalParam = 3)
         {
-            return SteganographicAlgorithmBase.Encode(this, typeof(RandomLsb), src, value, password,
+            return SteganographicAlgorithmBase.Encode(this, typeof (RandomLsb), src, value, password,
                 additionalParam);
         }
 
         protected override ISecretMessage Decode(Bitmap src, int password, MessageType type, int additionalParam = 3)
         {
-            return SteganographicAlgorithmBase.Decode(this, typeof(RandomLsb), src, password, type, additionalParam);
+            return SteganographicAlgorithmBase.Decode(this, typeof (RandomLsb), src, password, type, additionalParam);
         }
     }
 }

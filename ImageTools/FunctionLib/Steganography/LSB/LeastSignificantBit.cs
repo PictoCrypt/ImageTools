@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using FunctionLib.Helper;
-using FunctionLib.Model.Message;
-
-namespace FunctionLib.Steganography.LSB
+﻿namespace FunctionLib.Steganography.LSB
 {
     public class LeastSignificantBit : LsbAlgorithmBase
     {
@@ -23,14 +16,14 @@ namespace FunctionLib.Steganography.LSB
             }
         }
 
-        protected override bool Iteration(int lsbIndicator)
+        protected override bool EncodingIteration(int lsbIndicator)
         {
             for (var y = 0; y < Bitmap.Height; y++)
             {
                 for (var x = 0; x < Bitmap.Width; x++)
                 {
                     EncodeBytes(x, y, lsbIndicator);
-                    if (CheckForEnd())
+                    if (EncodeCheckForEnd())
                     {
                         return true;
                     }
@@ -39,61 +32,24 @@ namespace FunctionLib.Steganography.LSB
             return false;
         }
 
-        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
+        protected override bool DecodingIteration(int lsbIndicator)
         {
-            var img = LockBitmap(src);
-            var byteList = new List<byte>();
-            ICollection<int> bitHolder = new List<int>();
-            var end = int.MaxValue;
-            for (var y = 0; y < img.Height; y++)
+            for (var y = 0; y < Bitmap.Height; y++)
             {
-                for (var x = 0; x < img.Width; x++)
+                for (var x = 0; x < Bitmap.Width; x++)
                 {
-                    var pixel = img.GetPixel(x, y);
-                    int bit;
-                    for (var i = 0; i < lsbIndicator; i++)
+                    DecodeBytes(x, y, lsbIndicator);
+                    //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
+                    var bitHolder = BitHolder;
+                    ByteList = DecryptHelper(ByteList, ref bitHolder);
+                    BitHolder = bitHolder;
+                    if (DecodeCheckForEnd())
                     {
-                        bit = ByteHelper.GetBit(pixel.R, 8 - lsbIndicator + i);
-                        bitHolder.Add(bit);
-                    }
-
-                    for (var i = 0; i < lsbIndicator; i++)
-                    {
-                        bit = ByteHelper.GetBit(pixel.G, 8 - lsbIndicator + i);
-                        bitHolder.Add(bit);
-                    }
-
-                    for (var i = 0; i < lsbIndicator; i++)
-                    {
-                        bit = ByteHelper.GetBit(pixel.B, 8 - lsbIndicator + i);
-                        bitHolder.Add(bit);
-                    }
-                    byteList = DecryptHelper(byteList, ref bitHolder);
-
-                    // Check for EndTag (END)
-                    if (end == int.MaxValue)
-                    {
-                        var index = ListHelper.IndexOf(byteList, Constants.TagSeperator);
-                        if (index > 0)
-                        {
-                            var seq = byteList.Take(index);
-                            int.TryParse(ConvertHelper.Convert(seq.ToArray()), out end);
-                            if (end == 0)
-                            {
-                                throw new ArithmeticException();
-                            }
-
-                            end = end + seq.Count() + Constants.TagSeperator.Length;
-                        }
-                    }
-
-                    if (byteList.Count >= end)
-                    {
-                        return MethodHelper.GetSpecificMessage(type, byteList.ToArray());
+                        return true;
                     }
                 }
             }
-            throw new SystemException("Error, anything happened (or maybe not).");
+            return false;
         }
     }
 }

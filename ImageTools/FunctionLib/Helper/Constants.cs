@@ -6,9 +6,9 @@ namespace FunctionLib.Helper
 {
     public static class Constants
     {
+        public const char Seperator = '\r';
         public static readonly List<string> ImageExtensions = new List<string> {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"};
         public static readonly byte[] EndTag = ConvertHelper.Convert("<EOF>");
-        public const char Seperator = '\r';
         public static readonly byte[] TagSeperator = ConvertHelper.Convert(Seperator.ToString());
 
         public static string ExecutiongPath

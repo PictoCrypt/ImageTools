@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO.Compression;
 
 namespace FunctionLib.Model.Message
 {
@@ -25,6 +24,10 @@ namespace FunctionLib.Model.Message
             Compression = compression;
         }
 
+        public string Message { get; }
+        public byte[] Bytes { get; }
+        public bool Compression { get; }
+
         public override string ToString()
         {
             if (Message != null)
@@ -33,9 +36,5 @@ namespace FunctionLib.Model.Message
             }
             return base.ToString();
         }
-
-        public string Message { get; }
-        public byte[] Bytes { get; }
-        public bool Compression { get; }
     }
 }

@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using FunctionLib.Helper;
 
@@ -9,7 +6,7 @@ namespace FunctionLib.Model.Message
 {
     public class DocumentMessage : SecretMessage, ISecretMessage
     {
-        public DocumentMessage(string obj, bool compression = false) 
+        public DocumentMessage(string obj, bool compression = false)
             : base(obj, compression)
         {
             if (!File.Exists(obj))
@@ -18,7 +15,7 @@ namespace FunctionLib.Model.Message
             }
         }
 
-        public DocumentMessage(byte[] bytes, bool compression = false) 
+        public DocumentMessage(byte[] bytes, bool compression = false)
             : base(bytes, compression)
         {
         }
@@ -48,14 +45,19 @@ namespace FunctionLib.Model.Message
 
             var length = ConvertHelper.Convert(result.Length.ToString());
             var path = ConvertHelper.Convert(Path.GetExtension(Message));
-            result = length.Concat(Constants.TagSeperator).Concat(path).Concat(Constants.TagSeperator).Concat(result).ToArray();
+            result =
+                length.Concat(Constants.TagSeperator)
+                    .Concat(path)
+                    .Concat(Constants.TagSeperator)
+                    .Concat(result)
+                    .ToArray();
             return result;
         }
 
         public string ConvertBack()
         {
             var index = ListHelper.IndexOf(Bytes, Constants.TagSeperator);
-            var sep1 = Bytes.Skip(index +  Constants.TagSeperator.Length).ToArray();
+            var sep1 = Bytes.Skip(index + Constants.TagSeperator.Length).ToArray();
             var extension = ConvertHelper.Convert(sep1.Take(ListHelper.IndexOf(sep1, Constants.TagSeperator)).ToArray());
             var resulting = sep1.Skip(ListHelper.IndexOf(Bytes, Constants.TagSeperator)).ToArray();
 

@@ -1,6 +1,4 @@
-﻿using System.IO.Compression;
-
-namespace FunctionLib.Model.Message
+﻿namespace FunctionLib.Model.Message
 {
     public interface ISecretMessage
     {

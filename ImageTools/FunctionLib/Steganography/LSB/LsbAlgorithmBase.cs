@@ -16,6 +16,18 @@ namespace FunctionLib.Steganography.LSB
         protected int BitIndex;
         protected int ByteIndex;
 
+        protected int EndCount { get; set; }
+
+        protected ICollection<int> BitHolder { get; set; }
+
+        protected List<byte> ByteList { get; set; }
+
+        protected int PassHash { get; private set; }
+
+        protected LockBitmap Bitmap { get; private set; }
+
+        protected byte[] Bytes { get; private set; }
+
         public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             if (src == null)
@@ -27,36 +39,99 @@ namespace FunctionLib.Steganography.LSB
                 throw new ArgumentNullException(nameof(message));
             }
             InitializeEncoding(src, message, passHash);
-            if (!IsEncryptionIsPossible(src, message, lsbIndicator))
+            if (!IsEncryptionIsPossible(src, lsbIndicator))
             {
                 throw new ContentLengthException();
             }
             try
             {
-                if (!Iteration(lsbIndicator))
+                if (!EncodingIteration(lsbIndicator))
                 {
                     throw new SystemException();
                 }
             }
             finally
             {
-                CleanupEncoding();
+                Cleanup();
             }
             return Bitmap;
         }
 
-        private bool IsEncryptionIsPossible(Image src, ISecretMessage message, int lsbIndicator)
+        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
+        {
+            if (src == null)
+            {
+                throw new ArgumentNullException(nameof(src));
+            }
+            InitializeDecoding(src, passHash);
+
+            try
+            {
+                if (!DecodingIteration(lsbIndicator))
+                {
+                    throw new SystemException();
+                }
+            }
+            finally
+            {
+                Cleanup();
+            }
+            return MethodHelper.GetSpecificMessage(type, ByteList.ToArray());
+        }
+
+        protected abstract bool DecodingIteration(int lsbIndicator);
+
+        private void InitializeDecoding(Bitmap src, int passHash)
+        {
+            Bitmap = LockBitmap(src);
+            PassHash = passHash;
+            //TODO: möglichkeit Bytes in List für beide?
+            ByteList = new List<byte>();
+            BitHolder = new List<int>();
+            EndCount = int.MaxValue;
+        }
+
+        private bool IsEncryptionIsPossible(Image src, int lsbIndicator)
         {
             var squarePixel = src.Width*src.Height;
-            var maxSize = (squarePixel*3*lsbIndicator) / 8;
+            var maxSize = squarePixel*3*lsbIndicator/8;
             return maxSize >= Bytes.Length;
         }
 
-        protected abstract bool Iteration(int lsbIndicator);
+        protected abstract bool EncodingIteration(int lsbIndicator);
 
-        protected bool CheckForEnd()
+        protected bool EncodeCheckForEnd()
         {
             return ByteIndex > Bytes.Length - 1 || ByteIndex == Bytes.Length - 1 && BitIndex == 7;
+        }
+
+        protected bool DecodeCheckForEnd()
+        {
+            // Check for EndTag (END)
+            if (EndCount == int.MaxValue)
+            {
+                var index = ListHelper.IndexOf(ByteList, Constants.TagSeperator);
+                if (index > 0)
+                {
+                    var seq = ByteList.Take(index);
+                    //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
+                    int endCount;
+                    int.TryParse(ConvertHelper.Convert(seq.ToArray()), out endCount);
+                    EndCount = endCount;
+                    if (EndCount == 0)
+                    {
+                        throw new ArithmeticException();
+                    }
+
+                    EndCount = EndCount + seq.Count() + Constants.TagSeperator.Length;
+                }
+            }
+
+            if (ByteList.Count >= EndCount)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected void EncodeBytes(int x, int y, int lsbIndicator)
@@ -74,14 +149,10 @@ namespace FunctionLib.Steganography.LSB
             PassHash = passHash;
         }
 
-        protected int PassHash { get; private set; }
-
-        private void CleanupEncoding()
+        private void Cleanup()
         {
             Bitmap.UnlockBits();
         }
-
-        protected LockBitmap Bitmap { get; private set; }
 
         protected List<byte> DecryptHelper(List<byte> bytes, ref ICollection<int> bitHolder)
         {
@@ -99,7 +170,8 @@ namespace FunctionLib.Steganography.LSB
             return bytes;
         }
 
-        private static byte CurrentByte(IReadOnlyList<byte> b, ref int byteIndex, ref int bitIndex, int significantIndicator)
+        private static byte CurrentByte(IReadOnlyList<byte> b, ref int byteIndex, ref int bitIndex,
+            int significantIndicator)
         {
             var builder = new StringBuilder();
             for (var i = 0; i < significantIndicator; i++)
@@ -117,8 +189,6 @@ namespace FunctionLib.Steganography.LSB
             return result;
         }
 
-        protected byte[] Bytes { get; private set; }
-
         private int[] ReadPixelLsb(Color pixel, int lsbIndicator)
         {
             var r = ByteHelper.ClearLeastSignificantBit(pixel.R, lsbIndicator);
@@ -129,6 +199,29 @@ namespace FunctionLib.Steganography.LSB
             g = g + CurrentByte(Bytes, ref ByteIndex, ref BitIndex, lsbIndicator);
             b = b + CurrentByte(Bytes, ref ByteIndex, ref BitIndex, lsbIndicator);
             return new[] {r, g, b};
+        }
+
+        protected void DecodeBytes(int x, int y, int lsbIndicator)
+        {
+            var pixel = Bitmap.GetPixel(x, y);
+            int bit;
+            for (var i = 0; i < lsbIndicator; i++)
+            {
+                bit = ByteHelper.GetBit(pixel.R, 8 - lsbIndicator + i);
+                BitHolder.Add(bit);
+            }
+
+            for (var i = 0; i < lsbIndicator; i++)
+            {
+                bit = ByteHelper.GetBit(pixel.G, 8 - lsbIndicator + i);
+                BitHolder.Add(bit);
+            }
+
+            for (var i = 0; i < lsbIndicator; i++)
+            {
+                bit = ByteHelper.GetBit(pixel.B, 8 - lsbIndicator + i);
+                BitHolder.Add(bit);
+            }
         }
     }
 }

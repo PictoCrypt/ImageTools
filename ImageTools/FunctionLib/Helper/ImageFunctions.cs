@@ -7,9 +7,9 @@ namespace FunctionLib.Helper
     {
         public static void WriteBitwiseToOutput(LockBitmap src, int lsbIndicator = 3)
         {
-            for (int y = 0; y < src.Height; y++)
+            for (var y = 0; y < src.Height; y++)
             {
-                for (int x = 0; x < src.Width; x++)
+                for (var x = 0; x < src.Width; x++)
                 {
                     var pixel = src.GetPixel(x, y);
                     //TODO implement lsb

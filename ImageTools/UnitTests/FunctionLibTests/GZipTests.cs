@@ -51,7 +51,7 @@ namespace UnitTests.FunctionLibTests
                 var result = CompressionHelper.Compress(stream);
                 Assert.IsNotNull(result);
                 Assert.IsTrue(result.Length > 0);
-            }            
+            }
         }
 
         [TestMethod]

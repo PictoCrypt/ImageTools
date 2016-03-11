@@ -25,6 +25,7 @@ namespace FunctionLib.Helper
             Source = source;
         }
 
+        public bool IsLocked { get; set; }
         private byte[] Pixels { get; set; }
         private int Depth { get; set; }
         public int Width { get; set; }
@@ -69,8 +70,9 @@ namespace FunctionLib.Helper
 
                 // Copy data from pointer to array
                 Marshal.Copy(mIptr, Pixels, 0, Pixels.Length);
+                IsLocked = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -88,8 +90,9 @@ namespace FunctionLib.Helper
 
                 // Unlock bitmap data
                 Source.UnlockBits(mBitmapData);
+                IsLocked = false;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

@@ -20,7 +20,10 @@ namespace FunctionLib.Filter
             Image = image;
             StartRange = startbits;
             EndRange = endbits;
-            image.LockBits();
+            if (!image.IsLocked)
+            {
+                image.LockBits();
+            }
         }
 
         public override int GetValue(int x, int y)
