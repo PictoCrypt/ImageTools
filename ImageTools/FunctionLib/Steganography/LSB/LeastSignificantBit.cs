@@ -1,4 +1,7 @@
-﻿namespace FunctionLib.Steganography.LSB
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace FunctionLib.Steganography.LSB
 {
     public class LeastSignificantBit : LsbAlgorithmBase
     {
@@ -41,7 +44,7 @@
                     DecodeBytes(x, y, lsbIndicator);
                     //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                     var bitHolder = BitHolder;
-                    ByteList = DecryptHelper(ByteList, ref bitHolder);
+                    Bytes = BitToByte(Bytes, ref bitHolder);
                     BitHolder = bitHolder;
                     if (DecodeCheckForEnd())
                     {

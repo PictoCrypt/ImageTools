@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -88,6 +89,19 @@ namespace FunctionLib.Steganography.Base
         protected void ReleaseBitmap(LockBitmap lockBitmap)
         {
             lockBitmap.UnlockBits();
+        }
+
+        public static ISecretMessage GetSpecificMessage(MessageType type, byte[] bytes)
+        {
+            switch (type)
+            {
+                case MessageType.Text:
+                    return new TextMessage(bytes);
+                case MessageType.Document:
+                    return new DocumentMessage(bytes);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
         }
     }
 }

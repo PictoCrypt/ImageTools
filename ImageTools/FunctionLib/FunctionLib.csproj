@@ -65,7 +65,6 @@
     <Compile Include="Helper\ImageFunctions.cs" />
     <Compile Include="Helper\ListHelper.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
-    <Compile Include="Helper\MethodHelper.cs" />
     <Compile Include="Helper\SteganographicMethodHelper.cs" />
     <Compile Include="Helper\FileManager.cs" />
     <Compile Include="ImageFunctionLib.cs" />

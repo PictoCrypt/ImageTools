@@ -20,13 +20,11 @@ namespace FunctionLib.Steganography.LSB
 
         protected ICollection<int> BitHolder { get; set; }
 
-        protected List<byte> ByteList { get; set; }
-
         protected int PassHash { get; private set; }
 
         protected LockBitmap Bitmap { get; private set; }
 
-        protected byte[] Bytes { get; private set; }
+        protected byte[] Bytes { get; set; }
 
         public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
@@ -76,7 +74,7 @@ namespace FunctionLib.Steganography.LSB
             {
                 Cleanup();
             }
-            return MethodHelper.GetSpecificMessage(type, ByteList.ToArray());
+            return GetSpecificMessage(type, Bytes.ToArray());
         }
 
         protected abstract bool DecodingIteration(int lsbIndicator);
@@ -85,8 +83,7 @@ namespace FunctionLib.Steganography.LSB
         {
             Bitmap = LockBitmap(src);
             PassHash = passHash;
-            //TODO: möglichkeit Bytes in List für beide?
-            ByteList = new List<byte>();
+            Bytes = new byte[0];
             BitHolder = new List<int>();
             EndCount = int.MaxValue;
         }
@@ -110,10 +107,10 @@ namespace FunctionLib.Steganography.LSB
             // Check for EndTag (END)
             if (EndCount == int.MaxValue)
             {
-                var index = ListHelper.IndexOf(ByteList, Constants.TagSeperator);
+                var index = ListHelper.IndexOf(Bytes, Constants.TagSeperator);
                 if (index > 0)
                 {
-                    var seq = ByteList.Take(index);
+                    var seq = Bytes.Take(index);
                     //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                     int endCount;
                     int.TryParse(ConvertHelper.Convert(seq.ToArray()), out endCount);
@@ -127,7 +124,7 @@ namespace FunctionLib.Steganography.LSB
                 }
             }
 
-            if (ByteList.Count >= EndCount)
+            if (Bytes.Length >= EndCount)
             {
                 return true;
             }
@@ -154,7 +151,12 @@ namespace FunctionLib.Steganography.LSB
             Bitmap.UnlockBits();
         }
 
-        protected List<byte> DecryptHelper(List<byte> bytes, ref ICollection<int> bitHolder)
+        protected byte[] BitToByte(byte[] bytes, ref ICollection<int> bitHolder)
+        {
+            return bytes == null ? BitToByte(new List<byte>(), ref bitHolder) : BitToByte(bytes.ToList(), ref bitHolder);
+        }
+
+        protected byte[] BitToByte(List<byte> bytes, ref ICollection<int> bitHolder)
         {
             while (bitHolder.Count >= 8)
             {
@@ -167,7 +169,7 @@ namespace FunctionLib.Steganography.LSB
                 bytes.Add(Convert.ToByte(builder.ToString(), 2));
                 bitHolder = bitHolder.Skip(8).ToList();
             }
-            return bytes;
+            return bytes.ToArray();
         }
 
         private static byte CurrentByte(IReadOnlyList<byte> b, ref int byteIndex, ref int bitIndex,

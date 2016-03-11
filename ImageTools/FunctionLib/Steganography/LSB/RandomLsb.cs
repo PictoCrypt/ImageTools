@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace FunctionLib.Steganography.LSB
 {
@@ -33,11 +34,15 @@ namespace FunctionLib.Steganography.LSB
         protected override bool DecodingIteration(int lsbIndicator)
         {
             var random = new Random(PassHash);
-            while (ByteList.Count <= EndCount)
+            while (Bytes.Length <= EndCount)
             {
                 var x = GetNextRandom(Coordinate.X, Bitmap.Width, random);
                 var y = GetNextRandom(Coordinate.Y, Bitmap.Height, random);
                 DecodeBytes(x, y, lsbIndicator);
+                //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
+                var bitHolder = BitHolder;
+                Bytes = BitToByte(Bytes.ToList(), ref bitHolder);
+                BitHolder = bitHolder;
                 if (DecodeCheckForEnd())
                 {
                     return true;
