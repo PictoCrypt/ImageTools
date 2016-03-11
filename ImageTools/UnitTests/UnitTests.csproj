@@ -67,7 +67,6 @@
     <Compile Include="StegaTests\FilterFirstTest.cs" />
     <Compile Include="StegaTests\RandomLsbTest.cs" />
     <Compile Include="TestingConstants.cs" />
-    <Compile Include="StegaTests\ComplexLeastSignificantBitTest.cs" />
     <Compile Include="StegaTests\LeastSignificantBitTest.cs" />
     <Compile Include="StegaTests\SteganographicAlogithmBaseTestClass.cs" />
   </ItemGroup>

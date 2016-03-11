@@ -26,7 +26,7 @@ namespace FunctionLib.Steganography.LSB
 
         protected byte[] Bytes { get; set; }
 
-        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        public override Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             if (src == null)
             {
@@ -52,7 +52,7 @@ namespace FunctionLib.Steganography.LSB
             {
                 Cleanup();
             }
-            return Bitmap;
+            return Bitmap.Source;
         }
 
         public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)

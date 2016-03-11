@@ -32,7 +32,7 @@ namespace FunctionLib.Steganography.Base
             return bitsNeeded/8;
         }
 
-        public abstract LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3);
+        public abstract Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3);
 
         public abstract ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3);
 

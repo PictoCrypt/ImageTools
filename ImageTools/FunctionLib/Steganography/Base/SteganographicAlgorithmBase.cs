@@ -60,7 +60,7 @@ namespace FunctionLib.Steganography.Base
         {
             mLastAccessedAlgorithm = new T();
             var result = mLastAccessedAlgorithm.Encode(src, value, password, additionalParam);
-            return result.Source;
+            return result;
         }
 
 

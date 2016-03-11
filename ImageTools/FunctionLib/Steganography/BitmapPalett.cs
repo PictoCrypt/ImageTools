@@ -59,7 +59,7 @@ namespace FunctionLib.Steganography
             get { return "Changing the color palett"; }
         }
 
-        public override LockBitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        public override Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             throw new NotImplementedException();
         }
