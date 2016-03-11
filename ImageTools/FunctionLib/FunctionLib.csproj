@@ -85,7 +85,6 @@
     <Compile Include="Steganography\LSB\LsbWithRandomness.cs" />
     <Compile Include="Steganography\LSB\RandomLsb.cs" />
     <Compile Include="Steganography\BitmapPalett.cs" />
-    <Compile Include="Steganography\ComplexLeastSignificantBit.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
