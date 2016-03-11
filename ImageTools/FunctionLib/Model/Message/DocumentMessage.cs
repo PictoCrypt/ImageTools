@@ -6,16 +6,16 @@ namespace FunctionLib.Model.Message
 {
     public class DocumentMessage : SecretMessage, ISecretMessage
     {
-        public DocumentMessage(string obj, bool compression = false)
-            : base(obj, compression)
+        public DocumentMessage(string path, bool compression = true)
+            : base(path, compression)
         {
-            if (!File.Exists(obj))
+            if (!File.Exists(path))
             {
-                throw new FileNotFoundException(obj);
+                throw new FileNotFoundException(path);
             }
         }
 
-        public DocumentMessage(byte[] bytes, bool compression = false)
+        public DocumentMessage(byte[] bytes, bool compression = true)
             : base(bytes, compression)
         {
         }

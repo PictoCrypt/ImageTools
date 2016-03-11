@@ -14,7 +14,7 @@ namespace FunctionLib.Cryptography
         private const string Vector = "8947az34awl34kjq"; // Random
         private static int mKeySize = 256;
 
-        public static string Encrypt(object obj, Type method, string value, string password)
+        public static string Encode(object obj, Type method, string value, string password)
         {
             var baseType = typeof (SymmetricAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Encode");
@@ -33,7 +33,7 @@ namespace FunctionLib.Cryptography
             throw new ArgumentException(baseType.ToString());
         }
 
-        public static string Decrypt(object obj, Type method, string value, string password)
+        public static string Decode(object obj, Type method, string value, string password)
         {
             var baseType = typeof (SymmetricAlgorithmBase);
             var extractedMethod = baseType.GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "Decode");

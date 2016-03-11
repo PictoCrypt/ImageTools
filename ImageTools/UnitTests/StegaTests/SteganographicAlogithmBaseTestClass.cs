@@ -5,18 +5,21 @@ using System.IO;
 using FunctionLib.CustomException;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
+using FunctionLib.Steganography.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.StegaTests
 {
     public abstract class SteganographicAlogithmBaseTestClass
     {
+        protected SteganographicAlgorithmImpl Algorithm;
+
         private TimeSpan mDecryptionTime;
         private TimeSpan mEncryptionTime;
         private Stopwatch mStopwatch;
 
         [TestInitialize]
-        public void Initialize()
+        public virtual void Initialize()
         {
             mStopwatch = new Stopwatch();
         }
@@ -147,7 +150,14 @@ namespace UnitTests.StegaTests
             Trace.WriteLine("");
         }
 
-        protected abstract Bitmap Encode(Bitmap src, ISecretMessage value, int password, int additionalParam = 3);
-        protected abstract ISecretMessage Decode(Bitmap src, int password, MessageType type, int additionalParam = 3);
+        private Bitmap Encode(Bitmap src, ISecretMessage value, int password, int lsbIndicator = 3)
+        {
+            return Algorithm.Encode(src, value, password, lsbIndicator);
+        }
+
+        private ISecretMessage Decode(Bitmap src, int password, MessageType type, int lsbIndicator = 3)
+        {
+            return Algorithm.Decode(src, password, type, lsbIndicator);
+        }
     }
 }

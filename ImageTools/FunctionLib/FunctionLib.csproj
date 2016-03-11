@@ -65,9 +65,11 @@
     <Compile Include="Helper\ImageFunctions.cs" />
     <Compile Include="Helper\ListHelper.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
+    <Compile Include="Helper\PasswordHelper.cs" />
     <Compile Include="Helper\SteganographicMethodHelper.cs" />
     <Compile Include="Helper\FileManager.cs" />
     <Compile Include="ImageFunctionLib.cs" />
+    <Compile Include="Model\EncodeModel.cs" />
     <Compile Include="Model\Message\DocumentMessage.cs" />
     <Compile Include="Model\Message\ISecretMessage.cs" />
     <Compile Include="Model\Message\MessageType.cs" />

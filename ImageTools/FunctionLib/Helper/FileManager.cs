@@ -35,8 +35,19 @@ namespace FunctionLib.Helper
             }
         }
 
+        public string CopyImageToTmp(string path)
+        {
+            string result;
+            using (var bmp = new Bitmap(path))
+            {
+                result = CopyImageToTmp(bmp, bmp.RawFormat);
+            }
+            return result;
+        }
+
         public string CopyImageToTmp(Bitmap bmp, ImageFormat format)
         {
+            //TODO Umbauen als USING bmp..?
             var path = GenerateTmp(format);
             bmp.Save(path);
             return path;

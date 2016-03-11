@@ -9,12 +9,12 @@ namespace UnitTests.CryptTests
     {
         public override string Encrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Encrypt(this, typeof (RC2CryptoServiceProvider), value, password);
+            return SymmetricAlgorithmBase.Encode(this, typeof (RC2CryptoServiceProvider), value, password);
         }
 
         public override string Decrypt(string value, string password)
         {
-            return SymmetricAlgorithmBase.Decrypt(this, typeof (RC2CryptoServiceProvider), value, password);
+            return SymmetricAlgorithmBase.Decode(this, typeof (RC2CryptoServiceProvider), value, password);
         }
     }
 }

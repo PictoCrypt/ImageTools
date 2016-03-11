@@ -6,12 +6,12 @@ namespace FunctionLib.Model.Message
 {
     public class TextMessage : SecretMessage, ISecretMessage
     {
-        public TextMessage(string obj, bool compression = false)
-            : base(obj, compression)
+        public TextMessage(string message, bool compression = true)
+            : base(message, compression)
         {
         }
 
-        public TextMessage(byte[] bytes, bool compression = false)
+        public TextMessage(byte[] bytes, bool compression = true)
             : base(bytes, compression)
         {
         }

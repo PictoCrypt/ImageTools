@@ -170,7 +170,7 @@ namespace ImageToolApp.Controllers
                         value = ViewModel.Text;
                         if (ViewModel.EncryptedCheck)
                         {
-                            value = SymmetricAlgorithmBase.Encrypt(this, ViewModel.SelectedEncryptionMethod, value,
+                            value = SymmetricAlgorithmBase.Encode(this, ViewModel.SelectedEncryptionMethod, value,
                                 ViewModel.Password);
                         }
                     }
