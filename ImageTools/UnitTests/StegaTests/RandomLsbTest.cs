@@ -10,7 +10,7 @@ namespace UnitTests.StegaTests
         public override void Initialize()
         {
             base.Initialize();
-            Algorithm = new FilterFirst();
+            Algorithm = new RandomLsb();
         }
     }
 }

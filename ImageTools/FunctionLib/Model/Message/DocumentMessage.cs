@@ -57,9 +57,10 @@ namespace FunctionLib.Model.Message
         public string ConvertBack()
         {
             var index = ListHelper.IndexOf(Bytes, Constants.TagSeperator);
-            var sep1 = Bytes.Skip(index + Constants.TagSeperator.Length).ToArray();
-            var extension = ConvertHelper.Convert(sep1.Take(ListHelper.IndexOf(sep1, Constants.TagSeperator)).ToArray());
-            var resulting = sep1.Skip(ListHelper.IndexOf(Bytes, Constants.TagSeperator)).ToArray();
+            var seq1 = Bytes.Skip(index + Constants.TagSeperator.Length).ToArray();
+            var extension = ConvertHelper.Convert(seq1.Take(ListHelper.IndexOf(seq1, Constants.TagSeperator)).ToArray());
+            index = ListHelper.IndexOf(seq1, Constants.TagSeperator);
+            var resulting = seq1.Skip(index + 1).ToArray();
 
             var path = FileManager.GetInstance().GenerateTmp(extension);
             var ms = Compression ? CompressionHelper.Decompress(resulting) : new MemoryStream(resulting);

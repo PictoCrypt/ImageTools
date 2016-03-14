@@ -98,7 +98,7 @@ namespace UnitTests.StegaTests
         {
             using (var bitmap = new Bitmap(TestingConstants.SmallKoala))
             {
-                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers),
+                var encrypted = Encode(bitmap, new TextMessage(TestingConstants.LongText),
                     TestingConstants.Password.GetHashCode());
             }
         }
