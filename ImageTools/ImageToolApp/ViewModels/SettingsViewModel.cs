@@ -56,7 +56,7 @@ namespace ImageToolApp.ViewModels
             get { return mSelectedEncryptionMethod; }
             set
             {
-                if (value == mSelectedEncryptionMethod)
+                if (value.Equals(mSelectedEncryptionMethod))
                 {
                     return;
                 }
@@ -69,7 +69,7 @@ namespace ImageToolApp.ViewModels
             get { return mSelectedSteganographicMethod; }
             set
             {
-                if (value == mSelectedSteganographicMethod)
+                if (value.Equals(mSelectedSteganographicMethod))
                 {
                     return;
                 }

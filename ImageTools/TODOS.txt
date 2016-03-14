@@ -25,6 +25,4 @@ Einbettungsrate anzeigen (10% ist sehr gut.)
 
 Neue Verfahren (Kathryn Hempstalk)
 
-config as json
-
 Testing von Stego und Library neu machen!
