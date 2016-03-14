@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
+using FunctionLib.Model;
 using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
@@ -170,17 +171,19 @@ namespace ImageToolApp.Controllers
                         value = ViewModel.Text;
                         if (ViewModel.EncryptedCheck)
                         {
-                            value = SymmetricAlgorithmBase.Encode(this, ViewModel.SelectedEncryptionMethod, value,
+                            value = SymmetricAlgorithmBase.Encode(this, ViewModel.SelectedEncryptionMethod.GetType(), value,
                                 ViewModel.Password);
                         }
                     }
 
                     try
                     {
-                        var cryptModel = new CryptModel(ViewModel.ImagePath, value, ViewModel.Password,
-                            ViewModel.SelectedEncryptionMethod, ViewModel.SelectedSteganographicMethod,
+                        //TODO compression
+                        var model = new EncodeModel(ViewModel.ImagePath, value, ViewModel.SelectedEncryptionMethod,
+                            ViewModel.Password, ViewModel.SelectedSteganographicMethod, true,
                             ViewModel.NumericUpDownValue);
-                        var result = cryptModel.EncryptedImage;
+
+                        var result = model.Encode();
                         if (result != null)
                         {
                             var path = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
@@ -201,10 +204,10 @@ namespace ImageToolApp.Controllers
 
         public void ChangedPixels()
         {
-            var path = SteganographicAlgorithmBase.ChangeColor(ViewModel.ResultImagePath, Color.Red);
+            var path = ViewModel.SelectedSteganographicMethod.ChangeColor(ViewModel.ResultImagePath, Color.Red);
             //var view = new ImagePresentation();
-            var count = SteganographicAlgorithmBase.ChangedPixels;
-            new ImagePresentationController(path, string.Format("{0} Pixel", count));
+            var count = ViewModel.SelectedSteganographicMethod.ChangedPixels;
+            var controller = new ImagePresentationController(path, string.Format("{0} Pixel", count));
         }
     }
 }

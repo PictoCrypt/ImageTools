@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
 using UserControlClassLibrary;
 
@@ -12,8 +14,8 @@ namespace ImageToolApp.ViewModels
         private string mImagePath = string.Empty;
         private int mNumericUpDownValue = 3;
         private string mPassword;
-        private Type mSelectedEncryptionMethod;
-        private Type mSelectedSteganographicMethod;
+        private SymmetricAlgorithm mSelectedEncryptionMethod;
+        private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
 
         public BaseTabViewModel()
@@ -22,7 +24,7 @@ namespace ImageToolApp.ViewModels
             SelectedSteganographicMethod = Settings.SelectedSteganographicMethod ??
                                            Settings.SteganographicMethods.FirstOrDefault();
             SelectedEncryptionMethod = Settings.SelectedEncryptionMethod ??
-                                       Settings.EncryptionMethods.FirstOrDefault().Value;
+                                       Settings.EncryptionMethods.FirstOrDefault();
         }
 
         public Settings Settings
@@ -30,6 +32,7 @@ namespace ImageToolApp.ViewModels
             get { return Settings.Instance; }
         }
 
+        //TODO Rename!
         public int NumericUpDownValue
         {
             get { return mNumericUpDownValue; }
@@ -58,7 +61,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public Type SelectedEncryptionMethod
+        public SymmetricAlgorithm SelectedEncryptionMethod
         {
             get { return mSelectedEncryptionMethod; }
             set
@@ -72,12 +75,12 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public IDictionary<string, Type> EncryptionMethods
+        public IList<SymmetricAlgorithm> EncryptionMethods
         {
             get { return Settings.EncryptionMethods; }
         }
 
-        public Type SelectedSteganographicMethod
+        public SteganographicAlgorithmImpl SelectedSteganographicMethod
         {
             get { return mSelectedSteganographicMethod; }
             set
@@ -91,7 +94,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public IList<Type> SteganographicMethods
+        public IList<SteganographicAlgorithmImpl> SteganographicMethods
         {
             get { return Settings.SteganographicMethods; }
         }

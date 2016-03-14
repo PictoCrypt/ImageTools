@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using FunctionLib.Model;
+using FunctionLib.Model.Message;
 using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -31,10 +33,11 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                var cryptModel = new CryptModel(ViewModel.ImagePath, null, ViewModel.Password,
-                    ViewModel.SelectedEncryptionMethod, ViewModel.SelectedSteganographicMethod,
-                    ViewModel.NumericUpDownValue);
-                ViewModel.Result = cryptModel.DecryptMessage;
+                //TODO Type und Compression
+                var model = new DecodeModel(ViewModel.ImagePath, MessageType.Text, ViewModel.SelectedEncryptionMethod,
+                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, true, ViewModel.NumericUpDownValue);
+
+                ViewModel.Result = model.Decode();
             });
         }
     }

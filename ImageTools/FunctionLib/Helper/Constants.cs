@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -23,5 +24,20 @@ namespace FunctionLib.Helper
         {
             get { return "ISO-8859-1"; }
         }
+
+        public static string AppData {
+            get
+            {
+                var result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    ApplicationName);
+                if (!Directory.Exists(result))
+                {
+                    Directory.CreateDirectory(result);
+                }
+                return result;
+            }
+        }
+
+        public const string ApplicationName = "ImageTools";
     }
 }

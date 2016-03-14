@@ -15,9 +15,9 @@ namespace FunctionLib.Model
         private readonly bool mCompression;
         private readonly MessageType mType;
 
-        public DecodeModel(string obj, MessageType type, SymmetricAlgorithm crypto, string passsword, SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
+        public DecodeModel(string imageSrc, MessageType type, SymmetricAlgorithm crypto, string passsword, SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
         {
-            mSrcObj = obj;
+            mSrcObj = imageSrc;
             Src = FileManager.GetInstance().CopyImageToTmp(mSrcObj);
             mCompression = compression;
             mType = type;

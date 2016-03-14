@@ -36,7 +36,7 @@ namespace ImageToolApp.Controllers
             var dialog = new FolderBrowserDialog
             {
                 ShowNewFolderButton = true,
-                SelectedPath = mSettings.StandardPath
+                SelectedPath = mSettings.DefaultPath
             };
             var dialogResult = dialog.ShowDialog();
             if (dialogResult == DialogResult.OK)

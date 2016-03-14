@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography;
+using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
 using UserControlClassLibrary;
 
@@ -12,15 +13,15 @@ namespace ImageToolApp.ViewModels
         private UICommand mChoosePathCommand;
         private string mPassword;
         private UICommand mSaveCommand;
-        private Type mSelectedEncryptionMethod;
-        private Type mSelectedSteganographicMethod;
+        private SymmetricAlgorithm mSelectedEncryptionMethod;
+        private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
         private string mStandardPath;
 
         public SettingsViewModel(Settings settings)
         {
             mSettings = settings;
             Password = mSettings.Password;
-            StandardPath = mSettings.StandardPath;
+            StandardPath = mSettings.DefaultPath;
             SelectedEncryptionMethod = mSettings.SelectedEncryptionMethod;
             SelectedSteganographicMethod = mSettings.SelectedSteganographicMethod;
         }
@@ -50,7 +51,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public Type SelectedEncryptionMethod
+        public SymmetricAlgorithm SelectedEncryptionMethod
         {
             get { return mSelectedEncryptionMethod; }
             set
@@ -63,7 +64,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public Type SelectedSteganographicMethod
+        public SteganographicAlgorithmImpl SelectedSteganographicMethod
         {
             get { return mSelectedSteganographicMethod; }
             set
@@ -76,12 +77,12 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public IDictionary<string, Type> EncryptionMethods
+        public IList<SymmetricAlgorithm> EncryptionMethods
         {
             get { return mSettings.EncryptionMethods; }
         }
 
-        public IList<Type> SteganographicMethods
+        public IList<SteganographicAlgorithmImpl> SteganographicMethods
         {
             get { return mSettings.SteganographicMethods; }
         }

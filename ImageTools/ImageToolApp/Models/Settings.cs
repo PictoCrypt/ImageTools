@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Reflection;
+using System.Security.Cryptography;
 using FunctionLib.Helper;
+using FunctionLib.Steganography.Base;
+using Newtonsoft.Json;
 
 namespace ImageToolApp.Models
 {
     public class Settings
     {
         private static Settings mInstance;
+        private static JsonSerializer mSerializer;
 
-
-        private Settings(IDictionary<string, Type> encryptionMethods = null,
-            IList<Type> steganographicMethods = null)
+        private Settings(IList<SymmetricAlgorithm> encryptionMethods = null,
+            IList<SteganographicAlgorithmImpl> steganographicMethods = null)
         {
+            mSerializer = new JsonSerializer {TypeNameHandling = TypeNameHandling.Auto};
+
             LoadConfig();
-            EncryptionMethods = encryptionMethods ??
-                                new Dictionary<string, Type>(EncryptionMethodHelper.ImplementationList);
-            SteganographicMethods = steganographicMethods ??
-                                    new ObservableCollection<Type>(SteganographicMethodHelper.ImplementationList);
+            EncryptionMethods = encryptionMethods ?? AlgorithmCollector.GetAllAlgorithm<SymmetricAlgorithm>();
+            SteganographicMethods = steganographicMethods ?? AlgorithmCollector.GetAllAlgorithm<SteganographicAlgorithmImpl>();
         }
 
         public static Settings Instance
@@ -36,85 +35,65 @@ namespace ImageToolApp.Models
             }
         }
 
-        public IList<Type> SteganographicMethods { get; }
+        public IList<SteganographicAlgorithmImpl> SteganographicMethods { get; }
 
-        public IDictionary<string, Type> EncryptionMethods { get; }
+        public IList<SymmetricAlgorithm> EncryptionMethods { get; }
 
         public string Password { get; private set; } = string.Empty;
 
-        public Type SelectedEncryptionMethod { get; private set; }
+        public SymmetricAlgorithm SelectedEncryptionMethod { get; private set; }
 
-        public Type SelectedSteganographicMethod { get; private set; }
+        public SteganographicAlgorithmImpl SelectedSteganographicMethod { get; private set; }
 
-        public string StandardPath { get; private set; }
+        public string DefaultPath { get; private set; }
 
         public void LoadConfig()
         {
-            var configFileMap = new ExeConfigurationFileMap
+            var file = Path.Combine(Constants.AppData, "Config.json");
+            if (!File.Exists(file))
             {
-                ExeConfigFilename = Path.Combine(Constants.ExecutiongPath, "App.config")
-            };
-            var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
-
-            foreach (var key in config.AppSettings.Settings.AllKeys)
-            {
-                var value = config.AppSettings.Settings[key].Value;
-                switch (key)
-                {
-                    case "Password":
-                        Password = value ?? string.Empty;
-                        break;
-                    case "StandardPath":
-                        StandardPath = !string.IsNullOrEmpty(value)
-                            ? value
-                            : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                        break;
-                    case "SelectedEncryptionMethod":
-                        SelectedEncryptionMethod =
-                            EncryptionMethodHelper.ImplementationList.Values.FirstOrDefault(
-                                x => x.ToString().Equals(value));
-                        break;
-                    case "SelectedSteganographicMethod":
-                        var steganoMethod = SteganographicMethodHelper.ImplementationList.Find(
-                            x => x.ToString().Equals(value, StringComparison.OrdinalIgnoreCase));
-                        SelectedSteganographicMethod = steganoMethod;
-                        break;
-                }
+                return;
             }
 
-            //if (Changed != null)
-            //{
-            //    Changed(this);
-            //}
+            Config config;
+            using (var sr = new StreamReader(File.OpenRead(file)))
+            {
+                using (var reader = new JsonTextReader(sr))
+                {
+                    config = mSerializer.Deserialize(reader, typeof (Config)) as Config;
+                }
+            }
+            if (config != null)
+            {
+                Password = config.Password;
+                SelectedEncryptionMethod = config.Crypto;
+                SelectedSteganographicMethod = config.Stego;
+                DefaultPath = config.DefaultPath;
+            }
         }
 
-        internal void Save(string password, Type selectedEncryptionMethod, Type selectedSteganographicMethod,
+        private SteganographicAlgorithmImpl CreateClassFromType(Type steganographicAlgorithm)
+        {
+            return (SteganographicAlgorithmImpl) Activator.CreateInstance(steganographicAlgorithm);
+        }
+
+        internal void Save(string password, SymmetricAlgorithm selectedEncryptionMethod, SteganographicAlgorithmImpl selectedSteganographicMethod,
             string standardPath)
         {
             Password = password;
             SelectedEncryptionMethod = selectedEncryptionMethod;
             SelectedSteganographicMethod = selectedSteganographicMethod;
-            StandardPath = standardPath;
+            DefaultPath = standardPath;
 
-            var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var configFile = Path.Combine(appPath, "App.config");
-            var configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
-            var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
-
-            config.AppSettings.Settings["Password"].Value = password;
-            config.AppSettings.Settings["SelectedEncryptionMethod"].Value = selectedEncryptionMethod.ToString();
-            config.AppSettings.Settings["SelectedSteganographicMethod"].Value = selectedSteganographicMethod.ToString();
-            config.AppSettings.Settings["StandardPath"].Value = standardPath;
-            config.Save();
-
-            //if (Changed != null)
-            //{
-            //    Changed(this);
-            //}
+            var config = new Config(DefaultPath, Password, SelectedEncryptionMethod, SelectedSteganographicMethod);
+            var file = Path.Combine(Constants.AppData, Constants.ApplicationName + ".json");
+            using (var sw = new StreamWriter(File.Create(file)))
+            {
+                using (var writer = new JsonTextWriter(sw))
+                {
+                    mSerializer.Serialize(writer, config);
+                }
+            }
         }
-
-        //public event SettingsChangedEventHandler Changed;
     }
-
-    //public delegate void SettingsChangedEventHandler(object sender);
 }

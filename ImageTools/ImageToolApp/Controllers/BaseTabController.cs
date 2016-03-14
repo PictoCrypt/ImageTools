@@ -37,7 +37,7 @@ namespace ImageToolApp.Controllers
             var dialog = new OpenFileDialog
             {
                 Multiselect = false,
-                InitialDirectory = ViewModel.Settings.StandardPath
+                InitialDirectory = ViewModel.Settings.DefaultPath
             };
 
             dialog.ShowDialog();

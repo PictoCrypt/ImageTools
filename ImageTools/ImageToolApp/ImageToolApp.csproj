@@ -73,6 +73,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\MashApps.Metro\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\Newtonsoft.JSON\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -104,6 +108,7 @@
     <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
     <Compile Include="HandleJobController.cs" />
+    <Compile Include="Models\Config.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
