@@ -73,11 +73,6 @@ namespace ImageToolApp.Models
             }
         }
 
-        private SteganographicAlgorithmImpl CreateClassFromType(Type steganographicAlgorithm)
-        {
-            return (SteganographicAlgorithmImpl) Activator.CreateInstance(steganographicAlgorithm);
-        }
-
         internal void Save(string password, SymmetricAlgorithm selectedEncryptionMethod,
             SteganographicAlgorithmImpl selectedSteganographicMethod,
             string standardPath)
@@ -88,7 +83,7 @@ namespace ImageToolApp.Models
             DefaultPath = standardPath;
 
             var config = new Config(DefaultPath, Password, SelectedEncryptionMethod, SelectedSteganographicMethod);
-            var file = Path.Combine(Constants.AppData, Constants.ApplicationName + ".json");
+            var file = Path.Combine(Constants.AppData, "Config.json");
             using (var sw = new StreamWriter(File.Create(file)))
             {
                 using (var writer = new JsonTextWriter(sw))

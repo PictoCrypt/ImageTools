@@ -41,7 +41,7 @@
             <documentChooser:DocumentChooser />
         </Expander>
 
-        <GroupBox Grid.Column="0" Grid.Row="3" Header="Encodeion" HorizontalAlignment="Stretch"
+        <GroupBox Grid.Column="0" Grid.Row="3" Header="Encryption" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" Style="{StaticResource GroupBoxDisabledStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -58,7 +58,6 @@
                              IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
                              controls:TextBoxHelper.Watermark="Password..." />
                 <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
-                          SelectedValuePath="Value" DisplayMemberPath="Key"
                           SelectedValue="{Binding SelectedEncryptionMethod}"
                           Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
             </Grid>
