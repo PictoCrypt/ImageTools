@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
-using ImageToolApp.Models;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;

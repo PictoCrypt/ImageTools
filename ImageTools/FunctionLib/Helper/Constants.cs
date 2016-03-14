@@ -8,6 +8,8 @@ namespace FunctionLib.Helper
     public static class Constants
     {
         private const char Seperator = '\r';
+
+        public const string ApplicationName = "ImageTools";
         public static readonly List<string> ImageExtensions = new List<string> {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"};
         public static readonly byte[] TagSeperator = ConvertHelper.Convert(Seperator.ToString());
 
@@ -25,7 +27,8 @@ namespace FunctionLib.Helper
             get { return "ISO-8859-1"; }
         }
 
-        public static string AppData {
+        public static string AppData
+        {
             get
             {
                 var result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -37,7 +40,5 @@ namespace FunctionLib.Helper
                 return result;
             }
         }
-
-        public const string ApplicationName = "ImageTools";
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using FunctionLib.Model.Message;
-using FunctionLib.Steganography.LSB;
+﻿using FunctionLib.Steganography.LSB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.StegaTests

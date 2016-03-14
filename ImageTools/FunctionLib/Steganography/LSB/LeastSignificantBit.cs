@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace FunctionLib.Steganography.LSB
+﻿namespace FunctionLib.Steganography.LSB
 {
     public class LeastSignificantBit : LsbAlgorithmBase
     {

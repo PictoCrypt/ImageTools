@@ -10,13 +10,14 @@ namespace FunctionLib.Model
 {
     public class EncodeModel
     {
-        private readonly string mSrcObj;
-        private readonly string mSrcMessage;
-        private readonly string mPassword;
-        private readonly int mLsbIndicator;
         private readonly bool mCompression;
+        private readonly int mLsbIndicator;
+        private readonly string mPassword;
+        private readonly string mSrcMessage;
+        private readonly string mSrcObj;
 
-        public EncodeModel(string imageSrc, string message, SymmetricAlgorithm crypto, string passsword, SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
+        public EncodeModel(string imageSrc, string message, SymmetricAlgorithm crypto, string passsword,
+            SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
         {
             mSrcObj = imageSrc;
             Src = FileManager.GetInstance().CopyImageToTmp(mSrcObj);
@@ -34,7 +35,10 @@ namespace FunctionLib.Model
 
         public string Src { get; set; }
 
-        private int PasswordHash { get { return mPassword == null ? 0 : PasswordHelper.GetHash(mPassword); } }
+        private int PasswordHash
+        {
+            get { return mPassword == null ? 0 : PasswordHelper.GetHash(mPassword); }
+        }
 
         public SteganographicAlgorithmImpl SteganoAlgorithm { get; set; }
 

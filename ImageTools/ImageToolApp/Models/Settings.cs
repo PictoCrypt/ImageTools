@@ -20,7 +20,8 @@ namespace ImageToolApp.Models
 
             LoadConfig();
             EncryptionMethods = encryptionMethods ?? AlgorithmCollector.GetAllAlgorithm<SymmetricAlgorithm>();
-            SteganographicMethods = steganographicMethods ?? AlgorithmCollector.GetAllAlgorithm<SteganographicAlgorithmImpl>();
+            SteganographicMethods = steganographicMethods ??
+                                    AlgorithmCollector.GetAllAlgorithm<SteganographicAlgorithmImpl>();
         }
 
         public static Settings Instance
@@ -77,7 +78,8 @@ namespace ImageToolApp.Models
             return (SteganographicAlgorithmImpl) Activator.CreateInstance(steganographicAlgorithm);
         }
 
-        internal void Save(string password, SymmetricAlgorithm selectedEncryptionMethod, SteganographicAlgorithmImpl selectedSteganographicMethod,
+        internal void Save(string password, SymmetricAlgorithm selectedEncryptionMethod,
+            SteganographicAlgorithmImpl selectedSteganographicMethod,
             string standardPath)
         {
             Password = password;

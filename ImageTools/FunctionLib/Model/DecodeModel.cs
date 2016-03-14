@@ -9,13 +9,14 @@ namespace FunctionLib.Model
 {
     public class DecodeModel
     {
-        private readonly string mSrcObj;
-        private readonly string mPassword;
-        private readonly int mLsbIndicator;
         private readonly bool mCompression;
+        private readonly int mLsbIndicator;
+        private readonly string mPassword;
+        private readonly string mSrcObj;
         private readonly MessageType mType;
 
-        public DecodeModel(string imageSrc, MessageType type, SymmetricAlgorithm crypto, string passsword, SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
+        public DecodeModel(string imageSrc, MessageType type, SymmetricAlgorithm crypto, string passsword,
+            SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
         {
             mSrcObj = imageSrc;
             Src = FileManager.GetInstance().CopyImageToTmp(mSrcObj);
@@ -33,7 +34,10 @@ namespace FunctionLib.Model
 
         public string Src { get; set; }
 
-        private int PasswordHash { get { return mPassword == null ? 0 : PasswordHelper.GetHash(mPassword); } }
+        private int PasswordHash
+        {
+            get { return mPassword == null ? 0 : PasswordHelper.GetHash(mPassword); }
+        }
 
         public SteganographicAlgorithmImpl SteganoAlgorithm { get; set; }
 
@@ -48,7 +52,7 @@ namespace FunctionLib.Model
             }
             //TODO: Kompression einbauen
             var message = SymmetricAlgorithmBase.Decode(this, CryptoAlgorithm.GetType(), result.ConvertBack(),
-                    mPassword);
+                mPassword);
             return message;
         }
     }

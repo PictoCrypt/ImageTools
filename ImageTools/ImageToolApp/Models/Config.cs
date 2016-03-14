@@ -12,9 +12,9 @@ namespace ImageToolApp.Models
             Crypto = crypto;
             Stego = stego;
         }
-        
+
         public string DefaultPath { get; private set; }
-        public string  Password { get; private set; }
+        public string Password { get; private set; }
         public SteganographicAlgorithmImpl Stego { get; set; }
         public SymmetricAlgorithm Crypto { get; set; }
     }
