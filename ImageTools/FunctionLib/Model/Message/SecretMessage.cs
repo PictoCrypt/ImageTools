@@ -26,7 +26,7 @@ namespace FunctionLib.Model.Message
 
         public string Message { get; }
         public byte[] Bytes { get; }
-        public bool Compression { get; }
+        public bool Compression { get; set; }
 
         public override string ToString()
         {

@@ -32,9 +32,9 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                //TODO Type und Compression
-                var model = new DecodeModel(ViewModel.ImagePath, MessageType.Text, ViewModel.SelectedEncryptionMethod,
-                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, true, ViewModel.NumericUpDownValue);
+                //TODO Compression
+                var model = new DecodeModel(ViewModel.ImagePath, ViewModel.SelectedEncryptionMethod,
+                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, true, ViewModel.LsbIndicator);
 
                 ViewModel.Result = model.Decode();
             });

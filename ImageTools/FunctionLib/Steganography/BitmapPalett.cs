@@ -63,7 +63,7 @@ namespace FunctionLib.Steganography
             throw new NotImplementedException();
         }
 
-        public override ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3)
+        public override ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3)
         {
             throw new NotImplementedException();
         }

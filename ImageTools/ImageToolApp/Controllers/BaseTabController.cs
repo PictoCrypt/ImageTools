@@ -14,8 +14,6 @@ namespace ImageToolApp.Controllers
         where TView : UserControl, new()
     {
         private readonly Expander mImageExpander;
-        // TODO: Tmp-Files löschen nach gebrauch?
-
         protected readonly TViewModel ViewModel;
 
         protected BaseTabController()

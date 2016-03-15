@@ -69,7 +69,7 @@
             <ComboBox ItemsSource="{Binding SteganographicMethods}" DisplayMemberPath="Name"
                       SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
             <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"
-                                    Value="{Binding NumericUpDownValue}"
+                                    Value="{Binding LsbIndicator}"
                                     ToolTip="Number of Bits which should be used from 1 color."
                                     Style="{StaticResource NumericUpDownStyle}" />
             <Button HorizontalAlignment="Right"

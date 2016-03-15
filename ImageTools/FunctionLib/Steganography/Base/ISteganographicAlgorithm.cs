@@ -12,7 +12,7 @@ namespace FunctionLib.Steganography.Base
         string Name { get; }
         string Description { get; }
         Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3);
-        ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3);
+        ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3);
         string ChangeColor(string srcPath, Color color);
         int MaxEmbeddingCount(Bitmap src, int lsbIndicator);
         int CheckIfEncryptionIsPossible(LockBitmap lockBitmap, int bytesLength, int significantIndicator);

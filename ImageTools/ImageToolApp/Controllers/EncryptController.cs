@@ -177,7 +177,7 @@ namespace ImageToolApp.Controllers
                         //TODO compression
                         var model = new EncodeModel(ViewModel.ImagePath, value, ViewModel.SelectedEncryptionMethod,
                             ViewModel.Password, ViewModel.SelectedSteganographicMethod, true,
-                            ViewModel.NumericUpDownValue);
+                            ViewModel.LsbIndicator);
 
                         var result = model.Encode();
                         if (result != null)

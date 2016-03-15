@@ -73,7 +73,6 @@
     <Compile Include="Helper\Constants.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
     <Compile Include="Helper\AlgorithmCollector.cs" />
-    <Compile Include="Helper\ImageFunctions.cs" />
     <Compile Include="Helper\ListHelper.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
     <Compile Include="Helper\PasswordHelper.cs" />

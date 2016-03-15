@@ -12,15 +12,13 @@ namespace FunctionLib.Model
         private readonly int mLsbIndicator;
         private readonly string mPassword;
         private readonly string mSrcObj;
-        private readonly MessageType mType;
 
-        public DecodeModel(string imageSrc, MessageType type, CryptographicAlgorithmImpl crypto, string passsword,
+        public DecodeModel(string imageSrc, CryptographicAlgorithmImpl crypto, string passsword,
             SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
         {
             mSrcObj = imageSrc;
             Src = FileManager.GetInstance().CopyImageToTmp(mSrcObj);
             mCompression = compression;
-            mType = type;
 
             //Crypt
             CryptoAlgorithm = crypto;
@@ -38,18 +36,18 @@ namespace FunctionLib.Model
             get { return mPassword == null ? 0 : PasswordHelper.GetHash(mPassword); }
         }
 
-        public SteganographicAlgorithmImpl SteganoAlgorithm { get; set; }
+        public SteganographicAlgorithmImpl SteganoAlgorithm { get; }
 
-        public CryptographicAlgorithmImpl CryptoAlgorithm { get; set; }
+        public CryptographicAlgorithmImpl CryptoAlgorithm { get; }
 
         public string Decode()
         {
             ISecretMessage result;
             using (var bmp = new Bitmap(Src))
             {
-                result = SteganoAlgorithm.Decode(bmp, PasswordHash, mType, mLsbIndicator);
+                result = SteganoAlgorithm.Decode(bmp, PasswordHash, mLsbIndicator);
             }
-            //TODO: Kompression einbauen
+            result.Compression = mCompression;
             var message = CryptoAlgorithm.Decode(result.ConvertBack(), mPassword);
             return message;
         }

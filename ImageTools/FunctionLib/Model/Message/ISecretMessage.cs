@@ -2,7 +2,7 @@
 {
     public interface ISecretMessage
     {
-        bool Compression { get; }
+        bool Compression { get; set; }
         string Message { get; }
         byte[] Bytes { get; }
         byte[] Convert();

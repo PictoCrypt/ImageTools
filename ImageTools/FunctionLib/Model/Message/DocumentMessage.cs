@@ -6,6 +6,8 @@ namespace FunctionLib.Model.Message
 {
     public class DocumentMessage : SecretMessage, ISecretMessage
     {
+        private string mExtension;
+
         public DocumentMessage(string path, bool compression = true)
             : base(path, compression)
         {
@@ -15,9 +17,10 @@ namespace FunctionLib.Model.Message
             }
         }
 
-        public DocumentMessage(byte[] bytes, bool compression = true)
+        public DocumentMessage(byte[] bytes, string extension, bool compression = true)
             : base(bytes, compression)
         {
+            mExtension = extension;
         }
 
 
@@ -56,14 +59,8 @@ namespace FunctionLib.Model.Message
 
         public string ConvertBack()
         {
-            var index = ListHelper.IndexOf(Bytes, Constants.TagSeperator);
-            var seq1 = Bytes.Skip(index + Constants.TagSeperator.Length).ToArray();
-            var extension = ConvertHelper.Convert(seq1.Take(ListHelper.IndexOf(seq1, Constants.TagSeperator)).ToArray());
-            index = ListHelper.IndexOf(seq1, Constants.TagSeperator);
-            var resulting = seq1.Skip(index + 1).ToArray();
-
-            var path = FileManager.GetInstance().GenerateTmp(extension);
-            var ms = Compression ? CompressionHelper.Decompress(resulting) : new MemoryStream(resulting);
+            var path = FileManager.GetInstance().GenerateTmp(mExtension);
+            var ms = Compression ? CompressionHelper.Decompress(Bytes) : new MemoryStream(Bytes);
             using (var fs = File.Create(path))
             {
                 ms.CopyTo(fs);

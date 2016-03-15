@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
@@ -34,7 +35,7 @@ namespace FunctionLib.Steganography.Base
 
         public abstract Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3);
 
-        public abstract ISecretMessage Decode(Bitmap src, int passHash, MessageType type, int lsbIndicator = 3);
+        public abstract ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3);
 
         public virtual string ChangeColor(string srcPath, Color color)
         {
@@ -59,25 +60,6 @@ namespace FunctionLib.Steganography.Base
             return result;
         }
 
-        //public virtual LockBitmap Encode(Bitmap src, string message, int passHash, int lsbIndicator = 3)
-        //{
-        //    //    var result = new Bitmap(src);
-        //    //    var lockBitmap = new LockBitmap(result);
-        //    //    lockBitmap.LockBits();
-        //    //    var bytes = ConvertHelper.Convert(value);
-        //    //    var size = CheckIfEncryptionIsPossible(lockBitmap, bytes, significantIndicator);
-        //    //    if (size > 0)
-        //    //    {
-        //    //        throw new ArgumentOutOfRangeException(
-        //    //            string.Format("Not enough source size. A minimum of {0} pixel is needed.", size));
-        //    //    }
-        //    //    lockBitmap = Encode(lockBitmap, bytes, password, significantIndicator);
-        //    //    lockBitmap.UnlockBits();
-        //    //    return result;
-        //    //GNDN
-        //    return null;
-        //}
-
         protected LockBitmap LockBitmap(Bitmap src)
         {
             var file = new Bitmap(FileManager.GetInstance().CopyImageToTmp(src, ImageFormat.Png));
@@ -86,21 +68,19 @@ namespace FunctionLib.Steganography.Base
             return lockBitmap;
         }
 
-        protected void ReleaseBitmap(LockBitmap lockBitmap)
+        protected static ISecretMessage GetSpecificMessage(byte[] bytes)
         {
-            lockBitmap.UnlockBits();
-        }
-
-        public static ISecretMessage GetSpecificMessage(MessageType type, byte[] bytes)
-        {
-            switch (type)
+            var index = ListHelper.IndexOf(bytes, Constants.TagSeperator);
+            if (index > 0)
             {
-                case MessageType.Text:
-                    return new TextMessage(bytes);
-                case MessageType.Document:
-                    return new DocumentMessage(bytes);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                var seq = bytes.Take(index).ToArray();
+                var extension = ConvertHelper.Convert(seq);
+                var result = bytes.Skip(index + 1).ToArray();
+                return new DocumentMessage(result, extension);
+            }
+            else
+            {
+                return new TextMessage(bytes);
             }
         }
     }

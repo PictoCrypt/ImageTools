@@ -11,7 +11,7 @@ namespace ImageToolApp.ViewModels
     {
         private bool mEncryptedCheck;
         private string mImagePath = string.Empty;
-        private int mNumericUpDownValue = 3;
+        private int mLsbIndicator = 3;
         private string mPassword;
         private CryptographicAlgorithmImpl mSelectedEncryptionMethod;
         private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
@@ -30,19 +30,18 @@ namespace ImageToolApp.ViewModels
         {
             get { return Settings.Instance; }
         }
-
-        //TODO Rename!
-        public int NumericUpDownValue
+        
+        public int LsbIndicator
         {
-            get { return mNumericUpDownValue; }
+            get { return mLsbIndicator; }
             set
             {
-                if (value.Equals(mNumericUpDownValue))
+                if (value.Equals(mLsbIndicator))
                 {
                     return;
                 }
-                mNumericUpDownValue = value;
-                OnPropertyChanged("NumericUpDownValue");
+                mLsbIndicator = value;
+                OnPropertyChanged("LsbIndicator");
             }
         }
 
