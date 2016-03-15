@@ -10,7 +10,7 @@ using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.Base
 {
-    public abstract class SteganographicAlgorithmImpl : ISteganographicAlgorithm
+    public abstract class SteganographicAlgorithmImpl
     {
         protected SteganographicAlgorithmImpl()
         {
@@ -20,18 +20,6 @@ namespace FunctionLib.Steganography.Base
         public List<Pixel> ChangedPixels { get; }
         public abstract string Name { get; }
         public abstract string Description { get; }
-
-        public virtual int CheckIfEncryptionIsPossible(LockBitmap lockBitmap, int bytesLength, int significantIndicator)
-        {
-            var pixelsAvailable = lockBitmap.Width*lockBitmap.Height;
-            var bitsAvailable = pixelsAvailable*significantIndicator;
-            var bitsNeeded = bytesLength*8;
-            if (bitsAvailable >= bitsNeeded)
-            {
-                return 0;
-            }
-            return bitsNeeded/8;
-        }
 
         public abstract Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3);
 

@@ -88,7 +88,6 @@
     <Compile Include="Model\Pixel.cs" />
     <Compile Include="Model\Steganogramm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Steganography\Base\ISteganographicAlgorithm.cs" />
     <Compile Include="Steganography\Base\SteganographicAlgorithmBase.cs" />
     <Compile Include="Steganography\Base\SteganographicAlgorithmImpl.cs" />
     <Compile Include="Steganography\LSB\FilterFirst.cs" />

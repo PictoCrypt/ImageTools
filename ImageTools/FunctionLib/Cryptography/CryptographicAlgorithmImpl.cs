@@ -20,7 +20,7 @@ namespace FunctionLib.Cryptography
             var vectorBytes = Encoding.ASCII.GetBytes(Vector);
             var saltBytes = Encoding.ASCII.GetBytes(Salt);
             var valueBytes = Encoding.UTF8.GetBytes(value);
-            byte[] encrypted;
+            byte[] encoded;
 
             using (var cipher = Algorithm)
             {
@@ -38,13 +38,13 @@ namespace FunctionLib.Cryptography
                         {
                             writer.Write(valueBytes, 0, valueBytes.Length);
                             writer.FlushFinalBlock();
-                            encrypted = ms.ToArray();
+                            encoded = ms.ToArray();
                         }
                     }
                 }
                 cipher.Clear();
             }
-            return Convert.ToBase64String(encrypted);
+            return Convert.ToBase64String(encoded);
         }
 
         public string Decode(string value, string password)
