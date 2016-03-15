@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.IO.Compression;
+using Ionic.Zip;
 
 namespace FunctionLib.Helper
 {
@@ -10,9 +10,10 @@ namespace FunctionLib.Helper
             byte[] result;
             using (var compressed = new MemoryStream())
             {
-                using (var gzip = new GZipStream(compressed, CompressionMode.Compress))
+                using (var zip = new ZipFile())
                 {
-                    src.CopyTo(gzip);
+                    zip.AddEntry("Object", src);
+                    zip.Save(compressed);
                 }
                 result = compressed.ToArray();
             }
@@ -24,9 +25,12 @@ namespace FunctionLib.Helper
             var result = new MemoryStream();
             using (var ms = new MemoryStream(bytes))
             {
-                using (var gzip = new GZipStream(ms, CompressionMode.Decompress))
+                using (var zip = ZipFile.Read(ms))
                 {
-                    gzip.CopyTo(result);
+                    foreach (var entry in zip)
+                    {
+                        entry.Extract(result);
+                    }
                 }
             }
             return result;

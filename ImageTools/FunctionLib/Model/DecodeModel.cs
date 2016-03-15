@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Security.Cryptography;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
@@ -15,7 +14,7 @@ namespace FunctionLib.Model
         private readonly string mSrcObj;
         private readonly MessageType mType;
 
-        public DecodeModel(string imageSrc, MessageType type, SymmetricAlgorithm crypto, string passsword,
+        public DecodeModel(string imageSrc, MessageType type, CryptographicAlgorithmImpl crypto, string passsword,
             SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
         {
             mSrcObj = imageSrc;
@@ -41,7 +40,7 @@ namespace FunctionLib.Model
 
         public SteganographicAlgorithmImpl SteganoAlgorithm { get; set; }
 
-        public SymmetricAlgorithm CryptoAlgorithm { get; set; }
+        public CryptographicAlgorithmImpl CryptoAlgorithm { get; set; }
 
         public string Decode()
         {
@@ -51,8 +50,7 @@ namespace FunctionLib.Model
                 result = SteganoAlgorithm.Decode(bmp, PasswordHash, mType, mLsbIndicator);
             }
             //TODO: Kompression einbauen
-            var message = SymmetricAlgorithmBase.Decode(this, CryptoAlgorithm.GetType(), result.ConvertBack(),
-                mPassword);
+            var message = CryptoAlgorithm.Decode(result.ConvertBack(), mPassword);
             return message;
         }
     }

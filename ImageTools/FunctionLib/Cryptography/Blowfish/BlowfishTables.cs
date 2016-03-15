@@ -9,7 +9,7 @@
 namespace FunctionLib.Cryptography.Blowfish
 {
     /// <summary>
-    ///     Blowfish initialization values (PI hex)
+    ///     BlowfishBase initialization values (PI hex)
     /// </summary>
     public class BlowfishTables
     {

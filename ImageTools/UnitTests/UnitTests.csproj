@@ -55,14 +55,13 @@
   <ItemGroup>
     <Compile Include="CryptTests\AESTest.cs" />
     <Compile Include="CryptTests\DesTest.cs" />
-    <Compile Include="CryptTests\ISymmetricAlgorithmBaseTestClass.cs" />
     <Compile Include="CryptTests\Rc2Test.cs" />
     <Compile Include="CryptTests\RijndaelManagedTest.cs" />
     <Compile Include="CryptTests\SymmetricAlgorithmBaseTestClass.cs" />
     <Compile Include="CryptTests\TripleDesTest.cs" />
     <Compile Include="CryptTests\TwofishTest.cs" />
     <Compile Include="Filter\LaplaceTest.cs" />
-    <Compile Include="FunctionLibTests\GZipTests.cs" />
+    <Compile Include="FunctionLibTests\CompressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StegaTests\FilterFirstTest.cs" />
     <Compile Include="StegaTests\RandomLsbTest.cs" />

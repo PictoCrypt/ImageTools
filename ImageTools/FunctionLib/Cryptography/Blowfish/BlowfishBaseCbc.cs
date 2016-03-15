@@ -10,13 +10,13 @@
 namespace FunctionLib.Cryptography.Blowfish
 {
     /// <summary>
-    ///     helper class to enable CBCB for Blowfish
+    ///     helper class to enable CBCB for BlowfishBase
     /// </summary>
     /// <remarks>
     ///     Use this class to encrypt or decrypt byte arrays or a single
-    ///     block with Blowfish in the CBC (Cipher Block Block Chaining) mode.
+    ///     block with BlowfishBase in the CBC (Cipher Block Block Chaining) mode.
     /// </remarks>
-    public class BlowfishCBC : Blowfish
+    public class BlowfishBaseCbc : BlowfishBase
     {
         private uint m_unIvHi;
         private uint m_unIvLo;
@@ -29,10 +29,10 @@ namespace FunctionLib.Cryptography.Blowfish
         ///     the key material, up to MAXKYELENGTH bytes, oversized material is ignored
         /// </param>
         /// <param name="iv">
-        ///     the initialization vector as a byte array of Blowfish.BLOCKSIZE length,
+        ///     the initialization vector as a byte array of BlowfishBase.BLOCKSIZE length,
         ///     no range checking, oversized data is ignored
         /// </param>
-        public BlowfishCBC
+        public BlowfishBaseCbc
             (byte[] key,
                 byte[] iv) : base(key)
         {
@@ -41,7 +41,7 @@ namespace FunctionLib.Cryptography.Blowfish
 
 
         /// <summary>
-        ///     the current IV, Blowfish.BLOCKSIZE bytes large
+        ///     the current IV, BlowfishBase.BLOCKSIZE bytes large
         /// </summary>
         public byte[] Iv
         {

@@ -6,11 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTests.FunctionLibTests
 {
     [TestClass]
-    public class GZipTests
+    public class CompressionTests
     {
         [TestMethod]
-        // Dieser Test soll fehlschlagen, wenn GZip GRÖSSER als ein normaler Stream ist.
-        public void GZipVersusNormalStreamTest()
+        // Dieser Test soll fehlschlagen, wenn Zip GRÖSSER als ein normaler Stream ist.
+        public void CompressionVersusNormalStreamTest()
         {
             byte[] msArrayBytes;
             using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
@@ -34,7 +34,7 @@ namespace UnitTests.FunctionLibTests
         }
 
         [TestMethod]
-        public void GZipCompressTest()
+        public void NormalCompressionTest()
         {
             var testBytes = ConvertHelper.Convert(TestingConstants.NormalText);
             var src = new MemoryStream(testBytes);
@@ -44,7 +44,7 @@ namespace UnitTests.FunctionLibTests
         }
 
         [TestMethod]
-        public void GZipImageCompressTest()
+        public void ImageCompressionTest()
         {
             using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
             {
@@ -55,7 +55,7 @@ namespace UnitTests.FunctionLibTests
         }
 
         [TestMethod]
-        public void GZipDecompressTest()
+        public void DecompressionTest()
         {
             var testBytes = ConvertHelper.Convert(TestingConstants.NormalText);
             var src = new MemoryStream(testBytes);
@@ -66,7 +66,7 @@ namespace UnitTests.FunctionLibTests
         }
 
         [TestMethod]
-        public void GZipImageDecompressTest()
+        public void ImageDecompressionTest()
         {
             using (var stream = new FileStream(TestingConstants.NormalImage, FileMode.Open))
             {

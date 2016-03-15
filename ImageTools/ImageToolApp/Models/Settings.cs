@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
+using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Steganography.Base;
 using Newtonsoft.Json;
@@ -13,13 +12,13 @@ namespace ImageToolApp.Models
         private static Settings mInstance;
         private static JsonSerializer mSerializer;
 
-        private Settings(IList<SymmetricAlgorithm> encryptionMethods = null,
+        private Settings(IList<CryptographicAlgorithmImpl> encryptionMethods = null,
             IList<SteganographicAlgorithmImpl> steganographicMethods = null)
         {
             mSerializer = new JsonSerializer {TypeNameHandling = TypeNameHandling.Auto};
 
             LoadConfig();
-            EncryptionMethods = encryptionMethods ?? AlgorithmCollector.GetAllAlgorithm<SymmetricAlgorithm>();
+            EncryptionMethods = encryptionMethods ?? AlgorithmCollector.GetAllAlgorithm<CryptographicAlgorithmImpl>();
             SteganographicMethods = steganographicMethods ??
                                     AlgorithmCollector.GetAllAlgorithm<SteganographicAlgorithmImpl>();
         }
@@ -38,11 +37,11 @@ namespace ImageToolApp.Models
 
         public IList<SteganographicAlgorithmImpl> SteganographicMethods { get; }
 
-        public IList<SymmetricAlgorithm> EncryptionMethods { get; }
+        public IList<CryptographicAlgorithmImpl> EncryptionMethods { get; }
 
         public string Password { get; private set; } = string.Empty;
 
-        public SymmetricAlgorithm SelectedEncryptionMethod { get; private set; }
+        public CryptographicAlgorithmImpl SelectedEncryptionMethod { get; private set; }
 
         public SteganographicAlgorithmImpl SelectedSteganographicMethod { get; private set; }
 
@@ -73,7 +72,7 @@ namespace ImageToolApp.Models
             }
         }
 
-        internal void Save(string password, SymmetricAlgorithm selectedEncryptionMethod,
+        internal void Save(string password, CryptographicAlgorithmImpl selectedEncryptionMethod,
             SteganographicAlgorithmImpl selectedSteganographicMethod,
             string standardPath)
         {

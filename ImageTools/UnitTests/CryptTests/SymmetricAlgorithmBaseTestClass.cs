@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
+using FunctionLib.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.CryptTests
 {
-    public abstract class SymmetricAlgorithmBaseTestClass : ISymmetricAlgorithmBaseTestClass
+    public abstract class SymmetricAlgorithmBaseTestClass
     {
         private TimeSpan mDecryptionTime;
         private TimeSpan mEncryptionTime;
         //TODO: Falschtests
 
         private Stopwatch mStopwatch;
+
+        protected abstract CryptographicAlgorithmImpl Algorithm { get; }
 
         [TestMethod]
         public void NormalEncryptionTest()
@@ -36,10 +39,6 @@ namespace UnitTests.CryptTests
             WriteToOutput();
         }
 
-        public abstract string Encrypt(string value, string password);
-
-        public abstract string Decrypt(string value, string password);
-
         [TestInitialize]
         public void Initialize()
         {
@@ -58,7 +57,7 @@ namespace UnitTests.CryptTests
         private string Decrypt(string encrypted)
         {
             mStopwatch.Start();
-            var decrypted = Decrypt(encrypted, TestingConstants.Password);
+            var decrypted = Algorithm.Decode(encrypted, TestingConstants.Password);
             mStopwatch.Stop();
             mDecryptionTime = mStopwatch.Elapsed;
             Assert.IsFalse(string.IsNullOrEmpty(decrypted));
@@ -68,7 +67,7 @@ namespace UnitTests.CryptTests
         private string Encrypt(string value)
         {
             mStopwatch.Start();
-            var encrypted = Encrypt(value, TestingConstants.Password);
+            var encrypted = Algorithm.Encode(value, TestingConstants.Password);
             mStopwatch.Stop();
             mEncryptionTime = mStopwatch.Elapsed;
             mStopwatch.Reset();

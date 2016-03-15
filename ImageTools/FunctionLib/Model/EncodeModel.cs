@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.IO;
-using System.Security.Cryptography;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
@@ -16,7 +15,7 @@ namespace FunctionLib.Model
         private readonly string mSrcMessage;
         private readonly string mSrcObj;
 
-        public EncodeModel(string imageSrc, string message, SymmetricAlgorithm crypto, string passsword,
+        public EncodeModel(string imageSrc, string message, CryptographicAlgorithmImpl crypto, string passsword,
             SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
         {
             mSrcObj = imageSrc;
@@ -42,7 +41,7 @@ namespace FunctionLib.Model
 
         public SteganographicAlgorithmImpl SteganoAlgorithm { get; set; }
 
-        public SymmetricAlgorithm CryptoAlgorithm { get; set; }
+        public CryptographicAlgorithmImpl CryptoAlgorithm { get; set; }
 
         public Bitmap Encode()
         {
@@ -60,8 +59,7 @@ namespace FunctionLib.Model
             }
             else
             {
-                var cryptedMessage = SymmetricAlgorithmBase.Encode(this, CryptoAlgorithm.GetType(), mSrcMessage,
-                    mPassword);
+                var cryptedMessage = CryptoAlgorithm.Encode(mSrcMessage, mPassword);
                 message = new TextMessage(cryptedMessage, mCompression);
             }
 

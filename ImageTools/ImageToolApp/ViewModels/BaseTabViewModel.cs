@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
+using FunctionLib.Cryptography;
 using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
 using UserControlClassLibrary;
@@ -13,7 +13,7 @@ namespace ImageToolApp.ViewModels
         private string mImagePath = string.Empty;
         private int mNumericUpDownValue = 3;
         private string mPassword;
-        private SymmetricAlgorithm mSelectedEncryptionMethod;
+        private CryptographicAlgorithmImpl mSelectedEncryptionMethod;
         private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
 
@@ -60,7 +60,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public SymmetricAlgorithm SelectedEncryptionMethod
+        public CryptographicAlgorithmImpl SelectedEncryptionMethod
         {
             get { return mSelectedEncryptionMethod; }
             set
@@ -74,7 +74,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public IList<SymmetricAlgorithm> EncryptionMethods
+        public IList<CryptographicAlgorithmImpl> EncryptionMethods
         {
             get { return Settings.EncryptionMethods; }
         }

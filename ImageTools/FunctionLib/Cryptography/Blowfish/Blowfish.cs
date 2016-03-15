@@ -1,525 +1,395 @@
 // REFERENCE http://www.codeproject.com/Articles/483490/XCrypt-Encryption-and-decryption-class-wrapper
 
-
 /* 
-  Copyright 2001-2003 Markus Hahn <markus_hahn@gmx.net>
-  All rights reserved.
-  See Documentation for license details.  
+  Copright 2001-2003 by Markus Hahn <markus_hahn@gmx.net>
+  All rights reserved. 
+  See Documentation for license details.
 */
 
 
+using System;
+using System.Security.Cryptography;
+
 namespace FunctionLib.Cryptography.Blowfish
 {
-    /// <summary>
-    ///     Blowfish ECB implementation
-    /// </summary>
-    /// <remarks>
-    ///     Use this class to encrypt or decrypt byte arrays or a single
-    ///     block with Blowfish in the ECB (Electronic Code Book) mode,
-    ///     they key length can be flexible from zero up to 56 bytes.
-    /// </remarks>
-    public class Blowfish
+    public class Blowfish : SymmetricAlgorithm, ICryptoTransform
     {
+        private readonly bool m_blIsEncryptor;
+        // in factory mode the BlowfishBase instances are always null,
+        // they get only initialized in transformation mode
+
+        private readonly BlowfishBase mBlowfishBase;
+        private readonly BlowfishBaseCbc mBlowfishBaseCbc;
+
+
+        // factory settings
+
+        private RNGCryptoServiceProvider m_rng;
+
         /// <summary>
-        ///     maximum (and recommended) key size in bytes
+        ///     constructor
         /// </summary>
-        public const int MAXKEYLENGTH = 56;
+        public Blowfish()
+        {
+            mBlowfishBase = null;
+            mBlowfishBaseCbc = null;
+
+            // FIXME: are we supposed to create a default key and IV?
+            IVValue = null;
+            KeyValue = null;
+            KeySizeValue = BlowfishBase.MAXKEYLENGTH*8;
+
+            LegalBlockSizesValue = new KeySizes[1];
+            LegalBlockSizesValue[0] = new KeySizes(BlockSize, BlockSize, 8);
+
+            LegalKeySizesValue = new KeySizes[1];
+            LegalKeySizesValue[0] = new KeySizes(0, BlowfishBase.MAXKEYLENGTH*8, 8);
+
+            ModeValue = CipherMode.ECB;
+
+            m_rng = null;
+        }
+
+        private Blowfish
+            (
+            byte[] key,
+            byte[] iv,
+            bool blCBC,
+            bool blIsEncryptor
+            )
+        {
+            if (null == key) GenerateKey();
+            else Key = key;
+
+            if (blCBC)
+            {
+                if (null == iv) GenerateIV();
+                else IV = iv;
+
+                mBlowfishBase = null;
+                mBlowfishBaseCbc = new BlowfishBaseCbc(KeyValue, IVValue);
+            }
+            else
+            {
+                mBlowfishBase = new BlowfishBase(KeyValue);
+                mBlowfishBaseCbc = null;
+            }
+
+            m_blIsEncryptor = blIsEncryptor;
+        }
+
+
+        // SymmetricAlgorithm ...
+
 
         /// <summary>
-        ///     block size in bytes
+        ///     the BlowfishBase block size, can only be set to the same value
         /// </summary>
-        /// <remarks>
-        ///     (please note that data has to be aligned to the block size)
-        /// </remarks>
-        public const int BLOCKSIZE = 8;
-
-        private const int PBOX_ENTRIES = 18;
-        private const int SBOX_ENTRIES = 256;
-
-
-        private static readonly byte[] TEST_KEY = {0x1c, 0x58, 0x7f, 0x1c, 0x13, 0x92, 0x4f, 0xef};
-        private static readonly uint[] TEST_VECTOR_PLAIN = {0x30553228, 0x6d6f295a};
-        private static readonly uint[] TEST_VECTOR_CIPHER = {0x55cb3774, 0xd13ef201};
-
-        private readonly uint[] m_pbox;
-        private readonly uint[] m_sbox1;
-        private readonly uint[] m_sbox2;
-        private readonly uint[] m_sbox3;
-        private readonly uint[] m_sbox4;
-
-        private int m_nIsWeakKey;
+        public override int BlockSize
+        {
+            get { return BlowfishBase.BLOCKSIZE*8; }
+            set
+            {
+                // (we only support 64bit block sizes, although BlowfishBase is
+                //  also thinkable with 128bit blocks or even more)
+                if (value != BlowfishBase.BLOCKSIZE*8)
+                {
+                    throw new CryptographicException("illegal blocksize");
+                }
+            }
+        }
 
         /// <summary>
-        ///     standard constructor
+        ///     the initialization vector, used in the factory
+        /// </summary>
+        public override byte[] IV
+        {
+            get { return IVValue; }
+            set
+            {
+                if (null == value)
+                {
+                    throw new ArgumentNullException();
+                }
+                if (value.Length != BlowfishBase.BLOCKSIZE)
+                {
+                    throw new CryptographicException("illegal IV length");
+                }
+                IVValue = value;
+            }
+        }
+
+        /// <summary>
+        ///     the key, used in the factory
+        /// </summary>
+        public override byte[] Key
+        {
+            get { return KeyValue; }
+            set
+            {
+                if (null == value)
+                {
+                    throw new ArgumentNullException("key cannot be null");
+                }
+                // FIXME: according to the documentation we don't validate the
+                //        key, can this be correct? additionally it is confusing
+                //        because the key size can actually be changed, so what
+                //        happens then to the key material already set?
+                KeyValue = value;
+            }
+        }
+
+        /// <summary>
+        ///     the key length (for auto generation only)
+        /// </summary>
+        public override int KeySize
+        {
+            get { return KeySizeValue; }
+            set
+            {
+                var ks = LegalKeySizes[0];
+                if ((0 != value%ks.SkipSize) ||
+                    (value > ks.MaxSize) ||
+                    (value < ks.MinSize))
+                {
+                    throw new CryptographicException("invalid key size");
+                }
+                KeySizeValue = value;
+            }
+        }
+
+        public override KeySizes[] LegalBlockSizes
+        {
+            get { return LegalBlockSizesValue; }
+        }
+
+        public override KeySizes[] LegalKeySizes
+        {
+            get { return LegalKeySizesValue; }
+        }
+
+        public override CipherMode Mode
+        {
+            get { return ModeValue; }
+            set
+            {
+                // FIXME: we only support ECB and CBC, so is it ok
+                //        to raise an exception even if the requested
+                //        mode itself is a valid one?
+                if (value != CipherMode.CBC &&
+                    value != CipherMode.ECB)
+                {
+                    throw new CryptographicException("only ECB and CBC are supported");
+                }
+                ModeValue = value;
+            }
+        }
+
+        // ICryptoTransform ...
+
+        public bool CanReuseTransform
+        {
+            get { return true; }
+        }
+
+        public bool CanTransformMultipleBlocks
+        {
+            get { return true; }
+        }
+
+        public int InputBlockSize
+        {
+            get { return BlowfishBase.BLOCKSIZE; }
+        }
+
+        public int OutputBlockSize
+        {
+            get { return BlowfishBase.BLOCKSIZE; }
+        }
+
+        public int TransformBlock
+            (
+            byte[] bufIn,
+            int nOfsIn,
+            int nCount,
+            byte[] bufOut,
+            int nOfsOut
+            )
+        {
+            // NOTE: we assume that the caller understands the meaning of
+            //	     this method and that only even byte boundaries are
+            //       given, thus we do not cache any data left internally
+
+            var nResult = 0;
+
+            if (null != mBlowfishBaseCbc)
+            {
+                if (m_blIsEncryptor)
+                {
+                    nResult = mBlowfishBaseCbc.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+                else
+                {
+                    nResult = mBlowfishBaseCbc.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+            }
+            else if (null != mBlowfishBase)
+            {
+                if (m_blIsEncryptor)
+                {
+                    nResult = mBlowfishBase.Encrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+                else
+                {
+                    nResult = mBlowfishBase.Decrypt(bufIn, bufOut, nOfsIn, nOfsOut, nCount);
+                }
+            }
+            else
+            {
+                nResult = 0;
+            }
+
+            return nResult*BlowfishBase.BLOCKSIZE;
+        }
+
+        public byte[] TransformFinalBlock
+            (
+            byte[] inBuf,
+            int nOfs,
+            int nCount
+            )
+        {
+            byte[] result;
+
+            if (m_blIsEncryptor)
+            {
+                // we need to take over whatever we got, pad it with the right
+                // scheme and then encrypt or decrypt it
+
+                var nRest = nCount%BlowfishBase.BLOCKSIZE;
+
+                // NOTE: the padding schemes may result into different data length,
+                //       while zero padding just fills up the last block PKCS7 might
+                //       need an extra block to store its length information
+
+                var nBufSize = nCount - nRest;
+                int nFill;
+
+                if (PaddingMode.PKCS7 == PaddingValue)
+                {
+                    nBufSize += BlowfishBase.BLOCKSIZE;
+                    nFill = BlowfishBase.BLOCKSIZE - nRest;
+                }
+                else
+                {
+                    if (0 < nRest) nBufSize += BlowfishBase.BLOCKSIZE;
+                    nFill = 0;
+                }
+
+                result = new byte[nBufSize];
+                Array.Copy(inBuf, nOfs, result, 0, nCount);
+
+                for (var nI = nCount; nI < nBufSize; nI++)
+                {
+                    result[nI] = (byte) nFill;
+                }
+
+                TransformBlock(result, 0, nBufSize, result, 0);
+            }
+            else
+            {
+                var lastBlocks = new byte[nCount];
+                if (0 < nCount)
+                {
+                    TransformBlock(inBuf, nOfs, nCount, lastBlocks, 0);
+
+                    if (PaddingMode.PKCS7 == PaddingValue)
+                    {
+                        nCount -= lastBlocks[nCount - 1];
+                    }
+
+                    result = new byte[nCount];
+                    Array.Copy(lastBlocks, 0, result, 0, nCount);
+                }
+                else
+                {
+                    // (that will be an empty array)
+                    result = lastBlocks;
+                }
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        ///     checks if a key is weak (and perhaps shouldn't be used)
         /// </summary>
         /// <param name="key">
-        ///     the key material, up to MAXKYELENGTH bytes, oversized material is ignored
+        ///     the key material to test against
         /// </param>
-        public Blowfish
+        /// <returns>
+        ///     true: key is "weak" / false: key passed the test
+        /// </returns>
+        public static bool IsWeakKey
             (byte[] key)
         {
-            int nI;
+            var bfAlg = new Blowfish(key, null, false, true);
 
-            m_pbox = new uint[PBOX_ENTRIES];
-
-            for (nI = 0; nI < PBOX_ENTRIES; nI++)
-            {
-                m_pbox[nI] = BlowfishTables.pbox_init[nI];
-            }
-
-            m_sbox1 = new uint[SBOX_ENTRIES];
-            m_sbox2 = new uint[SBOX_ENTRIES];
-            m_sbox3 = new uint[SBOX_ENTRIES];
-            m_sbox4 = new uint[SBOX_ENTRIES];
-
-            for (nI = 0; nI < SBOX_ENTRIES; nI++)
-            {
-                m_sbox1[nI] = BlowfishTables.sbox_init_1[nI];
-                m_sbox2[nI] = BlowfishTables.sbox_init_2[nI];
-                m_sbox3[nI] = BlowfishTables.sbox_init_3[nI];
-                m_sbox4[nI] = BlowfishTables.sbox_init_4[nI];
-            }
-
-            // xor the key over the p-boxes
-
-            var nLen = key.Length;
-            if (nLen == 0) return;
-            var nKeyPos = 0;
-            uint unBuild = 0;
-
-            for (nI = 0; nI < PBOX_ENTRIES; nI++)
-            {
-                for (var nJ = 0; nJ < 4; nJ++)
-                {
-                    unBuild = (unBuild << 8) | key[nKeyPos];
-
-                    if (++nKeyPos == nLen)
-                    {
-                        nKeyPos = 0;
-                    }
-                }
-                m_pbox[nI] ^= unBuild;
-            }
-
-
-            // encrypt all boxes with the all zero string
-            uint unZeroHi = 0;
-            uint unZeroLo = 0;
-
-            for (nI = 0; nI < PBOX_ENTRIES; nI += 2)
-            {
-                BaseEncrypt(ref unZeroHi, ref unZeroLo);
-                m_pbox[nI] = unZeroHi;
-                m_pbox[nI + 1] = unZeroLo;
-            }
-            for (nI = 0; nI < SBOX_ENTRIES; nI += 2)
-            {
-                BaseEncrypt(ref unZeroHi, ref unZeroLo);
-                m_sbox1[nI] = unZeroHi;
-                m_sbox1[nI + 1] = unZeroLo;
-            }
-            for (nI = 0; nI < SBOX_ENTRIES; nI += 2)
-            {
-                BaseEncrypt(ref unZeroHi, ref unZeroLo);
-                m_sbox2[nI] = unZeroHi;
-                m_sbox2[nI + 1] = unZeroLo;
-            }
-            for (nI = 0; nI < SBOX_ENTRIES; nI += 2)
-            {
-                BaseEncrypt(ref unZeroHi, ref unZeroLo);
-                m_sbox3[nI] = unZeroHi;
-                m_sbox3[nI + 1] = unZeroLo;
-            }
-            for (nI = 0; nI < SBOX_ENTRIES; nI += 2)
-            {
-                BaseEncrypt(ref unZeroHi, ref unZeroLo);
-                m_sbox4[nI] = unZeroHi;
-                m_sbox4[nI + 1] = unZeroLo;
-            }
-
-            m_nIsWeakKey = -1;
+            return bfAlg.mBlowfishBase.IsWeakKey;
         }
 
-        /// <summary>
-        ///     to check if the key used is weak, which means that eventually
-        ///     an attack is easier to apply than simple brute force on keys;
-        ///     due to the randomness such a case is very unlikely to happen
-        /// </summary>
-        public bool IsWeakKey
+        // the factory methods are just simple mappings to the private constructors
+
+        public override ICryptoTransform CreateEncryptor
+            (
+            byte[] key,
+            byte[] iv
+            )
         {
-            get
-            {
-                // (NOTE: for performance reason we don't do the weak key 
-                //  check during the initialization, but on demand only)
+            var result = new Blowfish(
+                key,
+                iv,
+                CipherMode.CBC == ModeValue,
+                true);
 
-                if (-1 == m_nIsWeakKey)
-                {
-                    m_nIsWeakKey = 0;
-
-                    int nI, nJ;
-                    for (nI = 0; nI < SBOX_ENTRIES - 1; nI++)
-                    {
-                        nJ = nI + 1;
-                        while (nJ < SBOX_ENTRIES)
-                        {
-                            if ((m_sbox1[nI] == m_sbox1[nJ]) |
-                                (m_sbox2[nI] == m_sbox2[nJ]) |
-                                (m_sbox3[nI] == m_sbox3[nJ]) |
-                                (m_sbox4[nI] == m_sbox4[nJ])) break;
-                            nJ++;
-                        }
-                        if (nJ < SBOX_ENTRIES)
-                        {
-                            m_nIsWeakKey = 1;
-                            break;
-                        }
-                    }
-                }
-
-                return 1 == m_nIsWeakKey;
-            }
+            result.Padding = Padding;
+            return result;
         }
 
-
-        /// <summary>
-        ///     deletes all internal data structures and invalidates this instance
-        /// </summary>
-        /// <remarks>
-        ///     Call this method as soon as the work with a particular instance is
-        ///     done. By this no sensitive translated key material remains. The
-        ///     instance is invalid after this call and usage can lead to unexpected
-        ///     results.
-        /// </remarks>
-        public virtual void Burn()
+        public override ICryptoTransform CreateDecryptor
+            (
+            byte[] key,
+            byte[] iv
+            )
         {
-            int nI;
+            var result = new Blowfish(
+                key,
+                iv,
+                CipherMode.CBC == ModeValue,
+                false);
 
-            for (nI = 0; nI < PBOX_ENTRIES; nI++)
-            {
-                m_pbox[nI] = 0;
-            }
-
-            for (nI = 0; nI < SBOX_ENTRIES; nI++)
-            {
-                m_sbox1[nI] = m_sbox2[nI] = m_sbox3[nI] = m_sbox4[nI] = 0;
-            }
+            result.Padding = Padding;
+            return result;
         }
 
+        // FIXME: is our generator strategy here good enough?
+        //        (and why does the base class actually not offer a decent default?)
 
-        /// <summary>
-        ///     executes a selftest
-        /// </summary>
-        /// <remarks>
-        ///     Call this method to make sure that the instance is able to produce
-        ///     valid output according to the specification.
-        /// </remarks>
-        /// <returns>
-        ///     true: selftest passed / false: selftest failed
-        /// </returns>
-        public static bool SelfTest()
+        public override void GenerateKey()
         {
-            var unHi = TEST_VECTOR_PLAIN[0];
-            var unLo = TEST_VECTOR_PLAIN[1];
+            if (null == m_rng) m_rng = new RNGCryptoServiceProvider();
 
-            var bf = new Blowfish(TEST_KEY);
-
-            bf.Encrypt(ref unHi, ref unLo);
-
-            if ((unHi != TEST_VECTOR_CIPHER[0]) ||
-                (unLo != TEST_VECTOR_CIPHER[1]))
-            {
-                return false;
-            }
-
-            bf.Decrypt(ref unHi, ref unLo);
-
-            if ((unHi != TEST_VECTOR_PLAIN[0]) ||
-                (unLo != TEST_VECTOR_PLAIN[1]))
-            {
-                return false;
-            }
-
-            return true;
+            KeyValue = new byte[KeySizeValue/8];
+            m_rng.GetBytes(KeyValue);
         }
 
-        protected void BaseEncrypt
-            (ref uint unHiRef,
-                ref uint unLoRef)
+        public override void GenerateIV()
         {
-            // copy to local cache (faster)
+            if (null == m_rng) m_rng = new RNGCryptoServiceProvider();
 
-            var unHi = unHiRef;
-            var unLo = unLoRef;
-
-            // and use local references, too
-
-            var sbox1 = m_sbox1;
-            var sbox2 = m_sbox2;
-            var sbox3 = m_sbox3;
-            var sbox4 = m_sbox4;
-
-            var pbox = m_pbox;
-
-            // encrypt the block, unrolled loop and odd/even changes to maximize the speed
-
-            unHi ^= pbox[0];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[1];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[2];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[3];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[4];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[5];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[6];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[7];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[8];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[9];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[10];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[11];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[12];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[13];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[14];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[15];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[16];
-
-            // finalize and copy back
-
-            unLoRef = unHi;
-            unHiRef = unLo ^ pbox[17];
-        }
-
-        /// <summary>
-        ///     encrypts a single block
-        /// </summary>
-        /// <remarks>
-        ///     Use this method to encrypt one logical block, which is passed
-        ///     as two 32bit halves. If you extract the block from a sequence
-        ///     of bytes you have to do it in the network byte order.
-        /// </remarks>
-        /// <param name="unHiRef">
-        ///     reference to the high 32 bits of the block
-        /// </param>
-        /// <param name="unLoRef">
-        ///     reference to the low 32 bits of the block
-        /// </param>
-        public virtual void Encrypt
-            (ref uint unHiRef,
-                ref uint unLoRef)
-        {
-            BaseEncrypt(ref unHiRef, ref unLoRef);
-        }
-
-
-        /// <summary>
-        ///     encrypts single bytes
-        /// </summary>
-        /// <remarks>
-        ///     Use this method to encrypt bytes from one array to another one.
-        ///     You can also use the same array for input and output. Note that
-        ///     the number of bytes must be adjusted to the block size of the
-        ///     algorithm. Overlapping bytes will not be encrypted. No check for
-        ///     buffer overflows are made.
-        /// </remarks>
-        /// <param name="dataIn"> input buffer </param>
-        /// <param name="dataOut"> output buffer </param>
-        /// <param name="nPosIn"> where to start reading in the input buffer </param>
-        /// <param name="nPosOut"> where to start writing to the output buffer </param>
-        /// <param name="nCount"> number ob bytes to encrypt </param>
-        /// <returns>
-        ///     number of blocks processed
-        /// </returns>
-        public int Encrypt
-            (byte[] dataIn,
-                byte[] dataOut,
-                int nPosIn,
-                int nPosOut,
-                int nCount)
-        {
-            // count in blocks
-            nCount >>= 3;
-
-            for (var nI = 0; nI < nCount; nI++)
-            {
-                // load the bytes into two 32bit words, which together represent the block
-
-                var unHi = ((uint) dataIn[nPosIn] << 24) |
-                           ((uint) dataIn[nPosIn + 1] << 16) |
-                           ((uint) dataIn[nPosIn + 2] << 8) |
-                           dataIn[nPosIn + 3];
-
-                var unLo = ((uint) dataIn[nPosIn + 4] << 24) |
-                           ((uint) dataIn[nPosIn + 5] << 16) |
-                           ((uint) dataIn[nPosIn + 6] << 8) |
-                           dataIn[nPosIn + 7];
-
-                // encrypt that construct
-
-                Encrypt(ref unHi, ref unLo);
-
-                // write the encrypted block back
-
-                dataOut[nPosOut] = (byte) (unHi >> 24);
-                dataOut[nPosOut + 1] = (byte) (unHi >> 16);
-                dataOut[nPosOut + 2] = (byte) (unHi >> 8);
-                dataOut[nPosOut + 3] = (byte) unHi;
-                dataOut[nPosOut + 4] = (byte) (unLo >> 24);
-                dataOut[nPosOut + 5] = (byte) (unLo >> 16);
-                dataOut[nPosOut + 6] = (byte) (unLo >> 8);
-                dataOut[nPosOut + 7] = (byte) unLo;
-
-                nPosIn += 8;
-                nPosOut += 8;
-            }
-
-            return nCount;
-        }
-
-
-        /// <summary>
-        ///     decrypts a single block
-        /// </summary>
-        /// <remarks>
-        ///     Use this method to decrypt one logical block, which is passed
-        ///     as two 32bit halves. If you extract the block from a sequence
-        ///     of bytes you have to do it in the network byte order.
-        /// </remarks>
-        /// <param name="unHiRef">
-        ///     reference to the high 32 bits of the block
-        /// </param>
-        /// <param name="unLoRef">
-        ///     reference to the low 32 bits of the block
-        /// </param>
-        public virtual void Decrypt
-            (ref uint unHiRef,
-                ref uint unLoRef)
-        {
-            // (same procedure and tricks as above)
-
-            var unHi = unHiRef;
-            var unLo = unLoRef;
-
-            var sbox1 = m_sbox1;
-            var sbox2 = m_sbox2;
-            var sbox3 = m_sbox3;
-            var sbox4 = m_sbox4;
-
-            var pbox = m_pbox;
-
-            unHi ^= pbox[17];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[16];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[15];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[14];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[13];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[12];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[11];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[10];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[9];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[8];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[7];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[6];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[5];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[4];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[3];
-            unLo ^= (((sbox1[(int) (unHi >> 24)] + sbox2[(int) ((unHi >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unHi >> 8) & 0x0ff)]) + sbox4[(int) (unHi & 0x0ff)]) ^ pbox[2];
-            unHi ^= (((sbox1[(int) (unLo >> 24)] + sbox2[(int) ((unLo >> 16) & 0x0ff)]) ^
-                      sbox3[(int) ((unLo >> 8) & 0x0ff)]) + sbox4[(int) (unLo & 0x0ff)]) ^ pbox[1];
-
-            unLoRef = unHi;
-            unHiRef = unLo ^ pbox[0];
-        }
-
-
-        /// <summary>
-        ///     decrypts single bytes
-        /// </summary>
-        /// <remarks>
-        ///     Use this method to decrypt bytes from one array to another one.
-        ///     You can also use the same array for input and output. Note that
-        ///     the number of bytes must be adjusted to the block size of the
-        ///     algorithm. Overlapping bytes will not be decrypted. No check for
-        ///     buffer overflows are made.
-        /// </remarks>
-        /// <param name="dataIn"> input buffer </param>
-        /// <param name="dataOut"> output buffer </param>
-        /// <param name="nPosIn"> where to start reading in the input buffer </param>
-        /// <param name="nPosOut"> where to start writing to the output buffer </param>
-        /// <param name="nCount"> number ob bytes to decrypt </param>
-        /// <returns>
-        ///     number of blocks processed
-        /// </returns>
-        public int Decrypt
-            (byte[] dataIn,
-                byte[] dataOut,
-                int nPosIn,
-                int nPosOut,
-                int nCount)
-        {
-            // count in blocks
-            nCount >>= 3;
-
-            for (var nI = 0; nI < nCount; nI++)
-            {
-                // load the bytes into two 32bit words, which together represent the block
-
-                var unHi = ((uint) dataIn[nPosIn] << 24) |
-                           ((uint) dataIn[nPosIn + 1] << 16) |
-                           ((uint) dataIn[nPosIn + 2] << 8) |
-                           dataIn[nPosIn + 3];
-
-                var unLo = ((uint) dataIn[nPosIn + 4] << 24) |
-                           ((uint) dataIn[nPosIn + 5] << 16) |
-                           ((uint) dataIn[nPosIn + 6] << 8) |
-                           dataIn[nPosIn + 7];
-
-                // encrypt that construct
-
-                Decrypt(ref unHi, ref unLo);
-
-                // write the encrypted block back
-
-                dataOut[nPosOut] = (byte) (unHi >> 24);
-                dataOut[nPosOut + 1] = (byte) (unHi >> 16);
-                dataOut[nPosOut + 2] = (byte) (unHi >> 8);
-                dataOut[nPosOut + 3] = (byte) unHi;
-                dataOut[nPosOut + 4] = (byte) (unLo >> 24);
-                dataOut[nPosOut + 5] = (byte) (unLo >> 16);
-                dataOut[nPosOut + 6] = (byte) (unLo >> 8);
-                dataOut[nPosOut + 7] = (byte) unLo;
-
-                nPosIn += 8;
-                nPosOut += 8;
-            }
-
-            return nCount;
+            IVValue = new byte[BlowfishBase.BLOCKSIZE];
+            m_rng.GetBytes(IVValue);
         }
     }
 }

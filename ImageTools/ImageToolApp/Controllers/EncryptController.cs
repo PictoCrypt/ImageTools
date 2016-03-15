@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 using ImageToolApp.ViewModels;
@@ -169,9 +168,7 @@ namespace ImageToolApp.Controllers
                         value = ViewModel.Text;
                         if (ViewModel.EncryptedCheck)
                         {
-                            value = SymmetricAlgorithmBase.Encode(this, ViewModel.SelectedEncryptionMethod.GetType(),
-                                value,
-                                ViewModel.Password);
+                            value = ViewModel.SelectedEncryptionMethod.Encode(value, ViewModel.Password);
                         }
                     }
 
