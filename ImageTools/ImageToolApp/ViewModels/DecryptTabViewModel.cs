@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -52,7 +53,7 @@ namespace ImageToolApp.ViewModels
                 }
                 else
                 {
-                    if (Constants.ImageExtensions.Contains(Path.GetExtension(str).ToUpperInvariant()))
+                    if(Constants.ImageExtensions.Contains(Path.GetExtension(str).Replace(".", ""), StringComparer.OrdinalIgnoreCase))
                     {
                         result = new Image
                         {

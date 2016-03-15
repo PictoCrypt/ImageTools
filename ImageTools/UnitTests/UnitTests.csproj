@@ -88,6 +88,9 @@
     <Content Include="Testfiles\SmallFlowers.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Testfiles\SmallImage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Testfiles\SmallKoala.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

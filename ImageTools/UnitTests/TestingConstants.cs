@@ -19,6 +19,8 @@ namespace UnitTests
         private static readonly string LittleImage = Path.Combine(Constants.ExecutiongPath, "Testfiles",
             "LittleTest.png");
 
+        public static readonly string SmallImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallImage.jpg");
+
         public static readonly string SmallKoala = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallKoala.jpg");
 
         public static readonly string SmallFlowers = Path.Combine(Constants.ExecutiongPath, "Testfiles",

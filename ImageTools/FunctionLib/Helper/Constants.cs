@@ -10,7 +10,7 @@ namespace FunctionLib.Helper
         private const char Seperator = '\r';
 
         public const string ApplicationName = "ImageTools";
-        public static readonly List<string> ImageExtensions = new List<string> {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"};
+        public static readonly HashSet<string> ImageExtensions = new HashSet<string>{"JPG", "JPE", "BMP", "GIF", "PNG"};
         public static readonly byte[] TagSeperator = ConvertHelper.Convert(Seperator.ToString());
 
         public static string ExecutiongPath

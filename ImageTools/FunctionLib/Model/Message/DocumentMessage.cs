@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using FunctionLib.Helper;
@@ -6,9 +10,9 @@ namespace FunctionLib.Model.Message
 {
     public class DocumentMessage : SecretMessage, ISecretMessage
     {
-        private string mExtension;
+        private readonly string mExtension;
 
-        public DocumentMessage(string path, bool compression = true)
+        public DocumentMessage(string path, bool compression = false)
             : base(path, compression)
         {
             if (!File.Exists(path))
@@ -17,7 +21,7 @@ namespace FunctionLib.Model.Message
             }
         }
 
-        public DocumentMessage(byte[] bytes, string extension, bool compression = true)
+        public DocumentMessage(byte[] bytes, string extension, bool compression = false)
             : base(bytes, compression)
         {
             mExtension = extension;
@@ -32,11 +36,20 @@ namespace FunctionLib.Model.Message
             }
 
             var memStream = new MemoryStream();
-            using (var fs = new FileStream(Message, FileMode.Open))
+            if (Constants.ImageExtensions.Contains(Path.GetExtension(Message).Replace(".", ""), StringComparer.OrdinalIgnoreCase))
             {
-                fs.CopyTo(memStream);
+                using (var img = Image.FromFile(Message))
+                {
+                    img.Save(memStream, ImageFormat.Png);
+                }
             }
-
+            else
+            {
+                using (var fs = new FileStream(Message, FileMode.Open))
+                {
+                    fs.CopyTo(memStream);
+                }
+            }
             var result = memStream.ToArray();
             if (Compression)
             {
@@ -47,7 +60,7 @@ namespace FunctionLib.Model.Message
             }
 
             var length = ConvertHelper.Convert(result.Length.ToString());
-            var path = ConvertHelper.Convert(Path.GetExtension(Message));
+            var path = ConvertHelper.Convert(Path.GetExtension(Message).Replace(".", ""));
             result =
                 length.Concat(Constants.TagSeperator)
                     .Concat(path)
@@ -61,10 +74,20 @@ namespace FunctionLib.Model.Message
         {
             var path = FileManager.GetInstance().GenerateTmp(mExtension);
             var ms = Compression ? CompressionHelper.Decompress(Bytes) : new MemoryStream(Bytes);
-            using (var fs = File.Create(path))
+            if (Constants.ImageExtensions.Contains(mExtension, StringComparer.OrdinalIgnoreCase))
             {
-                ms.CopyTo(fs);
-                fs.Flush();
+                using (var img = Image.FromStream(ms))
+                {
+                    img.Save(path);
+                }
+            }
+            else
+            {
+                using (var fs = File.Create(path))
+                {
+                    ms.CopyTo(fs);
+                    fs.Flush();
+                }
             }
             return path;
         }

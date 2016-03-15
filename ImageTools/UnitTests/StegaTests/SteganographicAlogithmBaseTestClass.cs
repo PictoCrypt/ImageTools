@@ -68,7 +68,7 @@ namespace UnitTests.StegaTests
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))
             {
-                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallFlowers),
+                var encrypted = Encode(bitmap, new DocumentMessage(TestingConstants.SmallImage),
                     TestingConstants.Password.GetHashCode());
                 var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode());
                 var result = decrypted.ConvertBack();
