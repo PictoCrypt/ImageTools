@@ -15,6 +15,8 @@ namespace FunctionLib.Cryptography
 
         protected abstract SymmetricAlgorithm Algorithm { get; }
 
+        protected abstract string Name { get; }
+
         public string Encode(string value, string password)
         {
             var vectorBytes = Encoding.ASCII.GetBytes(Vector);
@@ -92,6 +94,11 @@ namespace FunctionLib.Cryptography
                 return result.Remove(index, result.Length - index);
             }
             return result;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

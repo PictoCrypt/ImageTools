@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
@@ -22,8 +23,8 @@ namespace ImageToolApp.ViewModels
             mSettings = settings;
             Password = mSettings.Password;
             StandardPath = mSettings.DefaultPath;
-            SelectedEncryptionMethod = mSettings.SelectedEncryptionMethod;
-            SelectedSteganographicMethod = mSettings.SelectedSteganographicMethod;
+            SelectedEncryptionMethod = mSettings.SelectedEncryptionMethod ?? mSettings.EncryptionMethods.FirstOrDefault();
+            SelectedSteganographicMethod = mSettings.SelectedSteganographicMethod ?? mSettings.SteganographicMethods.FirstOrDefault();
         }
 
         public string Password

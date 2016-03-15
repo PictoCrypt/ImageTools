@@ -8,5 +8,6 @@ namespace FunctionLib.Cryptography
         {
             get { return new TripleDESCryptoServiceProvider(); }
         }
+        protected override string Name { get { return "TripleDES";  } }
     }
 }

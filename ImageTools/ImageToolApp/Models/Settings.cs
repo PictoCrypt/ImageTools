@@ -12,15 +12,13 @@ namespace ImageToolApp.Models
         private static Settings mInstance;
         private static JsonSerializer mSerializer;
 
-        private Settings(IList<CryptographicAlgorithmImpl> encryptionMethods = null,
-            IList<SteganographicAlgorithmImpl> steganographicMethods = null)
+        private Settings()
         {
             mSerializer = new JsonSerializer {TypeNameHandling = TypeNameHandling.Auto};
 
             LoadConfig();
-            EncryptionMethods = encryptionMethods ?? AlgorithmCollector.GetAllAlgorithm<CryptographicAlgorithmImpl>();
-            SteganographicMethods = steganographicMethods ??
-                                    AlgorithmCollector.GetAllAlgorithm<SteganographicAlgorithmImpl>();
+            EncryptionMethods = AlgorithmCollector.GetAllAlgorithm<CryptographicAlgorithmImpl>();
+            SteganographicMethods = AlgorithmCollector.GetAllAlgorithm<SteganographicAlgorithmImpl>();
         }
 
         public static Settings Instance

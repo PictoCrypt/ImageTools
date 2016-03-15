@@ -58,7 +58,7 @@
                              IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
                              controls:TextBoxHelper.Watermark="Password..." />
                 <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
-                          SelectedItem="{Binding SelectedEncryptionMethod}"
+                          SelectedItem="{Binding SelectedEncryptionMethod}" DisplayMemberPath="Name"
                           Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
             </Grid>
         </GroupBox>
