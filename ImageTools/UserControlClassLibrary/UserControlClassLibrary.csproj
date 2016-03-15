@@ -97,9 +97,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FunctionLib\FunctionLib.csproj">
+    <ProjectReference Include="..\FunctionLib\ImageToolLib.csproj">
       <Project>{8DF508C2-07F4-486A-89B1-DB17A5166216}</Project>
-      <Name>FunctionLib</Name>
+      <Name>ImageToolLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

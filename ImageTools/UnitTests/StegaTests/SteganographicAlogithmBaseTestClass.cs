@@ -49,6 +49,28 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
+        public Bitmap Encoding()
+        {
+            Bitmap encrypted;
+            using (var bitmap = new Bitmap(TestingConstants.NormalImage))
+            {
+                encrypted = Encode(bitmap, new TextMessage(TestingConstants.NormalText),
+                    TestingConstants.Password.GetHashCode());
+                Assert.IsNotNull(encrypted);
+            }
+            return encrypted;
+        }
+
+        [TestMethod]
+        public void Decodig()
+        {
+            var enc = Encoding();
+            var decrypted = Decode(enc, TestingConstants.Password.GetHashCode());
+            var result = decrypted.ConvertBack();
+            Assert.IsTrue(result.Length > 0);
+        }
+
+        [TestMethod]
         public void EncodeWithLsbIndicator()
         {
             using (var bitmap = new Bitmap(TestingConstants.NormalImage))

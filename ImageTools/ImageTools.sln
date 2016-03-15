@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionLib", "FunctionLib\FunctionLib.csproj", "{8DF508C2-07F4-486A-89B1-DB17A5166216}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToolLib", "FunctionLib\ImageToolLib.csproj", "{8DF508C2-07F4-486A-89B1-DB17A5166216}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToolApp", "ImageToolApp\ImageToolApp.csproj", "{D523E1DC-5788-4E27-921D-D3B97FB78208}"
 EndProject

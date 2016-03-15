@@ -26,3 +26,5 @@ Einbettungsrate anzeigen (10% ist sehr gut.)
 Neue Verfahren (Kathryn Hempstalk)
 
 Testing von Stego und Library neu machen!
+
+Test mit Kompression

@@ -199,9 +199,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FunctionLib\FunctionLib.csproj">
+    <ProjectReference Include="..\FunctionLib\ImageToolLib.csproj">
       <Project>{8DF508C2-07F4-486A-89B1-DB17A5166216}</Project>
-      <Name>FunctionLib</Name>
+      <Name>ImageToolLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\UserControlClassLibrary\UserControlClassLibrary.csproj">
       <Project>{6c9fc726-54a4-434b-b1d0-d4afcff75da0}</Project>
