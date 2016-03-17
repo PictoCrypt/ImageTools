@@ -1,4 +1,7 @@
-﻿namespace ImageToolApp.ViewModels
+﻿using System.Drawing;
+using FunctionLib.Helper;
+
+namespace ImageToolApp.ViewModels
 {
     public class EncryptTabViewModel : BaseTabViewModel
     {
@@ -16,6 +19,30 @@
                 }
                 mText = value;
                 OnPropertyChanged("Text");
+                OnPropertyChanged("ProgressBarValue");
+            }
+        }
+
+        public double ProgressBarValue
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ImagePath) || SelectedSteganographicMethod == null || string.IsNullOrEmpty(Text))
+                {
+                    return 0;
+                }
+                double max;
+                using (var bitmap = new Bitmap(ImagePath))
+                {
+                    max = SelectedSteganographicMethod.MaxEmbeddingCount(bitmap, LsbIndicator);
+                }
+                var contentLength = (double) ConvertHelper.Convert(Text).Length;
+                var result = (contentLength / max) * 100;
+                return result;
+            }
+            set
+            {
+                //GNDN
             }
         }
 

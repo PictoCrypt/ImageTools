@@ -142,6 +142,7 @@ namespace ImageToolApp.ViewModels
                 }
                 mImagePath = value;
                 OnPropertyChanged("ImagePath");
+                OnPropertyChanged("ProgressBarValue");
             }
         }
     }

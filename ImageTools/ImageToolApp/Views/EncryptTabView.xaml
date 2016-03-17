@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -28,7 +29,7 @@
                   HorizontalAlignment="Stretch" Header="Text">
             <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
                      VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
-                     Text="{Binding Text}" controls:TextBoxHelper.Watermark="Secret Text..." />
+                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" controls:TextBoxHelper.Watermark="Secret Message..." />
         </Expander>
 
         <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch"
@@ -65,7 +66,7 @@
         </GroupBox>
 
 
-        <StackPanel Grid.Column="0" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Right"
+        <StackPanel Grid.Column="0" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding SteganographicMethods}" DisplayMemberPath="Name"
                       SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
@@ -79,11 +80,15 @@
                     IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />
         </StackPanel>
 
-        <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="5" Grid.Row="0"
+        <controls:MetroProgressBar Grid.Column="0" Grid.Row="4" Minimum="0" Maximum="100" 
+                                   BorderThickness="1" Foreground="{DynamicResource AccentColorBrush}"
+                                   Value="{Binding ProgressBarValue}" />
+        
+        <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="6" Grid.Row="0"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Visibility="{Binding ElementName=ImageExpander, Path=IsExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
-        <Expander x:Name="ImageExpander" Grid.Column="2" Grid.Row="0" Grid.RowSpan="5" ExpandDirection="Left"
+        <Expander x:Name="ImageExpander" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" ExpandDirection="Left"
                   IsExpanded="False" VerticalAlignment="Stretch"
                   Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
                   HorizontalAlignment="Right">
