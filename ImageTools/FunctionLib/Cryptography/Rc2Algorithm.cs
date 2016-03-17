@@ -8,6 +8,6 @@ namespace FunctionLib.Cryptography
         {
             get { return new RC2CryptoServiceProvider(); }
         }
-        protected override string Name { get { return "RC2";  } }
+        public override string Name { get { return "RC2";  } }
     }
 }

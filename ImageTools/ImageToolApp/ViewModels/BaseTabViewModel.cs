@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
@@ -16,8 +17,9 @@ namespace ImageToolApp.ViewModels
         private CryptographicAlgorithmImpl mSelectedEncryptionMethod;
         private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
+        private CryptographicAlgorithmImpl mSelectedEncryption;
 
-        public BaseTabViewModel()
+        protected BaseTabViewModel()
         {
             Password = Settings.Password;
             SelectedSteganographicMethod = Settings.SelectedSteganographicMethod ??
@@ -117,7 +119,7 @@ namespace ImageToolApp.ViewModels
 
         public bool EncryptedCheck
         {
-            get { return mEncryptedCheck || !string.IsNullOrEmpty(Password); }
+            get { return mEncryptedCheck; }
             set
             {
                 if (value.Equals(mEncryptedCheck))

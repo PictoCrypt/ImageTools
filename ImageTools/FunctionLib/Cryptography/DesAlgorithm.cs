@@ -9,6 +9,6 @@ namespace FunctionLib.Cryptography
             get { return new DESCryptoServiceProvider(); }
         }
 
-        protected override string Name { get { return "DES";  } }
+        public override string Name { get { return "DES";  } }
     }
 }

@@ -15,7 +15,7 @@ namespace FunctionLib.Cryptography
 
         protected abstract SymmetricAlgorithm Algorithm { get; }
 
-        protected abstract string Name { get; }
+        public abstract string Name { get; }
 
         public string Encode(string value, string password)
         {
@@ -99,6 +99,27 @@ namespace FunctionLib.Cryptography
         public override string ToString()
         {
             return Name;
+        }
+
+        public override int GetHashCode()
+        {
+            var result = Name.GetHashCode() + Iterations.GetHashCode() + Salt.GetHashCode() + Vector.GetHashCode();
+            return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as CryptographicAlgorithmImpl;
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (Name.Equals(other.Name))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

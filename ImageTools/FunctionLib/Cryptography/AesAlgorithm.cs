@@ -9,6 +9,6 @@ namespace FunctionLib.Cryptography
             get { return new AesCryptoServiceProvider(); }
         }
 
-        protected override string Name { get { return "AES";  } }
+        public override string Name { get { return "AES";  } }
     }
 }

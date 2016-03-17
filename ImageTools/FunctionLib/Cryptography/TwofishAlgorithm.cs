@@ -8,6 +8,6 @@ namespace FunctionLib.Cryptography
         {
             get { return new Twofish.Twofish(); }
         }
-        protected override string Name { get { return "Twofish";  } }
+        public override string Name { get { return "Twofish";  } }
     }
 }

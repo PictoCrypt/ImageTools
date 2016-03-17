@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using FunctionLib.Model;
-using FunctionLib.Model.Message;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using Microsoft.Win32;
@@ -34,7 +33,7 @@ namespace ImageToolApp.Controllers
             {
                 //TODO Compression
                 var model = new DecodeModel(ViewModel.ImagePath, ViewModel.SelectedEncryptionMethod,
-                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, true, ViewModel.LsbIndicator);
+                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, false, ViewModel.LsbIndicator);
 
                 ViewModel.Result = model.Decode();
             });

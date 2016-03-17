@@ -8,6 +8,6 @@ namespace FunctionLib.Cryptography
         {
             get { return new RijndaelManaged(); }
         }
-        protected override string Name { get { return "Rijndael";  } }
+        public override string Name { get { return "Rijndael";  } }
     }
 }

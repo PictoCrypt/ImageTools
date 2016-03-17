@@ -140,68 +140,68 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                using (var bitmap = new Bitmap(ViewModel.ImagePath))
+                try
                 {
-                    string value;
-                    var currentExpanderContent =
-                        Application.Current.Dispatcher.Invoke(
-                            () => { return mExpanders.FirstOrDefault(x => x.IsExpanded).Content; });
+                    var message = GetCurrentMessage();
+                    //TODO compression
+                    var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
+                        ViewModel.Password, ViewModel.SelectedSteganographicMethod, false,
+                        ViewModel.LsbIndicator);
 
-                    if (currentExpanderContent is PathChooser)
+                    var result = model.Encode();
+                    if (result != null)
                     {
-                        var secretPath =
-                            Application.Current.Dispatcher.Invoke(
-                                () => ((currentExpanderContent as PathChooser).DataContext as PathChooserViewModel).Path);
-                        value = secretPath;
-                    }
-                    else if (currentExpanderContent is DocumentChooser)
-                    {
-                        var secretPath =
-                            Application.Current.Dispatcher.Invoke(
-                                () =>
-                                    ((currentExpanderContent as DocumentChooser).DataContext as DocumentChooserViewModel)
-                                        .Path);
-                        value = secretPath;
-                    }
-                    else
-                    {
-                        value = ViewModel.Text;
-                        if (ViewModel.EncryptedCheck)
-                        {
-                            value = ViewModel.SelectedEncryptionMethod.Encode(value, ViewModel.Password);
-                        }
-                    }
-
-                    try
-                    {
-                        //TODO compression
-                        var model = new EncodeModel(ViewModel.ImagePath, value, ViewModel.SelectedEncryptionMethod,
-                            ViewModel.Password, ViewModel.SelectedSteganographicMethod, true,
-                            ViewModel.LsbIndicator);
-
-                        var result = model.Encode();
-                        if (result != null)
-                        {
-                            var path = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
-                            result.Save(path);
-                            ViewModel.ResultImagePath = path;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.InnerException.Message,
-                            "Fehler",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
+                        var path = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
+                        result.Save(path);
+                        ViewModel.ResultImagePath = path;
                     }
                 }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.InnerException.Message,
+                        "Fehler",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
             });
+        }
+
+        private string GetCurrentMessage()
+        {
+            string result;
+            object expanderContent = null;
+            if (mExpanders != null && mExpanders.Count > 0)
+            {
+                expanderContent = Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var current = mExpanders.FirstOrDefault(x => x.IsExpanded);
+                    return current != null ? current.Content : null;
+                });
+            }
+
+            if (expanderContent == null)
+            {
+                result = ViewModel.Text;
+            }
+            else
+            {
+                if (expanderContent is PathChooser)
+                {
+                    var content = expanderContent as PathChooser;
+                    result = (content.DataContext as PathChooserViewModel).Path;
+                }
+                else
+                {
+                    var content = expanderContent as DocumentChooser;
+                    result = (content.DataContext as DocumentChooserViewModel).Path;
+                }
+            }
+            return result;
         }
 
         public void ChangedPixels()
         {
             var path = ViewModel.SelectedSteganographicMethod.ChangeColor(ViewModel.ResultImagePath, Color.Red);
-            //var view = new ImagePresentation();
             var count = ViewModel.SelectedSteganographicMethod.ChangedPixels;
             var controller = new ImagePresentationController(path, string.Format("{0} Pixel", count));
         }

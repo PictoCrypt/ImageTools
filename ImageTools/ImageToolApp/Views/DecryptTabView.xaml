@@ -42,8 +42,8 @@
                              wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
                              IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
                              controls:TextBoxHelper.Watermark="Password..." />
-                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
-                          SelectedItem="{Binding SelectedEncryptionMethod}" DisplayMemberPath="Name"
+                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}" DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedEncryptionMethod}"
                           Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
             </Grid>
         </GroupBox>

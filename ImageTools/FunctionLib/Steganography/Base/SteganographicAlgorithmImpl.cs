@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -70,6 +69,32 @@ namespace FunctionLib.Steganography.Base
             {
                 return new TextMessage(bytes);
             }
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public override int GetHashCode()
+        {
+            var result = Name.GetHashCode() + Description.GetHashCode();
+            return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as SteganographicAlgorithmImpl;
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (Name.Equals(other.Name))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

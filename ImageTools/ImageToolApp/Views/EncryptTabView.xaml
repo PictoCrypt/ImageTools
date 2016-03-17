@@ -52,6 +52,7 @@
 
                 <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
                           Margin="3" IsChecked="{Binding EncryptedCheck}" />
+                
                 <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                              helpers:PasswordHelper.Attach="True"
                              helpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
