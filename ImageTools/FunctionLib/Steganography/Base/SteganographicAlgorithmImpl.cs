@@ -49,8 +49,7 @@ namespace FunctionLib.Steganography.Base
 
         protected LockBitmap LockBitmap(Bitmap src)
         {
-            var file = new Bitmap(FileManager.GetInstance().CopyImageToTmp(src, ImageFormat.Png));
-            var lockBitmap = new LockBitmap(file);
+            var lockBitmap = new LockBitmap(src);
             lockBitmap.LockBits();
             return lockBitmap;
         }

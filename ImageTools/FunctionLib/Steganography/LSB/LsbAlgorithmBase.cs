@@ -153,6 +153,8 @@ namespace FunctionLib.Steganography.LSB
 
         protected virtual void InitializeEncoding(Bitmap src, ISecretMessage message, int passHash)
         {
+            BitIndex = 0;
+            ByteIndex = 0;
             Bitmap = LockBitmap(src);
             Bytes = message.Convert();
             PassHash = passHash;

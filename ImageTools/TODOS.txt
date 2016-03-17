@@ -21,8 +21,6 @@ Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)
 
 Möglichkeit für cmd?
 
-Einbettungsrate anzeigen (10% ist sehr gut.)
-
 Neue Verfahren (Kathryn Hempstalk)
 
 Test mit Kompression
