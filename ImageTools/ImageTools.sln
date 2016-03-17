@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserControlClassLibrary", "UserControlClassLibrary\UserControlClassLibrary.csproj", "{6C9FC726-54A4-434B-B1D0-D4AFCFF75DA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToolCommandPrompt", "ImageToolCommandPrompt\ImageToolCommandPrompt.csproj", "{FF137B15-A165-413E-85CE-92FFE8A7F342}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{6C9FC726-54A4-434B-B1D0-D4AFCFF75DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C9FC726-54A4-434B-B1D0-D4AFCFF75DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C9FC726-54A4-434B-B1D0-D4AFCFF75DA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF137B15-A165-413E-85CE-92FFE8A7F342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF137B15-A165-413E-85CE-92FFE8A7F342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF137B15-A165-413E-85CE-92FFE8A7F342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF137B15-A165-413E-85CE-92FFE8A7F342}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
