@@ -14,25 +14,7 @@ namespace FunctionLib.Helper
 
         public static FileManager GetInstance()
         {
-            if (mFileManager == null)
-            {
-                mFileManager = new FileManager();
-                //mFileManager.mTmpFileList.CollectionChanged += TmpFileListOnCollectionChanged;
-            }
-            return mFileManager;
-        }
-
-        private static void TmpFileListOnCollectionChanged(object sender,
-            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
-            var collection = sender as ObservableCollection<string>;
-            foreach (var item in collection)
-            {
-                if (!IsFileLocked(new FileInfo(item)))
-                {
-                    File.Delete(item);
-                }
-            }
+            return mFileManager ?? (mFileManager = new FileManager());
         }
 
         public string CopyImageToTmp(string path)
@@ -40,7 +22,7 @@ namespace FunctionLib.Helper
             string result;
             using (var bmp = new Bitmap(path))
             {
-                result = CopyImageToTmp(bmp, bmp.RawFormat);
+                result = CopyImageToTmp(bmp, ImageFormat.Png);
             }
             return result;
         }
@@ -109,7 +91,6 @@ namespace FunctionLib.Helper
 
         public void CleanUp()
         {
-            //mFileManager.mTmpFileList.CollectionChanged -= TmpFileListOnCollectionChanged;
             ClearTmpFiles();
         }
     }

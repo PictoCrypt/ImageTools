@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace FunctionLib.Helper
 {
@@ -11,6 +12,8 @@ namespace FunctionLib.Helper
 
         public const string ApplicationName = "ImageTools";
         public static readonly HashSet<string> ImageExtensions = new HashSet<string>{"JPG", "JPE", "BMP", "GIF", "PNG"};
+        public const string ImageFilter =
+            "Image Files (*.JPG, *.JPE, *.BMP, *.GIF, *.PNG)| *.jpg; *.jpe; *.bmp; *.gif; *.png";
         public static readonly byte[] TagSeperator = ConvertHelper.Convert(Seperator.ToString());
 
         public static string ExecutiongPath

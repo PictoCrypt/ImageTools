@@ -35,7 +35,8 @@ namespace ImageToolApp.Controllers
             var dialog = new OpenFileDialog
             {
                 Multiselect = false,
-                InitialDirectory = ViewModel.Settings.DefaultPath
+                InitialDirectory = ViewModel.Settings.DefaultPath,
+                Filter = Constants.ImageFilter,
             };
 
             dialog.ShowDialog();
@@ -44,8 +45,7 @@ namespace ImageToolApp.Controllers
                 return;
             }
 
-            var tmp = FileManager.GetInstance().GenerateTmp(Path.GetExtension(dialog.FileName));
-            File.Copy(dialog.FileName, tmp);
+            var tmp = FileManager.GetInstance().CopyImageToTmp(dialog.FileName);
             ViewModel.ImagePath = tmp;
         }
 

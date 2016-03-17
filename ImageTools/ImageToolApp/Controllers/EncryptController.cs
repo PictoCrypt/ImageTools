@@ -185,7 +185,11 @@ namespace ImageToolApp.Controllers
             }
             else
             {
-                if (expanderContent is PathChooser)
+                if (expanderContent is TextBox)
+                {
+                    result = ViewModel.Text;
+                }
+                else if (expanderContent is PathChooser)
                 {
                     var content = expanderContent as PathChooser;
                     result = (content.DataContext as PathChooserViewModel).Path;
@@ -202,7 +206,7 @@ namespace ImageToolApp.Controllers
         public void ChangedPixels()
         {
             var path = ViewModel.SelectedSteganographicMethod.ChangeColor(ViewModel.ResultImagePath, Color.Red);
-            var count = ViewModel.SelectedSteganographicMethod.ChangedPixels;
+            var count = ViewModel.SelectedSteganographicMethod.ChangedPixels.Count;
             var controller = new ImagePresentationController(path, string.Format("{0} Pixel", count));
         }
     }

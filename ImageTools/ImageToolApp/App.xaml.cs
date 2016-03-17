@@ -39,7 +39,7 @@ namespace ImageToolApp
             else
             {
                 MessageBox.Show(Current.MainWindow,
-                    exception.InnerException.ToString(),
+                    exception.ToString(),
                     "Fehler",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
