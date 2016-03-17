@@ -1,13 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using FunctionLib.CustomException;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.LSB
 {
     public abstract class LsbWithRandomness : LsbAlgorithmBase
     {
-        private readonly HashSet<int> mXCoordinates = new HashSet<int>();
-        private readonly HashSet<int> mYCoordinates = new HashSet<int>();
+        private HashSet<int> mXCoordinates;
+        private HashSet<int> mYCoordinates;
+        protected Random Random { get; set; }
+
+        protected override void InitializeEncoding(Bitmap src, ISecretMessage message, int passHash)
+        {
+            base.InitializeEncoding(src, message, passHash);
+            mXCoordinates = new HashSet<int>();
+            mYCoordinates = new HashSet<int>();
+            Random = new Random(PassHash);
+        }
+
+        protected override void InitializeDecoding(Bitmap src, int passHash)
+        {
+            base.InitializeDecoding(src, passHash);
+            mXCoordinates = new HashSet<int>();
+            mYCoordinates = new HashSet<int>();
+            Random = new Random(PassHash);
+        }
 
         protected int GetNextRandom(Coordinate coordinate, int value, Random random)
         {
@@ -20,6 +39,7 @@ namespace FunctionLib.Steganography.LSB
                     {
                         result = random.Next(value);
                     }
+                    mXCoordinates.Add(result);
                     return result;
                 case Coordinate.Y:
                     result = random.Next(value);
@@ -27,6 +47,7 @@ namespace FunctionLib.Steganography.LSB
                     {
                         result = random.Next(value);
                     }
+                    mYCoordinates.Add(result);
                     return result;
             }
             throw new UniqueNumberException("Error generating unique random number.");

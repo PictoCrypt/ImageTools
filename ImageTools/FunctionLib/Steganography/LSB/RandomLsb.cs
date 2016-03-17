@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace FunctionLib.Steganography.LSB
 {
@@ -17,11 +16,10 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool EncodingIteration(int lsbIndicator)
         {
-            var random = new Random(PassHash);
             while (ByteIndex < Bytes.Length)
             {
-                var x = GetNextRandom(Coordinate.X, Bitmap.Width, random);
-                var y = GetNextRandom(Coordinate.Y, Bitmap.Height, random);
+                var x = GetNextRandom(Coordinate.X, Bitmap.Width, Random);
+                var y = GetNextRandom(Coordinate.Y, Bitmap.Height, Random);
                 EncodeBytes(x, y, lsbIndicator);
                 if (EncodeCheckForEnd())
                 {
@@ -33,11 +31,10 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool DecodingIteration(int lsbIndicator)
         {
-            var random = new Random(PassHash);
             while (Bytes.Length <= EndCount)
             {
-                var x = GetNextRandom(Coordinate.X, Bitmap.Width, random);
-                var y = GetNextRandom(Coordinate.Y, Bitmap.Height, random);
+                var x = GetNextRandom(Coordinate.X, Bitmap.Width, Random);
+                var y = GetNextRandom(Coordinate.Y, Bitmap.Height, Random);
                 DecodeBytes(x, y, lsbIndicator);
                 //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                 var bitHolder = BitHolder;

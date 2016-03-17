@@ -36,6 +36,10 @@ namespace FunctionLib.Steganography.LSB
             {
                 throw new ArgumentNullException(nameof(message));
             }
+            if (lsbIndicator < 0 || lsbIndicator > 8)
+            {
+                throw new ArgumentException(nameof(lsbIndicator));
+            }
             InitializeEncoding(src, message, passHash);
             if (!IsEncryptionIsPossible(Bitmap, lsbIndicator))
             {
@@ -87,7 +91,7 @@ namespace FunctionLib.Steganography.LSB
 
         protected abstract bool DecodingIteration(int lsbIndicator);
 
-        private void InitializeDecoding(Bitmap src, int passHash)
+        protected virtual void InitializeDecoding(Bitmap src, int passHash)
         {
             Bitmap = LockBitmap(src);
             PassHash = passHash;
@@ -147,7 +151,7 @@ namespace FunctionLib.Steganography.LSB
             ChangedPixels.Add(new Pixel(x, y));
         }
 
-        private void InitializeEncoding(Bitmap src, ISecretMessage message, int passHash)
+        protected virtual void InitializeEncoding(Bitmap src, ISecretMessage message, int passHash)
         {
             Bitmap = LockBitmap(src);
             Bytes = message.Convert();
