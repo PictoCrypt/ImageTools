@@ -63,11 +63,7 @@ namespace FunctionLib.Model
                 message = new TextMessage(cryptedMessage, mCompression);
             }
 
-            Bitmap result;
-            using (var bmp = new Bitmap(Src))
-            {
-                result = SteganoAlgorithm.Encode(bmp, message, PasswordHash, mLsbIndicator);
-            }
+            var result = SteganoAlgorithm.Encode(new Bitmap(mSrcObj), message, PasswordHash, mLsbIndicator);
             return result;
         }
     }

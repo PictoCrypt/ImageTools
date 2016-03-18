@@ -17,7 +17,6 @@ namespace ImageToolApp.ViewModels
         private CryptographicAlgorithmImpl mSelectedEncryptionMethod;
         private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
-        private CryptographicAlgorithmImpl mSelectedEncryption;
 
         protected BaseTabViewModel()
         {
