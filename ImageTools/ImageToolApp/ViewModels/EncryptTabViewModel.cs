@@ -27,7 +27,8 @@ namespace ImageToolApp.ViewModels
         {
             get
             {
-                if (string.IsNullOrEmpty(ImagePath) || SelectedSteganographicMethod == null || string.IsNullOrEmpty(Text))
+                if (string.IsNullOrEmpty(ImagePath) || SelectedSteganographicMethod == null ||
+                    string.IsNullOrEmpty(Text))
                 {
                     return 0;
                 }
@@ -37,7 +38,7 @@ namespace ImageToolApp.ViewModels
                     max = SelectedSteganographicMethod.MaxEmbeddingCount(bitmap, LsbIndicator);
                 }
                 var contentLength = (double) ConvertHelper.Convert(Text).Length;
-                var result = (contentLength / max) * 100;
+                var result = contentLength/max*100;
                 return result;
             }
             set

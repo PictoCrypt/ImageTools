@@ -29,7 +29,8 @@
                   HorizontalAlignment="Stretch" Header="Text">
             <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
                      VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
-                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" controls:TextBoxHelper.Watermark="Secret Message..." />
+                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                     controls:TextBoxHelper.Watermark="Secret Message..." />
         </Expander>
 
         <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch"
@@ -53,7 +54,7 @@
 
                 <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
                           Margin="3" IsChecked="{Binding EncryptedCheck}" />
-                
+
                 <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                              helpers:PasswordHelper.Attach="True"
                              helpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
@@ -80,10 +81,10 @@
                     IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />
         </StackPanel>
 
-        <controls:MetroProgressBar Grid.Column="0" Grid.Row="4" Minimum="0" Maximum="100" 
+        <controls:MetroProgressBar Grid.Column="0" Grid.Row="4" Minimum="0" Maximum="100"
                                    BorderThickness="1" Foreground="{DynamicResource AccentColorBrush}"
                                    Value="{Binding ProgressBarValue}" />
-        
+
         <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="6" Grid.Row="0"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"

@@ -23,8 +23,10 @@ namespace ImageToolApp.ViewModels
             mSettings = settings;
             Password = mSettings.Password;
             StandardPath = mSettings.DefaultPath;
-            SelectedEncryptionMethod = mSettings.SelectedEncryptionMethod ?? mSettings.EncryptionMethods.FirstOrDefault();
-            SelectedSteganographicMethod = mSettings.SelectedSteganographicMethod ?? mSettings.SteganographicMethods.FirstOrDefault();
+            SelectedEncryptionMethod = mSettings.SelectedEncryptionMethod ??
+                                       mSettings.EncryptionMethods.FirstOrDefault();
+            SelectedSteganographicMethod = mSettings.SelectedSteganographicMethod ??
+                                           mSettings.SteganographicMethods.FirstOrDefault();
         }
 
         public string Password

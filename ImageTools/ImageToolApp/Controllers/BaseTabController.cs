@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Helper;
@@ -36,7 +35,7 @@ namespace ImageToolApp.Controllers
             {
                 Multiselect = false,
                 InitialDirectory = ViewModel.Settings.DefaultPath,
-                Filter = Constants.ImageFilter,
+                Filter = Constants.ImageFilter
             };
 
             dialog.ShowDialog();

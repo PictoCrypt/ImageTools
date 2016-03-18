@@ -11,6 +11,7 @@ namespace ImageToolCommandPrompt
 {
     public class Program
     {
+        private const string Seperator = "--------------------";
         private static string mSource;
         private static string mMessage;
         private static int mCryptIndex;
@@ -105,19 +106,20 @@ namespace ImageToolCommandPrompt
                 {
                     EncodeWithParamters();
                 }
-                else if(function.Equals("DECODE", StringComparison.OrdinalIgnoreCase))
+                else if (function.Equals("DECODE", StringComparison.OrdinalIgnoreCase))
                 {
                     DecodeWithParameters();
                 }
             }
-            
-            
+
+
             //TODO maybe show changed pixels?
         }
 
         private static void DecodeWithParameters()
         {
-            var model = new DecodeModel(mSource, GetCrypt(mCryptIndex), mPassword, GetStego(mSteganoIndex), mCompression, mLsbIndicator);
+            var model = new DecodeModel(mSource, GetCrypt(mCryptIndex), mPassword, GetStego(mSteganoIndex), mCompression,
+                mLsbIndicator);
             var result = model.Decode();
             using (var sw = new StreamWriter(File.Create(mResultpath)))
             {
@@ -127,7 +129,8 @@ namespace ImageToolCommandPrompt
 
         private static void EncodeWithParamters()
         {
-            var model = new EncodeModel(mSource, mMessage, GetCrypt(mCryptIndex), mPassword, GetStego(mSteganoIndex), mCompression, mLsbIndicator);
+            var model = new EncodeModel(mSource, mMessage, GetCrypt(mCryptIndex), mPassword, GetStego(mSteganoIndex),
+                mCompression, mLsbIndicator);
             var result = model.Encode();
             using (result)
             {
@@ -147,9 +150,7 @@ namespace ImageToolCommandPrompt
             return algorithms[index];
         }
 
-        private const string Seperator = "--------------------";
-
-        public static void Encode()
+        private static void Encode()
         {
             Console.WriteLine(Seperator + " SETUP ENCODING " + Seperator);
             Console.WriteLine("Path to source image: ");
@@ -161,9 +162,9 @@ namespace ImageToolCommandPrompt
 
             Console.WriteLine("Path to file or text message:");
             var message = Console.ReadLine();
-            
+
             var crypto = CryptographicAlgorithmChooser();
-            string password = string.Empty;
+            var password = string.Empty;
             if (crypto != null)
             {
                 Console.WriteLine("Password:");
@@ -222,7 +223,7 @@ namespace ImageToolCommandPrompt
                 WriteError(string.Format("Path {0} is no valid file.", source));
             }
             var crypto = CryptographicAlgorithmChooser();
-            string password = "";
+            var password = "";
             if (crypto != null)
             {
                 Console.WriteLine("Password:");
@@ -264,12 +265,11 @@ namespace ImageToolCommandPrompt
 
             Console.WriteLine("Press <ENTER> to exit.");
             Console.ReadLine();
-
         }
 
         private static SteganographicAlgorithmImpl SteganographicAlgorithmChooser()
         {
-            Console.WriteLine(Seperator +  " Steganographic Algorithm Chooser " + Seperator);
+            Console.WriteLine(Seperator + " Steganographic Algorithm Chooser " + Seperator);
             var algorithms = AlgorithmCollector.GetAllAlgorithm<SteganographicAlgorithmImpl>();
             return algorithms[AlgorithmChooser(algorithms.Select(x => x.Name))];
         }
@@ -284,7 +284,7 @@ namespace ImageToolCommandPrompt
         private static int AlgorithmChooser(IEnumerable<string> algorithms)
         {
             Console.WriteLine("{0} \t {1}", "Index", "Algorithm Name");
-            int index = 0;
+            var index = 0;
             foreach (var algorithm in algorithms)
             {
                 Console.WriteLine("{0} \t {1}", index++, algorithm);

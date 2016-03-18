@@ -53,7 +53,8 @@ namespace ImageToolApp.ViewModels
                 }
                 else
                 {
-                    if(Constants.ImageExtensions.Contains(Path.GetExtension(str).Replace(".", ""), StringComparer.OrdinalIgnoreCase))
+                    if (Constants.ImageExtensions.Contains(Path.GetExtension(str).Replace(".", ""),
+                        StringComparer.OrdinalIgnoreCase))
                     {
                         result = new Image
                         {

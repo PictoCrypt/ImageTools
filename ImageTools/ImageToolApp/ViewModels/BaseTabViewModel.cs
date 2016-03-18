@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using FunctionLib.Cryptography;
 using FunctionLib.Steganography.Base;
 using ImageToolApp.Models;
@@ -31,7 +30,7 @@ namespace ImageToolApp.ViewModels
         {
             get { return Settings.Instance; }
         }
-        
+
         public int LsbIndicator
         {
             get { return mLsbIndicator; }

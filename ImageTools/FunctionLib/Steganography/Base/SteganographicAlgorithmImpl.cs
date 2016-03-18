@@ -64,10 +64,7 @@ namespace FunctionLib.Steganography.Base
                 var result = bytes.Skip(index + 1).ToArray();
                 return new DocumentMessage(result, extension);
             }
-            else
-            {
-                return new TextMessage(bytes);
-            }
+            return new TextMessage(bytes);
         }
 
         public override string ToString()

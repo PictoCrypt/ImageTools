@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -36,7 +35,8 @@ namespace FunctionLib.Model.Message
             }
 
             var memStream = new MemoryStream();
-            if (Constants.ImageExtensions.Contains(Path.GetExtension(Message).Replace(".", ""), StringComparer.OrdinalIgnoreCase))
+            if (Constants.ImageExtensions.Contains(Path.GetExtension(Message).Replace(".", ""),
+                StringComparer.OrdinalIgnoreCase))
             {
                 using (var img = Image.FromFile(Message))
                 {
