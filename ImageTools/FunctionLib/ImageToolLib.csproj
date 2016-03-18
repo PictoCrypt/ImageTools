@@ -86,6 +86,15 @@
     <Compile Include="Model\Pixel.cs" />
     <Compile Include="Model\Steganogramm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Steganalyse\Analysis.cs" />
+    <Compile Include="Steganalyse\AverageAbsoluteDifference.cs" />
+    <Compile Include="Steganalyse\CorrelationQuality.cs" />
+    <Compile Include="Steganalyse\LaplacianMeanSquaredError.cs" />
+    <Compile Include="Steganalyse\LpNorm.cs" />
+    <Compile Include="Steganalyse\MeanSquaredError.cs" />
+    <Compile Include="Steganalyse\NormalizedCrossCorrelation.cs" />
+    <Compile Include="Steganalyse\PeakSignalToNoiseRatio.cs" />
+    <Compile Include="Steganalyse\SignalToNoiseRatio.cs" />
     <Compile Include="Steganography\Base\SteganographicAlgorithmBase.cs" />
     <Compile Include="Steganography\Base\SteganographicAlgorithmImpl.cs" />
     <Compile Include="Steganography\LSB\FilterFirst.cs" />
