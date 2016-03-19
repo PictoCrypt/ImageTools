@@ -75,7 +75,7 @@
                                     Value="{Binding LsbIndicator}"
                                     ToolTip="Number of Bits which should be used from 1 color."
                                     Style="{StaticResource NumericUpDownStyle}" />
-            <Button HorizontalAlignment="Right"
+            <Button x:Name="ActionButton" HorizontalAlignment="Right"
                     Content="Encode"
                     Command="{Binding TabActionCommand}" Margin="3"
                     IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />

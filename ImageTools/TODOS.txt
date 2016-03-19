@@ -17,8 +17,6 @@ Eventuell Bild aus internet holen? Oder Zufallsbild selbst generieren (kleinste 
 
 Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)
 
-Möglichkeit für cmd?
-
 Neue Verfahren (Kathryn Hempstalk)
 
 Test mit Kompression
@@ -26,3 +24,9 @@ Test mit Kompression
 PNG und Transparente nur dort editieren, wo nicht transparent oder weiss!!!
 
 TODO Benchmarking -> Benchmarker, PixelBenchmark, RSAnalysis, SamplePairs, StegAnalyser, TraditionalLaplaceGraph, LaplaceGraph
+
+Performance? Random number generator
+
+CancelCommand? Why Cancel not in foreground?
+
+Time per Byte to hide?

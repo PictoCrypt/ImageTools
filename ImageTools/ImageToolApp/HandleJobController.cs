@@ -13,6 +13,7 @@ namespace ImageToolApp
     {
         private static readonly Window Window = Application.Current.MainWindow;
         private static readonly MainViewModel MainViewModel = Window.DataContext as MainViewModel;
+        private static Thread mThread;
 
         private static void WorkDone()
         {
@@ -28,6 +29,12 @@ namespace ImageToolApp
             }, DispatcherPriority.Background);
         }
 
+        public static void Cancel()
+        {
+            mThread.Abort("Aborted by user.");
+            WorkDone();
+        }
+
         public static void Progress(Action action)
         {
             var progress = Window.FindChildren<ProgressRing>().FirstOrDefault();
@@ -37,7 +44,7 @@ namespace ImageToolApp
             }
             Window.Cursor = Cursors.Wait;
 
-            var thread = new Thread(() =>
+            mThread = new Thread(() =>
             {
                 action.Invoke();
                 WorkDone();
@@ -46,7 +53,7 @@ namespace ImageToolApp
                 IsBackground = true,
                 Name = "EncryptDecryptThread"
             };
-            thread.Start();
+            mThread.Start();
         }
     }
 }

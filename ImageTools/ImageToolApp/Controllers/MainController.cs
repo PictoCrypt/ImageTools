@@ -11,8 +11,8 @@ namespace ImageToolApp.Controllers
 {
     public class MainController
     {
-        private readonly DecryptController mDecryptController;
-        private readonly EncryptController mEncryptController;
+        private readonly DecryptTabController mDecryptTabController;
+        private readonly EncryptTabController mEncryptTabController;
         private readonly MainWindow mView;
         private readonly MainViewModel mViewModel;
         private Settings mSettings;
@@ -22,24 +22,24 @@ namespace ImageToolApp.Controllers
             mView = mainWindow;
             mView.Closing += ViewOnClosing;
             LoadConfig();
-            mEncryptController = new EncryptController();
-            mDecryptController = new DecryptController();
-            mViewModel = new MainViewModel(mEncryptController.View, mDecryptController.View);
+            mEncryptTabController = new EncryptTabController();
+            mDecryptTabController = new DecryptTabController();
+            mViewModel = new MainViewModel(mEncryptTabController.View, mDecryptTabController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
             mView.Show();
         }
 
-        private IBaseTabController CurrentController
+        private IBaseTabController CurrentTabController
         {
             get
             {
                 var view = mViewModel.CurrentElement as EncryptTabView;
                 if (view != null)
                 {
-                    return mEncryptController;
+                    return mEncryptTabController;
                 }
-                return mDecryptController;
+                return mDecryptTabController;
             }
         }
 
@@ -55,7 +55,7 @@ namespace ImageToolApp.Controllers
 
         private void UnregisterEvents()
         {
-            mEncryptController.UnregisterEvents();
+            mEncryptTabController.UnregisterEvents();
 
             mView.Closing -= ViewOnClosing;
         }
@@ -70,6 +70,12 @@ namespace ImageToolApp.Controllers
             mViewModel.SaveTxtCommand = UICommand.Regular(SaveTxt);
             mViewModel.ChangedPixelsCommand = UICommand.Regular(ChangedPixels);
             mViewModel.OpenHelpCommand = UICommand.Regular(OpenHelp);
+            mViewModel.CancelCommand = UICommand.Regular(CancelAction);
+        }
+
+        private void CancelAction()
+        {
+            HandleJobController.Cancel();
         }
 
         private static void OpenHelp()
@@ -80,7 +86,7 @@ namespace ImageToolApp.Controllers
 
         private void ChangedPixels()
         {
-            var controller = CurrentController as EncryptController;
+            var controller = CurrentTabController as EncryptTabController;
             if (controller != null)
             {
                 controller.ChangedPixels();
@@ -89,7 +95,7 @@ namespace ImageToolApp.Controllers
 
         private void SaveTxt()
         {
-            var controller = CurrentController as DecryptController;
+            var controller = CurrentTabController as DecryptTabController;
             if (controller != null)
             {
                 controller.SaveTxt();
@@ -98,7 +104,7 @@ namespace ImageToolApp.Controllers
 
         private void OpenTxt()
         {
-            var controller = CurrentController as EncryptController;
+            var controller = CurrentTabController as EncryptTabController;
             if (controller != null)
             {
                 controller.OpenTxt();
@@ -107,7 +113,7 @@ namespace ImageToolApp.Controllers
 
         private void SaveImage()
         {
-            var controller = CurrentController as EncryptController;
+            var controller = CurrentTabController as EncryptTabController;
             if (controller != null)
             {
                 controller.SaveImage();
@@ -119,14 +125,14 @@ namespace ImageToolApp.Controllers
             var settingsController = new SettingsController(mView, mSettings);
             if (settingsController.OpenDialog())
             {
-                mDecryptController.SettingsSaved();
-                mEncryptController.SettingsSaved();
+                mDecryptTabController.SettingsSaved();
+                mEncryptTabController.SettingsSaved();
             }
         }
 
         private void OpenImage()
         {
-            CurrentController.OpenImage();
+            CurrentTabController.OpenImage();
         }
 
         private void CloseApp()

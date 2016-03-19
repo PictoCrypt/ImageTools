@@ -7,7 +7,7 @@ using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {
-    public class DecryptController : BaseTabController<DecryptTabViewModel, DecryptTabView>
+    public class DecryptTabController : BaseTabController<DecryptTabViewModel, DecryptTabView>
     {
         protected override void RegisterCommands()
         {

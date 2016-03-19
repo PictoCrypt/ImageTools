@@ -103,11 +103,17 @@
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>
 
-        <controls:ProgressRing x:Name="Progress" Grid.ZIndex="1000" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch" Margin="2"
-                               Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}"
-                               IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True"
-                               Foreground="{DynamicResource AccentColorBrush}" />
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}" Grid.ZIndex="1000">
+            <controls:ProgressRing x:Name="Progress" Grid.ZIndex="1000"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch" Margin="2"
+                                   Visibility="{Binding Visibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}}"
+                                   IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True"
+                                   Foreground="{DynamicResource AccentColorBrush}" />
+            <Button Panel.ZIndex="50000" Margin="2" Content="Cancel" Command="{Binding CancelCommand}" IsEnabled="True"
+                    Visibility="{Binding Visibility, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}, Mode=FindAncestor}}"
+                    />
+        </StackPanel>
     </Grid>
 </controls:MetroWindow>

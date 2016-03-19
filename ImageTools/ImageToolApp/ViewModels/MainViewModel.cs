@@ -17,6 +17,7 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
+        private UICommand mCancelCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
@@ -195,6 +196,20 @@ namespace ImageToolApp.ViewModels
                 }
                 mChangedPixelsCommand = value;
                 OnPropertyChanged("ChangedPixelsCommand");
+            }
+        }
+
+        public UICommand CancelCommand
+        {
+            get { return mCancelCommand; }
+            set
+            {
+                if (value.Equals(mCancelCommand))
+                {
+                    return;
+                }
+                mCancelCommand = value;
+                OnPropertyChanged("CancelCommand");
             }
         }
     }

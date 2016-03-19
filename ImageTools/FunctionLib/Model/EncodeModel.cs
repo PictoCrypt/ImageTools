@@ -36,7 +36,7 @@ namespace FunctionLib.Model
 
         private int PasswordHash
         {
-            get { return mPassword == null ? 0 : PasswordHelper.GetHash(mPassword); }
+            get { return string.IsNullOrEmpty(mPassword) ? 0 : PasswordHelper.GetHash(mPassword); }
         }
 
         public SteganographicAlgorithmImpl SteganoAlgorithm { get; set; }

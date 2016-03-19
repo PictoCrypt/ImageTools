@@ -142,8 +142,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Controllers\BaseTabController.cs" />
-    <Compile Include="Controllers\DecryptController.cs" />
-    <Compile Include="Controllers\EncryptController.cs" />
+    <Compile Include="Controllers\DecryptTabController.cs" />
+    <Compile Include="Controllers\EncryptTabController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Page Include="MainWindow.xaml">

@@ -15,21 +15,20 @@ using Microsoft.Win32;
 using UserControlClassLibrary;
 using UserControlClassLibrary.DocumentChooser;
 using UserControlClassLibrary.PathChooser;
-using Image = System.Drawing.Image;
 
 namespace ImageToolApp.Controllers
 {
-    public class EncryptController : BaseTabController<EncryptTabViewModel, EncryptTabView>
+    public class EncryptTabController : BaseTabController<EncryptTabViewModel, EncryptTabView>
     {
         private readonly List<Expander> mExpanders;
 
         private bool mExpanderAlreadyHandled;
 
-        public EncryptController()
+        public EncryptTabController()
         {
             mExpanders =
                 View.FindChildren<Expander>()
-                    .Where(x => x.Content != null && x.Content.GetType() != typeof (Image))
+                    .Where(x => x.Content != null && x.Content.GetType() != typeof (System.Windows.Controls.Image))
                     .ToList();
             foreach (var expander in mExpanders)
             {
