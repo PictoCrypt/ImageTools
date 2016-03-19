@@ -1,62 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using FunctionLib.CustomException;
+using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.LSB
 {
     public abstract class LsbWithRandomness : LsbAlgorithmBase
     {
-        private HashSet<int> mXCoordinates;
-        private HashSet<int> mYCoordinates;
+        private HashSet<Pixel> mPixels; 
         protected Random Random { get; set; }
 
         protected override void InitializeEncoding(Bitmap src, ISecretMessage message, int passHash)
         {
             base.InitializeEncoding(src, message, passHash);
-            mXCoordinates = new HashSet<int>();
-            mYCoordinates = new HashSet<int>();
+            mPixels = new HashSet<Pixel>();
             Random = new Random(PassHash);
         }
 
         protected override void InitializeDecoding(Bitmap src, int passHash)
         {
             base.InitializeDecoding(src, passHash);
-            mXCoordinates = new HashSet<int>();
-            mYCoordinates = new HashSet<int>();
+            mPixels = new HashSet<Pixel>();
             Random = new Random(PassHash);
         }
-
-        protected int GetNextRandom(Coordinate coordinate, int value, Random random)
+        
+        protected Pixel GetNextRandom(int xMax, int yMax, Random random)
         {
-            int result;
-            switch (coordinate)
+            //TODO verbessern: Vergleichen und nur die Koordinate ersetzen, welche schon vorhanden ist?
+            var pixel = GenerateRandomPixel(xMax, yMax, random);
+            while (mPixels.Contains(pixel))
             {
-                case Coordinate.X:
-                    result = random.Next(value);
-                    while (mXCoordinates.Contains(result))
-                    {
-                        result = random.Next(value);
-                    }
-                    mXCoordinates.Add(result);
-                    return result;
-                case Coordinate.Y:
-                    result = random.Next(value);
-                    while (mYCoordinates.Contains(result))
-                    {
-                        result = random.Next(value);
-                    }
-                    mYCoordinates.Add(result);
-                    return result;
+                pixel = GenerateRandomPixel(xMax, yMax, random);
             }
-            throw new UniqueNumberException("Error generating unique random number.");
+            mPixels.Add(pixel);
+            return pixel;
         }
-    }
 
-    public enum Coordinate
-    {
-        X,
-        Y
+        private static Pixel GenerateRandomPixel(int xMax, int yMax, Random random)
+        {
+            var randomX = random.Next(xMax);
+            var randomY = random.Next(yMax);
+            var pixel = new Pixel(randomX, randomY);
+            return pixel;
+        }
     }
 }

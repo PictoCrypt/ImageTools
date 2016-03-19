@@ -18,9 +18,8 @@ namespace FunctionLib.Steganography.LSB
         {
             while (ByteIndex < Bytes.Length)
             {
-                var x = GetNextRandom(Coordinate.X, Bitmap.Width, Random);
-                var y = GetNextRandom(Coordinate.Y, Bitmap.Height, Random);
-                EncodeBytes(x, y, lsbIndicator);
+                var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
+                EncodeBytes(pixel.X, pixel.Y, lsbIndicator);
                 if (EncodeCheckForEnd())
                 {
                     return true;
@@ -33,9 +32,8 @@ namespace FunctionLib.Steganography.LSB
         {
             while (Bytes.Length <= EndCount)
             {
-                var x = GetNextRandom(Coordinate.X, Bitmap.Width, Random);
-                var y = GetNextRandom(Coordinate.Y, Bitmap.Height, Random);
-                DecodeBytes(x, y, lsbIndicator);
+                var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
+                DecodeBytes(pixel.X, pixel.Y, lsbIndicator);
                 //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                 var bitHolder = BitHolder;
                 Bytes = BitToByte(Bytes.ToList(), ref bitHolder);

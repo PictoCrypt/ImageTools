@@ -64,7 +64,6 @@
     <Compile Include="Cryptography\Twofish\TwofishBase.cs" />
     <Compile Include="Cryptography\Twofish\TwofishEncryption.cs" />
     <Compile Include="CustomException\ContentLengthException.cs" />
-    <Compile Include="CustomException\UniqueNumberException.cs" />
     <Compile Include="Filter\Laplace.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\CompressionHelper.cs" />
