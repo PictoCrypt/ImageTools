@@ -85,7 +85,7 @@ namespace ImageToolApp.Controllers
 
         public void SaveImage()
         {
-            var dialog = new SaveFileDialog {Filter = "PNG Image|*.png|Bitmap Image|*.bmp"};
+            var dialog = new SaveFileDialog {Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats)};
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using FunctionLib.CustomException;
@@ -56,6 +57,11 @@ namespace FunctionLib.Steganography.LSB
                 Cleanup();
             }
             return Bitmap.Source;
+        }
+
+        public override IList<ImageFormat> PossibleImageFormats
+        {
+            get { return Enum.GetValues(typeof (ImageFormat)).Cast<ImageFormat>().ToList(); }
         }
 
         public override ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3)

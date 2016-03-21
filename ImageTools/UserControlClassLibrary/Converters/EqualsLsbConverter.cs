@@ -9,11 +9,7 @@ namespace UserControlClassLibrary.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.GetType() == typeof (LeastSignificantBit))
-            {
-                return true;
-            }
-            return false;
+            return value is LsbAlgorithmBase;
         }
     }
 }

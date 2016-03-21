@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -37,6 +38,8 @@ namespace FunctionLib.Steganography
             File.Copy(dest, tmp, true);
             return tmp;
         }
+
+        public abstract IList<ImageFormat> PossibleImageFormats { get; }
 
         public int MaxEmbeddingCount(Bitmap src, int lsbIndicator)
         {
