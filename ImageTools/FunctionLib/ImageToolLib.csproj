@@ -94,8 +94,10 @@
     <Compile Include="Steganalyse\NormalizedCrossCorrelation.cs" />
     <Compile Include="Steganalyse\PeakSignalToNoiseRatio.cs" />
     <Compile Include="Steganalyse\SignalToNoiseRatio.cs" />
+    <Compile Include="Steganography\AppendMessageAlgorithm.cs" />
     <Compile Include="Steganography\Base\SteganographicAlgorithmBase.cs" />
     <Compile Include="Steganography\Base\SteganographicAlgorithmImpl.cs" />
+    <Compile Include="Steganography\EditMetadata.cs" />
     <Compile Include="Steganography\LSB\FilterFirst.cs" />
     <Compile Include="Steganography\LSB\LeastSignificantBit.cs" />
     <Compile Include="Steganography\LSB\LsbAlgorithmBase.cs" />

@@ -1,10 +1,3 @@
-MainWindow.xaml 
-	-  evtl. Splitbuttons für Sidebar
-	- Sidebar ein/ausklappen? oder Hover
-
-Testing
-	- Falschtests
-
 Texte in Resource auslagern
 
 Zu Zufallsgenerator, Bild mit nutzlosen Daten auffüllen?
@@ -24,8 +17,6 @@ Test mit Kompression
 PNG und Transparente nur dort editieren, wo nicht transparent oder weiss!!!
 
 TODO Benchmarking -> Benchmarker, PixelBenchmark, RSAnalysis, SamplePairs, StegAnalyser, TraditionalLaplaceGraph, LaplaceGraph
-
-Performance? Random number generator
 
 CancelCommand? Why Cancel not in foreground?
 
