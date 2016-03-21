@@ -6,114 +6,121 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       mc:Ignorable="d" ShowIconOnTitleBar="True" Icon="{StaticResource ApplicationIcon}"
                       IconTemplate="{StaticResource WindowIconTemplate}"
-                      Title="{StaticResource ApplicationName}" Height="500" Width="600" ShowTitleBar="True"
-                      IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}">
+                      Title="{StaticResource ApplicationName}" Height="500" Width="600" ShowTitleBar="True">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <Grid IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
-            <Button Style="{StaticResource MenuButtonWithoutBorderStyle}" VerticalAlignment="Top"
-                    Click="ButtonBase_OnClick" Margin="5">
-                <Image Source="{StaticResource MenuImage}" />
-            </Button>
+            <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
+                <Button Style="{StaticResource MenuButtonWithoutBorderStyle}" VerticalAlignment="Top"
+                        Click="ButtonBase_OnClick" Margin="5">
+                    <Image Source="{StaticResource MenuImage}" />
+                </Button>
 
-            <StackPanel x:Name="StackPanel" Orientation="Vertical"
-                        Style="{StaticResource StackPanelSlideInStyle}">
-                <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
-                    <StackPanel Orientation="Vertical">
-                        <Button Command="{Binding SettingsCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Settings">
-                            <Image Source="{StaticResource SettingsImage}" />
-                        </Button>
-                        <Button Command="{Binding CloseAppCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Close">
-                            <Image Source="{StaticResource CloseAppImage}" />
-                        </Button>
-                        <Button Command="{Binding OpenHelpCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Help">
-                            <Image Source="{StaticResource HelpImage}" Width="25" />
-                        </Button>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
-                    <StackPanel Orientation="Vertical">
-                        <Button Command="{Binding OpenImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                ToolTip="Open Image">
-                            <Image Source="{StaticResource Image}" />
-                        </Button>
-                        <Button Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
-                                Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
-                                ToolTip="Save Image">
-                            <Image Source="{StaticResource SaveImage}"
-                                   Style="{StaticResource AutoDisableAndOutGrayImage}" />
-                        </Button>
-                        <Button Command="{Binding ChangedPixelsCommand}"
-                                Style="{StaticResource ButtonWithoutBorderStyle}"
-                                IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
-                                Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
-                                ToolTip="Show changed Pixel">
-                            <Image Source="{StaticResource Changed}"
-                                   Style="{StaticResource AutoDisableAndOutGrayImage}" />
-                        </Button>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
-                    <StackPanel Orientation="Vertical">
-                        <Button Command="{Binding OpenTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
-                                ToolTip="Import Textfile">
-                            <Image Source="{StaticResource TextImage}" />
-                        </Button>
-                        <Button Command="{Binding SaveTxtCommand}" Style="{StaticResource ButtonWithoutBorderStyle}"
-                                IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
-                                Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementDecryptToVisibilityConverter}}"
-                                ToolTip="Save Text">
-                            <Image Source="{StaticResource SaveImage}"
-                                   Style="{StaticResource AutoDisableAndOutGrayImage}" />
-                        </Button>
-                    </StackPanel>
-                </GroupBox>
+                <StackPanel x:Name="StackPanel" Orientation="Vertical"
+                            Style="{StaticResource StackPanelSlideInStyle}">
+                    <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
+                        <StackPanel Orientation="Vertical">
+                            <Button Command="{Binding SettingsCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    ToolTip="Settings">
+                                <Image Source="{StaticResource SettingsImage}" />
+                            </Button>
+                            <Button Command="{Binding CloseAppCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    ToolTip="Close">
+                                <Image Source="{StaticResource CloseAppImage}" />
+                            </Button>
+                            <Button Command="{Binding OpenHelpCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    ToolTip="Help">
+                                <Image Source="{StaticResource HelpImage}" Width="25" />
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
+                        <StackPanel Orientation="Vertical">
+                            <Button Command="{Binding OpenImageCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    ToolTip="Open Image">
+                                <Image Source="{StaticResource Image}" />
+                            </Button>
+                            <Button Command="{Binding SaveImageCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                                    Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
+                                    ToolTip="Save Image">
+                                <Image Source="{StaticResource SaveImage}"
+                                       Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                            </Button>
+                            <Button Command="{Binding ChangedPixelsCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                                    Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
+                                    ToolTip="Show changed Pixel">
+                                <Image Source="{StaticResource Changed}"
+                                       Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Style="{StaticResource GroupBoxDisabledStyle}">
+                        <StackPanel Orientation="Vertical">
+                            <Button Command="{Binding OpenTxtCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
+                                    ToolTip="Import Textfile">
+                                <Image Source="{StaticResource TextImage}" />
+                            </Button>
+                            <Button Command="{Binding SaveTxtCommand}"
+                                    Style="{StaticResource ButtonWithoutBorderStyle}"
+                                    IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
+                                    Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementDecryptToVisibilityConverter}}"
+                                    ToolTip="Save Text">
+                                <Image Source="{StaticResource SaveImage}"
+                                       Style="{StaticResource AutoDisableAndOutGrayImage}" />
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
 
-        <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1"
-                                          Style="{StaticResource MetroAnimatedTabControlDisabledStyle}">
-            <controls:MetroTabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
-                <controls:MetroTabItem.Header>
-                    <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encode"
-                           Style="{StaticResource TabItemImageStyle}" />
-                </controls:MetroTabItem.Header>
-                <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch" />
-            </controls:MetroTabItem>
-            <controls:MetroTabItem>
-                <controls:MetroTabItem.Header>
-                    <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decode"
-                           Style="{StaticResource TabItemImageStyle}" />
-                </controls:MetroTabItem.Header>
-                <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch" />
-            </controls:MetroTabItem>
-        </controls:MetroAnimatedTabControl>
-
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" 
+            <controls:MetroAnimatedTabControl Grid.Row="0" Grid.Column="1"
+                                              Style="{StaticResource MetroAnimatedTabControlDisabledStyle}">
+                <controls:MetroTabItem IsSelected="{Binding EncryptSelected, Mode=OneWayToSource}">
+                    <controls:MetroTabItem.Header>
+                        <Image Source="{StaticResource Lock}" Height="30" Width="30" ToolTip="Encode"
+                               Style="{StaticResource TabItemImageStyle}" />
+                    </controls:MetroTabItem.Header>
+                    <ContentControl Content="{Binding EncryptView}" HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch" />
+                </controls:MetroTabItem>
+                <controls:MetroTabItem>
+                    <controls:MetroTabItem.Header>
+                        <Image Source="{StaticResource Unlock}" Height="30" Width="30" ToolTip="Decode"
+                               Style="{StaticResource TabItemImageStyle}" />
+                    </controls:MetroTabItem.Header>
+                    <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch" />
+                </controls:MetroTabItem>
+            </controls:MetroAnimatedTabControl>
+        </Grid>
+        
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                     Visibility="{Binding ProgressActive, Converter={StaticResource BoolToVisibilityConverter}}" Grid.ZIndex="1000">
             <controls:ProgressRing x:Name="Progress" Grid.ZIndex="1000"
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Stretch" Margin="2"
                                    Visibility="{Binding Visibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}}"
-                                   IsActive="{Binding ProgressActive}" IsEnabled="True" IsLarge="True"
+                                   IsActive="{Binding ProgressActive}" IsLarge="True"
                                    Foreground="{DynamicResource AccentColorBrush}" />
-            <Button Panel.ZIndex="50000" Margin="2" Content="Cancel" Command="{Binding CancelCommand}" IsEnabled="True"
-                    Visibility="{Binding Visibility, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}, Mode=FindAncestor}}"
-                    />
+            <Button Panel.ZIndex="1000" Margin="2" Content="Cancel" Command="{Binding CancelCommand}"
+                    Visibility="{Binding Visibility, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}, Mode=FindAncestor}}" />
         </StackPanel>
     </Grid>
-</controls:MetroWindow>
+</controls:MetroWindow> 

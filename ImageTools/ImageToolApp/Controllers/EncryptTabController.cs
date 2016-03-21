@@ -139,28 +139,18 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                try
-                {
-                    var message = GetCurrentMessage();
-                    //TODO compression
-                    var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
-                        ViewModel.Password, ViewModel.SelectedSteganographicMethod, false,
-                        ViewModel.LsbIndicator);
+                var message = GetCurrentMessage();
+                //TODO compression
+                var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
+                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, false,
+                    ViewModel.LsbIndicator);
 
-                    var result = model.Encode();
-                    if (result != null)
-                    {
-                        var path = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
-                        result.Save(path);
-                        ViewModel.ResultImagePath = path;
-                    }
-                }
-                catch (Exception e)
+                var result = model.Encode();
+                if (result != null)
                 {
-                    MessageBox.Show(e.InnerException.Message,
-                        "Fehler",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                    var path = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
+                    result.Save(path);
+                    ViewModel.ResultImagePath = path;
                 }
             });
         }

@@ -39,7 +39,7 @@ namespace ImageToolApp.ViewModels
                 OnPropertyChanged("ProgressActive");
             }
         }
-
+        
         public bool EncryptSelected
         {
             set { CurrentElement = value ? EncryptView : DecryptView; }

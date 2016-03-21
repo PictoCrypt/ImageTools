@@ -30,3 +30,5 @@ Performance? Random number generator
 CancelCommand? Why Cancel not in foreground?
 
 Time per Byte to hide?
+
+ICommand with CanExecute austatten
