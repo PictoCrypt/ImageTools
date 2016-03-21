@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using FunctionLib.Model.Message;
-using FunctionLib.Steganography.Base;
 
 namespace FunctionLib.Steganography
 {

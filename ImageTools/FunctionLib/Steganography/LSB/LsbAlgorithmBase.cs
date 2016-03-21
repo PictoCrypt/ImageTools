@@ -7,7 +7,6 @@ using FunctionLib.CustomException;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
-using FunctionLib.Steganography.Base;
 
 namespace FunctionLib.Steganography.LSB
 {

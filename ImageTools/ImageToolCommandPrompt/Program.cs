@@ -5,7 +5,7 @@ using System.Linq;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Model;
-using FunctionLib.Steganography.Base;
+using FunctionLib.Steganography;
 
 namespace ImageToolCommandPrompt
 {

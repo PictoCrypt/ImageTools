@@ -3,7 +3,7 @@ using System.IO;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
-using FunctionLib.Steganography.Base;
+using FunctionLib.Steganography;
 
 namespace FunctionLib.Model
 {

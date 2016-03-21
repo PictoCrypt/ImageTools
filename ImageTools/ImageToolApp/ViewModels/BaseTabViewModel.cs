@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FunctionLib.Cryptography;
-using FunctionLib.Steganography.Base;
+using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using UserControlClassLibrary;
 

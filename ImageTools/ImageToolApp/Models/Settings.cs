@@ -2,7 +2,7 @@
 using System.IO;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
-using FunctionLib.Steganography.Base;
+using FunctionLib.Steganography;
 using Newtonsoft.Json;
 
 namespace ImageToolApp.Models

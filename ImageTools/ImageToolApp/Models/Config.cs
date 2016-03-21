@@ -1,5 +1,5 @@
 ﻿using FunctionLib.Cryptography;
-using FunctionLib.Steganography.Base;
+using FunctionLib.Steganography;
 
 namespace ImageToolApp.Models
 {

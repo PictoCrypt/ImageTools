@@ -7,7 +7,7 @@ using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
-namespace FunctionLib.Steganography.Base
+namespace FunctionLib.Steganography
 {
     public abstract class SteganographicAlgorithmImpl
     {
