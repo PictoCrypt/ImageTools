@@ -19,21 +19,42 @@ namespace FunctionLib.Helper
         public string CopyImageToTmp(string path)
         {
             string result;
-            using (var bmp = new Bitmap(path))
+            using (var bmp = Image.FromFile(path))
             {
-                result = CopyImageToTmp(bmp, ImageFormat.Png);
+                result = CopyImageToTmp(bmp);
             }
             return result;
         }
 
-        public string CopyImageToTmp(Bitmap bmp, ImageFormat format)
+        public string CopyImageToTmp(Image bmp)
         {
+            var format = GetImageFormat(bmp);
             var path = GenerateTmp(format);
-            using (bmp)
-            {
-                bmp.Save(path);
-            }
+            bmp.Save(path);
             return path;
+        }
+
+        private ImageFormat GetImageFormat(Image img)
+        {
+            if (img.RawFormat.Equals(ImageFormat.Jpeg))
+                return ImageFormat.Jpeg;
+            if (img.RawFormat.Equals(ImageFormat.Bmp))
+                return ImageFormat.Bmp;
+            if (img.RawFormat.Equals(ImageFormat.Png))
+                return ImageFormat.Png;
+            if (img.RawFormat.Equals(ImageFormat.Emf))
+                return ImageFormat.Emf;
+            if (img.RawFormat.Equals(ImageFormat.Exif))
+                return ImageFormat.Exif;
+            if (img.RawFormat.Equals(ImageFormat.Gif))
+                return ImageFormat.Gif;
+            if (img.RawFormat.Equals(ImageFormat.Icon))
+                return ImageFormat.Icon;
+            if (img.RawFormat.Equals(ImageFormat.MemoryBmp))
+                return ImageFormat.MemoryBmp;
+            if (img.RawFormat.Equals(ImageFormat.Tiff))
+                return ImageFormat.Tiff;
+            return ImageFormat.Wmf;
         }
 
         public string GenerateTmp(ImageFormat format)

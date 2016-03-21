@@ -17,7 +17,6 @@ namespace ImageToolApp
 
         private static void WorkDone()
         {
-            //Thread.Sleep(TimeSpan.FromSeconds(5));
             Window.Dispatcher.Invoke(() =>
             {
                 var progress = Window.FindChildren<ProgressRing>().FirstOrDefault();
@@ -31,7 +30,7 @@ namespace ImageToolApp
 
         public static void Cancel()
         {
-            mThread.Abort("Aborted by user.");
+            mThread.Interrupt();
             WorkDone();
         }
 
@@ -42,7 +41,7 @@ namespace ImageToolApp
             {
                 MainViewModel.ProgressActive = true;
             }
-            Window.Cursor = Cursors.Wait;
+            Window.Cursor = Cursors.AppStarting;
 
             mThread = new Thread(() =>
             {
@@ -51,7 +50,7 @@ namespace ImageToolApp
             })
             {
                 IsBackground = true,
-                Name = "EncryptDecryptThread"
+                Name = "EncryptDecryptThread",
             };
             mThread.Start();
         }

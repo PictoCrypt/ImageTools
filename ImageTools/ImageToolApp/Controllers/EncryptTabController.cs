@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using UserControlClassLibrary;
 using UserControlClassLibrary.DocumentChooser;
 using UserControlClassLibrary.PathChooser;
+using Image = System.Windows.Controls.Image;
 
 namespace ImageToolApp.Controllers
 {
@@ -28,7 +29,7 @@ namespace ImageToolApp.Controllers
         {
             mExpanders =
                 View.FindChildren<Expander>()
-                    .Where(x => x.Content != null && x.Content.GetType() != typeof (System.Windows.Controls.Image))
+                    .Where(x => x.Content != null && x.Content.GetType() != typeof (Image))
                     .ToList();
             foreach (var expander in mExpanders)
             {
@@ -99,21 +100,33 @@ namespace ImageToolApp.Controllers
 
                 switch (dialog.FilterIndex)
                 {
-                    case 0:
-                        HandleJobController.Progress(() =>
-                        {
-                            using (var bmp = new Bitmap(tmp))
-                            {
-                                bmp.Save(dialog.FileName, ImageFormat.Png);
-                            }
-                        });
-                        break;
                     case 1:
                         HandleJobController.Progress(() =>
                         {
+                            var file = Path.ChangeExtension(dialog.FileName, "png");
                             using (var bmp = new Bitmap(tmp))
                             {
-                                bmp.Save(dialog.FileName, ImageFormat.Bmp);
+                                bmp.Save(file, ImageFormat.Png);
+                            }
+                        });
+                        break;
+                    case 2:
+                        HandleJobController.Progress(() =>
+                        {
+                            var file = Path.ChangeExtension(dialog.FileName, "bmp");
+                            using (var bmp = new Bitmap(tmp))
+                            {
+                                bmp.Save(file, ImageFormat.Bmp);
+                            }
+                        });
+                        break;
+                    case 3:
+                        HandleJobController.Progress(() =>
+                        {
+                            var file = Path.ChangeExtension(dialog.FileName, "jpg");
+                            using (var bmp = new Bitmap(tmp))
+                            {
+                                bmp.Save(file, ImageFormat.Jpeg);
                             }
                         });
                         break;
@@ -139,8 +152,6 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                try
-                {
                     var message = GetCurrentMessage();
                     //TODO compression
                     var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
@@ -150,18 +161,10 @@ namespace ImageToolApp.Controllers
                     var result = model.Encode();
                     if (result != null)
                     {
-                        var path = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
+                    var path = FileManager.GetInstance().CopyImageToTmp(result);
                         result.Save(path);
                         ViewModel.ResultImagePath = path;
                     }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.InnerException.Message,
-                        "Fehler",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
             });
         }
 

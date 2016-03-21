@@ -40,7 +40,7 @@ namespace FunctionLib.Model.Message
             {
                 using (var img = Image.FromFile(Message))
                 {
-                    img.Save(memStream, ImageFormat.Png);
+                    img.Save(memStream, img.RawFormat);
                 }
             }
             else
