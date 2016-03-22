@@ -46,30 +46,35 @@ namespace FunctionLib.Helper
 
         private ImageFormat GetImageFormat(Image img)
         {
-            if (img.RawFormat.Equals(ImageFormat.Jpeg))
+            return GetImageFormat(img.RawFormat);
+        }
+
+        private ImageFormat GetImageFormat(ImageFormat format)
+        {
+            if (format.Equals(ImageFormat.Jpeg))
                 return ImageFormat.Jpeg;
-            if (img.RawFormat.Equals(ImageFormat.Bmp))
+            if (format.Equals(ImageFormat.Bmp))
                 return ImageFormat.Bmp;
-            if (img.RawFormat.Equals(ImageFormat.Png))
+            if (format.Equals(ImageFormat.Png))
                 return ImageFormat.Png;
-            if (img.RawFormat.Equals(ImageFormat.Emf))
+            if (format.Equals(ImageFormat.Emf))
                 return ImageFormat.Emf;
-            if (img.RawFormat.Equals(ImageFormat.Exif))
+            if (format.Equals(ImageFormat.Exif))
                 return ImageFormat.Exif;
-            if (img.RawFormat.Equals(ImageFormat.Gif))
+            if (format.Equals(ImageFormat.Gif))
                 return ImageFormat.Gif;
-            if (img.RawFormat.Equals(ImageFormat.Icon))
+            if (format.Equals(ImageFormat.Icon))
                 return ImageFormat.Icon;
-            if (img.RawFormat.Equals(ImageFormat.MemoryBmp))
+            if (format.Equals(ImageFormat.MemoryBmp))
                 return ImageFormat.MemoryBmp;
-            if (img.RawFormat.Equals(ImageFormat.Tiff))
+            if (format.Equals(ImageFormat.Tiff))
                 return ImageFormat.Tiff;
             return ImageFormat.Wmf;
         }
 
         public string GenerateTmp(ImageFormat format)
         {
-            return GenerateTmp(format.ToString());
+            return GenerateTmp(GetImageFormat(format).ToString());
         }
 
         public string GenerateTmp(string extension = "")

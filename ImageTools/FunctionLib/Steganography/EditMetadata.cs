@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
@@ -15,10 +16,14 @@ namespace FunctionLib.Steganography
         public override string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             var tmp = FileManager.CopyImageToTmp(src);
-            using (var bmp = new Bitmap(tmp))
+            using (var bmp = new Bitmap(src))
             {
-                var item = bmp.PropertyItems.Last();
-                item.Value = message.Convert();
+                var item = bmp.PropertyItems.OrderByDescending(x => x.Id).First();
+                var data = message.Convert();
+                item.Id = item.Id + 1;
+                item.Len = data.Length;
+                item.Value = data;
+                item.Type = 1;
                 bmp.SetPropertyItem(item);
                 bmp.Save(tmp);
             }
@@ -30,10 +35,19 @@ namespace FunctionLib.Steganography
             byte[] result;
             using (var bmp = new Bitmap(src))
             {
-                var item = bmp.PropertyItems.Last();
+                var item = bmp.PropertyItems.OrderByDescending(x => x.Id).First();
                 result = item.Value;
             }
+
+            result = RemoveSizeTag(result);
             return GetSpecificMessage(result);
+        }
+
+        private byte[] RemoveSizeTag(byte[] bytes)
+        {
+            var index = ListHelper.IndexOf(bytes, Constants.TagSeperator);
+            var result = bytes.Skip(index + 1).ToArray();
+            return result;
         }
 
         public override IList<ImageFormat> PossibleImageFormats
