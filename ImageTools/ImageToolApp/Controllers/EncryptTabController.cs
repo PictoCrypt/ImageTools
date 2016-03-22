@@ -90,47 +90,13 @@ namespace ImageToolApp.Controllers
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
-                var tmp = ViewModel.ResultImagePath;
                 if (File.Exists(dialog.FileName))
                 {
                     File.Delete(dialog.FileName);
                 }
+
+                File.Move(ViewModel.ResultImagePath, dialog.FileName);
                 ViewModel.ResultImagePath = dialog.FileName;
-
-
-                switch (dialog.FilterIndex)
-                {
-                    case 1:
-                        HandleJobController.Progress(() =>
-                        {
-                            var file = Path.ChangeExtension(dialog.FileName, "png");
-                            using (var bmp = new Bitmap(tmp))
-                            {
-                                bmp.Save(file, ImageFormat.Png);
-                            }
-                        });
-                        break;
-                    case 2:
-                        HandleJobController.Progress(() =>
-                        {
-                            var file = Path.ChangeExtension(dialog.FileName, "bmp");
-                            using (var bmp = new Bitmap(tmp))
-                            {
-                                bmp.Save(file, ImageFormat.Bmp);
-                            }
-                        });
-                        break;
-                    case 3:
-                        HandleJobController.Progress(() =>
-                        {
-                            var file = Path.ChangeExtension(dialog.FileName, "jpg");
-                            using (var bmp = new Bitmap(tmp))
-                            {
-                                bmp.Save(file, ImageFormat.Jpeg);
-                            }
-                        });
-                        break;
-                }
             }
         }
 
@@ -159,12 +125,7 @@ namespace ImageToolApp.Controllers
                         ViewModel.LsbIndicator);
 
                     var result = model.Encode();
-                    if (result != null)
-                    {
-                    var path = FileManager.GetInstance().CopyImageToTmp(result);
-                        result.Save(path);
-                        ViewModel.ResultImagePath = path;
-                    }
+                    ViewModel.ResultImagePath = result;
             });
         }
 

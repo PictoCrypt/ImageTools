@@ -21,9 +21,11 @@ namespace FunctionLib.Steganography
         public abstract string Name { get; }
         public abstract string Description { get; }
 
-        public abstract Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3);
+        protected FileManager FileManager { get { return FileManager.GetInstance(); } }
 
-        public abstract ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3);
+        public abstract string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3);
+
+        public abstract ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3);
 
         public virtual string ChangeColor(string srcPath, Color color)
         {
@@ -50,9 +52,9 @@ namespace FunctionLib.Steganography
             return result;
         }
 
-        protected LockBitmap LockBitmap(Bitmap src)
+        protected LockBitmap LockBitmap(string src)
         {
-            var lockBitmap = new LockBitmap(src);
+            var lockBitmap = new LockBitmap(new Bitmap(src));
             lockBitmap.LockBits();
             return lockBitmap;
         }

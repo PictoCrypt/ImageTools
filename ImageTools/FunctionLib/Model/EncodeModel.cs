@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
+﻿using System.IO;
 using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
@@ -19,7 +18,6 @@ namespace FunctionLib.Model
             SteganographicAlgorithmImpl stegano, bool compression, int lsbIndicator)
         {
             mSrcObj = imageSrc;
-            Src = FileManager.GetInstance().CopyImageToTmp(mSrcObj);
             mSrcMessage = message;
             mCompression = compression;
 
@@ -32,8 +30,6 @@ namespace FunctionLib.Model
             mLsbIndicator = lsbIndicator;
         }
 
-        public string Src { get; set; }
-
         private int PasswordHash
         {
             get { return string.IsNullOrEmpty(mPassword) ? 0 : PasswordHelper.GetHash(mPassword); }
@@ -43,7 +39,7 @@ namespace FunctionLib.Model
 
         public CryptographicAlgorithmImpl CryptoAlgorithm { get; set; }
 
-        public Bitmap Encode()
+        public string Encode()
         {
             ISecretMessage message;
             if (mPassword == null || File.Exists(mSrcMessage))
@@ -63,7 +59,7 @@ namespace FunctionLib.Model
                 message = new TextMessage(cryptedMessage, mCompression);
             }
 
-            var result = SteganoAlgorithm.Encode(new Bitmap(mSrcObj), message, PasswordHash, mLsbIndicator);
+            var result = SteganoAlgorithm.Encode(mSrcObj, message, PasswordHash, mLsbIndicator);
             return result;
         }
     }

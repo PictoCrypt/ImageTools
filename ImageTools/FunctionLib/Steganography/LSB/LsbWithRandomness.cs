@@ -11,14 +11,14 @@ namespace FunctionLib.Steganography.LSB
         private HashSet<Pixel> mPixels; 
         protected Random Random { get; set; }
 
-        protected override void InitializeEncoding(Bitmap src, ISecretMessage message, int passHash)
+        protected override void InitializeEncoding(string src, ISecretMessage message, int passHash)
         {
             base.InitializeEncoding(src, message, passHash);
             mPixels = new HashSet<Pixel>();
             Random = new Random(PassHash);
         }
 
-        protected override void InitializeDecoding(Bitmap src, int passHash)
+        protected override void InitializeDecoding(string src, int passHash)
         {
             base.InitializeDecoding(src, passHash);
             mPixels = new HashSet<Pixel>();

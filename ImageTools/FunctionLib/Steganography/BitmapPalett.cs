@@ -20,12 +20,12 @@ namespace FunctionLib.Steganography
             get { return "Changing the color palett"; }
         }
 
-        public override Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        public override string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
             throw new NotImplementedException();
         }
 
-        public override ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
         {
             throw new NotImplementedException();
         }

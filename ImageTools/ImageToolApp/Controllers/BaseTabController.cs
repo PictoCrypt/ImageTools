@@ -35,7 +35,7 @@ namespace ImageToolApp.Controllers
             {
                 Multiselect = false,
                 InitialDirectory = ViewModel.Settings.DefaultPath,
-                Filter = Constants.ImageFilter
+                Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats),
             };
 
             dialog.ShowDialog();
@@ -44,8 +44,7 @@ namespace ImageToolApp.Controllers
                 return;
             }
 
-            var tmp = FileManager.GetInstance().CopyImageToTmp(dialog.FileName);
-            ViewModel.ImagePath = tmp;
+            ViewModel.ImagePath = dialog.FileName;
         }
 
         private void ImageExpanderEvent(object sender, RoutedEventArgs routedEventArgs)

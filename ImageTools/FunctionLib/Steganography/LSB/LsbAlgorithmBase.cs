@@ -26,9 +26,9 @@ namespace FunctionLib.Steganography.LSB
 
         protected byte[] Bytes { get; set; }
 
-        public override Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        public override string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
-            if (src == null)
+            if (string.IsNullOrEmpty(src))
             {
                 throw new ArgumentNullException(nameof(src));
             }
@@ -40,7 +40,8 @@ namespace FunctionLib.Steganography.LSB
             {
                 throw new ArgumentException(nameof(lsbIndicator));
             }
-            InitializeEncoding(src, message, passHash);
+            var tmp = FileManager.CopyImageToTmp(src);
+            InitializeEncoding(tmp, message, passHash);
             if (!IsEncryptionIsPossible(Bitmap, lsbIndicator))
             {
                 throw new ContentLengthException();
@@ -55,8 +56,9 @@ namespace FunctionLib.Steganography.LSB
             finally
             {
                 Cleanup();
+                Bitmap.Source.Save(tmp);
             }
-            return Bitmap.Source;
+            return tmp;
         }
 
         public override IList<ImageFormat> PossibleImageFormats
@@ -64,9 +66,9 @@ namespace FunctionLib.Steganography.LSB
             get { return Enum.GetValues(typeof (ImageFormat)).Cast<ImageFormat>().ToList(); }
         }
 
-        public override ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
         {
-            if (src == null)
+            if (string.IsNullOrEmpty(src))
             {
                 throw new ArgumentNullException(nameof(src));
             }
@@ -96,7 +98,7 @@ namespace FunctionLib.Steganography.LSB
 
         protected abstract bool DecodingIteration(int lsbIndicator);
 
-        protected virtual void InitializeDecoding(Bitmap src, int passHash)
+        protected virtual void InitializeDecoding(string src, int passHash)
         {
             Bitmap = LockBitmap(src);
             PassHash = passHash;
@@ -156,7 +158,7 @@ namespace FunctionLib.Steganography.LSB
             ChangedPixels.Add(new Pixel(x, y));
         }
 
-        protected virtual void InitializeEncoding(Bitmap src, ISecretMessage message, int passHash)
+        protected virtual void InitializeEncoding(string src, ISecretMessage message, int passHash)
         {
             BitIndex = 0;
             ByteIndex = 0;

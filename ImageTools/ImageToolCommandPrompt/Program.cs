@@ -132,10 +132,7 @@ namespace ImageToolCommandPrompt
             var model = new EncodeModel(mSource, mMessage, GetCrypt(mCryptIndex), mPassword, GetStego(mSteganoIndex),
                 mCompression, mLsbIndicator);
             var result = model.Encode();
-            using (result)
-            {
-                result.Save(mResultpath);
-            }
+            File.Move(result, mResultpath);
         }
 
         private static CryptographicAlgorithmImpl GetCrypt(int index)
@@ -202,10 +199,7 @@ namespace ImageToolCommandPrompt
             {
                 Console.WriteLine("ENCODING successfully. Please enter a path to save:");
                 var path = Console.ReadLine();
-                using (result)
-                {
-                    result.Save(path);
-                }
+                File.Move(result, mResultpath);
                 Console.WriteLine("Image saved at " + path);
             }
 

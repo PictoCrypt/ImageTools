@@ -13,15 +13,50 @@ namespace FunctionLib.Helper
 
         public static string GenerateFilter(IList<ImageFormat> formats)
         {
+            var i = -1;
             var seperator = "|";
             var builder = new StringBuilder();
+
+            builder.Append("All Formats");
             foreach (var format in formats)
             {
-                if (builder.Length != 0)
+                i++;
+                if (i == 0)
                 {
                     builder.Append(seperator);
+                    if (format.Equals(ImageFormat.Jpeg))
+                    {
+                        builder.AppendFormat("*.{0}", "jpg");
+                    }
+                    else
+                    {
+                        builder.AppendFormat("*.{0}", format.ToString().ToLowerInvariant());
+                    }
                 }
-                builder.Append(string.Format("{0}{1}*.{2}", format.ToString().ToUpperInvariant(), seperator, format.ToString().ToLowerInvariant()));
+                else
+                {
+                    if (format.Equals(ImageFormat.Jpeg))
+                    {
+                        builder.AppendFormat("{0}*.{1}", ";", "jpg");
+                    }
+                    else
+                    {
+                        builder.AppendFormat("{0}*.{1}", ";", format.ToString().ToLowerInvariant());
+                    }
+                }
+            }
+
+            foreach (var format in formats)
+            {
+                builder.Append(seperator);
+                if (format.Equals(ImageFormat.Jpeg))
+                {
+                    builder.AppendFormat("{0}{1}*.{2}", format.ToString().ToUpperInvariant(), seperator, "jpg");
+                }
+                else
+                {
+                    builder.AppendFormat("{0}{1}*.{2}", format.ToString().ToUpperInvariant(), seperator, format.ToString().ToLowerInvariant());
+                }
             }
 
             return builder.ToString();

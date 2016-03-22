@@ -83,7 +83,6 @@
     <Compile Include="Model\Message\SecretMessage.cs" />
     <Compile Include="Model\Message\TextMessage.cs" />
     <Compile Include="Model\Pixel.cs" />
-    <Compile Include="Model\Steganogramm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Steganalyse\Analysis.cs" />
     <Compile Include="Steganalyse\AverageAbsoluteDifference.cs" />

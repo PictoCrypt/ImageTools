@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 
@@ -7,12 +8,9 @@ namespace FunctionLib.Helper
 {
     public static class Constants
     {
-        private const char Seperator = '\r';
+        public const char Seperator = '\r';
 
         public const string ApplicationName = "ImageTools";
-
-        public const string ImageFilter =
-            "Image Files (*.JPG, *.JPE, *.BMP, *.GIF, *.PNG)| *.jpg; *.jpe; *.bmp; *.gif; *.png";
 
         public static readonly HashSet<string> ImageExtensions = new HashSet<string> {"JPG", "JPE", "BMP", "GIF", "PNG"};
         public static readonly byte[] TagSeperator = ConvertHelper.Convert(Seperator.ToString());
@@ -42,6 +40,23 @@ namespace FunctionLib.Helper
                     Directory.CreateDirectory(result);
                 }
                 return result;
+            }
+        }
+
+        public static List<ImageFormat> ImageFormats
+        {
+            get
+            {
+                var t = new ImageFormat(new Guid());
+
+                return new List<ImageFormat>
+                {
+                    ImageFormat.Png,
+                    ImageFormat.Bmp,
+                    ImageFormat.MemoryBmp,
+                    ImageFormat.Gif,
+                    ImageFormat.Jpeg,
+                };
             }
         }
     }

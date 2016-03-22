@@ -34,6 +34,16 @@ namespace FunctionLib.Helper
             return path;
         }
 
+        public ImageFormat GetImageFormat(string path)
+        {
+            ImageFormat result;
+            using (var img = Image.FromFile(path))
+            {
+                result = GetImageFormat(img);
+            }
+            return result;
+        }
+
         private ImageFormat GetImageFormat(Image img)
         {
             if (img.RawFormat.Equals(ImageFormat.Jpeg))

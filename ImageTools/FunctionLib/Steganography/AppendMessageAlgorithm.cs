@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -13,30 +11,44 @@ namespace FunctionLib.Steganography
     {
         public override string Name { get { return "Append Message Algorithm"; } }
         public override string Description { get { return "Appending the secret message at the end of the image."; } }
-        public override Bitmap Encode(Bitmap src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        public override string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3)
         {
-            //TODO We cant return an filename. --
-
-            var fileManager = FileManager.GetInstance();
-            var path = fileManager.CopyImageToTmp(src);
-            File.AppendAllText(path, message.Message);
-            return new Bitmap(path);
+            var data = message.Convert();
+            var file = FileManager.CopyImageToTmp(src);
+            using (var sw = new StreamWriter(File.Open(file, FileMode.Append)))
+            {
+                sw.Write("\n");
+                sw.Write("\n");
+                sw.Write("\n");
+                sw.Write(ConvertHelper.Convert(data));   
+            }
+            return file;
         }
 
-        public override ISecretMessage Decode(Bitmap src, int passHash, int lsbIndicator = 3)
+        public override ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
         {
-            //TODO we need a filename
-            using (var reader = new StreamReader(File.OpenRead("")))
+            var text = string.Empty;
+            using (var sr = new StreamReader(File.OpenRead(src)))
             {
-                reader.ReadToEnd();
+                text = sr.ReadToEnd();
             }
+            var index = text.LastIndexOf("\n\n");
+            var result = string.Empty;
+            var seq = text.Skip(index + 2);
+            result = seq.Aggregate(result, (current, c) => current + c);
+            var sizeIndex = result.IndexOf(Constants.Seperator);
+            result = result.Remove(0, sizeIndex + 1);
 
-            throw new System.NotImplementedException();
+            return GetSpecificMessage(ConvertHelper.Convert(result));
         }
 
         public override IList<ImageFormat> PossibleImageFormats
         {
-            get { return Enum.GetValues(typeof (ImageFormat)).Cast<ImageFormat>().ToList(); }
+            get
+            {
+                var result = Constants.ImageFormats;
+                return result;
+            }
         }
     }
 }
