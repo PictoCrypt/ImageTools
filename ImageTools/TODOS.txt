@@ -21,3 +21,5 @@ TODO Benchmarking -> Benchmarker, PixelBenchmark, RSAnalysis, SamplePairs, StegA
 Time per Byte to hide?
 
 ICommand with CanExecute austatten
+
+Encode deaktivieren für ProgressBarValue >= 100

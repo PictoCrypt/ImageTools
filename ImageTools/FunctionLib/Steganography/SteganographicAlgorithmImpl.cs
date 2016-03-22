@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using FunctionLib.Helper;
-using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography
 {
     public abstract class SteganographicAlgorithmImpl
     {
-        protected SteganographicAlgorithmImpl()
-        {
-            ChangedPixels = new List<Pixel>();
-        }
-
-        public List<Pixel> ChangedPixels { get; }
         public abstract string Name { get; }
         public abstract string Description { get; }
 
@@ -27,30 +19,9 @@ namespace FunctionLib.Steganography
 
         public abstract ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3);
 
-        public virtual string ChangeColor(string srcPath, Color color)
-        {
-            var tmp = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
-            var dest = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
-            File.Copy(srcPath, tmp, true);
-            using (var bitmap = new Bitmap(tmp))
-            {
-                ImageFunctionLib.ChangeColor(bitmap, color, ChangedPixels);
-                bitmap.Save(dest, ImageFormat.Bmp);
-            }
-            File.Copy(dest, tmp, true);
-            return tmp;
-        }
-
         public abstract IList<ImageFormat> PossibleImageFormats { get; }
 
-        public int MaxEmbeddingCount(Bitmap src, int lsbIndicator)
-        {
-            // We are using the parameter leastSignificantBitIndicator each byte.
-            var lsbs = src.Width*src.Height*lsbIndicator;
-            // Each character uses 8 bits.
-            var result = lsbs/8;
-            return result;
-        }
+        public abstract int MaxEmbeddingCount(Bitmap src, int lsbIndicator);
 
         protected LockBitmap LockBitmap(string src)
         {

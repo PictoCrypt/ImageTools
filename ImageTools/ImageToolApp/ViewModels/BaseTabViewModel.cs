@@ -89,6 +89,7 @@ namespace ImageToolApp.ViewModels
                 }
                 mSelectedSteganographicMethod = value;
                 OnPropertyChanged("SelectedSteganographicMethod");
+                OnPropertyChanged("ProgressBarValue");
             }
         }
 

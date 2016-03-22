@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using FunctionLib.Helper;
+using FunctionLib.Steganography.LSB;
 
 namespace ImageToolApp.ViewModels
 {
@@ -37,7 +38,9 @@ namespace ImageToolApp.ViewModels
                 {
                     max = SelectedSteganographicMethod.MaxEmbeddingCount(bitmap, LsbIndicator);
                 }
-                var contentLength = (double) ConvertHelper.Convert(Text).Length;
+                var contentLength = (double) SelectedEncryptionMethod.Encode(Text, Password ?? "Test").Length;
+                contentLength += ConvertHelper.Convert(contentLength.ToString()).Length;
+                contentLength += Constants.TagSeperator.Length;
                 var result = contentLength/max*100;
                 return result;
             }

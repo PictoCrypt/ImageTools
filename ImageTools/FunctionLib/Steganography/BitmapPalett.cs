@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using FunctionLib.Helper;
 using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography
@@ -36,6 +38,11 @@ namespace FunctionLib.Steganography
             {
                 return new List<ImageFormat> {ImageFormat.Bmp, ImageFormat.Gif, ImageFormat.Png};
             }
+        }
+
+        public override int MaxEmbeddingCount(Bitmap src, int lsbIndicator)
+        {
+            return int.MaxValue;
         }
     }
 }

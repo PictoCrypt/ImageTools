@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FunctionLib.Helper;
 using FunctionLib.Model;
+using FunctionLib.Steganography.LSB;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
 using MahApps.Metro.Controls;
@@ -84,6 +85,7 @@ namespace ImageToolApp.Controllers
             ViewModel.TabActionCommand = UICommand.Regular(Encrypt);
         }
 
+        
         public void SaveImage()
         {
             var dialog = new SaveFileDialog {Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats)};
@@ -166,11 +168,15 @@ namespace ImageToolApp.Controllers
             return result;
         }
 
+
         public void ChangedPixels()
         {
-            var path = ViewModel.SelectedSteganographicMethod.ChangeColor(ViewModel.ResultImagePath, Color.Red);
-            var count = ViewModel.SelectedSteganographicMethod.ChangedPixels.Count;
-            var controller = new ImagePresentationController(path, string.Format("{0} Pixel", count));
+            var algorithm = ViewModel.SelectedSteganographicMethod as LsbAlgorithmBase;
+            if (algorithm != null)
+            {
+                var path = algorithm.ChangeColor(ViewModel.ResultImagePath, Color.Red);
+                var controller = new ImagePresentationController(path, string.Format("{0} Pixel", algorithm.ChangedPixels.Count));
+            }
         }
     }
 }

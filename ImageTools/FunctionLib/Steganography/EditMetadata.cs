@@ -54,5 +54,10 @@ namespace FunctionLib.Steganography
         {
             get { return Constants.ImageFormats; }
         }
+
+        public override int MaxEmbeddingCount(Bitmap src, int lsbIndicator)
+        {
+            return (int) Math.Pow(2, 16);
+        }
     }
 }

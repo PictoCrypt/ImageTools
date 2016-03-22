@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -49,6 +50,11 @@ namespace FunctionLib.Steganography
                 var result = Constants.ImageFormats;
                 return result;
             }
+        }
+
+        public override int MaxEmbeddingCount(Bitmap src, int lsbIndicator)
+        {
+            return int.MaxValue;
         }
     }
 }

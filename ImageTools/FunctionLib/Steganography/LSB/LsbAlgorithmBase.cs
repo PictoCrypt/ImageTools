@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using FunctionLib.CustomException;
@@ -13,6 +14,11 @@ namespace FunctionLib.Steganography.LSB
 {
     public abstract class LsbAlgorithmBase : SteganographicAlgorithmImpl
     {
+        public LsbAlgorithmBase()
+        {
+            ChangedPixels = new List<Pixel>();
+        }
+
         protected int BitIndex;
         protected int ByteIndex;
 
@@ -63,8 +69,10 @@ namespace FunctionLib.Steganography.LSB
 
         public override IList<ImageFormat> PossibleImageFormats
         {
-            get { return Enum.GetValues(typeof (ImageFormat)).Cast<ImageFormat>().ToList(); }
+            get { return Constants.ImageFormats; }
         }
+
+        public List<Pixel> ChangedPixels { get; }
 
         public override ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
         {
@@ -112,6 +120,15 @@ namespace FunctionLib.Steganography.LSB
             var squarePixel = src.Width*src.Height;
             var maxSize = squarePixel*3*lsbIndicator/8;
             return maxSize >= Bytes.Length;
+        }
+
+        public override int MaxEmbeddingCount(Bitmap src, int lsbIndicator)
+        {
+            // We are using the parameter leastSignificantBitIndicator each byte.
+            var lsbs = src.Width * src.Height * lsbIndicator;
+            // Each character uses 8 bits.
+            var result = lsbs / 8;
+            return result;
         }
 
         protected abstract bool EncodingIteration(int lsbIndicator);
@@ -245,6 +262,20 @@ namespace FunctionLib.Steganography.LSB
                 bit = ByteHelper.GetBit(pixel.B, 8 - lsbIndicator + i);
                 BitHolder.Add(bit);
             }
+        }
+
+        public virtual string ChangeColor(string srcPath, Color color)
+        {
+            var tmp = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
+            var dest = FileManager.GetInstance().GenerateTmp(ImageFormat.Png);
+            File.Copy(srcPath, tmp, true);
+            using (var bitmap = new Bitmap(tmp))
+            {
+                ImageFunctionLib.ChangeColor(bitmap, color, ChangedPixels);
+                bitmap.Save(dest, ImageFormat.Bmp);
+            }
+            File.Copy(dest, tmp, true);
+            return tmp;
         }
     }
 }
