@@ -68,7 +68,7 @@ namespace UnitTests.FunctionLibTests
         [TestMethod]
         public void ImageDecompressionTest()
         {
-            using (var stream = new FileStream(TestingConstants.SmallFlowers, FileMode.Open))
+            using (var stream = new FileStream(TestingConstants.SmallImage, FileMode.Open))
             {
                 var result = CompressionHelper.Compress(stream);
                 var decompressed = CompressionHelper.Decompress(result);

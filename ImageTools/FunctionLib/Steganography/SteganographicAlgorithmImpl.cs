@@ -44,11 +44,31 @@ namespace FunctionLib.Steganography
 
             if (!IsEncryptionPossible())
             {
+                CleanupEncoding();
                 throw new ContentLengthException();
+            }
+            if (!DoesCoverFitType())
+            {
+                CleanupEncoding();
+                throw new BadImageFormatException();
             }
 
             var result = EncodingAlgorithm(src, message, passHash, lsbIndicator);
+
+            CleanupEncoding();
+
             return result;
+        }
+
+        private bool DoesCoverFitType()
+        {
+            var format = FileManager.GetImageFormat(Bitmap.Source.RawFormat);
+            return PossibleImageFormats.Contains(format);
+        }
+
+        private void CleanupEncoding()
+        {
+            Bitmap.Source.Dispose();
         }
 
         protected abstract bool IsEncryptionPossible();

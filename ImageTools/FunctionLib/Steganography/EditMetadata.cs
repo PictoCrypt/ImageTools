@@ -24,7 +24,7 @@ namespace FunctionLib.Steganography
 
         public override IList<ImageFormat> PossibleImageFormats
         {
-            get { return Constants.ImageFormats; }
+            get { return new List<ImageFormat> {ImageFormat.Jpeg}; }
         }
 
         protected override bool IsEncryptionPossible()
@@ -39,7 +39,7 @@ namespace FunctionLib.Steganography
         }
 
         protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
-            int lsbIndicator = 3)
+            int lsbIndicator)
         {
             var tmp = FileManager.CopyImageToTmp(src);
             using (var bmp = new Bitmap(src))

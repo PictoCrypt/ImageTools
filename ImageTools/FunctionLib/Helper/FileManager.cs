@@ -49,7 +49,7 @@ namespace FunctionLib.Helper
             return GetImageFormat(img.RawFormat);
         }
 
-        private ImageFormat GetImageFormat(ImageFormat format)
+        public ImageFormat GetImageFormat(ImageFormat format)
         {
             if (format.Equals(ImageFormat.Jpeg))
                 return ImageFormat.Jpeg;

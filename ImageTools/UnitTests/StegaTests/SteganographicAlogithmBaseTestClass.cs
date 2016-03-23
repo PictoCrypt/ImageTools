@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using FunctionLib.Cryptography;
 using FunctionLib.CustomException;
 using FunctionLib.Helper;
-using FunctionLib.Model.Message;
+using FunctionLib.Model;
 using FunctionLib.Steganography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -37,112 +38,148 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
-        public void EncodeText()
+        public void FunctionTextTest()
         {
-            var encrypted = Encode(TestingConstants.NormalImage, new TextMessage(TestingConstants.NormalText));
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.NormalText);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
 
-            var decrypted = Decode(encrypted);
-            var result = decrypted.ConvertBack();
-            Assert.IsTrue(result.StartsWith(TestingConstants.NormalText));
+            var decoded = Decode(encrypted);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
         }
 
-        [TestMethod]
-        public string Encoding()
+        private string GetTheRightImage(bool small = false)
         {
-            var encrypted = Encode(TestingConstants.NormalImage, new TextMessage(TestingConstants.NormalText),
-                    TestingConstants.Password.GetHashCode());
-            Assert.IsTrue(!string.IsNullOrEmpty(encrypted));
-            using (var bmp = new Bitmap(encrypted))
+            if (Algorithm.PossibleImageFormats.Contains(ImageFormat.Jpeg))
             {
-                Assert.IsNotNull(bmp);
+                if (!small)
+                {
+                    return TestingConstants.NormalJpgImage;
+                }
+                return TestingConstants.SmallJpgImage;
             }
-            return encrypted;
+            else
+            {
+                if (!small)
+                {
+                    return TestingConstants.NormalImage;
+                }
+                return TestingConstants.SmallImage;
+            }
         }
 
         [TestMethod]
-        public void Decodig()
+        public void FunctionImageTest()
         {
-            var enc = Encoding();
-            var decrypted = Decode(enc, TestingConstants.Password.GetHashCode());
-            var result = decrypted.ConvertBack();
-            Assert.IsTrue(result.Length > 0);
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.SmallImage);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
+
+            var decoded = Decode(encrypted);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
+            Assert.IsTrue(File.Exists(decoded));
         }
 
         [TestMethod]
-        public void EncodeWithLsbIndicator()
+        public void FunctionDocTest()
         {
-            var encrypted = Encode(TestingConstants.NormalImage, new TextMessage(TestingConstants.NormalText),
-                TestingConstants.Password.GetHashCode(), 4);
-            var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode(), 4);
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.NormalTestdoc);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
 
-            var result = decrypted.ConvertBack();
-            Assert.IsTrue(result.StartsWith(TestingConstants.NormalText));
+            var decoded = Decode(encrypted);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
+            Assert.IsTrue(File.Exists(decoded));
         }
 
         [TestMethod]
-        public void EncodeImage()
+        public void FunctionTextWithLsbTest()
         {
-            var encrypted = Encode(TestingConstants.NormalImage, new DocumentMessage(TestingConstants.SmallImage),
-                TestingConstants.Password.GetHashCode());
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.NormalText, null, null, 4);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
 
-            var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode());
-            var result = decrypted.ConvertBack();
-            Assert.IsNotNull(result);
-            Assert.IsTrue(File.Exists(result));
+            var decoded = Decode(encrypted, null, null, 4);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
         }
 
         [TestMethod]
-        public void EncodeDocument()
+        public void FunctionFileWithLsbTest()
         {
-            var encrypted = Encode(TestingConstants.NormalImage, new DocumentMessage(TestingConstants.Testdoc),
-                TestingConstants.Password.GetHashCode());
-            var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode());
-            var result = decrypted.ConvertBack();
-            Assert.IsNotNull(result);
-            Assert.IsTrue(File.Exists(result));
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.SmallImage, null, null, 4);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
+
+            var decoded = Decode(encrypted, null, null, 4);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
+            Assert.IsTrue(File.Exists(decoded));
         }
 
         [TestMethod]
         [ExpectedException(typeof (ContentLengthException))]
-        public void EncodeWithoutSpace()
+        public virtual void EncodeTextWithoutSpaceTest()
         {
-            var encrypted = Encode(TestingConstants.SmallKoala, new TextMessage(TestingConstants.LongText),
-                    TestingConstants.Password.GetHashCode());
+            var encrypted = Encode(GetTheRightImage(true), TestingConstants.LongText);
+        }
+        
+        [TestMethod]
+        [ExpectedException(typeof (ContentLengthException))]
+        public virtual void EncodeDocumentWithoutSpaceTest()
+        {
+            var encrypted = Encode(GetTheRightImage(true), TestingConstants.LargeTestdoc);
         }
 
         [TestMethod]
         [ExpectedException(typeof (ArgumentNullException))]
-        public void EncodeWithoutText()
+        public void EncodeWithoutMessageTest()
         {
-            var encrypted = Encode(TestingConstants.NormalImage, new TextMessage(string.Empty));
+            var encrypted = Encode(GetTheRightImage(), string.Empty);
         }
 
         [TestMethod]
         [ExpectedException(typeof (ArgumentNullException))]
-        public void EncodeWithoutCover()
+        public void EncodeWithoutCoverTest()
         {
-            var encrypted = Encode(null, new TextMessage(TestingConstants.NormalText));
+            var encrypted = Encode(null, TestingConstants.NormalText);
         }
 
-        private ISecretMessage Decode(string encrypted)
+        [TestMethod]
+        [ExpectedException(typeof (BadImageFormatException))]
+        public virtual void EncodeWithWrongImageFormatTest()
         {
-            mStopwatch.Start();
-            var decrypted = Decode(encrypted, TestingConstants.Password.GetHashCode());
-            mStopwatch.Stop();
-            mDecryptionTime = mStopwatch.Elapsed;
-            Assert.IsFalse(decrypted == null);
-            return decrypted;
+            if (Algorithm.PossibleImageFormats.Contains(ImageFormat.Jpeg))
+            {
+                var encrypted = Encode(TestingConstants.NormalImage, TestingConstants.NormalText);
+            }
+            else
+            {
+                var encrypted = Encode(TestingConstants.NormalJpgImage, TestingConstants.NormalText);
+            }
         }
 
-        private string Encode(string src, ISecretMessage value)
+        [TestMethod]
+        public void FunctionCryptedTextTest()
         {
-            mStopwatch.Start();
-            var encrypted = Encode(src, value, TestingConstants.Password.GetHashCode());
-            mStopwatch.Stop();
-            mEncryptionTime = mStopwatch.Elapsed;
-            mStopwatch.Reset();
-            Assert.IsTrue(encrypted != null);
-            return encrypted;
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.NormalText, new AesAlgorithm(),
+                TestingConstants.Password);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
+
+            var decoded = Decode(encrypted, new AesAlgorithm(), TestingConstants.Password);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
+        }
+
+        [TestMethod]
+        public void FunctionCryptedFileTest()
+        {
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.SmallImage, new AesAlgorithm(),
+                TestingConstants.Password);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
+
+            var decoded = Decode(encrypted, new AesAlgorithm(), TestingConstants.Password);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
+            Assert.IsTrue(File.Exists(decoded));
         }
 
         private void WriteToOutput()
@@ -154,14 +191,28 @@ namespace UnitTests.StegaTests
             Trace.WriteLine("");
         }
 
-        private string Encode(string src, ISecretMessage value, int password, int lsbIndicator = 3)
+        private string Encode(string src, string message, CryptographicAlgorithmImpl crypt = null,
+            string password = null, int lsbIndicator = 3)
         {
-            return Algorithm.Encode(src, value, password, lsbIndicator);
+            var model = new EncodeModel(src, message, crypt, password, Algorithm, false, lsbIndicator);
+            mStopwatch.Start();
+            var result = model.Encode();
+            mStopwatch.Stop();
+            mEncryptionTime = mStopwatch.Elapsed;
+            mStopwatch.Reset();
+            return result;
         }
 
-        private ISecretMessage Decode(string src, int password, int lsbIndicator = 3)
+        private string Decode(string src, CryptographicAlgorithmImpl crypto = null, string password = null,
+            int lsbIndicator = 3)
         {
-            return Algorithm.Decode(src, password, lsbIndicator);
+            var model = new DecodeModel(src, crypto, password, Algorithm, false, lsbIndicator);
+            mStopwatch.Start();
+            var result = model.Decode();
+            mStopwatch.Stop();
+            mDecryptionTime = mStopwatch.Elapsed;
+            mStopwatch.Reset();
+            return result;
         }
     }
 }

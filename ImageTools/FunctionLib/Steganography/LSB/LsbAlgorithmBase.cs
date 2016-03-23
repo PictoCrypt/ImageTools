@@ -24,16 +24,12 @@ namespace FunctionLib.Steganography.LSB
         protected int EndCount { get; set; }
 
         protected ICollection<int> BitHolder { get; set; }
-
-        protected int PassHash { get; private set; }
-
-        protected LockBitmap Bitmap { get; private set; }
-
+        
         protected byte[] Bytes { get; set; }
 
         public override IList<ImageFormat> PossibleImageFormats
         {
-            get { return Constants.ImageFormats; }
+            get { return new List<ImageFormat> { ImageFormat.Bmp, ImageFormat.Png, ImageFormat.MemoryBmp}; }
         }
 
         public List<Pixel> ChangedPixels { get; }
@@ -157,6 +153,7 @@ namespace FunctionLib.Steganography.LSB
         protected override void InitializeEncoding(string src, ISecretMessage message, int passHash, int lsbIndicator)
         {
             base.InitializeEncoding(src, message, passHash, lsbIndicator);
+            LsbIndicator = lsbIndicator;
             BitIndex = 0;
             ByteIndex = 0;
             Bytes = message.Convert();

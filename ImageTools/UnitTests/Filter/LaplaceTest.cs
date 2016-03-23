@@ -21,7 +21,7 @@ namespace UnitTests.Filter
         [TestMethod]
         public void LaplaceTestWithSampleImage()
         {
-            var image = new Bitmap(TestingConstants.SmallFlowers);
+            var image = new Bitmap(TestingConstants.SmallImage);
             var filter = new Laplace(image, 1, 8);
             var results = new List<int>();
             for (var x = 0; x < image.Width; x++)

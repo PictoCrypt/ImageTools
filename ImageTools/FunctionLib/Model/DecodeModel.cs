@@ -40,10 +40,10 @@ namespace FunctionLib.Model
             var result = SteganoAlgorithm.Decode(mSrcObj, PasswordHash, mLsbIndicator);
             result.Compression = mCompression;
 
-            var message = string.Empty;
+            var message = result.ConvertBack();
             if (CryptoAlgorithm != null && string.IsNullOrEmpty(mPassword))
             {
-                message = CryptoAlgorithm.Decode(result.ConvertBack(), mPassword);
+                message = CryptoAlgorithm.Decode(message, mPassword);
             }
             return message;
         }
