@@ -55,7 +55,8 @@ namespace FunctionLib.Helper
                 }
                 else
                 {
-                    builder.AppendFormat("{0}{1}*.{2}", format.ToString().ToUpperInvariant(), seperator, format.ToString().ToLowerInvariant());
+                    builder.AppendFormat("{0}{1}*.{2}", format.ToString().ToUpperInvariant(), seperator,
+                        format.ToString().ToLowerInvariant());
                 }
             }
 

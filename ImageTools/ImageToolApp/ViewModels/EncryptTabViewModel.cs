@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using FunctionLib.Helper;
-using FunctionLib.Steganography.LSB;
 
 namespace ImageToolApp.ViewModels
 {

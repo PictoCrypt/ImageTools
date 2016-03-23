@@ -5,6 +5,7 @@ namespace ImageToolApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        private UICommand mCancelCommand;
         private UICommand mChangedPixelsCommand;
         private UICommand mCloseAppCommand;
         private FrameworkElement mCurrentElement;
@@ -17,7 +18,6 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
-        private UICommand mCancelCommand;
 
         public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
         {
@@ -39,7 +39,7 @@ namespace ImageToolApp.ViewModels
                 OnPropertyChanged("ProgressActive");
             }
         }
-        
+
         public bool EncryptSelected
         {
             set { CurrentElement = value ? EncryptView : DecryptView; }

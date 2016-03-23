@@ -17,7 +17,7 @@ namespace ImageToolApp
             application.InitializeComponent();
 
 #if !DEBUG
-            // Global Exception Handler
+    // Global Exception Handler
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 #endif
             application.MainWindow = new MainWindow();

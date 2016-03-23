@@ -35,7 +35,7 @@ namespace ImageToolApp.Controllers
             {
                 Multiselect = false,
                 InitialDirectory = ViewModel.Settings.DefaultPath,
-                Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats),
+                Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats)
             };
 
             dialog.ShowDialog();

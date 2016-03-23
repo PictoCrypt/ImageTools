@@ -55,7 +55,7 @@ namespace FunctionLib.Helper
                     ImageFormat.Bmp,
                     ImageFormat.MemoryBmp,
                     ImageFormat.Gif,
-                    ImageFormat.Jpeg,
+                    ImageFormat.Jpeg
                 };
             }
         }

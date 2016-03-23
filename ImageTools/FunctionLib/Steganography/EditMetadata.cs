@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
@@ -11,18 +10,44 @@ namespace FunctionLib.Steganography
 {
     public class EditMetadata : SteganographicAlgorithmImpl
     {
-        public override string Name { get { return "Edit Metadata"; } }
-        public override string Description { get { return "Embedding secret message into the metadata of an image."; } }
-        public override string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        public override string Name
+        {
+            get { return "Edit Metadata"; }
+        }
+
+        public override string Description
+        {
+            get { return "Embedding secret message into the metadata of an image."; }
+        }
+
+        private byte[] Bytes { get; set; }
+
+        public override IList<ImageFormat> PossibleImageFormats
+        {
+            get { return Constants.ImageFormats; }
+        }
+
+        protected override bool IsEncryptionPossible()
+        {
+            return !(Bytes.Length >= Math.Pow(2, 16));
+        }
+
+        protected override void InitializeEncoding(string src, ISecretMessage message, int passHash, int lsbIndicator)
+        {
+            base.InitializeEncoding(src, message, passHash, lsbIndicator);
+            Bytes = message.Convert();
+        }
+
+        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
+            int lsbIndicator = 3)
         {
             var tmp = FileManager.CopyImageToTmp(src);
             using (var bmp = new Bitmap(src))
             {
                 var item = bmp.PropertyItems.OrderByDescending(x => x.Id).First();
-                var data = message.Convert();
                 item.Id = item.Id + 1;
-                item.Len = data.Length;
-                item.Value = data;
+                item.Len = Bytes.Length;
+                item.Value = Bytes;
                 item.Type = 1;
                 bmp.SetPropertyItem(item);
                 bmp.Save(tmp);
@@ -30,7 +55,7 @@ namespace FunctionLib.Steganography
             return tmp;
         }
 
-        public override ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
+        protected override ISecretMessage DecodingAlgorithm(string src, int passHash, int lsbIndicator)
         {
             byte[] result;
             using (var bmp = new Bitmap(src))
@@ -48,11 +73,6 @@ namespace FunctionLib.Steganography
             var index = ListHelper.IndexOf(bytes, Constants.TagSeperator);
             var result = bytes.Skip(index + 1).ToArray();
             return result;
-        }
-
-        public override IList<ImageFormat> PossibleImageFormats
-        {
-            get { return Constants.ImageFormats; }
         }
 
         public override int MaxEmbeddingCount(Bitmap src, int lsbIndicator)

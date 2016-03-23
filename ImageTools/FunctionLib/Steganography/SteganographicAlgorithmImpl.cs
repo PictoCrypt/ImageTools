@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
+using FunctionLib.CustomException;
 using FunctionLib.Helper;
 using FunctionLib.Model.Message;
 
@@ -13,13 +14,73 @@ namespace FunctionLib.Steganography
         public abstract string Name { get; }
         public abstract string Description { get; }
 
-        protected FileManager FileManager { get { return FileManager.GetInstance(); } }
+        protected FileManager FileManager
+        {
+            get { return FileManager.GetInstance(); }
+        }
 
-        public abstract string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3);
+        protected LockBitmap Bitmap { get; set; }
 
-        public abstract ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3);
+        protected int PassHash { get; set; }
 
         public abstract IList<ImageFormat> PossibleImageFormats { get; }
+
+        public string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        {
+            if (string.IsNullOrEmpty(src))
+            {
+                throw new ArgumentNullException(nameof(src));
+            }
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+            if (lsbIndicator < 0 || lsbIndicator > 8)
+            {
+                throw new ArgumentException(nameof(lsbIndicator));
+            }
+
+            InitializeEncoding(src, message, passHash, lsbIndicator);
+
+            if (!IsEncryptionPossible())
+            {
+                throw new ContentLengthException();
+            }
+
+            var result = EncodingAlgorithm(src, message, passHash, lsbIndicator);
+            return result;
+        }
+
+        protected abstract bool IsEncryptionPossible();
+
+        protected virtual void InitializeEncoding(string src, ISecretMessage message, int passHash, int lsbIndicator)
+        {
+            Bitmap = LockBitmap(src);
+            PassHash = passHash;
+        }
+
+        protected abstract string EncodingAlgorithm(string src, ISecretMessage message, int passHash, int lsbIndicator);
+
+        public ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
+        {
+            if (string.IsNullOrEmpty(src))
+            {
+                throw new ArgumentNullException(nameof(src));
+            }
+
+            InitializeDecoding(src, passHash, lsbIndicator);
+
+            var result = DecodingAlgorithm(src, passHash, lsbIndicator);
+            return result;
+        }
+
+        protected virtual void InitializeDecoding(string src, int passHash, int lsbIndicator)
+        {
+            Bitmap = LockBitmap(src);
+            PassHash = passHash;
+        }
+
+        protected abstract ISecretMessage DecodingAlgorithm(string src, int passHash, int lsbIndicator);
 
         public abstract int MaxEmbeddingCount(Bitmap src, int lsbIndicator);
 

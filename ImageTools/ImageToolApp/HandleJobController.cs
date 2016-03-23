@@ -50,7 +50,7 @@ namespace ImageToolApp
             })
             {
                 IsBackground = true,
-                Name = "EncryptDecryptThread",
+                Name = "EncryptDecryptThread"
             };
             mThread.Start();
         }

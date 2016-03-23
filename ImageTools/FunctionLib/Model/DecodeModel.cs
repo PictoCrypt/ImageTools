@@ -25,7 +25,7 @@ namespace FunctionLib.Model
             SteganoAlgorithm = stegano;
             mLsbIndicator = lsbIndicator;
         }
-        
+
         private int PasswordHash
         {
             get { return mPassword == null ? 0 : PasswordHelper.GetHash(mPassword); }
@@ -39,7 +39,12 @@ namespace FunctionLib.Model
         {
             var result = SteganoAlgorithm.Decode(mSrcObj, PasswordHash, mLsbIndicator);
             result.Compression = mCompression;
-            var message = CryptoAlgorithm.Decode(result.ConvertBack(), mPassword);
+
+            var message = string.Empty;
+            if (CryptoAlgorithm != null && string.IsNullOrEmpty(mPassword))
+            {
+                message = CryptoAlgorithm.Decode(result.ConvertBack(), mPassword);
+            }
             return message;
         }
     }

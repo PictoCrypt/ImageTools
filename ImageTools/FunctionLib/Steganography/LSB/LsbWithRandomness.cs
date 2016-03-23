@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
 
@@ -8,23 +7,23 @@ namespace FunctionLib.Steganography.LSB
 {
     public abstract class LsbWithRandomness : LsbAlgorithmBase
     {
-        private HashSet<Pixel> mPixels; 
+        private HashSet<Pixel> mPixels;
         protected Random Random { get; set; }
 
-        protected override void InitializeEncoding(string src, ISecretMessage message, int passHash)
+        protected override void InitializeEncoding(string src, ISecretMessage message, int passHash, int lsbIndicator)
         {
-            base.InitializeEncoding(src, message, passHash);
+            base.InitializeEncoding(src, message, passHash, lsbIndicator);
             mPixels = new HashSet<Pixel>();
             Random = new Random(PassHash);
         }
 
-        protected override void InitializeDecoding(string src, int passHash)
+        protected override void InitializeDecoding(string src, int passHash, int lsbIndicator)
         {
-            base.InitializeDecoding(src, passHash);
+            base.InitializeDecoding(src, passHash, lsbIndicator);
             mPixels = new HashSet<Pixel>();
             Random = new Random(PassHash);
         }
-        
+
         protected Pixel GetNextRandom(int xMax, int yMax, Random random)
         {
             //TODO verbessern: Vergleichen und nur die Koordinate ersetzen, welche schon vorhanden ist?

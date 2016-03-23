@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -85,10 +84,13 @@ namespace ImageToolApp.Controllers
             ViewModel.TabActionCommand = UICommand.Regular(Encrypt);
         }
 
-        
+
         public void SaveImage()
         {
-            var dialog = new SaveFileDialog {Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats)};
+            var dialog = new SaveFileDialog
+            {
+                Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats)
+            };
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
@@ -120,20 +122,20 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                    var message = GetCurrentMessage();
-                    //TODO compression
-                    var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
-                        ViewModel.Password, ViewModel.SelectedSteganographicMethod, false,
-                        ViewModel.LsbIndicator);
+                var message = GetCurrentMessage();
+                //TODO compression
+                var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
+                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, false,
+                    ViewModel.LsbIndicator);
 
-                    var result = model.Encode();
-                    ViewModel.ResultImagePath = result;
+                var result = model.Encode();
+                ViewModel.ResultImagePath = result;
             });
         }
 
         private string GetCurrentMessage()
         {
-            string result;
+            var result = string.Empty;
             object expanderContent = null;
             if (mExpanders != null && mExpanders.Count > 0)
             {
@@ -156,13 +158,19 @@ namespace ImageToolApp.Controllers
                 }
                 else if (expanderContent is PathChooser)
                 {
-                    var content = expanderContent as PathChooser;
-                    result = (content.DataContext as PathChooserViewModel).Path;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var content = expanderContent as PathChooser;
+                        result = (content.DataContext as PathChooserViewModel).Path;
+                    });
                 }
                 else
                 {
-                    var content = expanderContent as DocumentChooser;
-                    result = (content.DataContext as DocumentChooserViewModel).Path;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var content = expanderContent as DocumentChooser;
+                        result = (content.DataContext as DocumentChooserViewModel).Path;
+                    });
                 }
             }
             return result;
@@ -175,7 +183,8 @@ namespace ImageToolApp.Controllers
             if (algorithm != null)
             {
                 var path = algorithm.ChangeColor(ViewModel.ResultImagePath, Color.Red);
-                var controller = new ImagePresentationController(path, string.Format("{0} Pixel", algorithm.ChangedPixels.Count));
+                var controller = new ImagePresentationController(path,
+                    string.Format("{0} Pixel", algorithm.ChangedPixels.Count));
             }
         }
     }

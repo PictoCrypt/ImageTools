@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FunctionLib.CustomException;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Model.Message;
@@ -14,13 +13,13 @@ namespace FunctionLib.Steganography.LSB
 {
     public abstract class LsbAlgorithmBase : SteganographicAlgorithmImpl
     {
+        protected int BitIndex;
+        protected int ByteIndex;
+
         public LsbAlgorithmBase()
         {
             ChangedPixels = new List<Pixel>();
         }
-
-        protected int BitIndex;
-        protected int ByteIndex;
 
         protected int EndCount { get; set; }
 
@@ -32,26 +31,20 @@ namespace FunctionLib.Steganography.LSB
 
         protected byte[] Bytes { get; set; }
 
-        public override string Encode(string src, ISecretMessage message, int passHash, int lsbIndicator = 3)
+        public override IList<ImageFormat> PossibleImageFormats
         {
-            if (string.IsNullOrEmpty(src))
-            {
-                throw new ArgumentNullException(nameof(src));
-            }
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-            if (lsbIndicator < 0 || lsbIndicator > 8)
-            {
-                throw new ArgumentException(nameof(lsbIndicator));
-            }
+            get { return Constants.ImageFormats; }
+        }
+
+        public List<Pixel> ChangedPixels { get; }
+
+        protected int LsbIndicator { get; set; }
+
+        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
+            int lsbIndicator = 3)
+        {
             var tmp = FileManager.CopyImageToTmp(src);
-            InitializeEncoding(tmp, message, passHash);
-            if (!IsEncryptionIsPossible(Bitmap, lsbIndicator))
-            {
-                throw new ContentLengthException();
-            }
+
             try
             {
                 if (!EncodingIteration(lsbIndicator))
@@ -67,21 +60,8 @@ namespace FunctionLib.Steganography.LSB
             return tmp;
         }
 
-        public override IList<ImageFormat> PossibleImageFormats
+        protected override ISecretMessage DecodingAlgorithm(string src, int passHash, int lsbIndicator)
         {
-            get { return Constants.ImageFormats; }
-        }
-
-        public List<Pixel> ChangedPixels { get; }
-
-        public override ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
-        {
-            if (string.IsNullOrEmpty(src))
-            {
-                throw new ArgumentNullException(nameof(src));
-            }
-            InitializeDecoding(src, passHash);
-
             try
             {
                 if (!DecodingIteration(lsbIndicator))
@@ -106,28 +86,20 @@ namespace FunctionLib.Steganography.LSB
 
         protected abstract bool DecodingIteration(int lsbIndicator);
 
-        protected virtual void InitializeDecoding(string src, int passHash)
+        protected override void InitializeDecoding(string src, int passHash, int lsbIndicator)
         {
-            Bitmap = LockBitmap(src);
-            PassHash = passHash;
+            base.InitializeDecoding(src, passHash, lsbIndicator);
             Bytes = new byte[0];
             BitHolder = new List<int>();
             EndCount = int.MaxValue;
         }
 
-        private bool IsEncryptionIsPossible(LockBitmap src, int lsbIndicator)
-        {
-            var squarePixel = src.Width*src.Height;
-            var maxSize = squarePixel*3*lsbIndicator/8;
-            return maxSize >= Bytes.Length;
-        }
-
         public override int MaxEmbeddingCount(Bitmap src, int lsbIndicator)
         {
             // We are using the parameter leastSignificantBitIndicator each byte.
-            var lsbs = src.Width * src.Height * lsbIndicator;
+            var lsbs = src.Width*src.Height*lsbIndicator;
             // Each character uses 8 bits.
-            var result = lsbs / 8;
+            var result = lsbs/8;
             return result;
         }
 
@@ -136,6 +108,13 @@ namespace FunctionLib.Steganography.LSB
         protected bool EncodeCheckForEnd()
         {
             return ByteIndex > Bytes.Length - 1 || ByteIndex == Bytes.Length - 1 && BitIndex == 7;
+        }
+
+        protected override bool IsEncryptionPossible()
+        {
+            var squarePixel = Bitmap.Width*Bitmap.Height;
+            var maxSize = squarePixel*3*LsbIndicator/8;
+            return maxSize >= Bytes.Length;
         }
 
         protected bool DecodeCheckForEnd()
@@ -175,13 +154,12 @@ namespace FunctionLib.Steganography.LSB
             ChangedPixels.Add(new Pixel(x, y));
         }
 
-        protected virtual void InitializeEncoding(string src, ISecretMessage message, int passHash)
+        protected override void InitializeEncoding(string src, ISecretMessage message, int passHash, int lsbIndicator)
         {
+            base.InitializeEncoding(src, message, passHash, lsbIndicator);
             BitIndex = 0;
             ByteIndex = 0;
-            Bitmap = LockBitmap(src);
             Bytes = message.Convert();
-            PassHash = passHash;
         }
 
         private void Cleanup()
