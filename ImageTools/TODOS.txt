@@ -12,8 +12,6 @@ Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)
 
 Neue Verfahren (Kathryn Hempstalk)
 
-Test mit Kompression
-
 PNG und Transparente nur dort editieren, wo nicht transparent oder weiss!!!
 
 TODO Benchmarking -> Benchmarker, PixelBenchmark, RSAnalysis, SamplePairs, StegAnalyser, TraditionalLaplaceGraph, LaplaceGraph
@@ -23,5 +21,3 @@ Time per Byte to hide?
 ICommand with CanExecute austatten
 
 Image oder Datei schauen ob überhaupt in Bild passt.
-
-Compression on UI
