@@ -130,6 +130,11 @@ namespace ImageToolApp.ViewModels
             }
         }
 
+        public virtual bool CanTabActionExecuted
+        {
+            get { return !string.IsNullOrEmpty(ImagePath); }
+        }
+
         public string ImagePath
         {
             get { return mImagePath; }
@@ -142,6 +147,7 @@ namespace ImageToolApp.ViewModels
                 mImagePath = value;
                 OnPropertyChanged("ImagePath");
                 OnPropertyChanged("ProgressBarValue");
+                OnPropertyChanged("CanTabActionExecuted");
             }
         }
     }

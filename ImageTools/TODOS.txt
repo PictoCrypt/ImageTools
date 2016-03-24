@@ -22,6 +22,4 @@ Time per Byte to hide?
 
 ICommand with CanExecute austatten
 
-Encode deaktivieren für ProgressBarValue >= 100
-
 Image oder Datei schauen ob überhaupt in Bild passt.

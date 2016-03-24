@@ -76,7 +76,7 @@
                                     ToolTip="Number of Bits which should be used from 1 color."
                                     Style="{StaticResource NumericUpDownStyle}" />
             <Button HorizontalAlignment="Right" Content="Encode" Command="{Binding TabActionCommand}" Margin="3"
-                    IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />
+                    IsEnabled="{Binding CanTabActionExecuted}" />
         </StackPanel>
 
         <controls:MetroProgressBar Grid.Column="0" Grid.Row="4" Minimum="0" Maximum="100"

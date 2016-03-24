@@ -20,7 +20,13 @@ namespace ImageToolApp.ViewModels
                 mText = value;
                 OnPropertyChanged("Text");
                 OnPropertyChanged("ProgressBarValue");
+                OnPropertyChanged("CanTabActionExecuted");
             }
+        }
+
+        public override bool CanTabActionExecuted
+        {
+            get { return base.CanTabActionExecuted && !string.IsNullOrEmpty(Text) && ProgressBarValue <= 100; }
         }
 
         public double ProgressBarValue
