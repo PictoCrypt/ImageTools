@@ -55,7 +55,7 @@ namespace FunctionLib.Steganography
             return tmp;
         }
 
-        protected override ISecretMessage DecodingAlgorithm(string src, int passHash, int lsbIndicator)
+        protected override ISecretMessage DecodingAlgorithm(string src, int lsbIndicator)
         {
             byte[] result;
             using (var bmp = new Bitmap(src))

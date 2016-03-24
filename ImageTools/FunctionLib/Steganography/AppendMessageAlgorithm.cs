@@ -49,7 +49,7 @@ namespace FunctionLib.Steganography
             return file;
         }
 
-        protected override ISecretMessage DecodingAlgorithm(string src, int passHash, int lsbIndicator)
+        protected override ISecretMessage DecodingAlgorithm(string src, int lsbIndicator)
         {
             var text = string.Empty;
             using (var sr = new StreamReader(File.OpenRead(src)))

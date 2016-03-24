@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using FunctionLib.Helper;
 using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography
@@ -9,7 +10,6 @@ namespace FunctionLib.Steganography
     public class BitmapPalett : SteganographicAlgorithmImpl
     {
         // Bitmap erzeugen, Palette ändern
-        //public override LockBitmap Encode(LockBitmap src, byte[] value, int password = 0,
         public override string Name
         {
             get { return "BitmapPalett"; }
@@ -22,21 +22,22 @@ namespace FunctionLib.Steganography
 
         public override IList<ImageFormat> PossibleImageFormats
         {
-            get { return new List<ImageFormat> {ImageFormat.Bmp, ImageFormat.Gif, ImageFormat.Png}; }
+            get { return Constants.ImageFormats; }
         }
 
         protected override bool IsEncryptionPossible()
         {
-            throw new NotImplementedException();
+            return Bitmap.Source.Palette.Entries.Length > 0;
         }
 
         protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
-            int lsbIndicator = 3)
+            int lsbIndicator)
         {
+            var palette = Bitmap.Source.Palette;
             throw new NotImplementedException();
         }
 
-        protected override ISecretMessage DecodingAlgorithm(string src, int passHash, int lsbIndicator)
+        protected override ISecretMessage DecodingAlgorithm(string src, int lsbIndicator)
         {
             throw new NotImplementedException();
         }

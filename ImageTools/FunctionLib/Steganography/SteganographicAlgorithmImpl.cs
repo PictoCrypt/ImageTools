@@ -90,7 +90,7 @@ namespace FunctionLib.Steganography
 
             InitializeDecoding(src, passHash, lsbIndicator);
 
-            var result = DecodingAlgorithm(src, passHash, lsbIndicator);
+            var result = DecodingAlgorithm(src, lsbIndicator);
             return result;
         }
 
@@ -100,7 +100,7 @@ namespace FunctionLib.Steganography
             PassHash = passHash;
         }
 
-        protected abstract ISecretMessage DecodingAlgorithm(string src, int passHash, int lsbIndicator);
+        protected abstract ISecretMessage DecodingAlgorithm(string src, int lsbIndicator);
 
         public abstract int MaxEmbeddingCount(Bitmap src, int lsbIndicator);
 
