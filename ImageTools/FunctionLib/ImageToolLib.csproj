@@ -74,6 +74,7 @@
     <Compile Include="Helper\Constants.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
     <Compile Include="Helper\AlgorithmCollector.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\ListHelper.cs" />
     <Compile Include="Helper\LockBitmap.cs" />
     <Compile Include="Helper\PasswordHelper.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Steganalyse\SignalToNoiseRatio.cs" />
     <Compile Include="Steganography\AppendMessageAlgorithm.cs" />
     <Compile Include="Steganography\EditMetadata.cs" />
+    <Compile Include="Steganography\LSB\ExtendedLsb.cs" />
     <Compile Include="Steganography\LSB\FilterFirst.cs" />
     <Compile Include="Steganography\LSB\LeastSignificantBit.cs" />
     <Compile Include="Steganography\LSB\LsbAlgorithmBase.cs" />

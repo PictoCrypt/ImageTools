@@ -25,18 +25,18 @@ namespace FunctionLib.Steganography.LSB
         protected override bool EncodingIteration(int lsbIndicator)
         {
             var filter = new Laplace(Bitmap, 1, 8);
-            IDictionary<Pixel, int> laplace = new Dictionary<Pixel, int>();
+            IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
             {
                 for (var y = 0; y < Bitmap.Height; y++)
                 {
-                    laplace.Add(new Pixel(x, y), filter.GetValue(x, y));
+                    filtered.Add(new Pixel(x, y), filter.GetValue(x, y));
                 }
             }
-            var orderedLaplace = laplace.OrderByDescending(key => key.Value);
+            var ordered = filtered.OrderByDescending(key => key.Value);
             //var random = new Random(password);
 
-            foreach (var key in orderedLaplace)
+            foreach (var key in ordered)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
@@ -53,18 +53,18 @@ namespace FunctionLib.Steganography.LSB
         protected override bool DecodingIteration(int lsbIndicator)
         {
             var filter = new Laplace(Bitmap, 1, 8);
-            IDictionary<Pixel, int> laplace = new Dictionary<Pixel, int>();
+            IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
             {
                 for (var y = 0; y < Bitmap.Height; y++)
                 {
-                    laplace.Add(new Pixel(x, y), filter.GetValue(x, y));
+                    filtered.Add(new Pixel(x, y), filter.GetValue(x, y));
                 }
             }
-            var orderedLaplace = laplace.OrderByDescending(key => key.Value);
+            var ordered = filtered.OrderByDescending(key => key.Value);
             //var random = new Random(password);
 
-            foreach (var key in orderedLaplace)
+            foreach (var key in ordered)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
