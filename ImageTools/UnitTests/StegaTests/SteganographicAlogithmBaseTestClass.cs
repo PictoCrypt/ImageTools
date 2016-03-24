@@ -48,26 +48,6 @@ namespace UnitTests.StegaTests
             Assert.IsFalse(string.IsNullOrEmpty(decoded));
         }
 
-        private string GetTheRightImage(bool small = false)
-        {
-            if (Algorithm.PossibleImageFormats.Contains(ImageFormat.Jpeg))
-            {
-                if (!small)
-                {
-                    return TestingConstants.NormalJpgImage;
-                }
-                return TestingConstants.SmallJpgImage;
-            }
-            else
-            {
-                if (!small)
-                {
-                    return TestingConstants.NormalImage;
-                }
-                return TestingConstants.SmallImage;
-            }
-        }
-
         [TestMethod]
         public void FunctionImageTest()
         {
@@ -76,6 +56,29 @@ namespace UnitTests.StegaTests
             Assert.IsTrue(File.Exists(encrypted));
 
             var decoded = Decode(encrypted);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
+            Assert.IsTrue(File.Exists(decoded));
+        }
+
+        [TestMethod]
+        public void FunctionTextWithCompressionTest()
+        {
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.NormalText, null, null, true);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
+
+            var decoded = Decode(encrypted, null, null, true);
+            Assert.IsFalse(string.IsNullOrEmpty(decoded));
+        }
+
+        [TestMethod]
+        public void FunctionImageWithCompressionTest()
+        {
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.SmallImage, null, null, true);
+            Assert.IsFalse(string.IsNullOrEmpty(encrypted));
+            Assert.IsTrue(File.Exists(encrypted));
+
+            var decoded = Decode(encrypted, null, null, true);
             Assert.IsFalse(string.IsNullOrEmpty(decoded));
             Assert.IsTrue(File.Exists(decoded));
         }
@@ -95,22 +98,22 @@ namespace UnitTests.StegaTests
         [TestMethod]
         public void FunctionTextWithLsbTest()
         {
-            var encrypted = Encode(GetTheRightImage(), TestingConstants.NormalText, null, null, 4);
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.NormalText, null, null, false, 4);
             Assert.IsFalse(string.IsNullOrEmpty(encrypted));
             Assert.IsTrue(File.Exists(encrypted));
 
-            var decoded = Decode(encrypted, null, null, 4);
+            var decoded = Decode(encrypted, null, null, false, 4);
             Assert.IsFalse(string.IsNullOrEmpty(decoded));
         }
 
         [TestMethod]
         public void FunctionFileWithLsbTest()
         {
-            var encrypted = Encode(GetTheRightImage(), TestingConstants.SmallImage, null, null, 4);
+            var encrypted = Encode(GetTheRightImage(), TestingConstants.SmallImage, null, null, false, 4);
             Assert.IsFalse(string.IsNullOrEmpty(encrypted));
             Assert.IsTrue(File.Exists(encrypted));
 
-            var decoded = Decode(encrypted, null, null, 4);
+            var decoded = Decode(encrypted, null, null, false, 4);
             Assert.IsFalse(string.IsNullOrEmpty(decoded));
             Assert.IsTrue(File.Exists(decoded));
         }
@@ -121,7 +124,7 @@ namespace UnitTests.StegaTests
         {
             var encrypted = Encode(GetTheRightImage(true), TestingConstants.LongText);
         }
-        
+
         [TestMethod]
         [ExpectedException(typeof (ContentLengthException))]
         public virtual void EncodeDocumentWithoutSpaceTest()
@@ -191,10 +194,27 @@ namespace UnitTests.StegaTests
             Trace.WriteLine("");
         }
 
-        private string Encode(string src, string message, CryptographicAlgorithmImpl crypt = null,
-            string password = null, int lsbIndicator = 3)
+        private string GetTheRightImage(bool small = false)
         {
-            var model = new EncodeModel(src, message, crypt, password, Algorithm, false, lsbIndicator);
+            if (Algorithm.PossibleImageFormats.Contains(ImageFormat.Jpeg))
+            {
+                if (!small)
+                {
+                    return TestingConstants.NormalJpgImage;
+                }
+                return TestingConstants.SmallJpgImage;
+            }
+            if (!small)
+            {
+                return TestingConstants.NormalImage;
+            }
+            return TestingConstants.SmallImage;
+        }
+
+        private string Encode(string src, string message, CryptographicAlgorithmImpl crypt = null,
+            string password = null, bool compression = false, int lsbIndicator = 3)
+        {
+            var model = new EncodeModel(src, message, crypt, password, Algorithm, compression, lsbIndicator);
             mStopwatch.Start();
             var result = model.Encode();
             mStopwatch.Stop();
@@ -203,10 +223,10 @@ namespace UnitTests.StegaTests
             return result;
         }
 
-        private string Decode(string src, CryptographicAlgorithmImpl crypto = null, string password = null,
+        private string Decode(string src, CryptographicAlgorithmImpl crypto = null, string password = null, bool compression = false,
             int lsbIndicator = 3)
         {
-            var model = new DecodeModel(src, crypto, password, Algorithm, false, lsbIndicator);
+            var model = new DecodeModel(src, crypto, password, Algorithm, compression, lsbIndicator);
             mStopwatch.Start();
             var result = model.Decode();
             mStopwatch.Stop();

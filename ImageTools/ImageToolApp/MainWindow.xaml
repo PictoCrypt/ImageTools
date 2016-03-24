@@ -54,7 +54,7 @@
                             </Button>
                             <Button Command="{Binding SaveImageCommand}"
                                     Style="{StaticResource ButtonWithoutBorderStyle}"
-                                    IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                                    IsEnabled="{Binding CurrentElement.DataContext.Result, Converter={StaticResource IsStringNullConverter}}"
                                     Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                                     ToolTip="Save Image">
                                 <Image Source="{StaticResource SaveImage}"
@@ -62,7 +62,7 @@
                             </Button>
                             <Button Command="{Binding ChangedPixelsCommand}"
                                     Style="{StaticResource ButtonWithoutBorderStyle}"
-                                    IsEnabled="{Binding CurrentElement.DataContext.ResultImagePath, Converter={StaticResource IsStringNullConverter}}"
+                                    IsEnabled="{Binding CurrentElement.DataContext.Result, Converter={StaticResource IsStringNullConverter}}"
                                     Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementEncryptToVisibilityConverter}}"
                                     ToolTip="Show changed Pixel">
                                 <Image Source="{StaticResource Changed}"
@@ -80,7 +80,7 @@
                             </Button>
                             <Button Command="{Binding SaveTxtCommand}"
                                     Style="{StaticResource ButtonWithoutBorderStyle}"
-                                    IsEnabled="{Binding CurrentElement.DataContext.Text, Converter={StaticResource IsStringNullConverter}}"
+                                    IsEnabled="{Binding CurrentElement.DataContext.Result, Converter={StaticResource IsStringNullConverter}}"
                                     Visibility="{Binding CurrentElement, Converter={StaticResource FrameworkElementDecryptToVisibilityConverter}}"
                                     ToolTip="Save Text">
                                 <Image Source="{StaticResource SaveImage}"

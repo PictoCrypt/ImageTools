@@ -12,27 +12,6 @@ namespace ImageToolApp.ViewModels
 {
     public class DecryptTabViewModel : BaseTabViewModel
     {
-        private object mResult;
-
-        public DecryptTabViewModel()
-        {
-            Result = string.Empty;
-        }
-
-        public object Result
-        {
-            get { return mResult; }
-            set
-            {
-                if (value.Equals(mResult))
-                {
-                    return;
-                }
-                mResult = value;
-                OnPropertyChanged("ResultContent");
-            }
-        }
-
         public FrameworkElement ResultContent
         {
             get

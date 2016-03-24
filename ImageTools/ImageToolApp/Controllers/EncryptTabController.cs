@@ -99,8 +99,8 @@ namespace ImageToolApp.Controllers
                     File.Delete(dialog.FileName);
                 }
 
-                File.Move(ViewModel.ResultImagePath, dialog.FileName);
-                ViewModel.ResultImagePath = dialog.FileName;
+                File.Move(ViewModel.Result, dialog.FileName);
+                ViewModel.Result = dialog.FileName;
             }
         }
 
@@ -125,11 +125,11 @@ namespace ImageToolApp.Controllers
                 var message = GetCurrentMessage();
                 //TODO compression
                 var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
-                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, false,
+                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, ViewModel.Compression,
                     ViewModel.LsbIndicator);
 
                 var result = model.Encode();
-                ViewModel.ResultImagePath = result;
+                ViewModel.Result = result;
             });
         }
 
@@ -182,7 +182,7 @@ namespace ImageToolApp.Controllers
             var algorithm = ViewModel.SelectedSteganographicMethod as LsbAlgorithmBase;
             if (algorithm != null)
             {
-                var path = algorithm.ChangeColor(ViewModel.ResultImagePath, Color.Red);
+                var path = algorithm.ChangeColor(ViewModel.Result, Color.Red);
                 var controller = new ImagePresentationController(path,
                     string.Format("{0} Pixel", algorithm.ChangedPixels.Count));
             }

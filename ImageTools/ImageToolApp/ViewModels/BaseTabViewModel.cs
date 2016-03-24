@@ -16,9 +16,12 @@ namespace ImageToolApp.ViewModels
         private CryptographicAlgorithmImpl mSelectedEncryptionMethod;
         private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
+        private bool mCompression;
+        private string mResult;
 
         protected BaseTabViewModel()
         {
+            Result = string.Empty;
             Password = Settings.Password;
             SelectedSteganographicMethod = Settings.SelectedSteganographicMethod ??
                                            Settings.SteganographicMethods.FirstOrDefault();
@@ -135,6 +138,20 @@ namespace ImageToolApp.ViewModels
             get { return !string.IsNullOrEmpty(ImagePath); }
         }
 
+        public bool Compression
+        {
+            get { return mCompression; }
+            set
+            {
+                if (value.Equals(mCompression))
+                {
+                    return;
+                }
+                mCompression = value;
+                OnPropertyChanged("Compression");
+            }
+        }
+
         public string ImagePath
         {
             get { return mImagePath; }
@@ -148,6 +165,20 @@ namespace ImageToolApp.ViewModels
                 OnPropertyChanged("ImagePath");
                 OnPropertyChanged("ProgressBarValue");
                 OnPropertyChanged("CanTabActionExecuted");
+            }
+        }
+
+        public string Result
+        {
+            get { return mResult; }
+            set
+            {
+                if (value.Equals(mResult))
+                {
+                    return;
+                }
+                mResult = value;
+                OnPropertyChanged("Result");
             }
         }
     }

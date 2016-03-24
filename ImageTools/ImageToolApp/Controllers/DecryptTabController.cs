@@ -33,7 +33,7 @@ namespace ImageToolApp.Controllers
             {
                 //TODO Compression
                 var model = new DecodeModel(ViewModel.ImagePath, ViewModel.SelectedEncryptionMethod,
-                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, false, ViewModel.LsbIndicator);
+                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, ViewModel.Compression, ViewModel.LsbIndicator);
 
                 ViewModel.Result = model.Decode();
             });
