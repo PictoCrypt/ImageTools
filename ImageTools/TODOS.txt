@@ -1,7 +1,5 @@
 Texte in Resource auslagern
 
-Zu Zufallsgenerator, Bild mit nutzlosen Daten auffüllen?
-
 Fehlerkorrekturen einbauen (CRC32)
 
 Passwort wiederholen?
@@ -12,8 +10,6 @@ Durchführung (Tutorial)... weiter, image auswählen, weiter... (SETUP)
 
 Neue Verfahren (Kathryn Hempstalk)
 
-PNG und Transparente nur dort editieren, wo nicht transparent oder weiss!!!
-
 TODO Benchmarking -> Benchmarker, PixelBenchmark, RSAnalysis, SamplePairs, StegAnalyser, TraditionalLaplaceGraph, LaplaceGraph
 
 Time per Byte to hide?
@@ -21,3 +17,7 @@ Time per Byte to hide?
 ICommand with CanExecute austatten
 
 Image oder Datei schauen ob überhaupt in Bild passt.
+
+Zu Zufallsgenerator, Bild mit nutzlosen Daten auffüllen?
+
+PNG und Transparente nur dort editieren, wo nicht transparent oder weiss!!!

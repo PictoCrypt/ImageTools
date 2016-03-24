@@ -13,6 +13,11 @@ namespace FunctionLib.Helper
 
         public LockBitmap(Bitmap source, PixelFormat format = PixelFormat.Undefined)
         {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             if (format == PixelFormat.Undefined)
             {
                 mFormat = source.PixelFormat;

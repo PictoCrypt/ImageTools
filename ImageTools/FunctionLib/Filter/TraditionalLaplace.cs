@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Filter
 {
-    public class Laplace : Filter
+    public class TraditionalLaplace : Filter
     {
+        public TraditionalLaplace(Bitmap image, int startbits, int endbits) : base(image, startbits, endbits)
+        {
+        }
+
+        public TraditionalLaplace(LockBitmap image, int startbits, int endbits) : base(image, startbits, endbits)
+        {
+        }
+
         public override int GetValue(int x, int y)
         {
             var pixel = Image.GetPixel(x, y);
@@ -24,6 +31,7 @@ namespace FunctionLib.Filter
             {
                 left = Image.GetPixel(x - 1, y);
             }
+
             if (x >= Image.Width - 1)
             {
                 pixelCount--;
@@ -32,14 +40,16 @@ namespace FunctionLib.Filter
             {
                 right = Image.GetPixel(x + 1, y);
             }
+
             if (y <= 0)
             {
-                pixelCount--;
+                pixelCount --;
             }
             else
             {
                 up = Image.GetPixel(x, y - 1);
             }
+
             if (y >= Image.Height - 1)
             {
                 pixelCount--;
@@ -49,28 +59,11 @@ namespace FunctionLib.Filter
                 down = Image.GetPixel(x, y + 1);
             }
 
-            //work out the colours individually
-            var diff = CalculateDifference(pixel, left, right, up, down, pixelCount);
+            // Difference
 
-            //return the results...
-            return diff.Sum(Math.Abs);
-        }
-
-        private int[] CalculateDifference(Color pixel, Color left, Color right, Color up, Color down, int pixelCount)
-        {
-            var result = new int[3];
-            result[0] = pixel.R*pixelCount - (left.R + right.R + up.R + down.R);
-            result[1] = pixel.G*pixelCount - (left.G + right.G + up.G + down.G);
-            result[1] = pixel.B*pixelCount - (left.B + right.B + up.B + down.B);
-            return result;
-        }
-
-        public Laplace(Bitmap image, int startbits, int endbits) : base(image, startbits, endbits)
-        {
-        }
-
-        public Laplace(LockBitmap image, int startbits, int endbits) : base(image, startbits, endbits)
-        {
+            var result = (pixelCount*pixel.GetBrightness()) - left.GetBrightness() + right.GetBrightness() +
+                         up.GetBrightness() + down.GetBrightness();
+            return Convert.ToInt32(result);
         }
     }
 }
