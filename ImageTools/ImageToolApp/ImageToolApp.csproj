@@ -120,10 +120,14 @@
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\DecryptTabViewModel.cs" />
+    <Compile Include="ViewModels\EncryptionModel.cs" />
     <Compile Include="ViewModels\EncryptTabViewModel.cs" />
     <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\CryptionUserControl.xaml.cs">
+      <DependentUpon>CryptionUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EncryptTabView.xaml.cs">
       <DependentUpon>EncryptTabView.xaml</DependentUpon>
     </Compile>
@@ -165,6 +169,10 @@
     <Page Include="Resources\ResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CryptionUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EncryptTabView.xaml">
       <SubType>Designer</SubType>

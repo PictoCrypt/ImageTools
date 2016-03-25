@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="ImageToolApp.Views.CryptionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageToolApp.Views"
+             xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="400">
+    <GroupBox Header="Encryption" HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch" Style="{StaticResource GroupBoxDisabledStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
+                          Margin="3" IsChecked="{Binding IsEnabled}" />
+
+            <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                             wpfHelpers:PasswordHelper.Attach="True"
+                             wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
+                             IsEnabled="{Binding IsEnabled}"
+                             controls:TextBoxHelper.Watermark="Password..." />
+            <ComboBox Grid.Column="2" ItemsSource="{Binding AlgorithmList}"
+                          SelectedItem="{Binding Algorithm}" DisplayMemberPath="Name"
+                          Margin="3" IsEnabled="{Binding IsEnabled}" />
+        </Grid>
+    </GroupBox>
+</UserControl>

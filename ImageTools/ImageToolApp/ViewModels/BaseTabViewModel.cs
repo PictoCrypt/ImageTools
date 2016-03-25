@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FunctionLib.Cryptography;
 using FunctionLib.Steganography;
 using ImageToolApp.Models;
 using UserControlClassLibrary;
@@ -9,24 +8,20 @@ namespace ImageToolApp.ViewModels
 {
     public class BaseTabViewModel : BaseViewModel
     {
-        private bool mEncryptedCheck;
         private string mImagePath = string.Empty;
         private int mLsbIndicator = 3;
-        private string mPassword;
-        private CryptographicAlgorithmImpl mSelectedEncryptionMethod;
         private SteganographicAlgorithmImpl mSelectedSteganographicMethod;
         private UICommand mTabActionCommand;
         private bool mCompression;
         private string mResult;
+        private readonly EncryptionModel mEncryptionModel;
 
         protected BaseTabViewModel()
         {
             Result = string.Empty;
-            Password = Settings.Password;
+            mEncryptionModel = new EncryptionModel(Settings.Password, Settings.SelectedEncryptionMethod);
             SelectedSteganographicMethod = Settings.SelectedSteganographicMethod ??
                                            Settings.SteganographicMethods.FirstOrDefault();
-            SelectedEncryptionMethod = Settings.SelectedEncryptionMethod ??
-                                       Settings.EncryptionMethods.FirstOrDefault();
         }
 
         public Settings Settings
@@ -62,24 +57,7 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public CryptographicAlgorithmImpl SelectedEncryptionMethod
-        {
-            get { return mSelectedEncryptionMethod; }
-            set
-            {
-                if (value == mSelectedEncryptionMethod)
-                {
-                    return;
-                }
-                mSelectedEncryptionMethod = value;
-                OnPropertyChanged("SelectedEncryptionMethod");
-            }
-        }
-
-        public IList<CryptographicAlgorithmImpl> EncryptionMethods
-        {
-            get { return Settings.EncryptionMethods; }
-        }
+        public EncryptionModel EncryptionModel { get { return mEncryptionModel; } }
 
         public SteganographicAlgorithmImpl SelectedSteganographicMethod
         {
@@ -101,37 +79,6 @@ namespace ImageToolApp.ViewModels
             get { return Settings.SteganographicMethods; }
         }
 
-        public string Password
-        {
-            get { return mPassword; }
-            set
-            {
-                if (value.Equals(mPassword))
-                {
-                    return;
-                }
-                mPassword = value;
-                OnPropertyChanged("Password");
-                if (!string.IsNullOrEmpty(mPassword))
-                {
-                    EncryptedCheck = true;
-                }
-            }
-        }
-
-        public bool EncryptedCheck
-        {
-            get { return mEncryptedCheck; }
-            set
-            {
-                if (value.Equals(mEncryptedCheck))
-                {
-                    return;
-                }
-                mEncryptedCheck = value;
-                OnPropertyChanged("EncryptedCheck");
-            }
-        }
 
         public virtual bool CanTabActionExecuted
         {

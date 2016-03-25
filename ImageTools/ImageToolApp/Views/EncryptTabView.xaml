@@ -7,6 +7,7 @@
              xmlns:pathChooser="clr-namespace:UserControlClassLibrary.PathChooser;assembly=UserControlClassLibrary"
              xmlns:documentChooser="clr-namespace:UserControlClassLibrary.DocumentChooser;assembly=UserControlClassLibrary"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:views="clr-namespace:ImageToolApp.Views"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400">
     <Grid x:Name="Grid">
@@ -43,29 +44,7 @@
             <documentChooser:DocumentChooser />
         </Expander>
 
-        <GroupBox Grid.Column="0" Grid.Row="3" Header="Encryption" HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch" Style="{StaticResource GroupBoxDisabledStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
-                          Margin="3" IsChecked="{Binding EncryptedCheck}" />
-
-                <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                             helpers:PasswordHelper.Attach="True"
-                             helpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
-                             IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
-                             controls:TextBoxHelper.Watermark="Password..." />
-                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
-                          SelectedItem="{Binding SelectedEncryptionMethod}" DisplayMemberPath="Name"
-                          Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
-            </Grid>
-        </GroupBox>
-
+        <views:CryptionUserControl Grid.Column="0" Grid.Row="3" DataContext="{Binding EncryptionModel}"/>
 
         <StackPanel Grid.Column="0" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">

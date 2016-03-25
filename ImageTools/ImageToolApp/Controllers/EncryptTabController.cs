@@ -124,8 +124,8 @@ namespace ImageToolApp.Controllers
             {
                 var message = GetCurrentMessage();
                 //TODO compression
-                var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.SelectedEncryptionMethod,
-                    ViewModel.Password, ViewModel.SelectedSteganographicMethod, ViewModel.Compression,
+                var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.EncryptionModel.Algorithm,
+                    ViewModel.EncryptionModel.Password, ViewModel.SelectedSteganographicMethod, ViewModel.Compression,
                     ViewModel.LsbIndicator);
 
                 var result = model.Encode();

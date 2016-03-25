@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
+             xmlns:views="clr-namespace:ImageToolApp.Views"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400">
     <Grid x:Name="Grid">
@@ -25,30 +26,8 @@
                             Content="{Binding ResultContent}" />
         </GroupBox>
 
-
-        <GroupBox Grid.Column="0" Grid.Row="1" Header="Encryption" HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch" Style="{StaticResource GroupBoxDisabledStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
-                          Margin="3" IsChecked="{Binding EncryptedCheck}" />
-                <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                             wpfHelpers:PasswordHelper.Attach="True"
-                             wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
-                             IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}"
-                             controls:TextBoxHelper.Watermark="Password..." />
-                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}" DisplayMemberPath="Name"
-                          SelectedItem="{Binding SelectedEncryptionMethod}"
-                          Margin="3" IsEnabled="{Binding ElementName=EncryptedCheck, Path=IsChecked}" />
-            </Grid>
-        </GroupBox>
-
-
+        <views:CryptionUserControl Grid.Column="0" Grid.Row="1" DataContext="{Binding EncryptionModel}"/>
+        
         <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding SteganographicMethods}" DisplayMemberPath="Name"

@@ -79,8 +79,8 @@ namespace ImageToolApp.Controllers
 
         public void SettingsSaved()
         {
-            ViewModel.Password = ViewModel.Settings.Password;
-            ViewModel.SelectedEncryptionMethod = ViewModel.Settings.SelectedEncryptionMethod;
+            ViewModel.EncryptionModel.Password = ViewModel.Settings.Password;
+            ViewModel.EncryptionModel.Algorithm = ViewModel.Settings.SelectedEncryptionMethod;
             ViewModel.SelectedSteganographicMethod = ViewModel.Settings.SelectedSteganographicMethod;
         }
     }
