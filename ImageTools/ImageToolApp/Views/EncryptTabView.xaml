@@ -44,24 +44,15 @@
             <documentChooser:DocumentChooser />
         </Expander>
 
-        <views:CryptionUserControl Grid.Column="0" Grid.Row="3" DataContext="{Binding EncryptionModel}"/>
-
-        <StackPanel Grid.Column="0" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-            <ComboBox ItemsSource="{Binding SteganographicMethods}" DisplayMemberPath="Name"
-                      SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
-            <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"
-                                    Value="{Binding LsbIndicator}"
-                                    ToolTip="Number of Bits which should be used from 1 color."
-                                    Style="{StaticResource NumericUpDownStyle}" />
-            <CheckBox Content="Compression" Margin="3" IsChecked="{Binding Compression}" />
-            <Button HorizontalAlignment="Right" Content="Encode" Command="{Binding TabActionCommand}" Margin="3"
-                    IsEnabled="{Binding CanTabActionExecuted}" />
-        </StackPanel>
+        <views:CryptionUserControl Grid.Column="0" Grid.Row="3" DataContext="{Binding CryptionModel}"/>
 
         <controls:MetroProgressBar Grid.Column="0" Grid.Row="4" Minimum="0" Maximum="100"
                                    BorderThickness="1" Foreground="{DynamicResource AccentColorBrush}"
                                    Value="{Binding ProgressBarValue}" />
+
+        <views:SteganographicUserControl Grid.Column="0" Grid.Row="5" Text="Decode" 
+                                         Enabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.CanTabActionExecuted}" 
+                                         DataContext="{Binding SteganographicModel}" />
 
         <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="6" Grid.Row="0"
                       HorizontalAlignment="Stretch"

@@ -5,13 +5,16 @@ using ImageToolApp.Models;
 
 namespace ImageToolApp.ViewModels
 {
-    public class EncryptionModel : BaseViewModel
+    public class CryptionModel : BaseViewModel
     {
+        private Settings Settings { get { return Settings.Instance; } }
+
+
         private bool mIsEnabled;
         private string mPassword;
         private CryptographicAlgorithmImpl mAlgorithm;
 
-        public EncryptionModel(string password, CryptographicAlgorithmImpl algorithm)
+        public CryptionModel(string password, CryptographicAlgorithmImpl algorithm)
         {
             if (string.IsNullOrEmpty(password))
             {
@@ -72,6 +75,6 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public IList<CryptographicAlgorithmImpl> AlgorithmList { get { return Settings.Instance.EncryptionMethods; } } 
+        public IList<CryptographicAlgorithmImpl> AlgorithmList { get { return Settings.EncryptionMethods; } } 
     }
 }

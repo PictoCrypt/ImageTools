@@ -120,11 +120,12 @@
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\DecryptTabViewModel.cs" />
-    <Compile Include="ViewModels\EncryptionModel.cs" />
+    <Compile Include="ViewModels\CryptionModel.cs" />
     <Compile Include="ViewModels\EncryptTabViewModel.cs" />
     <Compile Include="ViewModels\ImagePresentationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\SteganographicModel.cs" />
     <Compile Include="Views\CryptionUserControl.xaml.cs">
       <DependentUpon>CryptionUserControl.xaml</DependentUpon>
     </Compile>
@@ -139,6 +140,9 @@
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SteganographicUserControl.xaml.cs">
+      <DependentUpon>SteganographicUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfHelpers\PasswordHelper.cs" />
     <Page Include="App.xaml">
@@ -187,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SteganographicUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -21,3 +21,5 @@ Image oder Datei schauen ob überhaupt in Bild passt.
 Zu Zufallsgenerator, Bild mit nutzlosen Daten auffüllen?
 
 PNG und Transparente nur dort editieren, wo nicht transparent oder weiss!!!
+
+App.config anpassen

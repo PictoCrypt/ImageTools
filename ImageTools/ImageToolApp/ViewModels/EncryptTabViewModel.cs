@@ -33,7 +33,7 @@ namespace ImageToolApp.ViewModels
         {
             get
             {
-                if (string.IsNullOrEmpty(ImagePath) || SelectedSteganographicMethod == null ||
+                if (string.IsNullOrEmpty(ImagePath) || SteganographicModel.Algorithm == null ||
                     string.IsNullOrEmpty(Text))
                 {
                     return 0;
@@ -41,9 +41,9 @@ namespace ImageToolApp.ViewModels
                 double max;
                 using (var bitmap = new Bitmap(ImagePath))
                 {
-                    max = SelectedSteganographicMethod.MaxEmbeddingCount(bitmap, LsbIndicator);
+                    max = SteganographicModel.Algorithm.MaxEmbeddingCount(bitmap, SteganographicModel.LsbIndicator);
                 }
-                var contentLength = (double) EncryptionModel.Algorithm.Encode(Text, EncryptionModel.Password ?? "Test").Length;
+                var contentLength = (double) CryptionModel.Algorithm.Encode(Text, CryptionModel.Password ?? "Test").Length;
                 contentLength += ConvertHelper.Convert(contentLength.ToString()).Length;
                 contentLength += Constants.TagSeperator.Length;
                 var result = contentLength/max*100;

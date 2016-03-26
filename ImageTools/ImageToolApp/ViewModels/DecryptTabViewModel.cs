@@ -17,7 +17,7 @@ namespace ImageToolApp.ViewModels
             get
             {
                 FrameworkElement result;
-                var str = Result.ToString();
+                var str = Result;
                 if (string.IsNullOrEmpty(str) || !File.Exists(str))
                 {
                     result = new TextBox
@@ -25,7 +25,7 @@ namespace ImageToolApp.ViewModels
                         AcceptsReturn = true,
                         IsReadOnly = true,
                         Background = Brushes.DarkGray,
-                        Text = Result.ToString(),
+                        Text = Result,
                         TextWrapping = TextWrapping.Wrap
                     };
                     TextBoxHelper.SetWatermark(result, "Resulting content...");
@@ -37,7 +37,7 @@ namespace ImageToolApp.ViewModels
                     {
                         result = new Image
                         {
-                            Source = new BitmapImage(new Uri(Result.ToString()))
+                            Source = new BitmapImage(new Uri(Result))
                         };
                     }
                     else
@@ -47,7 +47,7 @@ namespace ImageToolApp.ViewModels
                             AcceptsReturn = false,
                             IsReadOnly = true,
                             Background = Brushes.DarkGray,
-                            Text = Result.ToString()
+                            Text = Result
                         };
                     }
                 }

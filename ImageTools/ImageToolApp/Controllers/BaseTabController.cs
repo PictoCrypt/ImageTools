@@ -5,6 +5,7 @@ using FunctionLib.Helper;
 using ImageToolApp.ViewModels;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using UserControlClassLibrary;
 
 namespace ImageToolApp.Controllers
 {
@@ -35,7 +36,7 @@ namespace ImageToolApp.Controllers
             {
                 Multiselect = false,
                 InitialDirectory = ViewModel.Settings.DefaultPath,
-                Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats)
+                Filter = ConvertHelper.GenerateFilter(ViewModel.SteganographicModel.Algorithm.PossibleImageFormats)
             };
 
             dialog.ShowDialog();
@@ -67,7 +68,7 @@ namespace ImageToolApp.Controllers
 
         private void InitializeController()
         {
-            RegisterCommands();
+            ViewModel.SteganographicModel.TabActionCommand = ActionCommand;
         }
 
         private TView CreateView()
@@ -75,13 +76,13 @@ namespace ImageToolApp.Controllers
             return new TView();
         }
 
-        protected abstract void RegisterCommands();
+        protected abstract UICommand ActionCommand { get; }
 
         public void SettingsSaved()
         {
-            ViewModel.EncryptionModel.Password = ViewModel.Settings.Password;
-            ViewModel.EncryptionModel.Algorithm = ViewModel.Settings.SelectedEncryptionMethod;
-            ViewModel.SelectedSteganographicMethod = ViewModel.Settings.SelectedSteganographicMethod;
+            ViewModel.CryptionModel.Password = ViewModel.Settings.Password;
+            ViewModel.CryptionModel.Algorithm = ViewModel.Settings.SelectedEncryptionMethod;
+            ViewModel.SteganographicModel.Algorithm = ViewModel.Settings.SelectedSteganographicMethod;
         }
     }
 }

@@ -139,12 +139,12 @@
     <Style x:Key="NumericUpDownStyle" TargetType="{x:Type controls:NumericUpDown}">
         <Style.Triggers>
             <DataTrigger
-                Binding="{Binding SelectedSteganographicMethod, Converter={StaticResource EqualsLsbConverter}}"
+                Binding="{Binding Algorithm, Converter={StaticResource EqualsLsbConverter}}"
                 Value="True">
                 <Setter Property="Visibility" Value="Visible" />
             </DataTrigger>
             <DataTrigger
-                Binding="{Binding SelectedSteganographicMethod, Converter={StaticResource EqualsLsbConverter}}"
+                Binding="{Binding Algorithm, Converter={StaticResource EqualsLsbConverter}}"
                 Value="False">
                 <Setter Property="Visibility" Value="Collapsed" />
             </DataTrigger>

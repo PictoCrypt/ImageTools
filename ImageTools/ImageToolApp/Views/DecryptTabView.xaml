@@ -26,23 +26,11 @@
                             Content="{Binding ResultContent}" />
         </GroupBox>
 
-        <views:CryptionUserControl Grid.Column="0" Grid.Row="1" DataContext="{Binding EncryptionModel}"/>
+        <views:CryptionUserControl Grid.Column="0" Grid.Row="1" DataContext="{Binding CryptionModel}"/>
         
-        <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-            <ComboBox ItemsSource="{Binding SteganographicMethods}" DisplayMemberPath="Name"
-                      SelectedItem="{Binding SelectedSteganographicMethod}"
-                      Margin="3" />
-            <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"
-                                    Value="{Binding LsbIndicator}"
-                                    ToolTip="Number of Bits which should be used from 1 color."
-                                    Style="{StaticResource NumericUpDownStyle}" />
-            <CheckBox Content="Compression" Margin="3" IsChecked="{Binding Compression}" />
-            <Button HorizontalAlignment="Right"
-                    Content="Decode"
-                    Command="{Binding TabActionCommand}" Margin="3"
-                    IsEnabled="{Binding ImagePath, Converter={StaticResource IsStringNullConverter}}" />
-        </StackPanel>
+        <views:SteganographicUserControl Grid.Column="0" Grid.Row="2" Text="Decode" 
+                                         Enabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.CanTabActionExecuted}" 
+                                         DataContext="{Binding SteganographicModel}"/>
 
         <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0"
                       HorizontalAlignment="Stretch"

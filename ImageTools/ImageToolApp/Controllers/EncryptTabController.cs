@@ -48,6 +48,8 @@ namespace ImageToolApp.Controllers
             }
         }
 
+        protected override UICommand ActionCommand { get { return UICommand.Regular(Encrypt); } }
+
         private void ExpanderOnExpanded(object sender, RoutedEventArgs routedEventArgs)
         {
             if (!mExpanderAlreadyHandled)
@@ -79,17 +81,11 @@ namespace ImageToolApp.Controllers
             routedEventArgs.Handled = true;
         }
 
-        protected override void RegisterCommands()
-        {
-            ViewModel.TabActionCommand = UICommand.Regular(Encrypt);
-        }
-
-
         public void SaveImage()
         {
             var dialog = new SaveFileDialog
             {
-                Filter = ConvertHelper.GenerateFilter(ViewModel.SelectedSteganographicMethod.PossibleImageFormats)
+                Filter = ConvertHelper.GenerateFilter(ViewModel.SteganographicModel.Algorithm.PossibleImageFormats)
             };
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
@@ -124,9 +120,9 @@ namespace ImageToolApp.Controllers
             {
                 var message = GetCurrentMessage();
                 //TODO compression
-                var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.EncryptionModel.Algorithm,
-                    ViewModel.EncryptionModel.Password, ViewModel.SelectedSteganographicMethod, ViewModel.Compression,
-                    ViewModel.LsbIndicator);
+                var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.CryptionModel.Algorithm,
+                    ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm, ViewModel.SteganographicModel.Compression,
+                    ViewModel.SteganographicModel.LsbIndicator);
 
                 var result = model.Encode();
                 ViewModel.Result = result;
@@ -179,7 +175,7 @@ namespace ImageToolApp.Controllers
 
         public void ChangedPixels()
         {
-            var algorithm = ViewModel.SelectedSteganographicMethod as LsbAlgorithmBase;
+            var algorithm = ViewModel.SteganographicModel.Algorithm as LsbAlgorithmBase;
             if (algorithm != null)
             {
                 var path = algorithm.ChangeColor(ViewModel.Result, Color.Red);
