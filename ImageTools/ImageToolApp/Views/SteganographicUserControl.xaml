@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="35" d:DesignWidth="300">
+             d:DesignHeight="35" d:DesignWidth="400">
     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal">
         <ComboBox ItemsSource="{Binding AlgorithmList}" DisplayMemberPath="Name"
-                      SelectedItem="{Binding Algorithm}"
+                      SelectedItem="{Binding Algorithm}" ToolTip="{Binding Algorithm.Description}"
                       Margin="3" />
         <controls:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"
                                     Value="{Binding LsbIndicator}"
@@ -17,7 +17,7 @@
                                     Style="{StaticResource NumericUpDownStyle}" />
         <CheckBox Content="Compression" Margin="3" IsChecked="{Binding Compression}" />
         <Button HorizontalAlignment="Right"
-                    Content="Decode"
+                    Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Text}"
                     Command="{Binding TabActionCommand}" Margin="3"
                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Enabled}" />
     </StackPanel>
