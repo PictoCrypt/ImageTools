@@ -1,0 +1,101 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageToolApp"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" xmlns:PathChooser="clr-namespace:UserControlClassLibrary.PathChooser;assembly=UserControlClassLibrary" xmlns:DocumentChooser="clr-namespace:UserControlClassLibrary.DocumentChooser;assembly=UserControlClassLibrary" xmlns:WpfHelpers="clr-namespace:ImageToolApp.WpfHelpers" x:Class="ImageToolApp.CryptionUserControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="71" d:DesignWidth="356">
+    <Grid>
+
+        <Grid x:Name="Grid" HorizontalAlignment="Right" Height="250" Margin="0,0,-400,-250" VerticalAlignment="Bottom" Width="400">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" MaxWidth="200" />
+            </Grid.ColumnDefinitions>
+
+            <Expander Grid.Column="0" Grid.Row="0" ExpandDirection="Down" IsExpanded="True" VerticalAlignment="Stretch"
+				HorizontalAlignment="Stretch" Header="Text">
+                <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
+					VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap"
+					Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+					Custom:TextBoxHelper.Watermark="Secret Message..." />
+            </Expander>
+
+            <Expander Grid.Column="0" Grid.Row="1" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch"
+				HorizontalAlignment="Stretch" Header="Image">
+                <PathChooser:PathChooser />
+            </Expander>
+
+            <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Down" IsExpanded="False" VerticalAlignment="Stretch"
+				HorizontalAlignment="Stretch" Header="Document">
+                <DocumentChooser:DocumentChooser />
+            </Expander>
+            <local:CryptionUserControl Margin="5,-18,5,5" Grid.Row="1" Grid.RowSpan="2"/>
+
+
+            <StackPanel Grid.Column="0" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Right"
+				Orientation="Horizontal">
+                <ComboBox ItemsSource="{Binding SteganographicMethods}" DisplayMemberPath="Name"
+					SelectedItem="{Binding SelectedSteganographicMethod}" Margin="3" />
+                <Custom:NumericUpDown Margin="3" InterceptMouseWheel="False" Interval="1" Maximum="8" Minimum="1"
+					Value="{Binding LsbIndicator}"
+					ToolTip="Number of Bits which should be used from 1 color."
+					Style="{StaticResource NumericUpDownStyle}" />
+                <CheckBox Content="Compression" Margin="3" IsChecked="{Binding Compression}" />
+                <Button HorizontalAlignment="Right" Content="Encode" Command="{Binding TabActionCommand}" Margin="3"
+					IsEnabled="{Binding CanTabActionExecuted}" />
+            </StackPanel>
+
+            <Custom:MetroProgressBar Grid.Column="0" Grid.Row="4" Minimum="0" Maximum="100"
+				BorderThickness="1" Foreground="{DynamicResource AccentColorBrush}"
+				Value="{Binding ProgressBarValue}" />
+
+            <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="6" Grid.Row="0"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Stretch"
+				Visibility="{Binding IsExpanded, Converter={StaticResource BoolToVisibilityConverter}, ElementName=ImageExpander}" />
+            <Expander x:Name="ImageExpander" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" ExpandDirection="Left"
+				IsExpanded="False" VerticalAlignment="Stretch"
+				Visibility="{Binding ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
+				HorizontalAlignment="Right">
+                <Image Source="{Binding ImagePath, Converter={StaticResource NullImageConverter}}" Margin="5" Height="Auto"
+					VerticalAlignment="Center" />
+            </Expander>
+        </Grid>
+        <GroupBox Grid.Column="0" Grid.Row="3" Header="Encryption" HorizontalAlignment="Right"
+        	VerticalAlignment="Bottom" Style="{StaticResource GroupBoxDisabledStyle}" Height="71" Margin="0,0,-356,-71" Width="356">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <CheckBox x:Name="EncryptedCheck" Grid.Column="0" Content="Encryption" HorizontalAlignment="Left"
+        			Margin="3" IsChecked="{Binding EncryptedCheck}" />
+
+                <PasswordBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        			WpfHelpers:PasswordHelper.Attach="True"
+        			WpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
+        			IsEnabled="{Binding IsChecked, ElementName=EncryptedCheck}"
+        			Custom:TextBoxHelper.Watermark="Password..." />
+                <ComboBox Grid.Column="2" ItemsSource="{Binding EncryptionMethods}"
+        			SelectedItem="{Binding SelectedEncryptionMethod}" DisplayMemberPath="Name"
+        			Margin="3" IsEnabled="{Binding IsChecked, ElementName=EncryptedCheck}" />
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</UserControl>
