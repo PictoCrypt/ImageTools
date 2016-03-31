@@ -4,6 +4,10 @@ using FunctionLib.Helper;
 
 namespace FunctionLib.Filter
 {
+    /*
+    *   This code is based on the DIIT steganography project, which is available at the following address: http://diit.sourceforge.net/
+    */
+
     public class Prewitt : Filter
     {
         public Prewitt(Bitmap image, int startbits, int endbits) : base(image, startbits, endbits)
@@ -15,12 +19,20 @@ namespace FunctionLib.Filter
         }
 
         public override int GetValue(int x, int y)
-        { 
+        {
             // Gathering the matrices
-            Color matrix1Left = default(Color), matrix1Leftup = default(Color), matrix1Leftdown = default(Color),
-                matrix1Right = default(Color), matrix1Rightup = default(Color), matrix1Rightdown = default(Color),
-                matrix2Up = default(Color), matrix2Upleft = default(Color), matrix2Upright = default(Color),
-                matrix2Down = default(Color), matrix2Downleft = default(Color), matrix2Downright = default(Color);
+            Color matrix1Left = default(Color),
+                matrix1Leftup = default(Color),
+                matrix1Leftdown = default(Color),
+                matrix1Right = default(Color),
+                matrix1Rightup = default(Color),
+                matrix1Rightdown = default(Color),
+                matrix2Up = default(Color),
+                matrix2Upleft = default(Color),
+                matrix2Upright = default(Color),
+                matrix2Down = default(Color),
+                matrix2Downleft = default(Color),
+                matrix2Downright = default(Color);
 
             if (x == 0 || y == 0 || y == Image.Height - 1 || x == Image.Width - 1)
             {
@@ -70,21 +82,35 @@ namespace FunctionLib.Filter
             // Calculating differences
 
             var redDiff = (int) Math.Sqrt(
-                Math.Pow((matrix1Right.R + matrix1Rightup.R + matrix1Rightdown.R) - (matrix1Left.R + matrix1Leftup.R + matrix1Leftdown.R), 2) 
-                + Math.Pow((matrix2Up.R + matrix2Upleft.R + matrix2Upright.R) - (matrix2Down.R + matrix2Downleft.R + matrix2Downright.R), 2));
+                Math.Pow(
+                    matrix1Right.R + matrix1Rightup.R + matrix1Rightdown.R -
+                    (matrix1Left.R + matrix1Leftup.R + matrix1Leftdown.R), 2)
+                +
+                Math.Pow(
+                    matrix2Up.R + matrix2Upleft.R + matrix2Upright.R -
+                    (matrix2Down.R + matrix2Downleft.R + matrix2Downright.R), 2));
 
-            var greenDiff = (int)Math.Sqrt(
-                Math.Pow((matrix1Right.G + matrix1Rightup.G + matrix1Rightdown.G) - (matrix1Left.G + matrix1Leftup.G + matrix1Leftdown.G), 2)
-                + Math.Pow((matrix2Up.G + matrix2Upleft.G + matrix2Upright.G) - (matrix2Down.G + matrix2Downleft.G + matrix2Downright.G), 2));
+            var greenDiff = (int) Math.Sqrt(
+                Math.Pow(
+                    matrix1Right.G + matrix1Rightup.G + matrix1Rightdown.G -
+                    (matrix1Left.G + matrix1Leftup.G + matrix1Leftdown.G), 2)
+                +
+                Math.Pow(
+                    matrix2Up.G + matrix2Upleft.G + matrix2Upright.G -
+                    (matrix2Down.G + matrix2Downleft.G + matrix2Downright.G), 2));
 
-            var blueDiff = (int)Math.Sqrt(
-                Math.Pow((matrix1Right.B + matrix1Rightup.B + matrix1Rightdown.B) - (matrix1Left.B + matrix1Leftup.B + matrix1Leftdown.B), 2)
-                + Math.Pow((matrix2Up.B + matrix2Upleft.B + matrix2Upright.B) - (matrix2Down.B + matrix2Downleft.B + matrix2Downright.B), 2));
+            var blueDiff = (int) Math.Sqrt(
+                Math.Pow(
+                    matrix1Right.B + matrix1Rightup.B + matrix1Rightdown.B -
+                    (matrix1Left.B + matrix1Leftup.B + matrix1Leftdown.B), 2)
+                +
+                Math.Pow(
+                    matrix2Up.B + matrix2Upleft.B + matrix2Upright.B -
+                    (matrix2Down.B + matrix2Downleft.B + matrix2Downright.B), 2));
 
             // Returing the total result
 
             return Math.Abs(redDiff) + Math.Abs(greenDiff) + Math.Abs(blueDiff);
-
         }
     }
 }
