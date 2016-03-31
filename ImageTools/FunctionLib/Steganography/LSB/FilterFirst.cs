@@ -24,7 +24,7 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool EncodingIteration(int lsbIndicator)
         {
-            var filter = new Laplace(Bitmap, 1, 8);
+            var filter = new Laplace(Bitmap, lsbIndicator, 8);
             IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
             {
@@ -52,7 +52,7 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool DecodingIteration(int lsbIndicator)
         {
-            var filter = new Laplace(Bitmap, 1, 8);
+            var filter = new Laplace(Bitmap, lsbIndicator, 8);
             IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
             {

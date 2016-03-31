@@ -64,9 +64,16 @@ namespace FunctionLib.Filter
 
             // Difference
 
-            var result = (pixelCount*pixel.GetBrightness()) - left.GetBrightness() + right.GetBrightness() +
-                         up.GetBrightness() + down.GetBrightness();
+            var result = (pixelCount* GetLuminance(pixel)) - GetLuminance(left) + GetLuminance(right) +
+                         GetLuminance(up) + GetLuminance(down);
             return Convert.ToInt32(result);
+        }
+
+        private int GetLuminance(Color pixel)
+        {
+            //Y = 0.299R + 0.587G + 0.114B
+            return (int)((0.299 * GetRed(pixel)) + (0.587 * GetGreen(pixel))
+                + (0.114 * GetBlue(pixel)));
         }
     }
 }

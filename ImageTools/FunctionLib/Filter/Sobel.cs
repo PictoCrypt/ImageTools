@@ -73,16 +73,16 @@ namespace FunctionLib.Filter
             // Calculating differences
 
             var redDiff = (int)Math.Sqrt(
-                Math.Pow((matrix1Right.R * 2 + matrix1Rightup.R + matrix1Rightdown.R) - (matrix1Left.R * 2 + matrix1Leftup.R + matrix1Leftdown.R), 2)
-                + Math.Pow((matrix2Up.R * 2 + matrix2Upleft.R + matrix2Upright.R) - (matrix2Down.R * 2 + matrix2Downleft.R + matrix2Downright.R), 2));
+                Math.Pow((GetRed(matrix1Right) * 2 + GetRed(matrix1Rightup) + GetRed(matrix1Rightdown)) - (GetRed(matrix1Left) * 2 + GetRed(matrix1Leftup) + GetRed(matrix1Leftdown)), 2)
+                + Math.Pow((GetRed(matrix2Up) * 2 + GetRed(matrix2Upleft) + GetRed(matrix2Upright)) - (GetRed(matrix2Down) * 2 + GetRed(matrix2Downleft) + GetRed(matrix2Downright)), 2));
 
             var greenDiff = (int)Math.Sqrt(
-                Math.Pow((matrix1Right.G * 2 + matrix1Rightup.G + matrix1Rightdown.G) - (matrix1Left.G * 2 + matrix1Leftup.G + matrix1Leftdown.G), 2)
-                + Math.Pow((matrix2Up.G * 2 + matrix2Upleft.G + matrix2Upright.G) - (matrix2Down.G * 2+ matrix2Downleft.G + matrix2Downright.G), 2));
+                Math.Pow((GetGreen(matrix1Right) * 2 + GetGreen(matrix1Rightup) + GetGreen(matrix1Rightdown)) - (GetGreen(matrix1Left) * 2 + GetGreen(matrix1Leftup) + GetGreen(matrix1Leftdown)), 2)
+                + Math.Pow((GetGreen(matrix2Up) * 2 + GetGreen(matrix2Upleft) + GetGreen(matrix2Upright)) - (GetGreen(matrix2Down) * 2 + GetGreen(matrix2Downleft) + GetGreen(matrix2Downright)), 2));
 
             var blueDiff = (int)Math.Sqrt(
-                Math.Pow((matrix1Right.B * 2 + matrix1Rightup.B + matrix1Rightdown.B) - (matrix1Left.B * 2 + matrix1Leftup.B + matrix1Leftdown.B), 2)
-                + Math.Pow((matrix2Up.B * 2+ matrix2Upleft.B + matrix2Upright.B) - (matrix2Down.B * 2 + matrix2Downleft.B + matrix2Downright.B), 2));
+                Math.Pow((GetBlue(matrix1Right) * 2 + GetBlue(matrix1Rightup) + GetBlue(matrix1Rightdown)) - (GetBlue(matrix1Left) * 2 + GetBlue(matrix1Leftup) + GetBlue(matrix1Leftdown)), 2)
+                + Math.Pow((GetBlue(matrix2Up) * 2 + GetBlue(matrix2Upleft) + GetBlue(matrix2Upright)) - (GetBlue(matrix2Down) * 2 + GetBlue(matrix2Downleft) + GetBlue(matrix2Downright)), 2));
 
             // Returing the total result
             return Math.Abs(redDiff) + Math.Abs(greenDiff) + Math.Abs(blueDiff);

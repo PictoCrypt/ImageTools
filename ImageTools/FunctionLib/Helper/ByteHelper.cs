@@ -29,18 +29,26 @@ namespace FunctionLib.Helper
         /// <returns></returns>
         public static int ClearLeastSignificantBit(byte b, int lsbIndicator)
         {
-            var builder = new StringBuilder();
-            for (var i = 0; i < 8 - lsbIndicator; i++)
-            {
-                builder.Append("1");
-            }
-            for (var i = 0; i < lsbIndicator; i++)
-            {
-                builder.Append("0");
-            }
+            return b & GetByteMask(lsbIndicator, 8);
+        }
 
-            var result = Convert.ToInt32(builder.ToString(), 2);
-            return b & result;
+        private static int GetByteMask(int startRange, int endRange)
+        {
+            int abyte = 0, abyte2 = 0;
+            for (var i = 0; i < 8; i++)
+            {
+                byte bit;
+                if (i <= endRange && i >= startRange)
+                    bit = 1;
+                else
+                    bit = 0;
+                abyte = (byte)(abyte << 1 | bit);
+            }
+            for (var i = 0; i < 8; i++)
+            {
+                abyte2 = abyte2 << 1 | ((abyte >> i) & 0x1);
+            }
+            return abyte2;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using FunctionLib.Helper;
@@ -60,12 +61,12 @@ namespace FunctionLib.Filter
             return diff.Sum(Math.Abs);
         }
 
-        private int[] CalculateDifference(Color pixel, Color left, Color right, Color up, Color down, int pixelCount)
+        private IEnumerable<int> CalculateDifference(Color pixel, Color left, Color right, Color up, Color down, int pixelCount)
         {
             var result = new int[3];
-            result[0] = pixel.R*pixelCount - (left.R + right.R + up.R + down.R);
-            result[1] = pixel.G*pixelCount - (left.G + right.G + up.G + down.G);
-            result[1] = pixel.B*pixelCount - (left.B + right.B + up.B + down.B);
+            result[0] = GetRed(pixel)*pixelCount - (GetRed(left) + GetRed(right) + GetRed(up) + GetRed(down));
+            result[1] = GetGreen(pixel) * pixelCount - (GetGreen(left) + GetGreen(right) + GetGreen(up) + GetGreen(down));
+            result[1] = GetBlue(pixel) * pixelCount - (GetBlue(left) + GetBlue(right) + GetBlue(up) + GetBlue(down));
             return result;
         }
 
