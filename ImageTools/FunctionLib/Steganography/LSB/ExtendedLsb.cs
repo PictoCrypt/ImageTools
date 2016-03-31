@@ -15,7 +15,7 @@ namespace FunctionLib.Steganography.LSB
             get
             {
                 return
-                    "Extends the normal LSB-Algorithm by functions like checking if the pixel is white or transparent.";
+                    "Extends the random LSB-Algorithm by functions like checking if the pixel is white or transparent.";
             }
         }
 
