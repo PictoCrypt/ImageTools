@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using System.Linq;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography.LSB
 {
-    public class ExtendedLsb : LsbAlgorithmBase
+    public class ExtendedLsb : LsbWithRandomness
     {
         public override string Name
         {
@@ -22,18 +21,17 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool EncodingIteration(int lsbIndicator)
         {
-            for (var y = 0; y < Bitmap.Height; y++)
+            while (ByteIndex < Bytes.Length)
             {
-                for (var x = 0; x < Bitmap.Width; x++)
+                var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
+                if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(pixel.X, pixel.Y)))
                 {
-                    if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(x, y)))
+                    EncodeBytes(pixel.X, pixel.Y, lsbIndicator);
+                    if (EncodeCheckForEnd())
                     {
-                        EncodeBytes(x, y, lsbIndicator);
-                        if (EncodeCheckForEnd())
-                        {
-                            return true;
-                        }
+                        return true;
                     }
+                    
                 }
             }
             return false;
@@ -41,27 +39,23 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool DecodingIteration(int lsbIndicator)
         {
-            for (var y = 0; y < Bitmap.Height; y++)
+            while (Bytes.Length <= EndCount)
             {
-                for (var x = 0; x < Bitmap.Width; x++)
+                var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
+                if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(pixel.X, pixel.Y)))
                 {
-                    if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(x, y)))
+                    DecodeBytes(pixel.X, pixel.Y, lsbIndicator);
+                    //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
+                    var bitHolder = BitHolder;
+                    Bytes = BitToByte(Bytes.ToList(), ref bitHolder);
+                    BitHolder = bitHolder;
+                    if (DecodeCheckForEnd())
                     {
-                        DecodeBytes(x, y, lsbIndicator);
-                        //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
-                        var bitHolder = BitHolder;
-                        Bytes = BitToByte(Bytes, ref bitHolder);
-                        BitHolder = bitHolder;
-                        if (DecodeCheckForEnd())
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
             return false;
         }
-
-        public override IList<ImageFormat> PossibleImageFormats { get { return Constants.ImageFormats; } }
     }
 }
