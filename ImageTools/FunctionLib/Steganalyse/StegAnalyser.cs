@@ -64,7 +64,7 @@ namespace FunctionLib.Steganalyse
          * @throws Exception If it has problems reading the images.
          */
 
-        public string run(Bitmap stego)
+        public string Run(Bitmap stego)
         {
             var results = new StringBuilder("Results of steganalysis\n"
                                             + "==========================\n\n");

@@ -93,7 +93,7 @@ namespace FunctionLib.Steganalyse
          * @throws Exception If it has problems reading the images.
          */
 
-        public string run(Bitmap original, Bitmap stego)
+        public string Run(Bitmap original, Bitmap stego)
         {
             if (original == null)
                 throw new ArgumentNullException(nameof(original));
@@ -190,8 +190,7 @@ namespace FunctionLib.Steganalyse
 	     *
 	     * @return The last results.
 	     */
-
-        public string ToString()
+        public override string ToString()
         {
             return mResultsString;
         }

@@ -18,12 +18,14 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
+        private FrameworkElement mAnalysisView;
 
-        public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView)
+        public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView, FrameworkElement analysisView)
         {
             CurrentElement = encryptView;
             EncryptView = encryptView;
             DecryptView = decryptView;
+            AnalysisView = analysisView;
         }
 
         public bool ProgressActive
@@ -168,6 +170,20 @@ namespace ImageToolApp.ViewModels
                 }
                 mDecryptView = value;
                 OnPropertyChanged("DecryptView");
+            }
+        }
+
+        public FrameworkElement AnalysisView
+        {
+            get { return mAnalysisView; }
+            set
+            {
+                if (value.Equals(mAnalysisView))
+                {
+                    return;
+                }
+                mAnalysisView = value;
+                OnPropertyChanged("AnalysisView");
             }
         }
 

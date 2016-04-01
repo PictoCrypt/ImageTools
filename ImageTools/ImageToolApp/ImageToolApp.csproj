@@ -109,6 +109,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AnalysisTabController.cs" />
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\ImagePresentationController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="HandleJobController.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="ViewModels\AnalysisTabViewModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\DecryptTabViewModel.cs" />
@@ -140,6 +142,9 @@
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AnalysisTabView.xaml.cs">
+      <DependentUpon>AnalysisTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SteganographicUserControl.xaml.cs">
       <DependentUpon>SteganographicUserControl.xaml</DependentUpon>
@@ -191,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AnalysisTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -259,6 +268,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Analysis.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

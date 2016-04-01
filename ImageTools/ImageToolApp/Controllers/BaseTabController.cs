@@ -23,9 +23,12 @@ namespace ImageToolApp.Controllers
             View.DataContext = ViewModel;
             InitializeController();
 
-            mImageExpander = View.FindChildren<Expander>().FirstOrDefault(x => x.Name == "ImageExpander");
-            mImageExpander.Expanded += ImageExpanderEvent;
-            mImageExpander.Collapsed += ImageExpanderEvent;
+            if (mImageExpander != null)
+            {
+                mImageExpander = View.FindChildren<Expander>().FirstOrDefault(x => x.Name == "ImageExpander");
+                mImageExpander.Expanded += ImageExpanderEvent;
+                mImageExpander.Collapsed += ImageExpanderEvent;
+            }
         }
 
         public TView View { get; }

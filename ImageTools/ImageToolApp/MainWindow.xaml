@@ -109,6 +109,14 @@
                     <ContentControl Content="{Binding DecryptView}" HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch" />
                 </controls:MetroTabItem>
+                <controls:MetroTabItem>
+                    <controls:MetroTabItem.Header>
+                        <Image Source="{StaticResource Analysis}" Height="30" Width="30" ToolTip="Steganalysis"
+                               Style="{StaticResource TabItemImageStyle}" />
+                    </controls:MetroTabItem.Header>
+                    <ContentControl Content="{Binding AnalysisView}" HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch" />
+                </controls:MetroTabItem>
             </controls:MetroAnimatedTabControl>
         </Grid>
 

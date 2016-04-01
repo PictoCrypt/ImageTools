@@ -19,6 +19,7 @@
     <ImageSource x:Key="Changed">Images/Changed.png</ImageSource>
     <ImageSource x:Key="Lock">Images/Lock.png</ImageSource>
     <ImageSource x:Key="Unlock">Images/Unlock.png</ImageSource>
+    <ImageSource x:Key="Analysis">Images/Analysis.png</ImageSource>
     <ImageSource x:Key="ApplicationIcon">Images/Ico/PictoCrypt.ico</ImageSource>
 
     <!-- Converters -->
