@@ -679,16 +679,16 @@ namespace FunctionLib.Steganalyse
         /*
 	     * Denotes analysis to be done with red.
 	     */
-        private const int ANALYSIS_COLOUR_RED = 0;
+        public const int ANALYSIS_COLOUR_RED = 0;
 
         /*
          * Denotes analysis to be done with green.
          */
-        private const int ANALYSIS_COLOUR_GREEN = 1;
+        public const int ANALYSIS_COLOUR_GREEN = 1;
 
         /*
          * Denotes analysis to be done with blue.
          */
-        private const int ANALYSIS_COLOUR_BLUE = 2;
+        public const int ANALYSIS_COLOUR_BLUE = 2;
     }
 }
