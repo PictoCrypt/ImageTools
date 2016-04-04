@@ -66,12 +66,15 @@ namespace ImageToolApp.Controllers
 
         public virtual void UnregisterEvents()
         {
-            mImageExpander.Expanded -= ImageExpanderEvent;
+            if (mImageExpander != null)
+            {
+                mImageExpander.Expanded -= ImageExpanderEvent;
+            }
         }
 
         private void InitializeController()
         {
-            ViewModel.SteganographicModel.TabActionCommand = ActionCommand;
+            ViewModel.TabActionCommand = ActionCommand;
         }
 
         private TView CreateView()

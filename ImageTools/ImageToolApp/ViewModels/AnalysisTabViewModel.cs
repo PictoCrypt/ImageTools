@@ -4,64 +4,71 @@ namespace ImageToolApp.ViewModels
 {
     public class AnalysisTabViewModel : BaseTabViewModel
     {
-        private UICommand mBenchmarkCommand;
-        private UICommand mAnalysisCommand;
-        private UICommand mLoadImageCommand;
-        private UICommand mLoadSteganoCommand;
+        private bool mRsAnalysis;
+        private bool mLaplaceGraph;
+        private bool mSamplePairs;
+        private UICommand mSaveToFileCommand;
 
-        public UICommand LoadImageCommand
+        public AnalysisTabViewModel()
         {
-            get { return mLoadImageCommand; }
+            RsAnalysis = true;
+            SamplePairs = false;
+            LaplaceGraph = false;
+        }
+
+        public bool RsAnalysis
+        {
+            get { return mRsAnalysis; }
             set
             {
-                if (value.Equals(mLoadImageCommand))
+                if (value == mRsAnalysis)
                 {
                     return;
                 }
-                mLoadImageCommand = value;
-                OnPropertyChanged("LoadImageCommand");
+                mRsAnalysis = value;
+                OnPropertyChanged();
             }
         }
 
-        public UICommand LoadSteganoCommand
+        public bool SamplePairs
         {
-            get { return mLoadSteganoCommand; }
+            get { return mSamplePairs; }
             set
             {
-                if (value.Equals(mLoadSteganoCommand))
+                if (value == mSamplePairs)
                 {
                     return;
                 }
-                mLoadSteganoCommand = value;
-                OnPropertyChanged("LoadSteganoCommand");
+                mSamplePairs = value;
+                OnPropertyChanged();
             }
         }
 
-        public UICommand BenchmarkCommand
+        public bool LaplaceGraph
         {
-            get { return mBenchmarkCommand; }
+            get { return mLaplaceGraph; }
             set
             {
-                if (value.Equals(mBenchmarkCommand))
+                if (value == mLaplaceGraph)
                 {
                     return;
                 }
-                mBenchmarkCommand = value;
-                OnPropertyChanged("BenchmarkCommand");
+                mLaplaceGraph = value;
+                OnPropertyChanged();
             }
         }
 
-        public UICommand AnalysisCommand
+        public UICommand SaveToFileCommand
         {
-            get { return mAnalysisCommand; }
+            get { return mSaveToFileCommand; }
             set
             {
-                if (value.Equals(mAnalysisCommand))
+                if (Equals(value, mSaveToFileCommand))
                 {
                     return;
                 }
-                mAnalysisCommand = value;
-                OnPropertyChanged("AnalysisCommand");
+                mSaveToFileCommand = value;
+                OnPropertyChanged();
             }
         }
     }

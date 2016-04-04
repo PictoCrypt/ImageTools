@@ -28,34 +28,23 @@ namespace FunctionLib.Steganalyse
             var a = (FilteredPixel) o1;
             var b = (FilteredPixel) o2;
 
-            //break a tie
-            if (a.FilterValue == b.FilterValue)
+            if (a.Equals(b))
             {
-                if (a.X == b.X)
-                {
-                    if (a.Y == b.Y)
-                    {
-                        return 0;
-                    }
-                    if (a.Y > b.Y)
-                    {
-                        //bigger y value, make it "bigger"
-                        return 20;
-                    }
-                    return -20;
-                }
+                return 0;
+            }
+            if (a.X == b.X)
+            {
                 if (a.Y > b.Y)
                 {
-                    //bigger x value, make it "bigger"
-                    return 50;
+                    return 1;
                 }
-                return -50;
+                return -1;
             }
-            if (a.FilterValue < b.FilterValue)
+            if (a.X > b.X)
             {
-                return -100;
+                return 1;
             }
-            return 100;
+            return -1;
         }
     }
 }

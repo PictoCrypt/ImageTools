@@ -18,7 +18,7 @@
         <CheckBox Content="Compression" Margin="3" IsChecked="{Binding Compression}" />
         <Button HorizontalAlignment="Right"
                     Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Text}"
-                    Command="{Binding TabActionCommand}" Margin="3"
+                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Command}" Margin="3"
                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Enabled}" />
     </StackPanel>
 </UserControl>

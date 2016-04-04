@@ -90,8 +90,12 @@ namespace FunctionLib.Steganalyse
             }
 
             //now we create an array to hold the filter values and their counts
-            var results = new double[numdistinct][];
             //var results = new double[numdistinct][2];
+            var results = new double[numdistinct][];
+            for (var i = 0; i < results.Length; i++)
+            {
+                results[i] = new double[2];
+            }
             results[0][0] = fparray[0].FilterValue;
             results[0][1] = 1;
             var k = 0;

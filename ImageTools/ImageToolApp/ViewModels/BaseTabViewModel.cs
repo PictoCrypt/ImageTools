@@ -46,6 +46,21 @@ namespace ImageToolApp.ViewModels
             }
         }
 
+        private UICommand mTabActionCommand;
+        public UICommand TabActionCommand
+        {
+            get { return mTabActionCommand; }
+            set
+            {
+                if (value.Equals(mTabActionCommand))
+                {
+                    return;
+                }
+                mTabActionCommand = value;
+                OnPropertyChanged("TabActionCommand");
+            }
+        }
+
         public string Result
         {
             get { return mResult; }

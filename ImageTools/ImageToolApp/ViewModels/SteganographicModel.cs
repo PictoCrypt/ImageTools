@@ -2,7 +2,6 @@
 using System.Linq;
 using FunctionLib.Steganography;
 using ImageToolApp.Models;
-using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
 {
@@ -30,21 +29,6 @@ namespace ImageToolApp.ViewModels
                 mAlgorithm = value;
                 OnPropertyChanged("Algorithm");
                 OnPropertyChanged("ProgressBarValue");
-            }
-        }
-
-        private UICommand mTabActionCommand;
-        public UICommand TabActionCommand
-        {
-            get { return mTabActionCommand; }
-            set
-            {
-                if (value.Equals(mTabActionCommand))
-                {
-                    return;
-                }
-                mTabActionCommand = value;
-                OnPropertyChanged("TabActionCommand");
             }
         }
 

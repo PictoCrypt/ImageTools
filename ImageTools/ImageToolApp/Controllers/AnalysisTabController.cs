@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.IO;
 using FunctionLib.Helper;
 using FunctionLib.Steganalyse;
 using ImageToolApp.ViewModels;
@@ -12,66 +13,53 @@ namespace ImageToolApp.Controllers
     {
         public AnalysisTabController()
         {
-            RegisterCommands();
+            ViewModel.SaveToFileCommand = UICommand.Regular(SaveToFile);
         }
 
-        protected override UICommand ActionCommand { get { return UICommand.Regular(DoNothing); } }
-
-        private void DoNothing()
+        private void SaveToFile()
         {
-            throw new System.NotImplementedException();
+            var dialog = new SaveFileDialog { Filter = "Text File|*.txt" };
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                using (var stream = File.CreateText(dialog.FileName))
+                {
+                    stream.Write(ViewModel.Result);
+                }
+            }
         }
 
-
-        private void RegisterCommands()
+        private void Analysis()
         {
-            ViewModel.AnalysisCommand = UICommand.Regular(Anaylsis);
-            ViewModel.BenchmarkCommand = UICommand.Regular(Benchmark);
-            ViewModel.LoadImageCommand = UICommand.Regular(LoadImage);
-            ViewModel.LoadSteganoCommand = UICommand.Regular(LoadStegano);
+            HandleJobController.Progress(() =>
+            {
+                var analyser = new StegAnalyser(ViewModel.RsAnalysis, ViewModel.SamplePairs, ViewModel.LaplaceGraph);
+                var path = SelectImage();
+                if (!string.IsNullOrEmpty(path))
+                {
+                    using (var bitmap = new Bitmap(path))
+                    {
+                        ViewModel.Result = analyser.Run(bitmap);
+                    }
+                }
+            });
         }
 
-        private void LoadStegano()
-        {
-            var path = Load();
-            ViewModel.Result = path;
-        }
-
-        private void LoadImage()
-        {
-            var path = Load();
-            ViewModel.ImagePath = path;
-        }
-
-        private string Load()
+        private string SelectImage()
         {
             var dialog = new OpenFileDialog
             {
-                Multiselect = false,
-                InitialDirectory = ViewModel.Settings.DefaultPath,
-                Filter = ConvertHelper.GenerateFilter(Constants.ImageFormats)
+                Filter = ConvertHelper.GenerateFilter(Constants.ImageFormats),
+                InitialDirectory = ViewModel.Settings.DefaultPath
             };
-            var result = dialog.ShowDialog();
-            if (result.HasValue && result.Value)
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
             {
                 return dialog.FileName;
             }
             return string.Empty;
         }
 
-        private void Benchmark()
-        {
-            var original = new Bitmap(ViewModel.ImagePath);
-            var steganogramm = new Bitmap(ViewModel.Result);
-            var benchmarker = new Benchmarker(true, true, true, true, true, true, true, true);
-            var result = benchmarker.Run(original, steganogramm);
-        }
-
-        private void Anaylsis()
-        {
-            var steganogramm = new Bitmap(ViewModel.Result);
-            var analysis = new StegAnalyser(true, true, true);
-            var result = analysis.Run(steganogramm);
-        }
+        protected override UICommand ActionCommand { get { return UICommand.Regular(Analysis); } }
     }
 }

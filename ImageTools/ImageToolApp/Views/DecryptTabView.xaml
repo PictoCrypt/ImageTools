@@ -27,8 +27,8 @@
         </GroupBox>
 
         <views:CryptionUserControl Grid.Column="0" Grid.Row="1" DataContext="{Binding CryptionModel}"/>
-        
-        <views:SteganographicUserControl Grid.Column="0" Grid.Row="2" Text="Decode" 
+
+        <views:SteganographicUserControl Grid.Column="0" Grid.Row="2" Text="Decode" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.TabActionCommand}"
                                          Enabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.CanTabActionExecuted}" 
                                          DataContext="{Binding SteganographicModel}"/>
 
