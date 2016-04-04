@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ImageToolApp.Views;
 using UserControlClassLibrary;
 
 namespace ImageToolApp.ViewModels
@@ -19,13 +20,15 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
         private FrameworkElement mAnalysisView;
+        private FrameworkElement mBenchmarkView;
 
-        public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView, FrameworkElement analysisView)
+        public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView, FrameworkElement analysisView, BenchmarkTabView benchmarkView)
         {
             CurrentElement = encryptView;
             EncryptView = encryptView;
             DecryptView = decryptView;
             AnalysisView = analysisView;
+            BenchmarkView = benchmarkView;
         }
 
         public bool ProgressActive
@@ -184,6 +187,20 @@ namespace ImageToolApp.ViewModels
                 }
                 mAnalysisView = value;
                 OnPropertyChanged("AnalysisView");
+            }
+        }
+
+        public FrameworkElement BenchmarkView
+        {
+            get { return mBenchmarkView; }
+            set
+            {
+                if (Equals(value, mBenchmarkView))
+                {
+                    return;
+                }
+                mBenchmarkView = value;
+                OnPropertyChanged();
             }
         }
 

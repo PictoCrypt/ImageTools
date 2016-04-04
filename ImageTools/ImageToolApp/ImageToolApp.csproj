@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AnalysisTabController.cs" />
+    <Compile Include="Controllers\BenchmarkTabController.cs" />
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\ImagePresentationController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="ViewModels\AnalysisTabViewModel.cs" />
     <Compile Include="ViewModels\BaseTabViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BenchmarkTabViewModel.cs" />
     <Compile Include="ViewModels\DecryptTabViewModel.cs" />
     <Compile Include="ViewModels\CryptionModel.cs" />
     <Compile Include="ViewModels\EncryptTabViewModel.cs" />
@@ -130,6 +132,9 @@
     <Compile Include="ViewModels\SteganographicModel.cs" />
     <Compile Include="Views\AnalysisTabView.xaml.cs">
       <DependentUpon>AnalysisTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BenchmarkTabView.xaml.cs">
+      <DependentUpon>BenchmarkTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CryptionUserControl.xaml.cs">
       <DependentUpon>CryptionUserControl.xaml</DependentUpon>
@@ -180,6 +185,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AnalysisTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BenchmarkTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
