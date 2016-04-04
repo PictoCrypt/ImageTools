@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using FunctionLib.Helper;
 
 namespace FunctionLib.Steganalyse
 {
@@ -25,7 +26,7 @@ namespace FunctionLib.Steganalyse
          *
          * @param image The image to analyse.
          */
-        public double DoAnalysis(Bitmap image, int colour)
+        public double DoAnalysis(LockBitmap image, int colour)
         {
 
             //get the images sizes
@@ -178,20 +179,27 @@ namespace FunctionLib.Steganalyse
                 Console.WriteLine("\nSample Pairs Results");
                 Console.WriteLine("--------------------");
                 SamplePairs sp = new SamplePairs();
-                Bitmap image = new Bitmap(args[0]);
-                double average = 0;
-                double results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_RED);
-                Console.WriteLine("Result from red: " + results);
-                average += results;
-                results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_GREEN);
-                Console.WriteLine("Result from green: " + results);
-                average += results;
-                results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_BLUE);
-                Console.WriteLine("Result from blue: " + results);
-                average += results;
-                average = average / 3;
-                Console.WriteLine("Average result: " + average);
-                Console.WriteLine();
+                using (Bitmap bitmap = new Bitmap(args[0]))
+                {
+                    var image = new LockBitmap(bitmap);
+                    image.LockBits();
+
+                    double average = 0;
+                    double results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_RED);
+                    Console.WriteLine("Result from red: " + results);
+                    average += results;
+                    results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_GREEN);
+                    Console.WriteLine("Result from green: " + results);
+                    average += results;
+                    results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_BLUE);
+                    Console.WriteLine("Result from blue: " + results);
+                    average += results;
+                    average = average/3;
+                    Console.WriteLine("Average result: " + average);
+                    Console.WriteLine();
+
+                    image.UnlockBits();
+                }
             }
             catch (Exception e)
             {

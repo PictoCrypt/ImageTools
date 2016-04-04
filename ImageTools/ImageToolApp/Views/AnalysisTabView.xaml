@@ -13,9 +13,14 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
-        </Grid.RowDefinitions>    
-        
-        <Button Grid.Column="0" Grid.Row="0" Width="100" Height="35" Command="{Binding BenchmarkCommand}" IsEnabled="{Binding Result, Converter={StaticResource IsStringNullConverter}}">Benchmark</Button>
-        <Button Grid.Column="0" Grid.Row="1" Width="100" Height="35" Command="{Binding AnalysisCommand}" IsEnabled="{Binding Result, Converter={StaticResource IsStringNullConverter}}">Analysis</Button>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Height="50" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Width="100" Margin="5" Command="{Binding LoadImageCommand}">Image ...</Button>
+            <Button Width="100" Margin="5" Command="{Binding LoadSteganoCommand}">Steganogram ...</Button>
+        </StackPanel>
+        <Button Grid.Column="0" Grid.Row="1" Width="100" Height="35" Command="{Binding BenchmarkCommand}" IsEnabled="{Binding Result, Converter={StaticResource IsStringNullConverter}}">Benchmark</Button>
+        <Button Grid.Column="0" Grid.Row="2" Width="100" Height="35" Command="{Binding AnalysisCommand}" IsEnabled="{Binding Result, Converter={StaticResource IsStringNullConverter}}">Analysis</Button>
     </Grid>
 </UserControl>

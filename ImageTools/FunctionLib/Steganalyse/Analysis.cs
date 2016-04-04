@@ -20,21 +20,14 @@ namespace FunctionLib.Steganalyse
                 throw new ArgumentNullException(nameof(steganoBmp));
             }
 
-            double result;
-            using (originalBmp)
-            {
-                using (steganoBmp)
-                {
-                    var original = new LockBitmap(originalBmp);
-                    original.LockBits();
-                    var stegano = new LockBitmap(steganoBmp);
-                    stegano.LockBits();
-                    result = Calculation(original, stegano);
+            var original = new LockBitmap(originalBmp);
+            original.LockBits();
+            var stegano = new LockBitmap(steganoBmp);
+            stegano.LockBits();
+            var result = Calculation(original, stegano);
 
-                    original.UnlockBits();
-                    stegano.UnlockBits();
-                }
-            }
+            original.UnlockBits();
+            stegano.UnlockBits();
             return result;
         }
 

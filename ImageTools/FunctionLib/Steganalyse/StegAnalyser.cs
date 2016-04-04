@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using FunctionLib.Helper;
 using FunctionLib.Model.Message;
 using FunctionLib.Steganography;
 
@@ -66,157 +67,163 @@ namespace FunctionLib.Steganalyse
 
         public string Run(Bitmap stego)
         {
-            var results = new StringBuilder("Results of steganalysis\n"
-                                            + "==========================\n\n");
-
-            string colour;
-            double averageresults = 0, averagelength = 0;
-
-            //RS Analysis
-            if (mRunRsAnalysis)
+            using (stego)
             {
-                results.Append("RS ANALYSIS\n" + "============\n\n");
-                results.Append("RS Analysis (Non-overlapping groups)\n");
-                for (var j = 0; j < 3; j++)
+                var image = new LockBitmap(stego);
+                image.LockBits();
+                var results = new StringBuilder("Results of steganalysis\n"
+                                                + "==========================\n\n");
+
+                string colour;
+                double averageresults = 0, averagelength = 0;
+
+                //RS Analysis
+                if (mRunRsAnalysis)
                 {
-                    var rsa = new RsAnalysis(2, 2);
-                    var testresults =
-                        rsa.DoAnalysis(stego, j, false);
-
-                    //get the right colour
-                    if (j == 0)
+                    results.Append("RS ANALYSIS\n" + "============\n\n");
+                    results.Append("RS Analysis (Non-overlapping groups)\n");
+                    for (var j = 0; j < 3; j++)
                     {
-                        colour = "red";
+                        var rsa = new RsAnalysis(2, 2);
+                        var testresults =
+                            rsa.DoAnalysis(image, j, false);
+
+                        //get the right colour
+                        if (j == 0)
+                        {
+                            colour = "red";
+                        }
+                        else if (j == 1)
+                        {
+                            colour = "green";
+                        }
+                        else
+                        {
+                            colour = "blue";
+                        }
+
+                        //Append the results
+                        results.Append("Percentage in " + colour + ": ");
+
+                        //Round and Append results
+                        results.Append(Round(testresults[26]*100, 5) + "\n");
+
+                        //and the approximate length (in bytes)
+                        results.Append("Approximate length (in bytes) from " + colour + ": "
+                                       + Round(testresults[27], 5) + "\n");
+
+                        averageresults += testresults[26];
+                        averagelength += testresults[27];
                     }
-                    else if (j == 1)
+
+                    //now do again for overlapping groups
+                    results.Append("\nRS Analysis (Overlapping groups)\n");
+                    for (var j = 0; j < 3; j++)
                     {
-                        colour = "green";
+                        var rsa = new RsAnalysis(2, 2);
+                        var testresults =
+                            rsa.DoAnalysis(image, j, true);
+
+                        //get the right colour
+                        if (j == 0)
+                        {
+                            colour = "red";
+                        }
+                        else if (j == 1)
+                        {
+                            colour = "green";
+                        }
+                        else
+                        {
+                            colour = "blue";
+                        }
+
+                        //Append the results
+                        results.Append("Percentage in " + colour + ": ");
+
+                        //Round and Append results
+                        results.Append(Round(testresults[26]*100, 5) + "\n");
+
+                        //and the approximate length (in bytes)
+                        results.Append("Approximate length (in bytes) from " + colour + ": "
+                                       + Round(testresults[27], 5) + "\n");
+
+                        averageresults += testresults[26];
+                        averagelength += testresults[27];
                     }
-                    else
-                    {
-                        colour = "blue";
-                    }
 
-                    //Append the results
-                    results.Append("Percentage in " + colour + ": ");
-
-                    //Round and Append results
-                    results.Append(Round(testresults[26]*100, 5) + "\n");
-
-                    //and the approximate length (in bytes)
-                    results.Append("Approximate length (in bytes) from " + colour + ": "
-                                   + Round(testresults[27], 5) + "\n");
-
-                    averageresults += testresults[26];
-                    averagelength += testresults[27];
+                    results.Append("\nAverage across all groups/colours: " +
+                                   Round(averageresults/6*100, 5));
+                    results.Append("\nAverage approximate length across all groups/colours: " +
+                                   Round(averagelength/6, 5));
+                    results.Append("\n\n\n");
                 }
 
-                //now do again for overlapping groups
-                results.Append("\nRS Analysis (Overlapping groups)\n");
-                for (var j = 0; j < 3; j++)
+
+                //Sample Pairs
+                averageresults = 0;
+                averagelength = 0;
+                if (mRunSamplePairs)
                 {
-                    var rsa = new RsAnalysis(2, 2);
-                    var testresults =
-                        rsa.DoAnalysis(stego, j, true);
-
-                    //get the right colour
-                    if (j == 0)
+                    results.Append("SAMPLE PAIRS\n" + "=============\n");
+                    for (var j = 0; j < 3; j++)
                     {
-                        colour = "red";
+                        var sp = new SamplePairs();
+                        var estimatedlength = sp.DoAnalysis(image, j);
+                        var numbytes = image.Height*image.Width*3/8
+                                       *estimatedlength;
+
+                        //get the right colour
+                        if (j == 0)
+                        {
+                            colour = "red";
+                        }
+                        else if (j == 1)
+                        {
+                            colour = "green";
+                        }
+                        else
+                        {
+                            colour = "blue";
+                        }
+
+                        //Append the results
+                        results.Append("Percentage in " + colour + ": ");
+
+                        //Round and Append results
+                        results.Append(Round(estimatedlength*100, 5) + "\n");
+
+                        //and the approximate length (in bytes)
+                        results.Append("Approximate length (in bytes) from " + colour + ": "
+                                       + Round(numbytes, 5) + "\n");
+
+                        averageresults += estimatedlength;
+                        averagelength += numbytes;
                     }
-                    else if (j == 1)
-                    {
-                        colour = "green";
-                    }
-                    else
-                    {
-                        colour = "blue";
-                    }
 
-                    //Append the results
-                    results.Append("Percentage in " + colour + ": ");
-
-                    //Round and Append results
-                    results.Append(Round(testresults[26]*100, 5) + "\n");
-
-                    //and the approximate length (in bytes)
-                    results.Append("Approximate length (in bytes) from " + colour + ": "
-                                   + Round(testresults[27], 5) + "\n");
-
-                    averageresults += testresults[26];
-                    averagelength += testresults[27];
+                    //average results
+                    results.Append("\nAverage across all groups/colours: " +
+                                   Round(averageresults/3*100, 5));
+                    results.Append("\nAverage approximate length across all groups/colours: " +
+                                   Round(averagelength/3, 5));
+                    results.Append("\n\n\n");
                 }
 
-                results.Append("\nAverage across all groups/colours: " +
-                               Round(averageresults/6*100, 5));
-                results.Append("\nAverage approximate length across all groups/colours: " +
-                               Round(averagelength/6, 5));
-                results.Append("\n\n\n");
-            }
 
-
-            //Sample Pairs
-            averageresults = 0;
-            averagelength = 0;
-            if (mRunSamplePairs)
-            {
-                results.Append("SAMPLE PAIRS\n" + "=============\n");
-                for (var j = 0; j < 3; j++)
+                //Laplace graph
+                if (mRunLaplaceGraph)
                 {
-                    var sp = new SamplePairs();
-                    var estimatedlength = sp.DoAnalysis(stego, j);
-                    var numbytes = stego.Height*stego.Width*3/8
-                                   *estimatedlength;
-
-                    //get the right colour
-                    if (j == 0)
-                    {
-                        colour = "red";
-                    }
-                    else if (j == 1)
-                    {
-                        colour = "green";
-                    }
-                    else
-                    {
-                        colour = "blue";
-                    }
-
-                    //Append the results
-                    results.Append("Percentage in " + colour + ": ");
-
-                    //Round and Append results
-                    results.Append(Round(estimatedlength*100, 5) + "\n");
-
-                    //and the approximate length (in bytes)
-                    results.Append("Approximate length (in bytes) from " + colour + ": "
-                                   + Round(numbytes, 5) + "\n");
-
-                    averageresults += estimatedlength;
-                    averagelength += numbytes;
+                    results.Append("LAPLACE GRAPH (CSV formatted)\n"
+                                   + "==============================\n\n");
+                    results.Append(LaplaceGraph.GetCSVGraph(image));
                 }
 
-                //average results
-                results.Append("\nAverage across all groups/colours: " +
-                               Round(averageresults/3*100, 5));
-                results.Append("\nAverage approximate length across all groups/colours: " +
-                               Round(averagelength/3, 5));
-                results.Append("\n\n\n");
+                //Append some new lines to make it look nice
+                results.Append("\n\n\n\n");
+
+                mResultsString = results.ToString();
+                image.UnlockBits();
             }
-
-
-            //Laplace graph
-            if (mRunLaplaceGraph)
-            {
-                results.Append("LAPLACE GRAPH (CSV formatted)\n"
-                               + "==============================\n\n");
-                results.Append(LaplaceGraph.GetCSVGraph(stego));
-            }
-
-            //Append some new lines to make it look nice
-            results.Append("\n\n\n\n");
-
-            mResultsString = results.ToString();
             return mResultsString;
         }
 
@@ -433,109 +440,113 @@ namespace FunctionLib.Steganalyse
                     //file can be worked on.
 
 
-                    Bitmap image;
                     string flag;
 
                     try
                     {
-                        image = new Bitmap(files[i]);
-
-                        //run RS analysis
-                        if (mRunRsAnalysis)
+                        using (var bitmap = new Bitmap(files[i]))
                         {
-                            //overlapping
-                            for (var j = 0; j < 3; j++)
-                            {
-                                var rsa = new RsAnalysis(2, 2);
-                                var testresults =
-                                    rsa.DoAnalysis(image, j, true);
+                            var image = new LockBitmap(bitmap);
+                            image.LockBits();
 
-                                for (var k = 0; k < testresults.Length; k++)
+                            //run RS analysis
+                            if (mRunRsAnalysis)
+                            {
+                                //overlapping
+                                for (var j = 0; j < 3; j++)
                                 {
-                                    csv.Append(testresults[k] + ",");
+                                    var rsa = new RsAnalysis(2, 2);
+                                    var testresults =
+                                        rsa.DoAnalysis(image, j, true);
+
+                                    for (var k = 0; k < testresults.Length; k++)
+                                    {
+                                        csv.Append(testresults[k] + ",");
+                                    }
+                                }
+                                //non-overlapping
+                                for (var j = 0; j < 3; j++)
+                                {
+                                    var rsa = new RsAnalysis(2, 2);
+                                    var testresults =
+                                        rsa.DoAnalysis(image, j, false);
+
+                                    for (var k = 0; k < testresults.Length; k++)
+                                    {
+                                        csv.Append(testresults[k] + ",");
+                                    }
                                 }
                             }
-                            //non-overlapping
-                            for (var j = 0; j < 3; j++)
-                            {
-                                var rsa = new RsAnalysis(2, 2);
-                                var testresults =
-                                    rsa.DoAnalysis(image, j, false);
 
-                                for (var k = 0; k < testresults.Length; k++)
+                            //run Sample Pairs
+                            if (mRunSamplePairs)
+                            {
+                                //overlapping
+                                for (var j = 0; j < 3; j++)
                                 {
-                                    csv.Append(testresults[k] + ",");
+                                    var sp = new SamplePairs();
+                                    var estimatedlength = sp.DoAnalysis(image, j);
+                                    var numbytes = image.Height*image.Width*3/8
+                                                   *estimatedlength;
+                                    csv.Append(estimatedlength + "," + numbytes + ",");
                                 }
                             }
-                        }
 
-                        //run Sample Pairs
-                        if (mRunSamplePairs)
-                        {
-                            //overlapping
-                            for (var j = 0; j < 3; j++)
+                            //run LaplaceGraph
+                            if (mRunLaplaceGraph)
                             {
-                                var sp = new SamplePairs();
-                                var estimatedlength = sp.DoAnalysis(image, j);
-                                var numbytes = image.Height*image.Width*3/8
-                                               *estimatedlength;
-                                csv.Append(estimatedlength + "," + numbytes + ",");
-                            }
-                        }
+                                var lgres = LaplaceGraph.GetGraph(image);
 
-                        //run LaplaceGraph
-                        if (mRunLaplaceGraph)
-                        {
-                            var lgres = LaplaceGraph.GetGraph(image);
-
-                            for (var j = 0; j < laplacelimit; j++)
-                            {
-                                if (lgres.Length <= laplacelimit && j >= lgres.Length)
+                                for (var j = 0; j < laplacelimit; j++)
                                 {
-                                    csv.Append("0,");
-                                }
-                                else
-                                {
-                                    if (lgres[j][0] != j)
+                                    if (lgres.Length <= laplacelimit && j >= lgres.Length)
                                     {
                                         csv.Append("0,");
                                     }
                                     else
                                     {
-                                        csv.Append(lgres[j][1] + ",");
+                                        if (lgres[j][0] != j)
+                                        {
+                                            csv.Append("0,");
+                                        }
+                                        else
+                                        {
+                                            csv.Append(lgres[j][1] + ",");
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        if (files[i].IndexOf("_") >= 0 || files[i].IndexOf("-") >= 0)
-                        {
-                            if (files[i].IndexOf("_") >= 0)
+                            if (files[i].IndexOf("_") >= 0 || files[i].IndexOf("-") >= 0)
                             {
-                                flag = files[i].Substring(files[i].IndexOf("_") + 1, files[i].LastIndexOf("."));
+                                if (files[i].IndexOf("_") >= 0)
+                                {
+                                    flag = files[i].Substring(files[i].IndexOf("_") + 1, files[i].LastIndexOf("."));
+                                }
+                                else
+                                {
+                                    flag = files[i].Substring(files[i].IndexOf("-") + 1, files[i].LastIndexOf("."));
+                                }
                             }
                             else
                             {
-                                flag = files[i].Substring(files[i].IndexOf("-") + 1, files[i].LastIndexOf("."));
+                                flag = "none";
                             }
-                        }
-                        else
-                        {
-                            flag = "none";
-                        }
 
-                        csv.Append(flag);
-                        //Append in the file name
-                        csv.Append("," + files[i]);
+                            csv.Append(flag);
+                            //Append in the file name
+                            csv.Append("," + files[i]);
 
-                        if (csv[csv.Length - 1] == ',')
-                        {
-                            csv.Remove(csv.Length - 1, 1);
+                            if (csv[csv.Length - 1] == ',')
+                            {
+                                csv.Remove(csv.Length - 1, 1);
+                            }
+
+                            csv.Append("\n");
+                            image.UnlockBits();
                         }
-
-                        csv.Append("\n");
                     }
-                    catch (Exception e1)
+                    catch (Exception ex)
                     {
                         //skip the file...
                     }
@@ -714,106 +725,109 @@ namespace FunctionLib.Steganalyse
                     //file can be worked on.
 
 
-                    Bitmap image;
-                    string flag;
-
                     try
                     {
-                        image = new Bitmap(files[i]);
-
-                        //run RS analysis
-                        if (mRunRsAnalysis)
+                        using (var bitmap = new Bitmap(files[i]))
                         {
-                            //overlapping
-                            for (var j = 0; j < 3; j++)
-                            {
-                                var rsa = new RsAnalysis(2, 2);
-                                var testresults =
-                                    rsa.DoAnalysis(image, j, true);
+                            var image = new LockBitmap(bitmap);
+                            image.LockBits();
 
-                                for (var k = 0; k < testresults.Length; k++)
+                            //run RS analysis
+                            if (mRunRsAnalysis)
+                            {
+                                //overlapping
+                                for (var j = 0; j < 3; j++)
                                 {
-                                    arff.Append(testresults[k] + ",");
+                                    var rsa = new RsAnalysis(2, 2);
+                                    var testresults =
+                                        rsa.DoAnalysis(image, j, true);
+
+                                    for (var k = 0; k < testresults.Length; k++)
+                                    {
+                                        arff.Append(testresults[k] + ",");
+                                    }
+                                }
+                                //non-overlapping
+                                for (var j = 0; j < 3; j++)
+                                {
+                                    var rsa = new RsAnalysis(2, 2);
+                                    var testresults =
+                                        rsa.DoAnalysis(image, j, false);
+
+                                    for (var k = 0; k < testresults.Length; k++)
+                                    {
+                                        arff.Append(testresults[k] + ",");
+                                    }
                                 }
                             }
-                            //non-overlapping
-                            for (var j = 0; j < 3; j++)
-                            {
-                                var rsa = new RsAnalysis(2, 2);
-                                var testresults =
-                                    rsa.DoAnalysis(image, j, false);
 
-                                for (var k = 0; k < testresults.Length; k++)
+                            //run Sample Pairs
+                            if (mRunSamplePairs)
+                            {
+                                //overlapping
+                                for (var j = 0; j < 3; j++)
                                 {
-                                    arff.Append(testresults[k] + ",");
+                                    var sp = new SamplePairs();
+                                    var estimatedlength = sp.DoAnalysis(image, j);
+                                    var numbytes = image.Height*image.Width*3/8
+                                                   *(estimatedlength/100);
+                                    arff.Append(estimatedlength + "," + numbytes + ",");
                                 }
                             }
-                        }
 
-                        //run Sample Pairs
-                        if (mRunSamplePairs)
-                        {
-                            //overlapping
-                            for (var j = 0; j < 3; j++)
+                            //run LaplaceGraph
+                            if (mRunLaplaceGraph)
                             {
-                                var sp = new SamplePairs();
-                                var estimatedlength = sp.DoAnalysis(image, j);
-                                var numbytes = image.Height*image.Width*3/8
-                                               *(estimatedlength/100);
-                                arff.Append(estimatedlength + "," + numbytes + ",");
-                            }
-                        }
+                                var lgres = LaplaceGraph.GetGraph(image);
 
-                        //run LaplaceGraph
-                        if (mRunLaplaceGraph)
-                        {
-                            var lgres = LaplaceGraph.GetGraph(image);
-
-                            for (var j = 0; j < laplacelimit; j++)
-                            {
-                                if (lgres.Length <= laplacelimit && j >= lgres.Length)
+                                for (var j = 0; j < laplacelimit; j++)
                                 {
-                                    arff.Append("0,");
-                                }
-                                else
-                                {
-                                    if (lgres[j][0] != j)
+                                    if (lgres.Length <= laplacelimit && j >= lgres.Length)
                                     {
                                         arff.Append("0,");
                                     }
                                     else
                                     {
-                                        arff.Append(lgres[j][1] + ",");
+                                        if (lgres[j][0] != j)
+                                        {
+                                            arff.Append("0,");
+                                        }
+                                        else
+                                        {
+                                            arff.Append(lgres[j][1] + ",");
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        if (files[i].IndexOf("_") >= 0 || files[i].IndexOf("-") >= 0)
-                        {
-                            if (files[i].IndexOf("_") >= 0)
+                            string flag;
+                            if (files[i].IndexOf("_") >= 0 || files[i].IndexOf("-") >= 0)
                             {
-                                flag = files[i].Substring(files[i].IndexOf("_") + 1, files[i].LastIndexOf("."));
+                                if (files[i].IndexOf("_") >= 0)
+                                {
+                                    flag = files[i].Substring(files[i].IndexOf("_") + 1, files[i].LastIndexOf("."));
+                                }
+                                else
+                                {
+                                    flag = files[i].Substring(files[i].IndexOf("-") + 1, files[i].LastIndexOf("."));
+                                }
                             }
                             else
                             {
-                                flag = files[i].Substring(files[i].IndexOf("-") + 1, files[i].LastIndexOf("."));
+                                flag = "none";
                             }
-                        }
-                        else
-                        {
-                            flag = "none";
-                        }
 
-                        arff.Append(flag);
-                        arff.Append("," + files[i]);
+                            arff.Append(flag);
+                            arff.Append("," + files[i]);
 
-                        if (arff[arff.Length - 1] == ',')
-                        {
-                            arff.Remove(arff.Length - 1, 1);
+                            if (arff[arff.Length - 1] == ',')
+                            {
+                                arff.Remove(arff.Length - 1, 1);
+                            }
+
+                            arff.Append("\n");
+                            image.UnlockBits();
                         }
-
-                        arff.Append("\n");
                     }
                     catch (Exception e1)
                     {

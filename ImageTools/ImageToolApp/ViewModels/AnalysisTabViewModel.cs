@@ -6,6 +6,36 @@ namespace ImageToolApp.ViewModels
     {
         private UICommand mBenchmarkCommand;
         private UICommand mAnalysisCommand;
+        private UICommand mLoadImageCommand;
+        private UICommand mLoadSteganoCommand;
+
+        public UICommand LoadImageCommand
+        {
+            get { return mLoadImageCommand; }
+            set
+            {
+                if (value.Equals(mLoadImageCommand))
+                {
+                    return;
+                }
+                mLoadImageCommand = value;
+                OnPropertyChanged("LoadImageCommand");
+            }
+        }
+
+        public UICommand LoadSteganoCommand
+        {
+            get { return mLoadSteganoCommand; }
+            set
+            {
+                if (value.Equals(mLoadSteganoCommand))
+                {
+                    return;
+                }
+                mLoadSteganoCommand = value;
+                OnPropertyChanged("LoadSteganoCommand");
+            }
+        }
 
         public UICommand BenchmarkCommand
         {

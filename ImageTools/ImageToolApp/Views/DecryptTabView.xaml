@@ -21,9 +21,9 @@
         </Grid.ColumnDefinitions>
 
         <GroupBox Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Style="{StaticResource GroupBoxDisabledStyle}" Header="Result">
-            <ContentControl Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                            Content="{Binding ResultContent}" />
+                  Style="{StaticResource GroupBoxDisabledStyle}" Header="Result" Content="{Binding ResultContent}">
+            <!--<ContentControl Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Content="{Binding ResultContent}" />-->
         </GroupBox>
 
         <views:CryptionUserControl Grid.Column="0" Grid.Row="1" DataContext="{Binding CryptionModel}"/>

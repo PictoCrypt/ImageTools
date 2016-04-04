@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using FunctionLib.Helper;
 
 namespace FunctionLib.Steganalyse
 {
@@ -24,8 +25,11 @@ namespace FunctionLib.Steganalyse
         {
             //two masks
 
-            //mMask = new int[2][m*n];
             mMask = new int[2][];
+            for (int i = 0; i < mMask.Length; i++)
+            {
+                mMask[i] = new int[m*n];
+            }
 
             //iterate through them and set alternating bits
             int k = 0;
@@ -60,7 +64,7 @@ namespace FunctionLib.Steganalyse
          * @param overlap Whether the blocks should overlap or not.
          * @return The analysis information.
          */
-        public double[] DoAnalysis(Bitmap image, int color, bool overlap)
+        public double[] DoAnalysis(LockBitmap image, int color, bool overlap)
         {
             int startx = 0, starty = 0;
             Color[] block = new Color[mM * mN];
@@ -93,6 +97,7 @@ namespace FunctionLib.Steganalyse
                     //negative mask
                     mMask[m] = InvertMask(mMask[m]);
                     variationN = GetNegativeVariation(block, color, mMask[m]);
+
                     mMask[m] = InvertMask(mMask[m]);
 
                     //now we need to work out which group each belongs to
@@ -295,7 +300,7 @@ namespace FunctionLib.Steganalyse
 	 * @param overlap Whether the blocks should overlap.
 	 * @return The analysis information for all flipped pixels.
 	 */
-        private double[] GetAllPixelFlips(Bitmap image, int colour, bool overlap)
+        private double[] GetAllPixelFlips(LockBitmap image, int colour, bool overlap)
         {
 
             //setup the mask for everything...
@@ -654,20 +659,27 @@ namespace FunctionLib.Steganalyse
                 Console.WriteLine("\nRS Analysis results");
                 Console.WriteLine("-------------------");
                 RsAnalysis rsa = new RsAnalysis(2, 2);
-                Bitmap image = new Bitmap(args[0]);
-                double average = 0;
-                double[] results = rsa.DoAnalysis(image, RsAnalysis.ANALYSIS_COLOUR_RED, true);
-                Console.WriteLine("Result from red: " + results[26]);
-                average += results[26];
-                results = rsa.DoAnalysis(image, RsAnalysis.ANALYSIS_COLOUR_GREEN, true);
-                Console.WriteLine("Result from green: " + results[26]);
-                average += results[26];
-                results = rsa.DoAnalysis(image, RsAnalysis.ANALYSIS_COLOUR_BLUE, true);
-                Console.WriteLine("Result from blue: " + results[26]);
-                average += results[26];
-                average = average / 3;
-                Console.WriteLine("Average result: " + average);
-                Console.WriteLine();
+                using (Bitmap bitmap = new Bitmap(args[0]))
+                {
+                    var image = new LockBitmap(bitmap);
+                    image.LockBits();
+
+                    double average = 0;
+                    double[] results = rsa.DoAnalysis(image, RsAnalysis.ANALYSIS_COLOUR_RED, true);
+                    Console.WriteLine("Result from red: " + results[26]);
+                    average += results[26];
+                    results = rsa.DoAnalysis(image, RsAnalysis.ANALYSIS_COLOUR_GREEN, true);
+                    Console.WriteLine("Result from green: " + results[26]);
+                    average += results[26];
+                    results = rsa.DoAnalysis(image, RsAnalysis.ANALYSIS_COLOUR_BLUE, true);
+                    Console.WriteLine("Result from blue: " + results[26]);
+                    average += results[26];
+                    average = average / 3;
+                    Console.WriteLine("Average result: " + average);
+                    Console.WriteLine();
+
+                    image.UnlockBits();
+                }
             }
             catch (Exception e)
             {

@@ -41,7 +41,7 @@ namespace FunctionLib.Model
             result.Compression = mCompression;
 
             var message = result.ConvertBack();
-            if (CryptoAlgorithm != null && string.IsNullOrEmpty(mPassword))
+            if (CryptoAlgorithm != null && !string.IsNullOrEmpty(mPassword))
             {
                 message = CryptoAlgorithm.Decode(message, mPassword);
             }

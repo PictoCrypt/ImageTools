@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Text;
 using FunctionLib.Filter;
+using FunctionLib.Helper;
 
 namespace FunctionLib.Steganalyse
 {
@@ -33,7 +34,7 @@ namespace FunctionLib.Steganalyse
         * the format of CSV.
         */
 
-        public static string GetCSVGraph(Bitmap image)
+        public static string GetCSVGraph(LockBitmap image)
         {
             var sb = new StringBuilder();
             sb.Append("\"Frequency\",\"Laplace Value\"\n");
@@ -55,7 +56,7 @@ namespace FunctionLib.Steganalyse
          * @param image The image to get the graph of.
          * @return The graph of the image.
          */
-        public static double[][] GetGraph(Bitmap image)
+        public static double[][] GetGraph(LockBitmap image)
         {
             var filter = new Laplace(image, 0, 8);
 
