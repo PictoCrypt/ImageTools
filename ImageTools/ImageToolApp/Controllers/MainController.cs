@@ -11,10 +11,10 @@ namespace ImageToolApp.Controllers
 {
     public class MainController
     {
-        private readonly DecryptTabController mDecryptTabController;
-        private readonly EncryptTabController mEncryptTabController;
         private readonly AnalysisTabController mAnalysisTabController;
         private readonly BenchmarkTabController mBenchmarkTabController;
+        private readonly DecryptTabController mDecryptTabController;
+        private readonly EncryptTabController mEncryptTabController;
         private readonly MainWindow mView;
         private readonly MainViewModel mViewModel;
         private Settings mSettings;
@@ -28,7 +28,8 @@ namespace ImageToolApp.Controllers
             mDecryptTabController = new DecryptTabController();
             mAnalysisTabController = new AnalysisTabController();
             mBenchmarkTabController = new BenchmarkTabController();
-            mViewModel = new MainViewModel(mEncryptTabController.View, mDecryptTabController.View, mAnalysisTabController.View, mBenchmarkTabController.View);
+            mViewModel = new MainViewModel(mEncryptTabController.View, mDecryptTabController.View,
+                mAnalysisTabController.View, mBenchmarkTabController.View);
             SetupCommands();
             mView.DataContext = mViewModel;
             mView.Show();

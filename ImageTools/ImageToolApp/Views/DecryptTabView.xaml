@@ -26,11 +26,12 @@
                             Content="{Binding ResultContent}" />-->
         </GroupBox>
 
-        <views:CryptionUserControl Grid.Column="0" Grid.Row="1" DataContext="{Binding CryptionModel}"/>
+        <views:CryptionUserControl Grid.Column="0" Grid.Row="1" DataContext="{Binding CryptionModel}" />
 
-        <views:SteganographicUserControl Grid.Column="0" Grid.Row="2" Text="Decode" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.TabActionCommand}"
-                                         Enabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.CanTabActionExecuted}" 
-                                         DataContext="{Binding SteganographicModel}"/>
+        <views:SteganographicUserControl Grid.Column="0" Grid.Row="2" Text="Decode"
+                                         Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.TabActionCommand}"
+                                         Enabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.CanTabActionExecuted}"
+                                         DataContext="{Binding SteganographicModel}" />
 
         <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0"
                       HorizontalAlignment="Stretch"

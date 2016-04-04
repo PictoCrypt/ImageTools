@@ -9,7 +9,10 @@ namespace ImageToolApp.Controllers
 {
     public class DecryptTabController : BaseTabController<DecryptTabViewModel, DecryptTabView>
     {
-        protected override UICommand ActionCommand { get { return UICommand.Regular(Decrypt); } }
+        protected override UICommand ActionCommand
+        {
+            get { return UICommand.Regular(Decrypt); }
+        }
 
         public void SaveTxt()
         {
@@ -30,7 +33,8 @@ namespace ImageToolApp.Controllers
             {
                 //TODO Compression
                 var model = new DecodeModel(ViewModel.ImagePath, ViewModel.CryptionModel.Algorithm,
-                    ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm, ViewModel.SteganographicModel.Compression, ViewModel.SteganographicModel.LsbIndicator);
+                    ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm,
+                    ViewModel.SteganographicModel.Compression, ViewModel.SteganographicModel.LsbIndicator);
 
                 ViewModel.Result = model.Decode();
             });

@@ -38,6 +38,11 @@ namespace ImageToolApp.Controllers
             }
         }
 
+        protected override UICommand ActionCommand
+        {
+            get { return UICommand.Regular(Encrypt); }
+        }
+
         public override void UnregisterEvents()
         {
             base.UnregisterEvents();
@@ -47,8 +52,6 @@ namespace ImageToolApp.Controllers
                 expander.Collapsed -= ExpanderOnCollapsed;
             }
         }
-
-        protected override UICommand ActionCommand { get { return UICommand.Regular(Encrypt); } }
 
         private void ExpanderOnExpanded(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -121,7 +124,8 @@ namespace ImageToolApp.Controllers
                 var message = GetCurrentMessage();
                 //TODO compression
                 var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.CryptionModel.Algorithm,
-                    ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm, ViewModel.SteganographicModel.Compression,
+                    ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm,
+                    ViewModel.SteganographicModel.Compression,
                     ViewModel.SteganographicModel.LsbIndicator);
 
                 var result = model.Encode();

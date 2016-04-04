@@ -4,8 +4,8 @@ namespace ImageToolApp.ViewModels
 {
     public class AnalysisTabViewModel : BaseTabViewModel
     {
-        private bool mRsAnalysis;
         private bool mLaplaceGraph;
+        private bool mRsAnalysis;
         private bool mSamplePairs;
         private UICommand mSaveToFileCommand;
 

@@ -33,6 +33,8 @@ namespace ImageToolApp.Controllers
 
         public TView View { get; }
 
+        protected abstract UICommand ActionCommand { get; }
+
         public void OpenImage()
         {
             var dialog = new OpenFileDialog
@@ -81,8 +83,6 @@ namespace ImageToolApp.Controllers
         {
             return new TView();
         }
-
-        protected abstract UICommand ActionCommand { get; }
 
         public void SettingsSaved()
         {

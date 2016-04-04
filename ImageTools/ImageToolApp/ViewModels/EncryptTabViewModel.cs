@@ -43,7 +43,8 @@ namespace ImageToolApp.ViewModels
                 {
                     max = SteganographicModel.Algorithm.MaxEmbeddingCount(bitmap, SteganographicModel.LsbIndicator);
                 }
-                var contentLength = (double) CryptionModel.Algorithm.Encode(Text, CryptionModel.Password ?? "Test").Length;
+                var contentLength =
+                    (double) CryptionModel.Algorithm.Encode(Text, CryptionModel.Password ?? "Test").Length;
                 contentLength += ConvertHelper.Convert(contentLength.ToString()).Length;
                 contentLength += Constants.TagSeperator.Length;
                 var result = contentLength/max*100;

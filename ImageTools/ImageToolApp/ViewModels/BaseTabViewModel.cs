@@ -7,14 +7,14 @@ namespace ImageToolApp.ViewModels
     {
         private string mImagePath = string.Empty;
         private string mResult;
-        private readonly CryptionModel mCryptionModel;
-        private readonly SteganographicModel mSteganographicModel;
+
+        private UICommand mTabActionCommand;
 
         protected BaseTabViewModel()
         {
             Result = string.Empty;
-            mCryptionModel = new CryptionModel(Settings.Password, Settings.SelectedEncryptionMethod);
-            mSteganographicModel = new SteganographicModel(Settings.SelectedSteganographicMethod);
+            CryptionModel = new CryptionModel(Settings.Password, Settings.SelectedEncryptionMethod);
+            SteganographicModel = new SteganographicModel(Settings.SelectedSteganographicMethod);
         }
 
         public Settings Settings
@@ -22,14 +22,14 @@ namespace ImageToolApp.ViewModels
             get { return Settings.Instance; }
         }
 
-        public CryptionModel CryptionModel { get { return mCryptionModel; } }
-        public SteganographicModel SteganographicModel { get { return mSteganographicModel; } }
+        public CryptionModel CryptionModel { get; }
+        public SteganographicModel SteganographicModel { get; }
 
         public virtual bool CanTabActionExecuted
         {
             get { return !string.IsNullOrEmpty(ImagePath); }
         }
-        
+
         public string ImagePath
         {
             get { return mImagePath; }
@@ -46,7 +46,6 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        private UICommand mTabActionCommand;
         public UICommand TabActionCommand
         {
             get { return mTabActionCommand; }

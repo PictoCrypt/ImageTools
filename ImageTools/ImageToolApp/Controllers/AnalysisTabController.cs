@@ -16,9 +16,14 @@ namespace ImageToolApp.Controllers
             ViewModel.SaveToFileCommand = UICommand.Regular(SaveToFile);
         }
 
+        protected override UICommand ActionCommand
+        {
+            get { return UICommand.Regular(Analysis); }
+        }
+
         private void SaveToFile()
         {
-            var dialog = new SaveFileDialog { Filter = "Text File|*.txt" };
+            var dialog = new SaveFileDialog {Filter = "Text File|*.txt"};
             var dialogResult = dialog.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
@@ -59,7 +64,5 @@ namespace ImageToolApp.Controllers
             }
             return string.Empty;
         }
-
-        protected override UICommand ActionCommand { get { return UICommand.Regular(Analysis); } }
     }
 }

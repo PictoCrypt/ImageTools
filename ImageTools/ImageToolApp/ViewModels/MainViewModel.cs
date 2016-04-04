@@ -6,6 +6,8 @@ namespace ImageToolApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        private FrameworkElement mAnalysisView;
+        private FrameworkElement mBenchmarkView;
         private UICommand mCancelCommand;
         private UICommand mChangedPixelsCommand;
         private UICommand mCloseAppCommand;
@@ -19,10 +21,9 @@ namespace ImageToolApp.ViewModels
         private UICommand mSaveImageCommand;
         private UICommand mSaveTxtCommand;
         private UICommand mSettingsCommand;
-        private FrameworkElement mAnalysisView;
-        private FrameworkElement mBenchmarkView;
 
-        public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView, FrameworkElement analysisView, BenchmarkTabView benchmarkView)
+        public MainViewModel(FrameworkElement encryptView, FrameworkElement decryptView, FrameworkElement analysisView,
+            BenchmarkTabView benchmarkView)
         {
             CurrentElement = encryptView;
             EncryptView = encryptView;

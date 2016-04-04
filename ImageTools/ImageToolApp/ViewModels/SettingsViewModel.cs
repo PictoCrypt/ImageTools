@@ -48,7 +48,10 @@ namespace ImageToolApp.ViewModels
             get { return mStandardPath; }
             set
             {
-                if (value == mStandardPath) return;
+                if (value == mStandardPath)
+                {
+                    return;
+                }
                 mStandardPath = value;
                 OnPropertyChanged("StandardPath");
             }
@@ -123,7 +126,10 @@ namespace ImageToolApp.ViewModels
             get { return mChoosePathCommand; }
             set
             {
-                if (Equals(value, mChoosePathCommand)) return;
+                if (Equals(value, mChoosePathCommand))
+                {
+                    return;
+                }
                 mChoosePathCommand = value;
                 OnPropertyChanged("ChoosePathCommand");
             }

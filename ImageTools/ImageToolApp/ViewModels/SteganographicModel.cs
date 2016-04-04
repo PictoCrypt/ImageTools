@@ -7,16 +7,25 @@ namespace ImageToolApp.ViewModels
 {
     public class SteganographicModel : BaseViewModel
     {
-        private Settings Settings { get { return Settings.Instance; } }
+        private SteganographicAlgorithmImpl mAlgorithm;
+
+
+        // TODO Shouldnt be here.
+        private bool mCompression;
+
+        private int mLsbIndicator = 3;
 
 
         public SteganographicModel(SteganographicAlgorithmImpl algorithm)
-        { 
+        {
             Algorithm = algorithm ?? AlgorithmList.FirstOrDefault();
         }
 
-        private int mLsbIndicator = 3;
-        private SteganographicAlgorithmImpl mAlgorithm;
+        private Settings Settings
+        {
+            get { return Settings.Instance; }
+        }
+
         public SteganographicAlgorithmImpl Algorithm
         {
             get { return mAlgorithm; }
@@ -51,9 +60,6 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-
-        // TODO Shouldnt be here.
-        private bool mCompression;
         public bool Compression
         {
             get { return mCompression; }

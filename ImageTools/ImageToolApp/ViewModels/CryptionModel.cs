@@ -7,12 +7,11 @@ namespace ImageToolApp.ViewModels
 {
     public class CryptionModel : BaseViewModel
     {
-        private Settings Settings { get { return Settings.Instance; } }
+        private CryptographicAlgorithmImpl mAlgorithm;
 
 
         private bool mIsEnabled;
         private string mPassword;
-        private CryptographicAlgorithmImpl mAlgorithm;
 
         public CryptionModel(string password, CryptographicAlgorithmImpl algorithm)
         {
@@ -28,6 +27,11 @@ namespace ImageToolApp.ViewModels
             }
 
             Algorithm = algorithm ?? AlgorithmList.FirstOrDefault();
+        }
+
+        private Settings Settings
+        {
+            get { return Settings.Instance; }
         }
 
         public bool IsEnabled
@@ -75,6 +79,9 @@ namespace ImageToolApp.ViewModels
             }
         }
 
-        public IList<CryptographicAlgorithmImpl> AlgorithmList { get { return Settings.EncryptionMethods; } } 
+        public IList<CryptographicAlgorithmImpl> AlgorithmList
+        {
+            get { return Settings.EncryptionMethods; }
+        }
     }
 }

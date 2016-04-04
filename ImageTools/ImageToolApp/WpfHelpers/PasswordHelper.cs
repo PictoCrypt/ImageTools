@@ -68,7 +68,9 @@ namespace ImageToolApp.WpfHelpers
             var passwordBox = sender as PasswordBox;
 
             if (passwordBox == null)
+            {
                 return;
+            }
 
             if ((bool) e.OldValue)
             {

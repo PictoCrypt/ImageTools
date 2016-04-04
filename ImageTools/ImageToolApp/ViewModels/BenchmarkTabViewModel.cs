@@ -4,6 +4,18 @@ namespace ImageToolApp.ViewModels
 {
     public class BenchmarkTabViewModel : BaseTabViewModel
     {
+        private bool mAverageAbsoluteDifference;
+        private bool mCorrelationQuality;
+        private bool mLaplacianMeanSquaredError;
+        private bool mLpNorm;
+        private bool mMeanSquaredError;
+        private bool mNormalizedCrossCorrelation;
+        private bool mPeakSignalToNoiseRatio;
+
+
+        private UICommand mSaveToFileCommand;
+        private bool mSignalToNoiseRatio;
+
         public BenchmarkTabViewModel()
         {
             AverageAbsoluteDifference = true;
@@ -127,17 +139,6 @@ namespace ImageToolApp.ViewModels
                 OnPropertyChanged();
             }
         }
-
-
-        private UICommand mSaveToFileCommand;
-        private bool mAverageAbsoluteDifference;
-        private bool mCorrelationQuality;
-        private bool mLpNorm;
-        private bool mNormalizedCrossCorrelation;
-        private bool mMeanSquaredError;
-        private bool mLaplacianMeanSquaredError;
-        private bool mSignalToNoiseRatio;
-        private bool mPeakSignalToNoiseRatio;
 
         public UICommand SaveToFileCommand
         {
