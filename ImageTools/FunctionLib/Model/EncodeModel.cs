@@ -42,21 +42,13 @@ namespace FunctionLib.Model
         public string Encode()
         {
             ISecretMessage message;
-            if (mPassword == null || File.Exists(mSrcMessage))
+            if (File.Exists(mSrcMessage))
             {
-                if (File.Exists(mSrcMessage))
-                {
-                    message = new DocumentMessage(mSrcMessage, mCompression);
-                }
-                else
-                {
-                    message = new TextMessage(mSrcMessage, mCompression);
-                }
+                message = new DocumentMessage(mSrcMessage, mCompression, CryptoAlgorithm, mPassword);
             }
             else
             {
-                var cryptedMessage = CryptoAlgorithm.Encode(mSrcMessage, mPassword);
-                message = new TextMessage(cryptedMessage, mCompression);
+                message = new TextMessage(mSrcMessage, mCompression, CryptoAlgorithm, mPassword);
             }
 
             var result = SteganoAlgorithm.Encode(mSrcObj, message, PasswordHash, mLsbIndicator);

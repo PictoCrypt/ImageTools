@@ -22,7 +22,7 @@ namespace UnitTests.CryptTests
 
             var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(TestingConstants.NormalText.Equals(decrypted));
+            Assert.IsTrue(decrypted.StartsWith(TestingConstants.NormalText));
 
             WriteToOutput();
         }
@@ -34,7 +34,7 @@ namespace UnitTests.CryptTests
 
             var decrypted = Decrypt(encrypted);
 
-            Assert.IsTrue(TestingConstants.LongText.Equals(decrypted));
+            Assert.IsTrue(decrypted.StartsWith(TestingConstants.LongText));
 
             WriteToOutput();
         }

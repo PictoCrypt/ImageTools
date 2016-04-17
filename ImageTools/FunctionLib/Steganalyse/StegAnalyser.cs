@@ -290,7 +290,7 @@ namespace FunctionLib.Steganalyse
                                     new TextMessage(File.ReadAllText(messagefilepath)), 0)).Save(tempdir);
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             //just go onto the next one...
                             errors.Append("Error: Could not process: " + imagefile + " with " + messagefile + "\n");
@@ -546,7 +546,7 @@ namespace FunctionLib.Steganalyse
                             image.UnlockBits();
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         //skip the file...
                     }
@@ -829,7 +829,7 @@ namespace FunctionLib.Steganalyse
                             image.UnlockBits();
                         }
                     }
-                    catch (Exception e1)
+                    catch (Exception)
                     {
                         //skip the file...
                     }

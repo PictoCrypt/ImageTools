@@ -1,20 +1,33 @@
 ﻿using System;
+using FunctionLib.Cryptography;
 
 namespace FunctionLib.Model.Message
 {
-    public class SecretMessage
+    public abstract class SecretMessage
     {
-        protected SecretMessage(string obj, bool compression)
+        protected readonly string mMessage;
+        private readonly string mPassword;
+
+        protected SecretMessage(string obj, bool compression, CryptographicAlgorithmImpl crypto, string password)
         {
             if (string.IsNullOrEmpty(obj))
             {
                 throw new ArgumentNullException(nameof(obj));
             }
-            Message = obj;
+            mMessage = obj;
             Compression = compression;
+            Crypto = crypto;
+            mPassword = password;
         }
 
-        protected SecretMessage(byte[] bytes, bool compression)
+        protected string Password
+        {
+            get { return mPassword ?? "secret"; }
+        }
+
+        protected CryptographicAlgorithmImpl Crypto { get; set; }
+
+        protected SecretMessage(byte[] bytes, bool compression, CryptographicAlgorithmImpl crypto, string password)
         {
             if (bytes == null || bytes.Length <= 0)
             {
@@ -22,9 +35,11 @@ namespace FunctionLib.Model.Message
             }
             Bytes = bytes;
             Compression = compression;
+            mPassword = password;
         }
 
-        public string Message { get; }
+        public abstract string Message { get; }
+
         public byte[] Bytes { get; }
         public bool Compression { get; set; }
 

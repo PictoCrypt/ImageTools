@@ -54,12 +54,10 @@ namespace ImageToolApp.Models
             }
 
             Config config;
-            using (var sr = new StreamReader(File.OpenRead(file)))
+            var sr = new StreamReader(File.OpenRead(file));
+            using (var reader = new JsonTextReader(sr))
             {
-                using (var reader = new JsonTextReader(sr))
-                {
-                    config = mSerializer.Deserialize(reader, typeof (Config)) as Config;
-                }
+                config = mSerializer.Deserialize(reader, typeof (Config)) as Config;
             }
             if (config != null)
             {
@@ -81,12 +79,10 @@ namespace ImageToolApp.Models
 
             var config = new Config(DefaultPath, Password, SelectedEncryptionMethod, SelectedSteganographicMethod);
             var file = Path.Combine(Constants.AppData, "Config.json");
-            using (var sw = new StreamWriter(File.Create(file)))
+            var sw = new StreamWriter(File.Create(file));
+            using (var writer = new JsonTextWriter(sw))
             {
-                using (var writer = new JsonTextWriter(sw))
-                {
-                    mSerializer.Serialize(writer, config);
-                }
+                mSerializer.Serialize(writer, config);
             }
         }
     }

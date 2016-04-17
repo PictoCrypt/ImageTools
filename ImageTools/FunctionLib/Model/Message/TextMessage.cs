@@ -1,18 +1,19 @@
 ﻿using System.IO;
 using System.Linq;
+using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Model.Message
 {
     public class TextMessage : SecretMessage, ISecretMessage
     {
-        public TextMessage(string message, bool compression = false)
-            : base(message, compression)
+        public TextMessage(string message, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+            : base(message, compression, crypto, password)
         {
         }
 
-        public TextMessage(byte[] bytes, bool compression = false)
-            : base(bytes, compression)
+        public TextMessage(byte[] bytes, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+            : base(bytes, compression, crypto, password)
         {
         }
 
@@ -47,12 +48,29 @@ namespace FunctionLib.Model.Message
             }
 
             var result = ConvertHelper.Convert(bytes.ToArray());
-
             if (string.IsNullOrEmpty(result))
             {
                 throw new IOException("Error reading from stream. Stream was empty.");
             }
+
+            if (Crypto != null)
+            {
+                result = Crypto.Decode(result, Password);
+            }
+
             return result;
+        }
+
+        public override string Message
+        {
+            get
+            {
+                if (Crypto == null)
+                {
+                    return mMessage;
+                }
+                return Crypto.Encode(mMessage, Password);
+            }
         }
     }
 }

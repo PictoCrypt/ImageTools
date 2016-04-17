@@ -43,44 +43,37 @@ namespace FunctionLib.Helper
         /// </summary>
         public void LockBits()
         {
-            try
+            // Get width and height of bitmap
+            Width = Source.Width;
+            Height = Source.Height;
+
+            // get total locked pixels count
+            var pixelCount = Width*Height;
+
+            // Create rectangle to lock
+            var rect = new Rectangle(0, 0, Width, Height);
+
+            // get source bitmap pixel format size
+            Depth = Image.GetPixelFormatSize(mFormat);
+
+            // Check if bpp (Bits Per Pixel) is 8, 24, or 32
+            if (Depth != 8 && Depth != 24 && Depth != 32)
             {
-                // Get width and height of bitmap
-                Width = Source.Width;
-                Height = Source.Height;
-
-                // get total locked pixels count
-                var pixelCount = Width*Height;
-
-                // Create rectangle to lock
-                var rect = new Rectangle(0, 0, Width, Height);
-
-                // get source bitmap pixel format size
-                Depth = Image.GetPixelFormatSize(mFormat);
-
-                // Check if bpp (Bits Per Pixel) is 8, 24, or 32
-                if (Depth != 8 && Depth != 24 && Depth != 32)
-                {
-                    throw new ArgumentException("Only 8, 24 and 32 bpp images are supported.");
-                }
-
-                // Lock bitmap and return bitmap data
-                mBitmapData = Source.LockBits(rect, ImageLockMode.ReadWrite,
-                    mFormat);
-
-                // create byte array to copy pixel values
-                var step = Depth/8;
-                Pixels = new byte[pixelCount*step];
-                mIptr = mBitmapData.Scan0;
-
-                // Copy data from pointer to array
-                Marshal.Copy(mIptr, Pixels, 0, Pixels.Length);
-                IsLocked = true;
+                throw new ArgumentException("Only 8, 24 and 32 bpp images are supported.");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
+            // Lock bitmap and return bitmap data
+            mBitmapData = Source.LockBits(rect, ImageLockMode.ReadWrite,
+                mFormat);
+
+            // create byte array to copy pixel values
+            var step = Depth/8;
+            Pixels = new byte[pixelCount*step];
+            mIptr = mBitmapData.Scan0;
+
+            // Copy data from pointer to array
+            Marshal.Copy(mIptr, Pixels, 0, Pixels.Length);
+            IsLocked = true;
         }
 
         /// <summary>
@@ -88,19 +81,12 @@ namespace FunctionLib.Helper
         /// </summary>
         public void UnlockBits()
         {
-            try
-            {
-                // Copy data from byte array to pointer
-                Marshal.Copy(Pixels, 0, mIptr, Pixels.Length);
+            // Copy data from byte array to pointer
+            Marshal.Copy(Pixels, 0, mIptr, Pixels.Length);
 
-                // Unlock bitmap data
-                Source.UnlockBits(mBitmapData);
-                IsLocked = false;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            // Unlock bitmap data
+            Source.UnlockBits(mBitmapData);
+            IsLocked = false;
         }
 
         /// <summary>

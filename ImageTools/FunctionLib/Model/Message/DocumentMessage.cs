@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Model.Message
@@ -10,8 +11,8 @@ namespace FunctionLib.Model.Message
     {
         private readonly string mExtension;
 
-        public DocumentMessage(string path, bool compression = false)
-            : base(path, compression)
+        public DocumentMessage(string path, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+            : base(path, compression, crypto, password)
         {
             if (!File.Exists(path))
             {
@@ -19,8 +20,8 @@ namespace FunctionLib.Model.Message
             }
         }
 
-        public DocumentMessage(byte[] bytes, string extension, bool compression = false)
-            : base(bytes, compression)
+        public DocumentMessage(byte[] bytes, string extension, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+            : base(bytes, compression, crypto, password)
         {
             mExtension = extension;
         }
@@ -49,7 +50,13 @@ namespace FunctionLib.Model.Message
                     fs.CopyTo(memStream);
                 }
             }
+
             var result = memStream.ToArray();
+            if (Crypto != null)
+            {
+                result = Crypto.Encode(result, Password);
+            }
+
             if (Compression)
             {
                 using (var ms = new MemoryStream(memStream.ToArray()))
@@ -73,6 +80,12 @@ namespace FunctionLib.Model.Message
         {
             var path = FileManager.GetInstance().GenerateTmp(mExtension);
             var ms = Compression ? CompressionHelper.Decompress(Bytes) : new MemoryStream(Bytes);
+
+            if (Crypto != null)
+            {
+                ms = new MemoryStream(Crypto.Decode(ms.ToArray(), Password));
+            }
+
             if (Constants.ImageExtensions.Contains(mExtension, StringComparer.OrdinalIgnoreCase))
             {
                 using (var img = Image.FromStream(ms))
@@ -90,5 +103,7 @@ namespace FunctionLib.Model.Message
             }
             return path;
         }
+
+        public override string Message { get {return mMessage;} }
     }
 }
