@@ -6,7 +6,7 @@ namespace FunctionLib.Model.Message
     public abstract class SecretMessage
     {
         protected readonly string mMessage;
-        private readonly string mPassword;
+        private string mPassword;
 
         protected SecretMessage(string obj, bool compression, CryptographicAlgorithmImpl crypto, string password)
         {
@@ -20,12 +20,13 @@ namespace FunctionLib.Model.Message
             mPassword = password;
         }
 
-        protected string Password
+        public string Password
         {
-            get { return mPassword ?? "secret"; }
+            protected get { return mPassword ?? "secret"; }
+            set { mPassword = value; }
         }
 
-        protected CryptographicAlgorithmImpl Crypto { get; set; }
+        public CryptographicAlgorithmImpl Crypto { get; set; }
 
         protected SecretMessage(byte[] bytes, bool compression, CryptographicAlgorithmImpl crypto, string password)
         {
@@ -35,6 +36,7 @@ namespace FunctionLib.Model.Message
             }
             Bytes = bytes;
             Compression = compression;
+            Crypto = crypto;
             mPassword = password;
         }
 

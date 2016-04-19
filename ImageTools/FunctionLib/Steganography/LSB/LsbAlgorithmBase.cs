@@ -137,6 +137,7 @@ namespace FunctionLib.Steganography.LSB
 
             if (Bytes.Length >= EndCount)
             {
+                Bytes = Bytes.Take(EndCount).ToArray();
                 return true;
             }
             return false;

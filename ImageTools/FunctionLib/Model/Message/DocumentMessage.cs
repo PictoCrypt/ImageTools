@@ -65,14 +65,11 @@ namespace FunctionLib.Model.Message
                 }
             }
 
-            var length = ConvertHelper.Convert(result.Length.ToString());
-            var path = ConvertHelper.Convert(Path.GetExtension(Message).Replace(".", ""));
-            result =
-                length.Concat(Constants.TagSeperator)
-                    .Concat(path)
-                    .Concat(Constants.TagSeperator)
-                    .Concat(result)
-                    .ToArray();
+            var extension = ConvertHelper.Convert(Path.GetExtension(Message).Replace(".", ""));
+            var listResult = extension.Concat(Constants.TagSeperator).Concat(result);
+            var length = ConvertHelper.Convert(listResult.Count().ToString());
+            listResult = length.Concat(Constants.TagSeperator).Concat(listResult);
+            result = listResult.ToArray();
             return result;
         }
 

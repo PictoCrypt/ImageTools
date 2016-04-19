@@ -89,6 +89,7 @@ namespace FunctionLib.Cryptography
                         using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Write))
                         {
                             cs.Write(value, 0, value.Length);
+                            cs.Close();
                         }
                         decrypted = ms.ToArray();
                     }

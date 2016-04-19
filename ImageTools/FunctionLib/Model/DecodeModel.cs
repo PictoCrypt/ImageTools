@@ -38,6 +38,8 @@ namespace FunctionLib.Model
         public string Decode()
         {
             var result = SteganoAlgorithm.Decode(mSrcObj, PasswordHash, mLsbIndicator);
+            result.Crypto = CryptoAlgorithm;
+            result.Password = mPassword;
             result.Compression = mCompression;
             var message = result.ConvertBack();
             return message;
