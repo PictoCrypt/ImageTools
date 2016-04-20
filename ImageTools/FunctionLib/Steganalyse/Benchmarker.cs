@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace FunctionLib.Steganalyse
 {
+    /*
+    *   This code is based on the DIIT steganography project, which is available at the following address: http://diit.sourceforge.net/
+    */
     public class Benchmarker
     {
 //VARIABLES
