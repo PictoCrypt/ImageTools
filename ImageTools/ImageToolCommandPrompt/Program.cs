@@ -40,7 +40,7 @@ namespace ImageToolCommandPrompt
                 Console.WriteLine("[-i Least Significant Bit indicator; default is 3]");
 
                 Console.WriteLine();
-                Console.WriteLine(Seperator + " ENCODING " + Seperator);
+                Console.WriteLine(Seperator + " DECODING " + Seperator);
                 Console.WriteLine("DECODING \t Starts the encoding setup without parameters.");
                 Console.WriteLine("DECODING [");
                 Console.WriteLine("-s Sourcepath ");
@@ -51,6 +51,7 @@ namespace ImageToolCommandPrompt
                 Console.WriteLine("-r Resultpath");
                 Console.WriteLine("[-k Compression on/off; default is off]");
                 Console.WriteLine("[-i Least Significant Bit indicator; default is 3]");
+                return;
             }
 
             if (args.Length == 1)

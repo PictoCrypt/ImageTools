@@ -23,3 +23,5 @@ LsbIndicator ersetzen mit Class "AdditionalParam" ableiten in LsbAdditionalParam
 TODO Benchmarking -> Benchmarker, PixelBenchmark, RSAnalysis, SamplePairs, StegAnalyser, TraditionalLaplaceGraph, LaplaceGraph
 
 BattleSteg implementieren
+
+CMD erweitern mit Steganalyse und Benchmark
