@@ -93,11 +93,13 @@ namespace FunctionLib.Steganalyse
 
                     //now flip according to the mask
                     block = FlipBlock(block, mMask[m]);
+                    variationP = GetVariation(block, color);
+                    //flip it back
+                    block = FlipBlock(block, mMask[m]);
 
                     //negative mask
                     mMask[m] = InvertMask(mMask[m]);
                     variationN = GetNegativeVariation(block, color, mMask[m]);
-
                     mMask[m] = InvertMask(mMask[m]);
 
                     //now we need to work out which group each belongs to
