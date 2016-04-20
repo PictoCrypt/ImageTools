@@ -9,7 +9,7 @@ using FunctionLib.Steganography;
 
 namespace ImageToolCommandPrompt
 {
-    public class Program
+    public static class Program
     {
         private const string Seperator = "--------------------";
         private static string mSource;
