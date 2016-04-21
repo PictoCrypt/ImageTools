@@ -10,8 +10,8 @@ namespace UserControlClassLibrary.ImagePresenter
     {
         public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
             "ImageSource",
-            typeof (string),
-            typeof (ImagePresenter),
+            typeof(string),
+            typeof(ImagePresenter),
             new PropertyMetadata(false));
 
         public ImagePresenter()

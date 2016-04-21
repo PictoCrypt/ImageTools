@@ -119,35 +119,35 @@ namespace UnitTests.StegaTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ContentLengthException))]
+        [ExpectedException(typeof(ContentLengthException))]
         public virtual void EncodeTextWithoutSpaceTest()
         {
             var encrypted = Encode(GetTheRightImage(true), TestingConstants.LongText);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ContentLengthException))]
+        [ExpectedException(typeof(ContentLengthException))]
         public virtual void EncodeDocumentWithoutSpaceTest()
         {
             var encrypted = Encode(GetTheRightImage(true), TestingConstants.LargeTestdoc);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void EncodeWithoutMessageTest()
         {
             var encrypted = Encode(GetTheRightImage(), string.Empty);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void EncodeWithoutCoverTest()
         {
             var encrypted = Encode(null, TestingConstants.NormalText);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (BadImageFormatException))]
+        [ExpectedException(typeof(BadImageFormatException))]
         public virtual void EncodeWithWrongImageFormatTest()
         {
             if (Algorithm.PossibleImageFormats.Contains(ImageFormat.Jpeg))
@@ -223,7 +223,8 @@ namespace UnitTests.StegaTests
             return result;
         }
 
-        private string Decode(string src, CryptographicAlgorithmImpl crypto = null, string password = null, bool compression = false,
+        private string Decode(string src, CryptographicAlgorithmImpl crypto = null, string password = null,
+            bool compression = false,
             int lsbIndicator = 3)
         {
             var model = new DecodeModel(src, crypto, password, Algorithm, compression, lsbIndicator);

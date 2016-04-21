@@ -57,7 +57,7 @@ namespace ImageToolApp.Models
             var sr = new StreamReader(File.OpenRead(file));
             using (var reader = new JsonTextReader(sr))
             {
-                config = mSerializer.Deserialize(reader, typeof (Config)) as Config;
+                config = mSerializer.Deserialize(reader, typeof(Config)) as Config;
             }
             if (config != null)
             {

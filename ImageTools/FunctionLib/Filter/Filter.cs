@@ -7,6 +7,7 @@ namespace FunctionLib.Filter
     /*
     *   This code is based on the DIIT steganography project, which is available at the following address: http://diit.sourceforge.net/
     */
+
     public abstract class Filter
     {
         protected Filter(Bitmap image, int startbits, int endbits) : this(new LockBitmap(image), startbits, endbits)
@@ -30,6 +31,10 @@ namespace FunctionLib.Filter
         }
 
         private int ByteMask { get; }
+
+        protected LockBitmap Image { get; }
+        private int StartRange { get; }
+        private int EndRange { get; }
 
         protected int GetRed(Color color)
         {
@@ -56,7 +61,7 @@ namespace FunctionLib.Filter
                     bit = 1;
                 else
                     bit = 0;
-                abyte = (byte)(abyte << 1 | bit);
+                abyte = (byte) (abyte << 1 | bit);
             }
             for (var i = 0; i < 8; i++)
             {
@@ -65,9 +70,6 @@ namespace FunctionLib.Filter
             return abyte2;
         }
 
-        protected LockBitmap Image { get; }
-        private int StartRange { get; }
-        private int EndRange { get; }
         public abstract int GetValue(int x, int y);
     }
 }

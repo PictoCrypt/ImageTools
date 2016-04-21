@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using FunctionLib.Filter;
-using FunctionLib.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.FilterTests

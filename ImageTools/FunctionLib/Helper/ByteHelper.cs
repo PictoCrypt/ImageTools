@@ -42,7 +42,7 @@ namespace FunctionLib.Helper
                     bit = 1;
                 else
                     bit = 0;
-                abyte = (byte)(abyte << 1 | bit);
+                abyte = (byte) (abyte << 1 | bit);
             }
             for (var i = 0; i < 8; i++)
             {

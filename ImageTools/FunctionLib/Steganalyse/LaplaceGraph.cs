@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Text;
 using FunctionLib.Filter;
 using FunctionLib.Helper;
@@ -56,6 +55,7 @@ namespace FunctionLib.Steganalyse
          * @param image The image to get the graph of.
          * @return The graph of the image.
          */
+
         public static double[][] GetGraph(LockBitmap image)
         {
             var filter = new Laplace(image, 0, 8);

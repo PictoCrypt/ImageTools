@@ -34,7 +34,7 @@ namespace FunctionLib.Cryptography
             {
                 mKeySize = cipher.LegalKeySizes.Max().MaxSize;
                 var passwordBytes = new Rfc2898DeriveBytes(password, saltBytes, Iterations);
-                var keyBytes = passwordBytes.GetBytes(mKeySize / 8);
+                var keyBytes = passwordBytes.GetBytes(mKeySize/8);
 
                 cipher.Mode = CipherMode.CBC;
 
@@ -78,7 +78,7 @@ namespace FunctionLib.Cryptography
             using (var cipher = Algorithm)
             {
                 var passwordBytes = new Rfc2898DeriveBytes(password, saltBytes, Iterations);
-                var keyBytes = passwordBytes.GetBytes(mKeySize / 8);
+                var keyBytes = passwordBytes.GetBytes(mKeySize/8);
 
                 cipher.Mode = CipherMode.CBC;
 

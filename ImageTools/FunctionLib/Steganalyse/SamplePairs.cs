@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganalyse
@@ -19,16 +18,34 @@ namespace FunctionLib.Steganalyse
      *
      * @author Kathryn Hempstalk
      */
+
     public class SamplePairs
     {
+        //VARIABLES
+
+
+        /**
+         * Denotes analysis to be done with red.
+         */
+        public const int ANALYSIS_COLOUR_RED = 0;
+
+        /**
+         * Denotes analysis to be done with green.
+         */
+        public const int ANALYSIS_COLOUR_GREEN = 1;
+
+        /**
+         * Denotes analysis to be done with blue.
+         */
+        public const int ANALYSIS_COLOUR_BLUE = 2;
         /**
          * Does sample pairs analysis on an image.
          *
          * @param image The image to analyse.
          */
+
         public double DoAnalysis(LockBitmap image, int colour)
         {
-
             //get the images sizes
             int imgx = image.Width, imgy = image.Height;
 
@@ -74,7 +91,6 @@ namespace FunctionLib.Steganalyse
             {
                 for (startx = 0; startx < imgx; startx++)
                 {
-
                     //get the block of data (2 pixels)
                     apair[0] = image.GetPixel(startx, starty);
                     apair[1] = image.GetPixel(startx, starty + 1);
@@ -100,8 +116,8 @@ namespace FunctionLib.Steganalyse
 
             //solve the quadratic equation
             //in the form ax^2 + bx + c = 0
-            double a = 0.5 * (W + Z);
-            double b = 2 * X - P;
+            var a = 0.5*(W + Z);
+            double b = 2*X - P;
             double c = Y - X;
 
             //the result
@@ -109,16 +125,16 @@ namespace FunctionLib.Steganalyse
 
             //straight line
             if (a == 0)
-                x = c / b;
+                x = c/b;
 
             //curve
             //take it as a curve
-            double discriminant = Math.Pow(b, 2) - (4 * a * c);
+            var discriminant = Math.Pow(b, 2) - 4*a*c;
 
             if (discriminant >= 0)
             {
-                double rootpos = ((-1 * b) + Math.Sqrt(discriminant)) / (2 * a);
-                double rootneg = ((-1 * b) - Math.Sqrt(discriminant)) / (2 * a);
+                var rootpos = (-1*b + Math.Sqrt(discriminant))/(2*a);
+                var rootneg = (-1*b - Math.Sqrt(discriminant))/(2*a);
 
                 //return the root with the smallest absolute value (as per paper)
                 if (Math.Abs(rootpos) <= Math.Abs(rootneg))
@@ -126,21 +142,19 @@ namespace FunctionLib.Steganalyse
                 else
                     x = rootneg;
             }
-            else {
-                x = c / b;
+            else
+            {
+                x = c/b;
             }
 
             if (x == 0)
             {
                 //let's assume straight lines again, something is probably wrong
-                x = c / b;
+                x = c/b;
             }
 
             return x;
         }
-
-
-
 
 
         /**
@@ -150,16 +164,16 @@ namespace FunctionLib.Steganalyse
          * @param colour The colour to get.
          * @return The colour value of the given colour in the given pixel.
          */
+
         public int GetPixelColour(Color pixel, int colour)
         {
             if (colour == RsAnalysis.ANALYSIS_COLOUR_RED)
                 return pixel.R;
-            else if (colour == RsAnalysis.ANALYSIS_COLOUR_GREEN)
+            if (colour == RsAnalysis.ANALYSIS_COLOUR_GREEN)
                 return pixel.G;
-            else if (colour == RsAnalysis.ANALYSIS_COLOUR_BLUE)
+            if (colour == RsAnalysis.ANALYSIS_COLOUR_BLUE)
                 return pixel.B;
-            else
-                return 0;
+            return 0;
         }
 
 
@@ -167,7 +181,8 @@ namespace FunctionLib.Steganalyse
          * A small main method that will print out the message length
          * in percent of pixels.
          */
-        public static void Main(String[] args)
+
+        public static void Main(string[] args)
         {
             if (args.Length != 1)
             {
@@ -178,20 +193,20 @@ namespace FunctionLib.Steganalyse
             {
                 Console.WriteLine("\nSample Pairs Results");
                 Console.WriteLine("--------------------");
-                SamplePairs sp = new SamplePairs();
-                using (Bitmap bitmap = new Bitmap(args[0]))
+                var sp = new SamplePairs();
+                using (var bitmap = new Bitmap(args[0]))
                 {
                     var image = new LockBitmap(bitmap);
                     image.LockBits();
 
                     double average = 0;
-                    double results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_RED);
+                    var results = sp.DoAnalysis(image, ANALYSIS_COLOUR_RED);
                     Console.WriteLine("Result from red: " + results);
                     average += results;
-                    results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_GREEN);
+                    results = sp.DoAnalysis(image, ANALYSIS_COLOUR_GREEN);
                     Console.WriteLine("Result from green: " + results);
                     average += results;
-                    results = sp.DoAnalysis(image, SamplePairs.ANALYSIS_COLOUR_BLUE);
+                    results = sp.DoAnalysis(image, ANALYSIS_COLOUR_BLUE);
                     Console.WriteLine("Result from blue: " + results);
                     average += results;
                     average = average/3;
@@ -207,24 +222,5 @@ namespace FunctionLib.Steganalyse
                 Console.WriteLine(e.StackTrace);
             }
         }
-
-
-        //VARIABLES
-
-
-        /**
-         * Denotes analysis to be done with red.
-         */
-        public const int ANALYSIS_COLOUR_RED = 0;
-
-        /**
-         * Denotes analysis to be done with green.
-         */
-        public const int ANALYSIS_COLOUR_GREEN = 1;
-
-        /**
-         * Denotes analysis to be done with blue.
-         */
-        public const int ANALYSIS_COLOUR_BLUE = 2;
     }
 }

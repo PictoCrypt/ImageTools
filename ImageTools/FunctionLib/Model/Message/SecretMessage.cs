@@ -20,14 +20,6 @@ namespace FunctionLib.Model.Message
             mPassword = password;
         }
 
-        public string Password
-        {
-            protected get { return mPassword ?? "secret"; }
-            set { mPassword = value; }
-        }
-
-        public CryptographicAlgorithmImpl Crypto { get; set; }
-
         protected SecretMessage(byte[] bytes, bool compression, CryptographicAlgorithmImpl crypto, string password)
         {
             if (bytes == null || bytes.Length <= 0)
@@ -39,6 +31,14 @@ namespace FunctionLib.Model.Message
             Crypto = crypto;
             mPassword = password;
         }
+
+        public string Password
+        {
+            protected get { return mPassword ?? "secret"; }
+            set { mPassword = value; }
+        }
+
+        public CryptographicAlgorithmImpl Crypto { get; set; }
 
         public abstract string Message { get; }
 

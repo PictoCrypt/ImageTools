@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using FunctionLib.Helper;
 
 namespace FunctionLib.Steganography.LSB
@@ -33,7 +32,6 @@ namespace FunctionLib.Steganography.LSB
                     {
                         return true;
                     }
-                    
                 }
             }
             return false;

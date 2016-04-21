@@ -14,12 +14,16 @@ namespace UnitTests
         private static readonly string LoremIpsum = Path.Combine(Constants.ExecutiongPath, "Testfiles", "LoremIpsum.txt");
         public static readonly string LongText = File.ReadAllText(LoremIpsum);
         public static readonly string NormalImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "NormalTest.png");
-        public static readonly string NormalJpgImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "NormalTest.jpg");
+
+        public static readonly string NormalJpgImage = Path.Combine(Constants.ExecutiongPath, "Testfiles",
+            "NormalTest.jpg");
 
 
         public static readonly string SmallImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallImage.jpg");
-        public static readonly string SmallJpgImage = Path.Combine(Constants.ExecutiongPath, "Testfiles", "SmallImage.png");
-        
+
+        public static readonly string SmallJpgImage = Path.Combine(Constants.ExecutiongPath, "Testfiles",
+            "SmallImage.png");
+
         public static readonly string NormalTestdoc = Path.Combine(Constants.ExecutiongPath, "Testfiles",
             "NormalTestdoc.docx");
 

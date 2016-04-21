@@ -11,7 +11,8 @@ namespace FunctionLib.Model.Message
     {
         private readonly string mExtension;
 
-        public DocumentMessage(string path, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+        public DocumentMessage(string path, bool compression = false, CryptographicAlgorithmImpl crypto = null,
+            string password = null)
             : base(path, compression, crypto, password)
         {
             if (!File.Exists(path))
@@ -20,7 +21,8 @@ namespace FunctionLib.Model.Message
             }
         }
 
-        public DocumentMessage(byte[] bytes, string extension, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+        public DocumentMessage(byte[] bytes, string extension, bool compression = false,
+            CryptographicAlgorithmImpl crypto = null, string password = null)
             : base(bytes, compression, crypto, password)
         {
             mExtension = extension;
@@ -101,6 +103,9 @@ namespace FunctionLib.Model.Message
             return path;
         }
 
-        public override string Message { get {return mMessage;} }
+        public override string Message
+        {
+            get { return mMessage; }
+        }
     }
 }

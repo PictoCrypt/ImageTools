@@ -7,16 +7,16 @@ namespace ImageToolApp.WpfHelpers
     {
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.RegisterAttached("Password",
-                typeof (string), typeof (PasswordHelper),
+                typeof(string), typeof(PasswordHelper),
                 new FrameworkPropertyMetadata(string.Empty, OnPasswordPropertyChanged));
 
         public static readonly DependencyProperty AttachProperty =
             DependencyProperty.RegisterAttached("Attach",
-                typeof (bool), typeof (PasswordHelper), new PropertyMetadata(false, Attach));
+                typeof(bool), typeof(PasswordHelper), new PropertyMetadata(false, Attach));
 
         private static readonly DependencyProperty IsUpdatingProperty =
-            DependencyProperty.RegisterAttached("IsUpdating", typeof (bool),
-                typeof (PasswordHelper));
+            DependencyProperty.RegisterAttached("IsUpdating", typeof(bool),
+                typeof(PasswordHelper));
 
 
         public static void SetAttach(DependencyObject dp, bool value)

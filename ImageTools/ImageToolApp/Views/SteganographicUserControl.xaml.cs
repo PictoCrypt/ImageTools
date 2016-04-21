@@ -9,15 +9,15 @@ namespace ImageToolApp.Views
     /// </summary>
     public partial class SteganographicUserControl : UserControl
     {
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof (string),
-            typeof (SteganographicUserControl));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+            typeof(SteganographicUserControl));
 
 
-        public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register("Enabled", typeof (bool),
-            typeof (SteganographicUserControl));
+        public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register("Enabled", typeof(bool),
+            typeof(SteganographicUserControl));
 
         public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command",
-            typeof (ICommand), typeof (SteganographicUserControl));
+            typeof(ICommand), typeof(SteganographicUserControl));
 
         public SteganographicUserControl()
         {

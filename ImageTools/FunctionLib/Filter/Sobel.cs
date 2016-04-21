@@ -7,6 +7,7 @@ namespace FunctionLib.Filter
     /*
     *   This code is based on the DIIT steganography project, which is available at the following address: http://diit.sourceforge.net/
     */
+
     public class Sobel : Filter
     {
         public Sobel(Bitmap image, int startbits, int endbits) : base(image, startbits, endbits)
@@ -20,10 +21,18 @@ namespace FunctionLib.Filter
         public override int GetValue(int x, int y)
         {
             // Gathering the matrices
-            Color matrix1Left = default(Color), matrix1Leftup = default(Color), matrix1Leftdown = default(Color),
-                matrix1Right = default(Color), matrix1Rightup = default(Color), matrix1Rightdown = default(Color),
-                matrix2Up = default(Color), matrix2Upleft = default(Color), matrix2Upright = default(Color),
-                matrix2Down = default(Color), matrix2Downleft = default(Color), matrix2Downright = default(Color);
+            Color matrix1Left = default(Color),
+                matrix1Leftup = default(Color),
+                matrix1Leftdown = default(Color),
+                matrix1Right = default(Color),
+                matrix1Rightup = default(Color),
+                matrix1Rightdown = default(Color),
+                matrix2Up = default(Color),
+                matrix2Upleft = default(Color),
+                matrix2Upright = default(Color),
+                matrix2Down = default(Color),
+                matrix2Downleft = default(Color),
+                matrix2Downright = default(Color);
 
             if (x == 0 || y == 0 || y == Image.Height - 1 || x == Image.Width - 1)
             {
@@ -72,17 +81,32 @@ namespace FunctionLib.Filter
 
             // Calculating differences
 
-            var redDiff = (int)Math.Sqrt(
-                Math.Pow((GetRed(matrix1Right) * 2 + GetRed(matrix1Rightup) + GetRed(matrix1Rightdown)) - (GetRed(matrix1Left) * 2 + GetRed(matrix1Leftup) + GetRed(matrix1Leftdown)), 2)
-                + Math.Pow((GetRed(matrix2Up) * 2 + GetRed(matrix2Upleft) + GetRed(matrix2Upright)) - (GetRed(matrix2Down) * 2 + GetRed(matrix2Downleft) + GetRed(matrix2Downright)), 2));
+            var redDiff = (int) Math.Sqrt(
+                Math.Pow(
+                    GetRed(matrix1Right)*2 + GetRed(matrix1Rightup) + GetRed(matrix1Rightdown) -
+                    (GetRed(matrix1Left)*2 + GetRed(matrix1Leftup) + GetRed(matrix1Leftdown)), 2)
+                +
+                Math.Pow(
+                    GetRed(matrix2Up)*2 + GetRed(matrix2Upleft) + GetRed(matrix2Upright) -
+                    (GetRed(matrix2Down)*2 + GetRed(matrix2Downleft) + GetRed(matrix2Downright)), 2));
 
-            var greenDiff = (int)Math.Sqrt(
-                Math.Pow((GetGreen(matrix1Right) * 2 + GetGreen(matrix1Rightup) + GetGreen(matrix1Rightdown)) - (GetGreen(matrix1Left) * 2 + GetGreen(matrix1Leftup) + GetGreen(matrix1Leftdown)), 2)
-                + Math.Pow((GetGreen(matrix2Up) * 2 + GetGreen(matrix2Upleft) + GetGreen(matrix2Upright)) - (GetGreen(matrix2Down) * 2 + GetGreen(matrix2Downleft) + GetGreen(matrix2Downright)), 2));
+            var greenDiff = (int) Math.Sqrt(
+                Math.Pow(
+                    GetGreen(matrix1Right)*2 + GetGreen(matrix1Rightup) + GetGreen(matrix1Rightdown) -
+                    (GetGreen(matrix1Left)*2 + GetGreen(matrix1Leftup) + GetGreen(matrix1Leftdown)), 2)
+                +
+                Math.Pow(
+                    GetGreen(matrix2Up)*2 + GetGreen(matrix2Upleft) + GetGreen(matrix2Upright) -
+                    (GetGreen(matrix2Down)*2 + GetGreen(matrix2Downleft) + GetGreen(matrix2Downright)), 2));
 
-            var blueDiff = (int)Math.Sqrt(
-                Math.Pow((GetBlue(matrix1Right) * 2 + GetBlue(matrix1Rightup) + GetBlue(matrix1Rightdown)) - (GetBlue(matrix1Left) * 2 + GetBlue(matrix1Leftup) + GetBlue(matrix1Leftdown)), 2)
-                + Math.Pow((GetBlue(matrix2Up) * 2 + GetBlue(matrix2Upleft) + GetBlue(matrix2Upright)) - (GetBlue(matrix2Down) * 2 + GetBlue(matrix2Downleft) + GetBlue(matrix2Downright)), 2));
+            var blueDiff = (int) Math.Sqrt(
+                Math.Pow(
+                    GetBlue(matrix1Right)*2 + GetBlue(matrix1Rightup) + GetBlue(matrix1Rightdown) -
+                    (GetBlue(matrix1Left)*2 + GetBlue(matrix1Leftup) + GetBlue(matrix1Leftdown)), 2)
+                +
+                Math.Pow(
+                    GetBlue(matrix2Up)*2 + GetBlue(matrix2Upleft) + GetBlue(matrix2Upright) -
+                    (GetBlue(matrix2Down)*2 + GetBlue(matrix2Downleft) + GetBlue(matrix2Downright)), 2));
 
             // Returing the total result
             return Math.Abs(redDiff) + Math.Abs(greenDiff) + Math.Abs(blueDiff);

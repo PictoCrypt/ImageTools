@@ -7,6 +7,7 @@ namespace FunctionLib.Filter
     /*
     *   This code is based on the DIIT steganography project, which is available at the following address: http://diit.sourceforge.net/
     */
+
     public class TraditionalLaplace : Filter
     {
         public TraditionalLaplace(Bitmap image, int startbits, int endbits) : base(image, startbits, endbits)
@@ -64,7 +65,7 @@ namespace FunctionLib.Filter
 
             // Difference
 
-            var result = (pixelCount* GetLuminance(pixel)) - GetLuminance(left) + GetLuminance(right) +
+            var result = pixelCount*GetLuminance(pixel) - GetLuminance(left) + GetLuminance(right) +
                          GetLuminance(up) + GetLuminance(down);
             return Convert.ToInt32(result);
         }
@@ -72,8 +73,8 @@ namespace FunctionLib.Filter
         private int GetLuminance(Color pixel)
         {
             //Y = 0.299R + 0.587G + 0.114B
-            return (int)((0.299 * GetRed(pixel)) + (0.587 * GetGreen(pixel))
-                + (0.114 * GetBlue(pixel)));
+            return (int) (0.299*GetRed(pixel) + 0.587*GetGreen(pixel)
+                          + 0.114*GetBlue(pixel));
         }
     }
 }

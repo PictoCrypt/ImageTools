@@ -7,12 +7,14 @@ namespace FunctionLib.Model.Message
 {
     public class TextMessage : SecretMessage, ISecretMessage
     {
-        public TextMessage(string message, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+        public TextMessage(string message, bool compression = false, CryptographicAlgorithmImpl crypto = null,
+            string password = null)
             : base(message, compression, crypto, password)
         {
         }
 
-        public TextMessage(byte[] bytes, bool compression = false, CryptographicAlgorithmImpl crypto = null, string password = null)
+        public TextMessage(byte[] bytes, bool compression = false, CryptographicAlgorithmImpl crypto = null,
+            string password = null)
             : base(bytes, compression, crypto, password)
         {
         }

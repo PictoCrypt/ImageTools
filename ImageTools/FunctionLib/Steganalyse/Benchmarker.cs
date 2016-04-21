@@ -6,15 +6,9 @@ namespace FunctionLib.Steganalyse
     /*
     *   This code is based on the DIIT steganography project, which is available at the following address: http://diit.sourceforge.net/
     */
+
     public class Benchmarker
     {
-//VARIABLES
-
-/**
- * A string holding the results of all the benchmarking tests.
- */
-        private string mResultsString;
-
 /**
  * Whether to run an Average Absolute Difference benchmark.
  */
@@ -54,6 +48,12 @@ namespace FunctionLib.Steganalyse
  * Whether to run a Signal-to-Noise Ratio benchmark.
  */
         private readonly bool mRunSignalToNoiseRatio;
+//VARIABLES
+
+/**
+ * A string holding the results of all the benchmarking tests.
+ */
+        private string mResultsString;
         /*
          * Sets up the benchmarker ready for use.  All tests are set as
          * per the entered values.
@@ -193,6 +193,7 @@ namespace FunctionLib.Steganalyse
 	     *
 	     * @return The last results.
 	     */
+
         public override string ToString()
         {
             return mResultsString;

@@ -12,6 +12,14 @@ namespace FunctionLib.Filter
 
     public class Laplace : Filter
     {
+        public Laplace(Bitmap image, int startbits, int endbits) : base(image, startbits, endbits)
+        {
+        }
+
+        public Laplace(LockBitmap image, int startbits, int endbits) : base(image, startbits, endbits)
+        {
+        }
+
         public override int GetValue(int x, int y)
         {
             var pixel = Image.GetPixel(x, y);
@@ -61,21 +69,14 @@ namespace FunctionLib.Filter
             return diff.Sum(Math.Abs);
         }
 
-        private IEnumerable<int> CalculateDifference(Color pixel, Color left, Color right, Color up, Color down, int pixelCount)
+        private IEnumerable<int> CalculateDifference(Color pixel, Color left, Color right, Color up, Color down,
+            int pixelCount)
         {
             var result = new int[3];
             result[0] = GetRed(pixel)*pixelCount - (GetRed(left) + GetRed(right) + GetRed(up) + GetRed(down));
-            result[1] = GetGreen(pixel) * pixelCount - (GetGreen(left) + GetGreen(right) + GetGreen(up) + GetGreen(down));
-            result[1] = GetBlue(pixel) * pixelCount - (GetBlue(left) + GetBlue(right) + GetBlue(up) + GetBlue(down));
+            result[1] = GetGreen(pixel)*pixelCount - (GetGreen(left) + GetGreen(right) + GetGreen(up) + GetGreen(down));
+            result[1] = GetBlue(pixel)*pixelCount - (GetBlue(left) + GetBlue(right) + GetBlue(up) + GetBlue(down));
             return result;
-        }
-
-        public Laplace(Bitmap image, int startbits, int endbits) : base(image, startbits, endbits)
-        {
-        }
-
-        public Laplace(LockBitmap image, int startbits, int endbits) : base(image, startbits, endbits)
-        {
         }
     }
 }

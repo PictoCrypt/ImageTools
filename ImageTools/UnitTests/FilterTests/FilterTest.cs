@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using FunctionLib.Filter;
-using FunctionLib.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.FilterTests
@@ -34,7 +33,7 @@ namespace UnitTests.FilterTests
 
                 Assert.IsNotNull(results);
                 Assert.IsTrue(results.Count > 0);
-                Assert.IsTrue(results.Count == image.Width * image.Height);
+                Assert.IsTrue(results.Count == image.Width*image.Height);
             }
         }
 

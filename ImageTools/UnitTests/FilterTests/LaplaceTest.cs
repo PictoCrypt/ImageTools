@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using FunctionLib.Filter;
-using FunctionLib.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.FilterTests
@@ -12,7 +9,7 @@ namespace UnitTests.FilterTests
     {
         protected override Filter GenerateFilter(Bitmap image, int startbits, int endbits)
         {
-            return new Laplace(image, startbits, endbits); 
+            return new Laplace(image, startbits, endbits);
         }
     }
 }

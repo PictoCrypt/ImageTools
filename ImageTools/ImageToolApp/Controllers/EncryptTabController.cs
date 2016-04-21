@@ -29,7 +29,7 @@ namespace ImageToolApp.Controllers
         {
             mExpanders =
                 View.FindChildren<Expander>()
-                    .Where(x => x.Content != null && x.Content.GetType() != typeof (Image))
+                    .Where(x => x.Content != null && x.Content.GetType() != typeof(Image))
                     .ToList();
             foreach (var expander in mExpanders)
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -25,12 +24,12 @@ namespace FunctionLib.Steganography.LSB
         protected int EndCount { get; set; }
 
         protected ICollection<int> BitHolder { get; set; }
-        
+
         protected byte[] Bytes { get; set; }
 
         public override IList<ImageFormat> PossibleImageFormats
         {
-            get { return new List<ImageFormat> { ImageFormat.Bmp, ImageFormat.Png, ImageFormat.MemoryBmp}; }
+            get { return new List<ImageFormat> {ImageFormat.Bmp, ImageFormat.Png, ImageFormat.MemoryBmp}; }
         }
 
         public List<Pixel> ChangedPixels { get; }
