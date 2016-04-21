@@ -54,7 +54,7 @@ namespace ImageToolCommandPrompt
         {
             Console.WriteLine();
             Console.WriteLine(Seperator + " {0} " + Seperator, Name);
-            Console.WriteLine("{0} \t Starts the benchmarking setup without parameters.", Name);
+            Console.WriteLine("{0} \t Starts the setup without parameters.", Name);
             Console.WriteLine("{0} [", Name);
         }
 
