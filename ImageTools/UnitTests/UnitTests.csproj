@@ -65,6 +65,7 @@
     <Compile Include="FilterTests\PrewittTest.cs" />
     <Compile Include="FilterTests\TraditionalLaplaceTest.cs" />
     <Compile Include="FilterTests\SobelTest.cs" />
+    <Compile Include="FunctionLibTests\AnalysisTest.cs" />
     <Compile Include="FunctionLibTests\CompressionTests.cs" />
     <Compile Include="FunctionLibTests\AdditionalTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
