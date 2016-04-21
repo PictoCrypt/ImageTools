@@ -16,13 +16,13 @@
             }
         }
 
-        protected override bool EncodingIteration(int lsbIndicator)
+        protected override bool EncodingIteration()
         {
             for (var y = 0; y < Bitmap.Height; y++)
             {
                 for (var x = 0; x < Bitmap.Width; x++)
                 {
-                    EncodeBytes(x, y, lsbIndicator);
+                    EncodeBytes(x, y, LsbIndicator);
                     if (EncodeCheckForEnd())
                     {
                         return true;
@@ -32,13 +32,13 @@
             return false;
         }
 
-        protected override bool DecodingIteration(int lsbIndicator)
+        protected override bool DecodingIteration()
         {
             for (var y = 0; y < Bitmap.Height; y++)
             {
                 for (var x = 0; x < Bitmap.Width; x++)
                 {
-                    DecodeBytes(x, y, lsbIndicator);
+                    DecodeBytes(x, y, LsbIndicator);
                     //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                     var bitHolder = BitHolder;
                     Bytes = BitToByte(Bytes, ref bitHolder);

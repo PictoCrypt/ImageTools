@@ -38,8 +38,7 @@ namespace FunctionLib.Steganography
             Bytes = message.Convert();
         }
 
-        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
-            int lsbIndicator)
+        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash)
         {
             var tmp = FileManager.CopyImageToTmp(src);
             using (var bmp = new Bitmap(src))

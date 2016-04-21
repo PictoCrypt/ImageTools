@@ -12,12 +12,12 @@ namespace FunctionLib.Steganography.LSB
                 "like \"Laplace-Filter\". Hiding the secret information into random pixels with high filter-values.";
             }
         }
-        protected override bool EncodingIteration(int lsbIndicator)
+        protected override bool EncodingIteration()
         {
             throw new NotImplementedException();
         }
 
-        protected override bool DecodingIteration(int lsbIndicator)
+        protected override bool DecodingIteration()
         {
             throw new NotImplementedException();
         }

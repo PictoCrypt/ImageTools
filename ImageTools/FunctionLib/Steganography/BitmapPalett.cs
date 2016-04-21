@@ -30,8 +30,7 @@ namespace FunctionLib.Steganography
             return Bitmap.Source.Palette.Entries.Length > 0;
         }
 
-        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
-            int lsbIndicator)
+        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash)
         {
             var palette = Bitmap.Source.Palette;
             throw new NotImplementedException();

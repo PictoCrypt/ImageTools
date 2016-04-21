@@ -53,7 +53,7 @@ namespace FunctionLib.Steganography
                 throw new BadImageFormatException();
             }
 
-            var result = EncodingAlgorithm(src, message, passHash, lsbIndicator);
+            var result = EncodingAlgorithm(src, message, passHash);
 
             CleanupEncoding();
 
@@ -79,7 +79,7 @@ namespace FunctionLib.Steganography
             PassHash = passHash;
         }
 
-        protected abstract string EncodingAlgorithm(string src, ISecretMessage message, int passHash, int lsbIndicator);
+        protected abstract string EncodingAlgorithm(string src, ISecretMessage message, int passHash);
 
         public ISecretMessage Decode(string src, int passHash, int lsbIndicator = 3)
         {

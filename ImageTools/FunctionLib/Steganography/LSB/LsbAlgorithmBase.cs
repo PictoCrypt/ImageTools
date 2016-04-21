@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -36,14 +37,13 @@ namespace FunctionLib.Steganography.LSB
 
         protected int LsbIndicator { get; set; }
 
-        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
-            int lsbIndicator = 3)
+        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash)
         {
             var tmp = FileManager.CopyImageToTmp(src);
 
             try
             {
-                if (!EncodingIteration(lsbIndicator))
+                if (!EncodingIteration())
                 {
                     throw new SystemException();
                 }
@@ -60,7 +60,7 @@ namespace FunctionLib.Steganography.LSB
         {
             try
             {
-                if (!DecodingIteration(lsbIndicator))
+                if (!DecodingIteration())
                 {
                     throw new SystemException();
                 }
@@ -80,7 +80,7 @@ namespace FunctionLib.Steganography.LSB
             Bytes = Bytes.Skip(index + 1).ToArray();
         }
 
-        protected abstract bool DecodingIteration(int lsbIndicator);
+        protected abstract bool DecodingIteration();
 
         protected override void InitializeDecoding(string src, int passHash, int lsbIndicator)
         {
@@ -99,7 +99,7 @@ namespace FunctionLib.Steganography.LSB
             return result;
         }
 
-        protected abstract bool EncodingIteration(int lsbIndicator);
+        protected abstract bool EncodingIteration();
 
         protected bool EncodeCheckForEnd()
         {

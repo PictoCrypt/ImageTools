@@ -34,8 +34,7 @@ namespace FunctionLib.Steganography
             return true;
         }
 
-        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash,
-            int lsbIndicator = 3)
+        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash)
         {
             var data = message.Convert();
             var file = FileManager.CopyImageToTmp(src);

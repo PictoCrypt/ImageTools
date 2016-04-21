@@ -22,9 +22,9 @@ namespace FunctionLib.Steganography.LSB
             }
         }
 
-        protected override bool EncodingIteration(int lsbIndicator)
+        protected override bool EncodingIteration()
         {
-            var filter = new Laplace(Bitmap, lsbIndicator, 8);
+            var filter = new Laplace(Bitmap, LsbIndicator, 8);
             IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
             {
@@ -41,7 +41,7 @@ namespace FunctionLib.Steganography.LSB
                 var x = key.Key.X;
                 var y = key.Key.Y;
                 //var x = GetNextRandom("x", orderedLaplace.Count(), random);
-                EncodeBytes(x, y, lsbIndicator);
+                EncodeBytes(x, y, LsbIndicator);
                 if (EncodeCheckForEnd())
                 {
                     return true;
@@ -50,9 +50,9 @@ namespace FunctionLib.Steganography.LSB
             return false;
         }
 
-        protected override bool DecodingIteration(int lsbIndicator)
+        protected override bool DecodingIteration()
         {
-            var filter = new Laplace(Bitmap, lsbIndicator, 8);
+            var filter = new Laplace(Bitmap, LsbIndicator, 8);
             IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
             {
@@ -69,7 +69,7 @@ namespace FunctionLib.Steganography.LSB
                 var x = key.Key.X;
                 var y = key.Key.Y;
                 //var x = GetNextRandom("x", orderedLaplace.Count(), random);
-                DecodeBytes(x, y, lsbIndicator);
+                DecodeBytes(x, y, LsbIndicator);
                 //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                 var bitHolder = BitHolder;
                 Bytes = BitToByte(Bytes.ToList(), ref bitHolder);
