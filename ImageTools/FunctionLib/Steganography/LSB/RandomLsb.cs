@@ -16,21 +16,17 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool EncodingIteration()
         {
-            while (ByteIndex < Bytes.Length)
+            while (!EncodeCheckForEnd())
             {
                 var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
                 EncodeBytes(pixel.X, pixel.Y, LsbIndicator);
-                if (EncodeCheckForEnd())
-                {
-                    return true;
-                }
             }
-            return false;
+            return true;
         }
 
         protected override bool DecodingIteration()
         {
-            while (Bytes.Length <= EndCount)
+            while (!DecodeCheckForEnd())
             {
                 var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
                 DecodeBytes(pixel.X, pixel.Y, LsbIndicator);
@@ -38,12 +34,8 @@ namespace FunctionLib.Steganography.LSB
                 var bitHolder = BitHolder;
                 Bytes = BitToByte(Bytes, ref bitHolder);
                 BitHolder = bitHolder;
-                if (DecodeCheckForEnd())
-                {
-                    return true;
-                }
             }
-            return false;
+            return Bytes.Length == EndCount;
         }
     }
 }

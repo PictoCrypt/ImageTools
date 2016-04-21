@@ -21,41 +21,33 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool EncodingIteration()
         {
-            while (ByteIndex < Bytes.Length)
+            while (!EncodeCheckForEnd())
             {
                 var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
-                if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(pixel.X, pixel.Y)))
+                if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(pixel.X, pixel.Y), LsbIndicator))
                 {
                     //TODO check if we can give pixel here
                     EncodeBytes(pixel.X, pixel.Y, LsbIndicator);
-                    if (EncodeCheckForEnd())
-                    {
-                        return true;
-                    }
-                }
+                }                
             }
-            return false;
+            return true;
         }
 
         protected override bool DecodingIteration()
         {
-            while (Bytes.Length <= EndCount)
+            while (!DecodeCheckForEnd())
             {
                 var pixel = GetNextRandom(Bitmap.Width, Bitmap.Height, Random);
-                if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(pixel.X, pixel.Y)))
+                if (!ImageHelper.TransparentOrWhite(Bitmap.GetPixel(pixel.X, pixel.Y), LsbIndicator))
                 {
                     DecodeBytes(pixel.X, pixel.Y, LsbIndicator);
                     //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                     var bitHolder = BitHolder;
                     Bytes = BitToByte(Bytes, ref bitHolder);
                     BitHolder = bitHolder;
-                    if (DecodeCheckForEnd())
-                    {
-                        return true;
-                    }
                 }
             }
-            return false;
+            return Bytes.Length == EndCount;
         }
     }
 }
