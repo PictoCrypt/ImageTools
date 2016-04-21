@@ -12,6 +12,10 @@ namespace ImageToolCommandPrompt
         private bool mRsAnalysis;
         private bool mSamplePair;
 
+        public Steganalysis()
+        {
+        }
+
         public Steganalysis(string[] args) : base(args)
         {
         }

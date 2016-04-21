@@ -12,6 +12,10 @@ namespace ImageToolCommandPrompt
         public static readonly string Seperator = "--------------------";
         private readonly bool mParametersSet;
 
+        protected CommandTool()
+        {
+        }
+
         protected CommandTool(string[] args)
         {
             mParametersSet = false;

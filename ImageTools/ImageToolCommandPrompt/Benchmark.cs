@@ -10,6 +10,10 @@ namespace ImageToolCommandPrompt
         private string mOriginalPath;
         private string mSteganogrammPath;
 
+        public Benchmark()
+        {
+        }
+
         public Benchmark(string[] args) : base(args)
         {
         }

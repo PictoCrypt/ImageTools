@@ -49,6 +49,7 @@ namespace ImageToolCommandPrompt
             foreach (var commandTool in StaticCommandTools)
             {
                 commandTool.Help();
+                Console.ReadLine();
             }
         }
     }

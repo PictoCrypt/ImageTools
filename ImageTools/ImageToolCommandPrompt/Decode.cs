@@ -17,6 +17,10 @@ namespace ImageToolCommandPrompt
         private string mResultPath;
         private int mStegoIndex = -1;
 
+        public Decode()
+        {
+        }
+
         public Decode(string[] args) : base(args)
         {
         }

@@ -18,6 +18,10 @@ namespace ImageToolCommandPrompt
         private string mResultPath;
         private int mStegoIndex;
 
+        public Encode()
+        {
+        }
+
         public Encode(string[] args) : base(args)
         {
         }
