@@ -68,8 +68,7 @@ namespace FunctionLib.Steganography.LSB
             {
                 Cleanup();
             }
-
-            RemoveSizeTag();
+            
             return GetSpecificMessage(Bytes.ToArray());
         }
 
@@ -130,7 +129,7 @@ namespace FunctionLib.Steganography.LSB
                         throw new ArithmeticException();
                     }
 
-                    EndCount = EndCount + seq.Count() + Constants.TagSeperator.Length;
+                    RemoveSizeTag();
                 }
             }
 

@@ -47,7 +47,7 @@ namespace FunctionLib.Steganography.LSB
                     DecodeBytes(pixel.X, pixel.Y, LsbIndicator);
                     //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                     var bitHolder = BitHolder;
-                    Bytes = BitToByte(Bytes.ToList(), ref bitHolder);
+                    Bytes = BitToByte(Bytes, ref bitHolder);
                     BitHolder = bitHolder;
                     if (DecodeCheckForEnd())
                     {
