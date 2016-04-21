@@ -8,9 +8,9 @@ namespace ImageToolCommandPrompt
     public class Steganalysis : CommandTool
     {
         private string mImagePath;
-        private bool mSamplePair;
-        private bool mRsAnalysis;
         private bool mLaplacianGraph;
+        private bool mRsAnalysis;
+        private bool mSamplePair;
 
         public Steganalysis(string[] args) : base(args)
         {

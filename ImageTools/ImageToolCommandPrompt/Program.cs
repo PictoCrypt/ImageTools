@@ -11,6 +11,7 @@ namespace ImageToolCommandPrompt
         {
             get { return AlgorithmCollector.GetAllAlgorithm<CommandTool>(); }
         }
+
         public static void Main(string[] args)
         {
             Console.WriteLine(CommandTool.Seperator + " HELP " + CommandTool.Seperator);
@@ -18,7 +19,7 @@ namespace ImageToolCommandPrompt
             {
                 WriteHelp();
             }
-            else if(args.Length > 0)
+            else if (args.Length > 0)
             {
                 var key = args[0].ToUpperInvariant();
                 args = args.Skip(1).ToArray();

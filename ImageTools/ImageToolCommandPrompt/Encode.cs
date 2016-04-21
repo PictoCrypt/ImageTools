@@ -8,6 +8,16 @@ namespace ImageToolCommandPrompt
 {
     public class Encode : CommandTool
     {
+        private bool mCompression;
+        private int mCryptIndex;
+
+        private string mImagePath;
+        private int mLsbIndicator;
+        private string mMessage;
+        private string mPassword;
+        private string mResultPath;
+        private int mStegoIndex;
+
         public Encode(string[] args) : base(args)
         {
         }
@@ -21,7 +31,8 @@ namespace ImageToolCommandPrompt
         {
             get
             {
-                return File.Exists(mImagePath) && !string.IsNullOrEmpty(mMessage) && !string.IsNullOrEmpty(mResultPath) && mStegoIndex >= 0;
+                return File.Exists(mImagePath) && !string.IsNullOrEmpty(mMessage) && !string.IsNullOrEmpty(mResultPath) &&
+                       mStegoIndex >= 0;
             }
         }
 
@@ -108,7 +119,8 @@ namespace ImageToolCommandPrompt
             {
                 InitializeRun();
                 //TODO Show process?
-                var model = new EncodeModel(mImagePath, mMessage, GetCrypt(mCryptIndex), mPassword, GetStego(mStegoIndex), mCompression, mLsbIndicator);
+                var model = new EncodeModel(mImagePath, mMessage, GetCrypt(mCryptIndex), mPassword,
+                    GetStego(mStegoIndex), mCompression, mLsbIndicator);
                 var result = model.Encode();
                 Console.WriteLine();
                 if (result != null)
@@ -123,15 +135,6 @@ namespace ImageToolCommandPrompt
                 Console.ReadLine();
             }
         }
-
-        private string mImagePath;
-        private string mMessage;
-        private int mCryptIndex;
-        private string mPassword;
-        private int mStegoIndex;
-        private string mResultPath;
-        private bool mCompression;
-        private int mLsbIndicator;
 
 
         public override void Help()

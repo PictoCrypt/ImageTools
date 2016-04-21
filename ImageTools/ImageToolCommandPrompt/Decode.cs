@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using FunctionLib.Cryptography;
-using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Steganography;
 
@@ -9,14 +8,14 @@ namespace ImageToolCommandPrompt
 {
     public class Decode : CommandTool
     {
-        private string mImagePath;
-        private string mMessage;
-        private int mCryptIndex = -1;
-        private string mPassword = string.Empty;
-        private int mStegoIndex = -1;
-        private string mResultPath;
         private bool mCompression;
+        private int mCryptIndex = -1;
+        private string mImagePath;
         private int mLsbIndicator = 3;
+        private string mMessage;
+        private string mPassword = string.Empty;
+        private string mResultPath;
+        private int mStegoIndex = -1;
 
         public Decode(string[] args) : base(args)
         {
@@ -31,7 +30,8 @@ namespace ImageToolCommandPrompt
         {
             get
             {
-                return File.Exists(mImagePath) && !string.IsNullOrEmpty(mMessage) && !string.IsNullOrEmpty(mResultPath) && mStegoIndex >= 0;
+                return File.Exists(mImagePath) && !string.IsNullOrEmpty(mMessage) && !string.IsNullOrEmpty(mResultPath) &&
+                       mStegoIndex >= 0;
             }
         }
 
@@ -115,7 +115,8 @@ namespace ImageToolCommandPrompt
             {
                 InitializeRun();
                 //TODO Show process?
-                var model = new DecodeModel(mImagePath, GetCrypt(mCryptIndex), mPassword, GetStego(mStegoIndex), mCompression,
+                var model = new DecodeModel(mImagePath, GetCrypt(mCryptIndex), mPassword, GetStego(mStegoIndex),
+                    mCompression,
                     mLsbIndicator);
                 var result = model.Decode();
                 Console.WriteLine();

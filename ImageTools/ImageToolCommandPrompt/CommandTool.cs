@@ -12,8 +12,6 @@ namespace ImageToolCommandPrompt
         public static readonly string Seperator = "--------------------";
         private readonly bool mParametersSet;
 
-        protected abstract string Name { get; }
-
         protected CommandTool(string[] args)
         {
             mParametersSet = false;
@@ -23,6 +21,8 @@ namespace ImageToolCommandPrompt
                 MapArgument(args[i++], args[i]);
             }
         }
+
+        protected abstract string Name { get; }
 
         protected abstract bool Configured { get; }
 
