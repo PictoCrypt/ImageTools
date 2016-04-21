@@ -2,11 +2,14 @@
 using System.Linq;
 using FunctionLib.Filter;
 using FunctionLib.Model;
+using FunctionLib.Model.Message;
 
 namespace FunctionLib.Steganography.LSB
 {
     public class FilterFirst : LsbAlgorithmBase
     {
+        private IOrderedEnumerable<KeyValuePair<Pixel, int>> mLaplaceValues;
+
         public override string Name
         {
             get { return "FilterFirst"; }
@@ -22,8 +25,9 @@ namespace FunctionLib.Steganography.LSB
             }
         }
 
-        protected override bool EncodingIteration()
+        protected override void InitializeEncoding(string src, ISecretMessage message, int passHash, int lsbIndicator)
         {
+            base.InitializeEncoding(src, message, passHash, lsbIndicator);
             var filter = new Laplace(Bitmap, LsbIndicator, 8);
             IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
@@ -34,9 +38,14 @@ namespace FunctionLib.Steganography.LSB
                 }
             }
             var ordered = filtered.OrderByDescending(key => key.Value);
+            mLaplaceValues = ordered;
+        }
+
+        protected override bool EncodingIteration()
+        {
             //var random = new Random(password);
 
-            foreach (var key in ordered)
+            foreach (var key in mLaplaceValues)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
@@ -50,8 +59,9 @@ namespace FunctionLib.Steganography.LSB
             return false;
         }
 
-        protected override bool DecodingIteration()
+        protected override void InitializeDecoding(string src, int passHash, int lsbIndicator)
         {
+            base.InitializeDecoding(src, passHash, lsbIndicator);
             var filter = new Laplace(Bitmap, LsbIndicator, 8);
             IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
@@ -61,10 +71,14 @@ namespace FunctionLib.Steganography.LSB
                     filtered.Add(new Pixel(x, y), filter.GetValue(x, y));
                 }
             }
-            var ordered = filtered.OrderByDescending(key => key.Value);
+            mLaplaceValues = filtered.OrderByDescending(key => key.Value);
+        }
+
+        protected override bool DecodingIteration()
+        {
             //var random = new Random(password);
 
-            foreach (var key in ordered)
+            foreach (var key in mLaplaceValues)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
