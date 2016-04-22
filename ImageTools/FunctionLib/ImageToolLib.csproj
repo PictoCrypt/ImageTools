@@ -57,7 +57,6 @@
     <Compile Include="Cryptography\CryptographicAlgorithmImpl.cs" />
     <Compile Include="Cryptography\DesAlgorithm.cs" />
     <Compile Include="Cryptography\Rc2Algorithm.cs" />
-    <Compile Include="Cryptography\RijndaelAlgorithm.cs" />
     <Compile Include="Cryptography\TripleDesAlgorithm.cs" />
     <Compile Include="Cryptography\TwofishAlgorithm.cs" />
     <Compile Include="Cryptography\Twofish\Twofish.cs" />

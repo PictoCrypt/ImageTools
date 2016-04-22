@@ -56,7 +56,6 @@
     <Compile Include="CryptTests\AESTest.cs" />
     <Compile Include="CryptTests\DesTest.cs" />
     <Compile Include="CryptTests\Rc2Test.cs" />
-    <Compile Include="CryptTests\RijndaelManagedTest.cs" />
     <Compile Include="CryptTests\SymmetricAlgorithmBaseTestClass.cs" />
     <Compile Include="CryptTests\TripleDesTest.cs" />
     <Compile Include="CryptTests\TwofishTest.cs" />
