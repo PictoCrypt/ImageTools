@@ -2,7 +2,7 @@
 
 namespace FunctionLib.Cryptography
 {
-    public class BlowfishAlgorithm : CryptographicAlgorithmImpl
+    public class BlowfishAlgorithm : CryptographicSymmetricAlgorithmImpl
     {
         protected override SymmetricAlgorithm Algorithm
         {

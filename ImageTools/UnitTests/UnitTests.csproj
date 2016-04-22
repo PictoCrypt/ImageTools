@@ -53,10 +53,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CryptTests\AESTest.cs" />
+    <Compile Include="CryptTests\AesTest.cs" />
+    <Compile Include="CryptTests\Base\AsymmetricAlgorithmBaseTestClass.cs" />
+    <Compile Include="CryptTests\Base\CryptAlgorithmTestClass.cs" />
+    <Compile Include="CryptTests\Base\SymmetricAlgorithmBaseTestClass.cs" />
     <Compile Include="CryptTests\DesTest.cs" />
     <Compile Include="CryptTests\Rc2Test.cs" />
-    <Compile Include="CryptTests\SymmetricAlgorithmBaseTestClass.cs" />
+    <Compile Include="CryptTests\RsaTest.cs" />
     <Compile Include="CryptTests\TripleDesTest.cs" />
     <Compile Include="CryptTests\TwofishTest.cs" />
     <Compile Include="FilterTests\FilterTest.cs" />

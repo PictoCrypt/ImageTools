@@ -2,7 +2,7 @@
 
 namespace FunctionLib.Cryptography
 {
-    public class TwofishAlgorithm : CryptographicAlgorithmImpl
+    public class TwofishAlgorithm : CryptographicSymmetricAlgorithmImpl
     {
         protected override SymmetricAlgorithm Algorithm
         {

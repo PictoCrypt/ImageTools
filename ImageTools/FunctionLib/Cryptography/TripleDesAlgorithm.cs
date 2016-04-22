@@ -2,7 +2,7 @@
 
 namespace FunctionLib.Cryptography
 {
-    public class TripleDesAlgorithm : CryptographicAlgorithmImpl
+    public class TripleDesAlgorithm : CryptographicSymmetricAlgorithmImpl
     {
         protected override SymmetricAlgorithm Algorithm
         {

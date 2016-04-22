@@ -2,7 +2,7 @@
 
 namespace FunctionLib.Cryptography
 {
-    public class Rc2Algorithm : CryptographicAlgorithmImpl
+    public class Rc2Algorithm : CryptographicSymmetricAlgorithmImpl
     {
         protected override SymmetricAlgorithm Algorithm
         {

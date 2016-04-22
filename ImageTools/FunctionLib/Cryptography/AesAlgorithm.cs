@@ -2,7 +2,7 @@
 
 namespace FunctionLib.Cryptography
 {
-    public class AesAlgorithm : CryptographicAlgorithmImpl
+    public class AesAlgorithm : CryptographicSymmetricAlgorithmImpl
     {
         protected override SymmetricAlgorithm Algorithm
         {

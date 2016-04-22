@@ -55,8 +55,11 @@
     <Compile Include="Cryptography\Blowfish\BlowfishBaseCbc.cs" />
     <Compile Include="Cryptography\Blowfish\BlowfishTables.cs" />
     <Compile Include="Cryptography\CryptographicAlgorithmImpl.cs" />
+    <Compile Include="Cryptography\CryptographicAssymetricAlgorithmImpl.cs" />
+    <Compile Include="Cryptography\CryptographicSymmetricAlgorithmImpl.cs" />
     <Compile Include="Cryptography\DesAlgorithm.cs" />
     <Compile Include="Cryptography\Rc2Algorithm.cs" />
+    <Compile Include="Cryptography\RsaAlgorithm.cs" />
     <Compile Include="Cryptography\TripleDesAlgorithm.cs" />
     <Compile Include="Cryptography\TwofishAlgorithm.cs" />
     <Compile Include="Cryptography\Twofish\Twofish.cs" />

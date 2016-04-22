@@ -8,6 +8,7 @@ using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Steganography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UnitTests.CryptTests.Base;
 
 namespace UnitTests.StegaTests
 {
