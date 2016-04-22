@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace UserControlClassLibrary.DocumentChooser
 {
@@ -11,6 +13,15 @@ namespace UserControlClassLibrary.DocumentChooser
         {
             InitializeComponent();
             DataContext = new DocumentChooserViewModel();
+        }
+
+        public static readonly DependencyProperty PathProperty = DependencyProperty.Register("Path", typeof(string),
+    typeof(DocumentChooser), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public string Path
+        {
+            get { return (string)GetValue(PathProperty); }
+            set { SetValue(PathProperty, value); }
         }
     }
 }

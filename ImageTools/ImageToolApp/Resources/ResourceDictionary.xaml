@@ -26,6 +26,8 @@
     <!-- Converters -->
     <converters:FrameworkElementEncryptToVisibilityConverter x:Key="FrameworkElementEncryptToVisibilityConverter" />
     <converters:FrameworkElementDecryptToVisibilityConverter x:Key="FrameworkElementDecryptToVisibilityConverter" />
+    <converters:CryptionRsaVisilibtyConverter x:Key="CryptionRsaVisilibtyConverter" />
+    <converters:NegationConverter x:Key="NegationConverter" />
 
     <!-- Styles -->
     <Style x:Key="MenuButtonWithoutBorderStyle" TargetType="Button"

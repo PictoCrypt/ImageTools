@@ -110,8 +110,10 @@
     <Compile Include="Controllers\IBaseTabController.cs" />
     <Compile Include="Controllers\ImagePresentationController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Converters\CryptionRsaVisilibtyConverter.cs" />
     <Compile Include="Converters\FrameworkElementDecryptToVisibilityConverter.cs" />
     <Compile Include="Converters\FrameworkElementEncryptToVisibilityConverter.cs" />
+    <Compile Include="Converters\NegationConverter.cs" />
     <Compile Include="HandleJobController.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\Settings.cs" />

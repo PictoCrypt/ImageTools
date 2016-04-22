@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using FunctionLib.Cryptography;
 using FunctionLib.Model;
 using ImageToolApp.ViewModels;
 using ImageToolApp.Views;
@@ -32,9 +33,27 @@ namespace ImageToolApp.Controllers
             HandleJobController.Progress(() =>
             {
                 //TODO Compression
-                var model = new DecodeModel(ViewModel.ImagePath, ViewModel.CryptionModel.Algorithm,
-                    ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm,
-                    ViewModel.SteganographicModel.Compression, ViewModel.SteganographicModel.LsbIndicator);
+                var algorithm = ViewModel.CryptionModel.Algorithm as RsaAlgorithm;
+                DecodeModel model;
+                if (algorithm != null)
+                {
+                    string key;
+                    using (var sr = new StreamReader(ViewModel.CryptionModel.KeyFilePath))
+                    {
+                        key = sr.ReadToEnd();
+                    }
+
+                    model = new DecodeModel(ViewModel.ImagePath, ViewModel.CryptionModel.Algorithm,
+                        key, ViewModel.SteganographicModel.Algorithm,
+                        ViewModel.SteganographicModel.Compression, ViewModel.SteganographicModel.LsbIndicator);
+                }
+                else
+                {
+                    model = new DecodeModel(ViewModel.ImagePath, ViewModel.CryptionModel.Algorithm,
+                        ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm,
+                        ViewModel.SteganographicModel.Compression, ViewModel.SteganographicModel.LsbIndicator);
+                }
+
 
                 ViewModel.Result = model.Decode();
             });

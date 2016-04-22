@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using FunctionLib.Cryptography;
 using ImageToolApp.Models;
+using ImageToolApp.Views;
 
 namespace ImageToolApp.ViewModels
 {
@@ -9,9 +11,10 @@ namespace ImageToolApp.ViewModels
     {
         private CryptographicAlgorithmImpl mAlgorithm;
 
-
         private bool mIsEnabled;
         private string mPassword;
+        private string mKeyFilePath;
+        private Visibility mRsaVisible;
 
         public CryptionModel(string password, CryptographicAlgorithmImpl algorithm)
         {
@@ -34,6 +37,17 @@ namespace ImageToolApp.ViewModels
             get { return Settings.Instance; }
         }
 
+        public Visibility RsaVisible
+        {
+            get { return mRsaVisible; }
+            set
+            {
+                if (value == mRsaVisible) return;
+                mRsaVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsEnabled
         {
             get { return mIsEnabled; }
@@ -45,6 +59,17 @@ namespace ImageToolApp.ViewModels
                 }
                 mIsEnabled = value;
                 OnPropertyChanged("IsEnabled");
+            }
+        }
+
+        public string KeyFilePath
+        {
+            get { return mKeyFilePath; }
+            set
+            {
+                if (value == mKeyFilePath) return;
+                mKeyFilePath = value;
+                OnPropertyChanged("KeyFilePath");
             }
         }
 
@@ -75,6 +100,14 @@ namespace ImageToolApp.ViewModels
                     return;
                 }
                 mAlgorithm = value;
+                if (mAlgorithm.GetType() == typeof(RsaAlgorithm))
+                {
+                    RsaVisible = Visibility.Visible;
+                }
+                else
+                {
+                    RsaVisible = Visibility.Collapsed;
+                }
                 OnPropertyChanged("Algorithm");
             }
         }

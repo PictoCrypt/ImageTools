@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:ImageToolApp.Views"
              xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:documentChooser="clr-namespace:UserControlClassLibrary.DocumentChooser;assembly=UserControlClassLibrary"
              mc:Ignorable="d"
              d:DesignHeight="80" d:DesignWidth="400">
     <GroupBox Header="Encryption" HorizontalAlignment="Stretch"
@@ -24,10 +25,13 @@
                          wpfHelpers:PasswordHelper.Attach="True"
                          wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="3"
                          IsEnabled="{Binding IsEnabled}"
+                         Visibility="{Binding RsaVisible, Converter={StaticResource NegationConverter}}"
                          controls:TextBoxHelper.Watermark="Password..." />
             <ComboBox Grid.Column="2" ItemsSource="{Binding AlgorithmList}"
                       SelectedItem="{Binding Algorithm}" DisplayMemberPath="Name"
                       Margin="3" IsEnabled="{Binding IsEnabled}" />
+
+            <documentChooser:DocumentChooser Grid.Column="1" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=GroupBox}, Path=DataContext.RsaVisible}" />
         </Grid>
     </GroupBox>
 </UserControl>

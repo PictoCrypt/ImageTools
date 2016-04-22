@@ -1,0 +1,51 @@
+﻿<Window x:Class="ImageToolApp.Views.CryptographicView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageToolApp.Views"
+        xmlns:wpfHelpers="clr-namespace:ImageToolApp.WpfHelpers"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:documentChooser="clr-namespace:UserControlClassLibrary.DocumentChooser;assembly=UserControlClassLibrary"
+        mc:Ignorable="d"
+        Title="Cryptographic-Setup" Height="140" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Algorithm:</Label>
+        <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" ItemsSource="{Binding AlgorithmList}" SelectedItem="{Binding SelectedAlgorithm}" DisplayMemberPath="Name" />
+
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+               Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=SelectedItem, Converter={StaticResource AlgorithmExceptRsaVisibilityConverter}}">
+            Password:
+        </Label>
+        <PasswordBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                        Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Visibility}"
+                        wpfHelpers:PasswordHelper.Attach="True"
+                        wpfHelpers:PasswordHelper.Password="{Binding Password, Mode=TwoWay}" Margin="5"
+                        controls:TextBoxHelper.Watermark="Password..." />
+
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" 
+               Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=PasswordBox}, 
+            Path=Visibility, Converter={StaticResource NegationConverter}}">
+            Keyfile:
+        </Label>
+        
+        <documentChooser:DocumentChooser Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" 
+                                         Path="{Binding KeyFilePath}"
+                                         Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Visibility}"/>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
+            <Button Command="{Binding OkCommand}" Margin="5">Ok</Button>
+            <Button Command="{Binding CancelCommand}" Margin="5" IsCancel="True">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</Window>

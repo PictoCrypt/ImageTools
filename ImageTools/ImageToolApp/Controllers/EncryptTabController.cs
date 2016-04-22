@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using FunctionLib.Cryptography;
 using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Steganography.LSB;
@@ -121,12 +122,31 @@ namespace ImageToolApp.Controllers
         {
             HandleJobController.Progress(() =>
             {
-                var message = GetCurrentMessage();
                 //TODO compression
-                var model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.CryptionModel.Algorithm,
-                    ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm,
-                    ViewModel.SteganographicModel.Compression,
-                    ViewModel.SteganographicModel.LsbIndicator);
+                var message = GetCurrentMessage();
+                var algorithm = ViewModel.CryptionModel.Algorithm as RsaAlgorithm;
+                EncodeModel model;
+
+                if (algorithm != null)
+                {
+                    string key;
+                    using (var sr = new StreamReader(ViewModel.CryptionModel.KeyFilePath))
+                    {
+                        key = sr.ReadToEnd();
+                    }
+
+                    model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.CryptionModel.Algorithm,
+                        key, ViewModel.SteganographicModel.Algorithm,
+                        ViewModel.SteganographicModel.Compression,
+                        ViewModel.SteganographicModel.LsbIndicator);
+                }
+                else
+                {
+                    model = new EncodeModel(ViewModel.ImagePath, message, ViewModel.CryptionModel.Algorithm,
+                        ViewModel.CryptionModel.Password, ViewModel.SteganographicModel.Algorithm,
+                        ViewModel.SteganographicModel.Compression,
+                        ViewModel.SteganographicModel.LsbIndicator);
+                }
 
                 var result = model.Encode();
                 ViewModel.Result = result;

@@ -18,7 +18,7 @@ namespace FunctionLib.Cryptography
             return new[] { KeyToString(pubKey), KeyToString(privKey)};
         }
 
-        private string KeyToString(RSAParameters parameter)
+        public string KeyToString(RSAParameters parameter)
         {
             string result;
             using (var sw = new StringWriter())
