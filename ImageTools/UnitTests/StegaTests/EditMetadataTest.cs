@@ -6,11 +6,6 @@ namespace UnitTests.StegaTests
     [TestClass]
     public class EditMetadataTest : SteganographicAlogithmBaseTestClass
     {
-        [TestInitialize]
-        public override void Initialize()
-        {
-            base.Initialize();
-            Algorithm = new EditMetadata();
-        }
+        protected override SteganographicAlgorithmImpl Algorithm { get {return new EditMetadata();} }
     }
 }

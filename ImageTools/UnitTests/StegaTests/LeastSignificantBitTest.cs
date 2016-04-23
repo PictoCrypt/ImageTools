@@ -1,4 +1,5 @@
-﻿using FunctionLib.Steganography.LSB;
+﻿using FunctionLib.Steganography;
+using FunctionLib.Steganography.LSB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.StegaTests
@@ -6,11 +7,6 @@ namespace UnitTests.StegaTests
     [TestClass]
     public class LeastSignificantBitTest : SteganographicAlogithmBaseTestClass
     {
-        [TestInitialize]
-        public override void Initialize()
-        {
-            base.Initialize();
-            Algorithm = new LeastSignificantBit();
-        }
+        protected override SteganographicAlgorithmImpl Algorithm { get {return new LeastSignificantBit();} }
     }
 }

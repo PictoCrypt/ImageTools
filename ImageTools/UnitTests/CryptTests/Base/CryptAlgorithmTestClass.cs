@@ -27,7 +27,7 @@ namespace UnitTests.CryptTests.Base
         }
 
         [TestMethod]
-        public void LongTextEncryptionTest()
+        public virtual void LongTextEncryptionTest()
         {
             var encrypted = Encrypt(TestingConstants.LongText);
 

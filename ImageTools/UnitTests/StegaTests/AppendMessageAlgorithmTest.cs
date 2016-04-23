@@ -8,18 +8,20 @@ namespace UnitTests.StegaTests
     [TestClass]
     public class AppendMessageAlgorithmTest : SteganographicAlogithmBaseTestClass
     {
-        [TestInitialize]
-        public override void Initialize()
-        {
-            base.Initialize();
-            Algorithm = new AppendMessageAlgorithm();
-        }
 
         [TestMethod]
         public override void EncodeDocumentWithoutSpaceTest()
         {
             //TODO thats shit
             throw new ContentLengthException();
+        }
+
+        protected override SteganographicAlgorithmImpl Algorithm
+        {
+            get
+            {
+                return new AppendMessageAlgorithm();
+            }
         }
 
         [TestMethod]

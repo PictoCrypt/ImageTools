@@ -43,13 +43,10 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool EncodingIteration()
         {
-            //var random = new Random(password);
-
             foreach (var key in mLaplaceValues)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
-                //var x = GetNextRandom("x", orderedLaplace.Count(), random);
                 EncodeBytes(x, y, LsbIndicator);
                 if (EncodeCheckForEnd())
                 {
@@ -76,13 +73,10 @@ namespace FunctionLib.Steganography.LSB
 
         protected override bool DecodingIteration()
         {
-            //var random = new Random(password);
-
             foreach (var key in mLaplaceValues)
             {
                 var x = key.Key.X;
                 var y = key.Key.Y;
-                //var x = GetNextRandom("x", orderedLaplace.Count(), random);
                 DecodeBytes(x, y, LsbIndicator);
                 //TODO: Fix this? Why is this so fucking cumbersome? Cant REF BitHolder
                 var bitHolder = BitHolder;

@@ -8,13 +8,12 @@ using FunctionLib.Helper;
 using FunctionLib.Model;
 using FunctionLib.Steganography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UnitTests.CryptTests.Base;
 
 namespace UnitTests.StegaTests
 {
     public abstract class SteganographicAlogithmBaseTestClass
     {
-        protected SteganographicAlgorithmImpl Algorithm;
+        protected abstract SteganographicAlgorithmImpl Algorithm { get; }
 
         private TimeSpan mDecryptionTime;
         private TimeSpan mEncryptionTime;
