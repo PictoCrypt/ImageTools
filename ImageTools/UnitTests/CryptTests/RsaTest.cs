@@ -9,12 +9,5 @@ namespace UnitTests.CryptTests
     public class RsaTest : AsymmetricAlgorithmBaseTestClass
     {
         protected override CryptographicAlgorithmImpl Algorithm { get {return new RsaAlgorithm(); } }
-
-        [TestMethod]
-        [ExpectedException(typeof(CryptographicException), "Ungültige Länge")]
-        public override void LongTextEncryptionTest()
-        {
-            base.LongTextEncryptionTest();
-        }
     }
 }
