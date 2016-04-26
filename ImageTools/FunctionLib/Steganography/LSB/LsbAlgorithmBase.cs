@@ -36,7 +36,7 @@ namespace FunctionLib.Steganography.LSB
 
         protected int LsbIndicator { get; set; }
 
-        protected override string EncodingAlgorithm(string src, ISecretMessage message, int passHash)
+        protected override string EncodingAlgorithm(string src, ISecretMessage message)
         {
             var tmp = FileManager.CopyImageToTmp(src);
 
@@ -83,6 +83,7 @@ namespace FunctionLib.Steganography.LSB
         protected override void InitializeDecoding(string src, int passHash, int lsbIndicator)
         {
             base.InitializeDecoding(src, passHash, lsbIndicator);
+            LsbIndicator = lsbIndicator;
             Bytes = new byte[0];
             BitHolder = new List<int>();
             EndCount = int.MaxValue;

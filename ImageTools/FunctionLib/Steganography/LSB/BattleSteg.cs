@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using FunctionLib.Filter;
 using FunctionLib.Model;
@@ -28,6 +29,11 @@ namespace FunctionLib.Steganography.LSB
         protected override void InitializeDecoding(string src, int passHash, int lsbIndicator)
         {
             base.InitializeDecoding(src, passHash, lsbIndicator);
+            GenerateShips();
+        }
+
+        private void GenerateShips()
+        {
             var filter = new Laplace(Bitmap, LsbIndicator, 8);
             IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
             for (var x = 0; x < Bitmap.Width; x++)
@@ -39,23 +45,13 @@ namespace FunctionLib.Steganography.LSB
             }
             var ordered = filtered.OrderByDescending(key => key.Value);
             //TODO: dynamic maybe? Top 100
-            mShips = new HashSet<Pixel>(ordered.Select((x, y) => x.Key).Take(100));
+            mShips = new HashSet<Pixel>(ordered.Select((x, y) => x.Key).Take(50));
         }
 
         protected override void InitializeEncoding(string src, ISecretMessage message, int passHash, int lsbIndicator)
         {
             base.InitializeEncoding(src, message, passHash, lsbIndicator);
-            var filter = new Laplace(Bitmap, LsbIndicator, 8);
-            IDictionary<Pixel, int> filtered = new Dictionary<Pixel, int>();
-            for (var x = 0; x < Bitmap.Width; x++)
-            {
-                for (var y = 0; y < Bitmap.Height; y++)
-                {
-                    filtered.Add(new Pixel(x, y), filter.GetValue(x, y));
-                }
-            }
-            var ordered = filtered.OrderByDescending(key => key.Value);
-            mShips = new HashSet<Pixel>(ordered.Select((x, y) => x.Key).Take(100));
+            GenerateShips();
         }
 
         protected override bool EncodingIteration()
@@ -71,6 +67,7 @@ namespace FunctionLib.Steganography.LSB
             }
             return true;
         }
+
 
         private void FillNeighbors(Pixel pixel)
         {
@@ -104,8 +101,11 @@ namespace FunctionLib.Steganography.LSB
             return Bytes.Length == EndCount;
         }
 
+        private int i = 0;
+
         private void ReadNeighbors(Pixel pixel)
         {
+            i++;
             DecodeBytes(pixel.X + 1, pixel.Y, LsbIndicator);
             DecodeBytes(pixel.X - 1, pixel.Y, LsbIndicator);
             DecodeBytes(pixel.X, pixel.Y + 1, LsbIndicator);
