@@ -45,44 +45,37 @@ namespace FunctionLib.Cryptography
 
         public override byte[] Encode(byte[] value, string password)
         {
-            //IEnumerable<byte> encoded = new byte[] {};
-            byte[] encoded;
+            IEnumerable<byte> encoded = new byte[] { };
             using (var cipher = Algorithm)
             {
                 cipher.ImportParameters(StringToKey(password));
-                encoded = cipher.Encrypt(value, false);
-                //var i = 0;
-                //var x = ((KeySize - 384)/8) + 37;
-                //while (value.Length > 0)
-                //{
-                //    var current = value.Skip(i++ * x).Take(x).ToArray();
-                //    value = value.Skip(x).ToArray();
-                //    encoded = encoded.Concat(cipher.Encrypt(current, false));
-                //}
+                var i = 0;
+                var x = ((KeySize - 384) / 8) + 37;
+                while (value.Length > 0)
+                {
+                    var current = value.Skip(i++ * x).Take(x).ToArray();
+                    value = value.Skip(x).ToArray();
+                    encoded = encoded.Concat(cipher.Encrypt(current, false));
+                }
             }
-            return encoded;
-            //return encoded.ToArray();
+            return encoded.ToArray();
         }
 
         public override byte[] Decode(byte[] value, string password)
         {
-            //IEnumerable<byte> decoded = new byte[] {};
-            byte[] decoded;
+            IEnumerable<byte> decoded = new byte[] { };
             using (var cipher = Algorithm)
             {
                 cipher.ImportParameters(StringToKey(password));
-                decoded = cipher.Decrypt(value, false);
-                //var i = 0;
-                //var x = ((KeySize - 384)/8) + 37;
-                //while (value.Length > 0)
-                //{
-                //    var current = value.Skip(i++ * x).Take(x).ToArray();
-                //    value = value.Skip(x).ToArray();
-                //    decoded = decoded.Concat(cipher.Decrypt(current, false));
-                //}
+                var x = 512;
+                while (value.Length > 0)
+                {
+                    var current = value.Take(x).ToArray();
+                    value = value.Skip(x).ToArray();
+                    decoded = decoded.Concat(cipher.Decrypt(current, false));
+                }
             }
-            return decoded;
-            //return decoded.ToArray();
+            return decoded.ToArray();
         }
     }
 }
