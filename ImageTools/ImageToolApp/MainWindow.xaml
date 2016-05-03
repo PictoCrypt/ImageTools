@@ -6,7 +6,8 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       mc:Ignorable="d" ShowIconOnTitleBar="True" Icon="{StaticResource ApplicationIcon}"
                       IconTemplate="{StaticResource WindowIconTemplate}"
-                      Title="{StaticResource ApplicationName}" Height="500" Width="600" ShowTitleBar="True">
+                      Title="{StaticResource ApplicationName}" Height="500" Width="600" ShowTitleBar="True"
+                    BorderThickness="2.5" BorderBrush="{DynamicResource AccentColorBrush}">
     <Grid>
         <Grid
             IsEnabled="{Binding ElementName=Progress, Path=IsActive, Converter={StaticResource InvertBooleanConverter}}">
